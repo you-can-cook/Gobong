@@ -23,14 +23,14 @@ public class ErrorResponse {
                 .body(ErrorResponse.of(errorCode, message));
     }
 
-    public static ErrorResponse of(final ErrorCode errorCode) {
+    private static ErrorResponse of(final ErrorCode errorCode) {
         return ErrorResponse.builder()
                 .code(errorCode.getCode())
                 .message(errorCode.getMessage())
                 .build();
     }
 
-    public static ErrorResponse of(final ErrorCode errorCode, String message) {
+    private static ErrorResponse of(final ErrorCode errorCode, String message) {
         return ErrorResponse.builder()
                 .code(errorCode.getCode())
                 .message(message)
