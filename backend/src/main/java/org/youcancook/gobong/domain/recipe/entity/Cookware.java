@@ -1,0 +1,22 @@
+package org.youcancook.gobong.domain.recipe.entity;
+
+import lombok.Getter;
+
+@Getter
+public enum Cookware {
+    // 1가지 종류
+    MICROWAVE, AIR_FRYER, OVEN, GAS_RANGE,
+
+    // 2가지 종류
+    MICROWAVE_AND_AIR_FRYER, MICROWAVE_AND_OVEN, MICROWAVE_AND_GAS_RANGE,
+    AIR_FRYER_AND_OVEN, AIR_FRYER_AND_GAS_RANGE,
+    OVEN_AND_GAS_RANGE,
+
+
+    // 3가지 종류
+    MICROWAVE_AND_AIR_FRYER_AND_OVEN, MICROWAVE_AND_AIR_FRYER_AND_GAS_RANGE,
+    MICROWAVE_AND_OVEN_AND_GAS_RANGE, AIR_FRYER_AND_OVEN_AND_GAS_RANGE,
+
+    // 4가지 종류
+    MICROWAVE_AND_AIR_FRYER_AND_OVEN_AND_GAS_RANGE;
+}
