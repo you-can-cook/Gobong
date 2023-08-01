@@ -43,7 +43,7 @@ public class Recipe {
     private Long cookwares;
 
     @OneToMany(mappedBy = "recipe")
-    @OrderBy("recipeStep asc")
+    @OrderBy("step asc")
     private List<RecipeDetail> recipeDetails = new ArrayList<>();
 
     @Builder

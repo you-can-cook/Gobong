@@ -28,7 +28,8 @@ public class RecipeDetail {
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
-    private int recipeStep;
+    @Column(nullable = false)
+    private Integer step;
 
     @Builder
     public RecipeDetail(String content, String imageURL, Long cookTimeInSeconds, Long cookware, Recipe recipe) {
