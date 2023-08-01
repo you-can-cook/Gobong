@@ -5,7 +5,11 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.youcancook.gobong.domain.recipedetail.entity.RecipeDetail;
 import org.youcancook.gobong.domain.user.entity.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,31 +19,43 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String title;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String thumbnailURL;
+    @Column(nullable = false)
+    private String title;
 
+    private String introduction;
+
+    private String ingredients;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
-    @Enumerated(EnumType.STRING)
-    private CookingTime cookingTime;
+    private String thumbnailURL;
 
-    @Enumerated(EnumType.STRING)
-    private Cookware cookware;
+    @Column(nullable = false)
+    private Long totalTimeInSeconds;
+
+    @Column(nullable = false)
+    private Long cookwares;
+
+    @OneToMany(mappedBy = "recipe")
+    @OrderBy("recipeStep asc")
+    private List<RecipeDetail> recipeDetails = new ArrayList<>();
 
     @Builder
-    public Recipe(String title, User user, String thumbnailURL, Difficulty difficulty, CookingTime cookingTime, Cookware cookware) {
-        this.title = title;
+    public Recipe(User user, String title, String introduction, String ingredients, Difficulty difficulty,
+                  String thumbnailURL, Long totalTimeInSeconds, Long cookwares) {
         this.user = user;
-        this.thumbnailURL = thumbnailURL;
+        this.title = title;
+        this.introduction = introduction;
+        this.ingredients = ingredients;
         this.difficulty = difficulty;
-        this.cookingTime = cookingTime;
-        this.cookware = cookware;
+        this.thumbnailURL = thumbnailURL;
+        this.totalTimeInSeconds = totalTimeInSeconds;
+        this.cookwares = cookwares;
     }
 }
