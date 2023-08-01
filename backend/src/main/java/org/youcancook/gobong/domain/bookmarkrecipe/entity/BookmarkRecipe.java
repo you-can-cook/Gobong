@@ -25,15 +25,10 @@ public class BookmarkRecipe {
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private BookmarkType bookmarkType;
-
     @Builder
-    public BookmarkRecipe(User user, Recipe recipe, BookmarkType bookmarkType) {
+    public BookmarkRecipe(User user, Recipe recipe) {
         this.user = user;
         this.recipe = recipe;
-        this.bookmarkType = bookmarkType;
     }
 }
 
