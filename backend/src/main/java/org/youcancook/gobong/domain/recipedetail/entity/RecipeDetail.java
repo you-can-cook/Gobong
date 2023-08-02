@@ -19,7 +19,7 @@ public class RecipeDetail {
     private String imageURL;
 
     @Column(nullable = false)
-    private Long cookTimeInSeconds;
+    private Integer cookTimeInSeconds;
 
     @Column(nullable = false)
     private Long cookware;
@@ -32,7 +32,7 @@ public class RecipeDetail {
     private Integer step;
 
     @Builder
-    public RecipeDetail(String content, String imageURL, Long cookTimeInSeconds, Long cookware, Recipe recipe) {
+    public RecipeDetail(String content, String imageURL, Integer cookTimeInSeconds, Long cookware, Recipe recipe) {
         this.content = content;
         this.imageURL = imageURL;
         this.cookTimeInSeconds = cookTimeInSeconds;
