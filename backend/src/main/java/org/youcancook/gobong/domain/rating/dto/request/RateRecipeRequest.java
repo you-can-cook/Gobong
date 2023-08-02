@@ -10,8 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class RateRecipeRequest {
-    @NotNull(message = "유저 ID는 필수 항목입니다.")
-    private Long userId;
 
     @NotNull(message = "레시피 ID는 필수 항목입니다.")
     private Long recipeId;
@@ -20,4 +18,5 @@ public class RateRecipeRequest {
     @Min(value = 1, message = "최소 평점은 1점입니다.")
     @Max(value = 5, message = "최대 평점은 5점입니다.")
     private Integer score;
+
 }
