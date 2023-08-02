@@ -25,7 +25,11 @@ public class User {
     private String nickname;
 
     @Column(nullable = false)
-    private String email;
+    private String oauthId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OAuthProvider oAuthProvider;
 
     private String profileImageURL;
 
@@ -36,9 +40,10 @@ public class User {
     private List<Follow> following = new ArrayList<>();
 
     @Builder
-    public User(String nickname, String email, String profileImageURL) {
+    public User(String nickname, String oauthId, OAuthProvider oAuthProvider, String profileImageURL) {
         this.nickname = nickname;
-        this.email = email;
+        this.oauthId = oauthId;
+        this.oAuthProvider = oAuthProvider;
         this.profileImageURL = profileImageURL;
     }
 }
