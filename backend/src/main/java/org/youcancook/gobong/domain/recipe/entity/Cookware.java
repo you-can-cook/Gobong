@@ -4,19 +4,16 @@ import lombok.Getter;
 
 @Getter
 public enum Cookware {
-    // 1가지 종류
-    MICROWAVE, AIR_FRYER, OVEN, GAS_RANGE,
+    MICROWAVE(0), AIR_FRYER(1), OVEN(2), GAS_RANGE(3),
+    MIXER(4), ELECTRIC_KETTLE(5), PAN(6),
+    ;
 
-    // 2가지 종류
-    MICROWAVE_AND_AIR_FRYER, MICROWAVE_AND_OVEN, MICROWAVE_AND_GAS_RANGE,
-    AIR_FRYER_AND_OVEN, AIR_FRYER_AND_GAS_RANGE,
-    OVEN_AND_GAS_RANGE,
+    private final long value;
+
+    Cookware(int power) {
+        this.value = 1L << power;
+    }
 
 
-    // 3가지 종류
-    MICROWAVE_AND_AIR_FRYER_AND_OVEN, MICROWAVE_AND_AIR_FRYER_AND_GAS_RANGE,
-    MICROWAVE_AND_OVEN_AND_GAS_RANGE, AIR_FRYER_AND_OVEN_AND_GAS_RANGE,
 
-    // 4가지 종류
-    MICROWAVE_AND_AIR_FRYER_AND_OVEN_AND_GAS_RANGE;
 }
