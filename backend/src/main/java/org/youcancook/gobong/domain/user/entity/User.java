@@ -24,11 +24,11 @@ public class User {
     @Column(nullable = false)
     private String nickname;
 
-    @Column(nullable = false)
-    private String oauthId;
+    @Column(nullable = false, name = "oauth_id")
+    private String oAuthId;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "oauth_provider")
     private OAuthProvider oAuthProvider;
 
     private String profileImageURL;
@@ -40,9 +40,9 @@ public class User {
     private List<Follow> following = new ArrayList<>();
 
     @Builder
-    public User(String nickname, String oauthId, OAuthProvider oAuthProvider, String profileImageURL) {
+    public User(String nickname, String oAuthId, OAuthProvider oAuthProvider, String profileImageURL) {
         this.nickname = nickname;
-        this.oauthId = oauthId;
+        this.oAuthId = oAuthId;
         this.oAuthProvider = oAuthProvider;
         this.profileImageURL = profileImageURL;
     }
