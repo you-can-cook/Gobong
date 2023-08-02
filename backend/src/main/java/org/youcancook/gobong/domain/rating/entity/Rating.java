@@ -11,6 +11,9 @@ import org.youcancook.gobong.domain.user.entity.User;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "recipe_id"})
+})
 public class Rating {
 
     @Id
@@ -26,12 +29,15 @@ public class Rating {
     private Recipe recipe;
 
     @Column(nullable = false)
-    private Long score;
+    private Integer score;
 
     @Builder
-    public Rating(User user, Recipe recipe, Long score) {
+    public Rating(User user, Recipe recipe, Integer score) {
         this.user = user;
         this.recipe = recipe;
+        this.score = score;
+    }
+    public void updateScore(Integer score) {
         this.score = score;
     }
 }
