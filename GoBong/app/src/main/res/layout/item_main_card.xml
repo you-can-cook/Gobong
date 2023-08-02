@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="6dp"
+    android:clipToPadding="false"
+    android:elevation="5dp"
+    app:cardCornerRadius="12dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/profileImageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="9dp"
+            android:background="@color/disabled_color"
+            android:src="@drawable/menu_my"
+            app:layout_constraintBottom_toBottomOf="@id/followingButton"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/followingButton" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/profileImageView"
+            app:layout_constraintEnd_toStartOf="followingButton"
+            app:layout_constraintStart_toEndOf="@id/profileImageView"
+            app:layout_constraintTop_toTopOf="@id/profileImageView"
+            tools:text="쩝쩝박사" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/followingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:text="팔로잉"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/thumbnailImageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="2.3:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/followingButton"
+            tools:src="@drawable/example_img" />
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintEnd_toStartOf="@id/bookmarkImageView"
+            app:layout_constraintStart_toStartOf="@id/profileImageView"
+            app:layout_constraintTop_toBottomOf="@id/thumbnailImageView"
+            tools:text="편의점 꿀조합 마크 정식wjdjdjdjdjdjdjdjdjdjdjdjfjfdjdfkjlf;jakfasdjfkla;jfalkdsf" />
+
+        <ImageView
+            android:id="@+id/bookmarkImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/icon_bookmark"
+            app:layout_constraintBottom_toBottomOf="@id/bookmarkTextView"
+            app:layout_constraintEnd_toStartOf="@id/bookmarkTextView"
+            app:layout_constraintTop_toTopOf="@id/bookmarkTextView" />
+
+        <TextView
+            android:id="@+id/bookmarkTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/titleTextView"
+            app:layout_constraintEnd_toEndOf="@id/followingButton"
+            app:layout_constraintTop_toTopOf="@id/titleTextView"
+            tools:text="324" />
+
+        <ImageView
+            android:id="@+id/timeImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:src="@drawable/icon_time"
+            app:layout_constraintEnd_toStartOf="@id/toolImageView"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+
+        <TextView
+            android:id="@+id/timeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="@id/timeImageView"
+            app:layout_constraintStart_toStartOf="@id/timeImageView"
+            app:layout_constraintTop_toBottomOf="@id/timeImageView"
+            tools:text="5분" />
+
+        <ImageView
+            android:id="@+id/toolImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_tool"
+            app:layout_constraintEnd_toStartOf="@id/levelImageView"
+            app:layout_constraintStart_toEndOf="@id/timeImageView"
+            app:layout_constraintTop_toTopOf="@id/timeImageView" />
+
+        <TextView
+            android:id="@+id/toolTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="@id/toolImageView"
+            app:layout_constraintStart_toStartOf="@id/toolImageView"
+            app:layout_constraintTop_toBottomOf="@id/toolImageView"
+            tools:text="전자레인지\n+3" />
+
+        <ImageView
+            android:id="@+id/levelImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_level"
+            app:layout_constraintEnd_toStartOf="@id/StarImageView"
+            app:layout_constraintStart_toEndOf="@id/toolImageView"
+            app:layout_constraintTop_toTopOf="@id/timeImageView" />
+
+        <TextView
+            android:id="@+id/levelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="@id/levelImageView"
+            app:layout_constraintStart_toStartOf="@id/levelImageView"
+            app:layout_constraintTop_toBottomOf="@id/levelImageView"
+            tools:text="쉬워요" />
+
+        <ImageView
+            android:id="@+id/StarImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/levelImageView"
+            app:layout_constraintTop_toTopOf="@id/timeImageView" />
+
+        <TextView
+            android:id="@+id/starTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="@id/StarImageView"
+            app:layout_constraintStart_toStartOf="@id/StarImageView"
+            app:layout_constraintTop_toBottomOf="@id/StarImageView"
+            tools:text="4.7공기" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
