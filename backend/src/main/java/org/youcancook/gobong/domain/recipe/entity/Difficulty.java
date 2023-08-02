@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum Difficulty {
-    EASY("쉬움"), NORMAL("보통"), HARD("어려움");
+    EASY("쉬워요"), NORMAL("보통이에요"), HARD("어려워요");
 
     private final String description;
 

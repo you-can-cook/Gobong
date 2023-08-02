@@ -15,29 +15,29 @@ public class RecipeDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String imageURL;
     private String content;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private IconType iconType;
-
-    private String iconDescription;
+    private String imageURL;
 
     @Column(nullable = false)
-    private Integer order;
+    private Integer cookTimeInSeconds;
+
+    @Column(nullable = false)
+    private Long cookware;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
+    @Column(nullable = false)
+    private Integer step;
+
     @Builder
-    public RecipeDetail(String imageURL, String content, IconType iconType, String iconDescription, Integer order, Recipe recipe) {
-        this.imageURL = imageURL;
+    public RecipeDetail(String content, String imageURL, Integer cookTimeInSeconds, Long cookware, Recipe recipe) {
         this.content = content;
-        this.iconType = iconType;
-        this.iconDescription = iconDescription;
-        this.order = order;
+        this.imageURL = imageURL;
+        this.cookTimeInSeconds = cookTimeInSeconds;
+        this.cookware = cookware;
         this.recipe = recipe;
+        recipe.getRecipeDetails().add(this);
     }
 }

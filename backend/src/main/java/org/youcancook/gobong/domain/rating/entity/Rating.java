@@ -1,4 +1,4 @@
-package org.youcancook.gobong.domain.bookmarkrecipe.entity;
+package org.youcancook.gobong.domain.rating.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,7 +11,10 @@ import org.youcancook.gobong.domain.user.entity.User;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BookmarkRecipe {
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "recipe_id"})
+})
+public class Rating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +28,16 @@ public class BookmarkRecipe {
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
+    @Column(nullable = false)
+    private Integer score;
+
     @Builder
-    public BookmarkRecipe(User user, Recipe recipe) {
+    public Rating(User user, Recipe recipe, Integer score) {
         this.user = user;
         this.recipe = recipe;
+        this.score = score;
+    }
+    public void updateScore(Integer score) {
+        this.score = score;
     }
 }
-
