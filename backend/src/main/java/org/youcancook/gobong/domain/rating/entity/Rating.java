@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.youcancook.gobong.domain.rating.exception.IllegalRatingException;
 import org.youcancook.gobong.domain.recipe.entity.Recipe;
 import org.youcancook.gobong.domain.user.entity.User;
 
@@ -15,6 +16,9 @@ import org.youcancook.gobong.domain.user.entity.User;
         @UniqueConstraint(columnNames = {"user_id", "recipe_id"})
 })
 public class Rating {
+
+    private static final Integer MIN_RATING = 1;
+    private static final Integer MAX_RATING = 5;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,11 +37,20 @@ public class Rating {
 
     @Builder
     public Rating(User user, Recipe recipe, Integer score) {
+        validateRatingRange(score);
         this.user = user;
         this.recipe = recipe;
         this.score = score;
+        this.recipe.addRating(this);
     }
     public void updateScore(Integer score) {
+        validateRatingRange(score);
         this.score = score;
+    }
+
+    public void validateRatingRange(Integer rating){
+        if (rating < MIN_RATING || rating > MAX_RATING){
+            throw new IllegalRatingException();
+        }
     }
 }
