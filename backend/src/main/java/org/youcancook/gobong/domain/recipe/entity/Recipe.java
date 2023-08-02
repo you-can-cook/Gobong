@@ -37,7 +37,7 @@ public class Recipe {
     private String thumbnailURL;
 
     @Column(nullable = false)
-    private Long totalTimeInSeconds;
+    private Integer totalTimeInSeconds;
 
     @Column(nullable = false)
     private Long cookwares;
@@ -48,7 +48,7 @@ public class Recipe {
 
     @Builder
     public Recipe(User user, String title, String introduction, String ingredients, Difficulty difficulty,
-                  String thumbnailURL, Long totalTimeInSeconds, Long cookwares) {
+                  String thumbnailURL, Integer totalTimeInSeconds, Long cookwares) {
         this.user = user;
         this.title = title;
         this.introduction = introduction;
