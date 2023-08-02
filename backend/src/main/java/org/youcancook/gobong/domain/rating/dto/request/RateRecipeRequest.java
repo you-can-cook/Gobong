@@ -17,6 +17,7 @@ public class RateRecipeRequest {
     private Long recipeId;
 
     @NotNull(message = "평점은 필수 항목입니다.")
-    @Min(1) @Max(5)
+    @Min(value = 1, message = "최소 평점은 1점입니다.")
+    @Max(value = 5, message = "최대 평점은 5점입니다.")
     private Integer score;
 }
