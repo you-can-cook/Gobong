@@ -7,32 +7,46 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.youcancook.gobong.adapter.CardRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentHomeBinding
+import com.youcancook.gobong.model.Recipe
+import com.youcancook.gobong.model.User
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+    private val cardAdapter = CardRecyclerViewListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.run {
+            recyclerView.adapter = cardAdapter
         }
-        return root
+
+        cardAdapter.submitList(listOf(
+            Recipe(),
+            Recipe(),
+            Recipe(),
+            Recipe(),
+            Recipe(),
+            Recipe(),
+            Recipe()
+        ))
+
     }
 
     override fun onDestroyView() {
