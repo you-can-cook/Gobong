@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.youcancook.gobong.domain.BaseTime.BaseTime;
+import org.youcancook.gobong.domain.rating.entity.Rating;
 import org.youcancook.gobong.domain.recipedetail.entity.RecipeDetail;
 import org.youcancook.gobong.domain.user.entity.User;
 
@@ -47,6 +48,9 @@ public class Recipe extends BaseTime {
     @OrderBy("step asc")
     private List<RecipeDetail> recipeDetails = new ArrayList<>();
 
+    @OneToMany(mappedBy = "recipe")
+    private List<Rating> rating = new ArrayList<>();
+
     @Builder
     public Recipe(User user, String title, String introduction, String ingredients, Difficulty difficulty,
                   String thumbnailURL, Integer totalTimeInSeconds, Long cookwares) {
@@ -59,4 +63,16 @@ public class Recipe extends BaseTime {
         this.totalTimeInSeconds = totalTimeInSeconds;
         this.cookwares = cookwares;
     }
+
+    public void addRating(Rating rating){
+        this.rating.add(rating);
+    }
+
+    public double getAverageRating(){
+        return rating.stream()
+                .mapToDouble(Rating::getScore)
+                .average()
+                .orElse(0.0);
+    }
+
 }
