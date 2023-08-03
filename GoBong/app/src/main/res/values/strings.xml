@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">GoBong</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+
+    <string name="star_format">%.1f점</string>
 </resources>
