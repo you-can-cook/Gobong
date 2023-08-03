@@ -24,4 +24,5 @@ logging.level:
 
 token:
   secret: test
-  access-token-expiration: 7200000 # 2시간
+  access-token-expiration-seconds: 7200 # 2시간
+  temporary-token-expiration-seconds: 600 # 10분
