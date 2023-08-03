@@ -10,14 +10,17 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.youcancook.gobong.domain.authentication.entity.TemporaryToken;
+import org.youcancook.gobong.domain.authentication.exception.TemporaryTokenFoundException;
 import org.youcancook.gobong.domain.authentication.repository.TemporaryTokenRepository;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -70,16 +73,15 @@ class TemporaryTokenServiceTest {
     void validTemporaryTokenFail() {
         // given
         final String token = UUID.randomUUID().toString();
-        when(temporaryTokenRepository.existsByTokenAndExpiredAtBefore(token, LocalDateTime.now(clock)))
-                .thenReturn(false);
+        when(temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, LocalDateTime.now(clock)))
+                .thenReturn(Optional.empty());
 
-        // when
-        boolean isExistToken = temporaryTokenService.isExistTemporaryToken(token);
+        // when, then
+        assertThrows(TemporaryTokenFoundException.class,
+                () -> temporaryTokenService.validTemporaryToken(token));
 
-        // then
-        assertThat(isExistToken).isEqualTo(false);
         verify(temporaryTokenRepository, times(1))
-                .existsByTokenAndExpiredAtBefore(token, LocalDateTime.now(clock));
+                .findByTokenAndExpiredAtBefore(token, LocalDateTime.now(clock));
     }
 
     @Test
@@ -87,15 +89,17 @@ class TemporaryTokenServiceTest {
     void validTemporaryTokenSuccess() {
         // given
         final String token = UUID.randomUUID().toString();
-        when(temporaryTokenRepository.existsByTokenAndExpiredAtBefore(token, LocalDateTime.now(clock)))
-                .thenReturn(true);
+        when(temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, LocalDateTime.now(clock)))
+                .thenReturn(Optional.of(new TemporaryToken(token, LocalDateTime.now())));
+        doNothing().when(temporaryTokenRepository).delete(any(TemporaryToken.class));
 
         // when
-        boolean isExistToken = temporaryTokenService.isExistTemporaryToken(token);
+        temporaryTokenService.validTemporaryToken(token);
 
         // then
-        assertThat(isExistToken).isEqualTo(true);
         verify(temporaryTokenRepository, times(1))
-                .existsByTokenAndExpiredAtBefore(token, LocalDateTime.now(clock));
+                .findByTokenAndExpiredAtBefore(token, LocalDateTime.now(clock));
+        verify(temporaryTokenRepository, times(1))
+                .delete(any(TemporaryToken.class));
     }
 }

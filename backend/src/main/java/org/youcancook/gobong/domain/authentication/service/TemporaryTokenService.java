@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.youcancook.gobong.domain.authentication.entity.TemporaryToken;
+import org.youcancook.gobong.domain.authentication.exception.TemporaryTokenFoundException;
 import org.youcancook.gobong.domain.authentication.repository.TemporaryTokenRepository;
 
 import java.time.Clock;
@@ -37,9 +38,15 @@ public class TemporaryTokenService {
         return LocalDateTime.now(clock).plusSeconds(temporaryTokenExpirationSeconds);
     }
 
-    @Transactional(readOnly = true)
-    public boolean isExistTemporaryToken(String token) {
+    @Transactional
+    public void validTemporaryToken(String token) {
         LocalDateTime localDateTimeNow = LocalDateTime.now(clock);
-        return temporaryTokenRepository.existsByTokenAndExpiredAtBefore(token, localDateTimeNow);
+        temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, localDateTimeNow)
+                .ifPresentOrElse(
+                        temporaryTokenRepository::delete,
+                        () -> {
+                            throw new TemporaryTokenFoundException();
+                        }
+                );
     }
 }

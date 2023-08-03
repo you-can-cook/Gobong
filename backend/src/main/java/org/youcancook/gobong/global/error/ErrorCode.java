@@ -35,9 +35,10 @@ public enum ErrorCode {
 
     // Rating
     RATING_RANGE_OUT_OF_BOUNDS(HttpStatus.BAD_REQUEST, "R201", "평점 범위는 1부터 5 사이입니다."),
-    RATING_NOT_FOUND(HttpStatus.NOT_FOUND, "R204", "평점을 찾을 수 없습니다.")
+    RATING_NOT_FOUND(HttpStatus.NOT_FOUND, "R204", "평점을 찾을 수 없습니다."),
 
-    ;
+    // Temporary Token
+    TEMPORARY_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "T004", "임시 토큰을 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String code;
