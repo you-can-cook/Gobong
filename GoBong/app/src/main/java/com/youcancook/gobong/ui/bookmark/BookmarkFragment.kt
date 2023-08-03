@@ -7,15 +7,21 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import com.youcancook.gobong.R
+import com.youcancook.gobong.adapter.GridItemDecorator
+import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentBookmarkBinding
+import com.youcancook.gobong.model.Recipe
 
 class BookmarkFragment : Fragment() {
 
     private var _binding: FragmentBookmarkBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    private val gridAdapter = GridRecyclerViewListAdapter()
+    private val gridItemDecorator =
+        GridItemDecorator()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,15 +32,33 @@ class BookmarkFragment : Fragment() {
             ViewModelProvider(this).get(BookmarkViewModel::class.java)
 
         _binding = FragmentBookmarkBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textNotifications
-        notificationsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        return root
+        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.run {
+            recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
+            recyclerView.addItemDecoration(gridItemDecorator.also {
+                it.halfMargin =
+                    requireContext().resources.getDimension(R.dimen.grid_half_margin).toInt()
+            })
+            recyclerView.adapter = gridAdapter
+        }
+
+        gridAdapter.submitList(
+            listOf(
+                Recipe(),
+                Recipe(),
+                Recipe(),
+                Recipe(),
+                Recipe(),
+                Recipe(),
+                Recipe()
+            )
+        )
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
