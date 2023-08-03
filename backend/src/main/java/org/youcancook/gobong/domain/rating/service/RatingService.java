@@ -34,8 +34,9 @@ public class RatingService {
 
     @Transactional
     public void updateRating(Long userId, Long recipeId, Integer score){
-        userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
+        if (!recipeRepository.existsById(recipeId)) {
+            throw new RecipeNotFoundException();
+        }
 
         Rating rating = ratingRepository.findByUserIdAndRecipeId(userId, recipeId)
                 .orElseThrow(RatingNotFoundException::new);
