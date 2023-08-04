@@ -40,7 +40,7 @@
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/followingButton"
-                tools:src="@drawable/menu_my" />
+                tools:src="@drawable/default_profile_img" />
 
             <TextView
                 android:id="@+id/nicknameTextView"
@@ -98,7 +98,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginEnd="4dp"
-                android:src="@drawable/icon_bookmark"
+                android:adjustViewBounds="true"
+                android:src="@drawable/icon_bookmark_filled"
                 app:layout_constraintBottom_toBottomOf="@id/bookmarkTextView"
                 app:layout_constraintEnd_toStartOf="@id/bookmarkTextView"
                 app:layout_constraintTop_toTopOf="@id/bookmarkTextView" />
@@ -189,7 +190,7 @@
                 android:id="@+id/StarImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_search"
+                android:src="@drawable/icon_star"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/levelImageView"
                 app:layout_constraintTop_toTopOf="@id/timeImageView" />
