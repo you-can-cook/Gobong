@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.youcancook.gobong.domain.authentication.entity.TemporaryToken;
 import org.youcancook.gobong.domain.authentication.exception.TemporaryTokenFoundException;
 import org.youcancook.gobong.domain.authentication.repository.TemporaryTokenRepository;
+import org.youcancook.gobong.global.util.clock.ClockService;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -19,7 +19,7 @@ public class TemporaryTokenService {
     @Value("${token.temporary-token-expiration-seconds}")
     private Integer temporaryTokenExpirationSeconds;
     private final TemporaryTokenRepository temporaryTokenRepository;
-    private final Clock clock;
+    private final ClockService clockService;
 
     @Transactional
     public String saveTemporaryToken() {
@@ -35,12 +35,12 @@ public class TemporaryTokenService {
     }
 
     private LocalDateTime createExpiredAt() {
-        return LocalDateTime.now(clock).plusSeconds(temporaryTokenExpirationSeconds);
+        return clockService.now().plusSeconds(temporaryTokenExpirationSeconds);
     }
 
     @Transactional
     public void validTemporaryToken(String token) {
-        LocalDateTime localDateTimeNow = LocalDateTime.now(clock);
+        LocalDateTime localDateTimeNow = clockService.now();
         temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, localDateTimeNow)
                 .ifPresentOrElse(
                         temporaryTokenRepository::delete,

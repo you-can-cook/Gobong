@@ -12,9 +12,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.youcancook.gobong.domain.authentication.entity.TemporaryToken;
 import org.youcancook.gobong.domain.authentication.exception.TemporaryTokenFoundException;
 import org.youcancook.gobong.domain.authentication.repository.TemporaryTokenRepository;
+import org.youcancook.gobong.global.util.clock.ClockService;
 
-import java.time.Clock;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,18 +30,16 @@ class TemporaryTokenServiceTest {
     private TemporaryTokenService temporaryTokenService;
 
     @Mock
-    private Clock clock;
+    private ClockService clockService;
 
     @Mock
     private TemporaryTokenRepository temporaryTokenRepository;
 
     @BeforeEach
     void mockingClock() {
-        final String localDateTimeOnTestEnv = "2023-07-16T10:15:30.00Z";
-        when(clock.instant())
-                .thenReturn(Instant.parse(localDateTimeOnTestEnv));
-        when(clock.getZone())
-                .thenReturn(Clock.systemDefaultZone().getZone());
+        final String localDateTimeOnTestEnv = "2023-07-16T10:15:30";
+        when(clockService.now())
+                .thenReturn(LocalDateTime.parse(localDateTimeOnTestEnv));
     }
 
     @Test
@@ -64,7 +61,7 @@ class TemporaryTokenServiceTest {
         verify(temporaryTokenRepository, times(1)).save(argument.capture());
         assertThat(argument.getValue().getToken()).isEqualTo(token);
 
-        LocalDateTime expectedExpiredAt = LocalDateTime.now(clock).plusSeconds(600);
+        LocalDateTime expectedExpiredAt = clockService.now().plusSeconds(600);
         assertThat(argument.getValue().getExpiredAt()).isEqualTo(expectedExpiredAt);
     }
 
@@ -73,7 +70,7 @@ class TemporaryTokenServiceTest {
     void validTemporaryTokenFail() {
         // given
         final String token = UUID.randomUUID().toString();
-        when(temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, LocalDateTime.now(clock)))
+        when(temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, clockService.now()))
                 .thenReturn(Optional.empty());
 
         // when, then
@@ -81,7 +78,7 @@ class TemporaryTokenServiceTest {
                 () -> temporaryTokenService.validTemporaryToken(token));
 
         verify(temporaryTokenRepository, times(1))
-                .findByTokenAndExpiredAtBefore(token, LocalDateTime.now(clock));
+                .findByTokenAndExpiredAtBefore(token, clockService.now());
     }
 
     @Test
@@ -89,7 +86,7 @@ class TemporaryTokenServiceTest {
     void validTemporaryTokenSuccess() {
         // given
         final String token = UUID.randomUUID().toString();
-        when(temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, LocalDateTime.now(clock)))
+        when(temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, clockService.now()))
                 .thenReturn(Optional.of(new TemporaryToken(token, LocalDateTime.now())));
         doNothing().when(temporaryTokenRepository).delete(any(TemporaryToken.class));
 
@@ -98,7 +95,7 @@ class TemporaryTokenServiceTest {
 
         // then
         verify(temporaryTokenRepository, times(1))
-                .findByTokenAndExpiredAtBefore(token, LocalDateTime.now(clock));
+                .findByTokenAndExpiredAtBefore(token, clockService.now());
         verify(temporaryTokenRepository, times(1))
                 .delete(any(TemporaryToken.class));
     }
