@@ -1,16 +1,16 @@
 package com.youcancook.gobong.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.youcancook.gobong.adapter.CardRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentHomeBinding
 import com.youcancook.gobong.model.Recipe
-import com.youcancook.gobong.model.User
+import com.youcancook.gobong.ui.detail.DetailActivity
 
 class HomeFragment : Fragment() {
 
@@ -35,17 +35,24 @@ class HomeFragment : Fragment() {
 
         binding.run {
             recyclerView.adapter = cardAdapter
+            addRecipeButton.setOnClickListener {
+                val intent = Intent(requireContext(), DetailActivity::class.java)
+                startActivity(intent)
+
+            }
         }
 
-        cardAdapter.submitList(listOf(
-            Recipe(),
-            Recipe(),
-            Recipe(),
-            Recipe(),
-            Recipe(),
-            Recipe(),
-            Recipe()
-        ))
+        cardAdapter.submitList(
+            listOf(
+                Recipe(),
+                Recipe(),
+                Recipe(),
+                Recipe(),
+                Recipe(),
+                Recipe(),
+                Recipe()
+            )
+        )
 
     }
 
