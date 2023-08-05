@@ -38,7 +38,7 @@ class TemporaryTokenServiceTest {
     @BeforeEach
     void mockingClock() {
         final String localDateTimeOnTestEnv = "2023-07-16T10:15:30";
-        when(clockService.now())
+        when(clockService.localDateTimeNow())
                 .thenReturn(LocalDateTime.parse(localDateTimeOnTestEnv));
     }
 
@@ -61,7 +61,7 @@ class TemporaryTokenServiceTest {
         verify(temporaryTokenRepository, times(1)).save(argument.capture());
         assertThat(argument.getValue().getToken()).isEqualTo(token);
 
-        LocalDateTime expectedExpiredAt = clockService.now().plusSeconds(600);
+        LocalDateTime expectedExpiredAt = clockService.localDateTimeNow().plusSeconds(600);
         assertThat(argument.getValue().getExpiredAt()).isEqualTo(expectedExpiredAt);
     }
 
@@ -70,7 +70,7 @@ class TemporaryTokenServiceTest {
     void validTemporaryTokenFail() {
         // given
         final String token = UUID.randomUUID().toString();
-        when(temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, clockService.now()))
+        when(temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, clockService.localDateTimeNow()))
                 .thenReturn(Optional.empty());
 
         // when, then
@@ -78,7 +78,7 @@ class TemporaryTokenServiceTest {
                 () -> temporaryTokenService.validTemporaryToken(token));
 
         verify(temporaryTokenRepository, times(1))
-                .findByTokenAndExpiredAtBefore(token, clockService.now());
+                .findByTokenAndExpiredAtBefore(token, clockService.localDateTimeNow());
     }
 
     @Test
@@ -86,7 +86,7 @@ class TemporaryTokenServiceTest {
     void validTemporaryTokenSuccess() {
         // given
         final String token = UUID.randomUUID().toString();
-        when(temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, clockService.now()))
+        when(temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, clockService.localDateTimeNow()))
                 .thenReturn(Optional.of(new TemporaryToken(token, LocalDateTime.now())));
         doNothing().when(temporaryTokenRepository).delete(any(TemporaryToken.class));
 
@@ -95,7 +95,7 @@ class TemporaryTokenServiceTest {
 
         // then
         verify(temporaryTokenRepository, times(1))
-                .findByTokenAndExpiredAtBefore(token, clockService.now());
+                .findByTokenAndExpiredAtBefore(token, clockService.localDateTimeNow());
         verify(temporaryTokenRepository, times(1))
                 .delete(any(TemporaryToken.class));
     }
