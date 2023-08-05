@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp">
+
+    <TextView
+        android:id="@+id/levelTextView"
+        style="@style/TextAppearance.GoBong.SemiBold12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_recipe_step"
+        android:gravity="center"
+        android:padding="2dp"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1단계" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/divider_dash_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/levelTextView"
+        app:layout_constraintStart_toStartOf="@id/levelTextView"
+        app:layout_constraintTop_toBottomOf="@id/levelTextView" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/recipeBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/background_recipe_box_outline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/levelTextView"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/timeTextView"
+            style="@style/TextAppearance.GoBong.SemiBold10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/background_recipe_box_filled"
+            android:padding="2dp"
+            android:text="3분"
+            app:layout_constraintStart_toStartOf="@id/recipeBox"
+            app:layout_constraintTop_toTopOf="@id/recipeBox" />
+
+        <ImageView
+            android:id="@+id/recipeImageView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/background_round_image"
+            android:clipToOutline="true"
+            android:src="@drawable/example_img"
+            app:layout_constraintEnd_toEndOf="@id/recipeBox"
+            app:layout_constraintStart_toStartOf="@id/recipeBox"
+            app:layout_constraintTop_toBottomOf="@id/timeTextView" />
+
+        <TextView
+            android:id="@+id/recipeDescriptionTextView"
+            style="@style/TextAppearance.GoBong.Regular14"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="@id/recipeBox"
+            app:layout_constraintEnd_toEndOf="@id/recipeBox"
+            app:layout_constraintStart_toStartOf="@id/recipeBox"
+            app:layout_constraintTop_toBottomOf="@id/recipeImageView"
+            tools:text="스파게티는 뜨거운 물에 건더기와 면만 익힌 후, 완성된 떡볶이에 넣기" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
