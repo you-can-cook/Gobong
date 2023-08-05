@@ -24,6 +24,9 @@ public enum ErrorCode {
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "A004", "만료된 토큰입니다."),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "A005", "Unauthorized"),
 
+    // OAuth
+    OAUTH_PROVIDER_NOT_FOUND(HttpStatus.NOT_FOUND, "O004", "OAuth provider를 찾을 수 없습니다."),
+
     // User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "U004", "유저를 찾을 수 없습니다."),
 
@@ -36,7 +39,7 @@ public enum ErrorCode {
     // Rating
     RATING_RANGE_OUT_OF_BOUNDS(HttpStatus.BAD_REQUEST, "R201", "평점 범위는 1부터 5 사이입니다."),
     RATING_NOT_FOUND(HttpStatus.NOT_FOUND, "R204", "평점을 찾을 수 없습니다."),
-  
+
     // Bookmarks
     BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "B004", "북마크에 담긴 레시피가 아닙니다."),
     ALREADY_BOOKMARKED_RECIPE(HttpStatus.BAD_REQUEST, "B001", "이미 북마크로 등록한 레시피입니다."),
