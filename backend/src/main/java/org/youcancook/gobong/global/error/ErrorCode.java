@@ -36,10 +36,15 @@ public enum ErrorCode {
     // Rating
     RATING_RANGE_OUT_OF_BOUNDS(HttpStatus.BAD_REQUEST, "R201", "평점 범위는 1부터 5 사이입니다."),
     RATING_NOT_FOUND(HttpStatus.NOT_FOUND, "R204", "평점을 찾을 수 없습니다."),
+  
+    // Bookmarks
+    BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "B004", "북마크에 담긴 레시피가 아닙니다."),
+    ALREADY_BOOKMARKED_RECIPE(HttpStatus.BAD_REQUEST, "B001", "이미 북마크로 등록한 레시피입니다."),
 
     // Temporary Token
-    TEMPORARY_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "T004", "임시 토큰을 찾을 수 없습니다.");
+    TEMPORARY_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "T004", "임시 토큰을 찾을 수 없습니다."),
 
+    ;
     private final HttpStatus status;
     private final String code;
     private final String message;
