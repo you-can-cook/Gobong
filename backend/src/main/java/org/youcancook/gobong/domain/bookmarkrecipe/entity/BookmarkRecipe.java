@@ -11,6 +11,9 @@ import org.youcancook.gobong.domain.user.entity.User;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "recipe_id"})
+})
 public class BookmarkRecipe {
 
     @Id
