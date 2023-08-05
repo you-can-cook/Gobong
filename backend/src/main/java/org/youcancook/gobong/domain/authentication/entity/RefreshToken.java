@@ -17,7 +17,6 @@ import java.util.Date;
 public class RefreshToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
     private String refreshToken;
