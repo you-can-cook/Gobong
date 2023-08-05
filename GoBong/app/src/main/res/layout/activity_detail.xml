@@ -115,7 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginEnd="4dp"
-                android:src="@drawable/icon_bookmark_filled"
+                android:src="@drawable/selector_bookmark"
                 app:layout_constraintBottom_toBottomOf="@id/bookmarkTextView"
                 app:layout_constraintEnd_toStartOf="@id/bookmarkTextView"
                 app:layout_constraintTop_toTopOf="@id/bookmarkTextView" />
@@ -308,6 +308,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:gravity="center"
                 android:text="레시피에 따라 음식을 조리하여 드셔보신 후\n고봉밥으로 후기를 남겨주세요!"
                 android:textColor="@color/charcoal_color"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -362,7 +363,7 @@
                 android:id="@+id/star5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_star_empty"
+                android:src="@drawable/selector_star"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/star4"
                 app:layout_constraintTop_toTopOf="@id/star1" />

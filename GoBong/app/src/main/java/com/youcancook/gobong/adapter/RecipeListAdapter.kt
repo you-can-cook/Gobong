@@ -6,32 +6,72 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.youcancook.gobong.databinding.ItemMainCardBinding
+import com.youcancook.gobong.databinding.ItemRecipeAddBinding
 import com.youcancook.gobong.databinding.ItemRecipeBinding
 import com.youcancook.gobong.model.Recipe
+import com.youcancook.gobong.model.RecipeAdd
 import com.youcancook.gobong.model.RecipeStep
 
 class RecipeListAdapter :
-    ListAdapter<RecipeStep, RecipeListAdapter.ViewHolder>(diffUtil) {
+    ListAdapter<RecipeStep, RecyclerView.ViewHolder>(diffUtil) {
 
-    inner class ViewHolder(val binding: ItemRecipeBinding) :
+    inner class RecipeViewHolder(val binding: ItemRecipeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: RecipeStep) {
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            ItemRecipeBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+    inner class RecipeAddViewHolder(val binding: ItemRecipeAddBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: RecipeStep) {
+        }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(currentList[position])
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            0 -> RecipeViewHolder(
+                ItemRecipeBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+
+            1 ->
+                RecipeAddViewHolder(
+                    ItemRecipeAddBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+
+            else -> RecipeViewHolder(
+                ItemRecipeBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is RecipeViewHolder) {
+            holder.bind(currentList[position])
+        } else if (holder is RecipeAddViewHolder) {
+            holder.bind(currentList[position])
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position == currentList.size - 1) {
+            1
+        } else {
+            0
+        }
     }
 
     companion object {
