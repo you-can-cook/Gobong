@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/toolbar_bookmark"
-        android:icon="@drawable/icon_bookmark_outline"
+        android:icon="@drawable/selector_bookmark"
         android:title="북마크"
         app:showAsAction="always" />
 
