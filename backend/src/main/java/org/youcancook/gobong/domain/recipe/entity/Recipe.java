@@ -92,4 +92,13 @@ public class Recipe extends BaseTime {
                 .mapToLong(RecipeDetail::getCookware)
                 .reduce(0L, Bitwise::or);
     }
+
+    public void updateProperties(String title, String introduction, String ingredients,
+                                 Difficulty difficulty, String thumbnailURL) {
+        this.title = title;
+        this.introduction = introduction;
+        this.ingredients = ingredients;
+        this.difficulty = difficulty;
+        this.thumbnailURL = thumbnailURL;
+    }
 }
