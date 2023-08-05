@@ -9,6 +9,7 @@ import org.youcancook.gobong.domain.BaseTime.BaseTime;
 import org.youcancook.gobong.domain.rating.entity.Rating;
 import org.youcancook.gobong.domain.recipedetail.entity.RecipeDetail;
 import org.youcancook.gobong.domain.user.entity.User;
+import org.youcancook.gobong.global.util.clock.bitwise.Bitwise;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,15 +54,15 @@ public class Recipe extends BaseTime {
 
     @Builder
     public Recipe(User user, String title, String introduction, String ingredients, Difficulty difficulty,
-                  String thumbnailURL, Integer totalTimeInSeconds, Long cookwares) {
+                  String thumbnailURL) {
         this.user = user;
         this.title = title;
         this.introduction = introduction;
         this.ingredients = ingredients;
         this.difficulty = difficulty;
         this.thumbnailURL = thumbnailURL;
-        this.totalTimeInSeconds = totalTimeInSeconds;
-        this.cookwares = cookwares;
+        this.totalTimeInSeconds = 0;
+        this.cookwares = 0L;
     }
 
     public void addRating(Rating rating){
@@ -75,4 +76,33 @@ public class Recipe extends BaseTime {
                 .orElse(0.0);
     }
 
+    public void gatherFromDetails(){
+        gatherTotalTimeInSeconds();
+        gatherCookwares();
+    }
+
+    public void gatherTotalTimeInSeconds(){
+        this.totalTimeInSeconds = recipeDetails.stream()
+                .mapToInt(RecipeDetail::getCookTimeInSeconds)
+                .sum();
+    }
+
+    public void gatherCookwares(){
+        this.cookwares = recipeDetails.stream()
+                .mapToLong(RecipeDetail::getCookware)
+                .reduce(0L, Bitwise::or);
+    }
+
+    public void clearDetails() {
+        recipeDetails.clear();
+    }
+
+    public void updateProperties(String title, String introduction, String ingredients,
+                                 Difficulty difficulty, String thumbnailURL) {
+        this.title = title;
+        this.introduction = introduction;
+        this.ingredients = ingredients;
+        this.difficulty = difficulty;
+        this.thumbnailURL = thumbnailURL;
+    }
 }
