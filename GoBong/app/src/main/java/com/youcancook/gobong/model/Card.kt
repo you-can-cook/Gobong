@@ -9,4 +9,6 @@ class Card(
     val tools: List<String> = listOf("전자레인지"),
     val level: String = "쉬워요",
     val star: String = "3.2공기",
+    val description: String = "",
+    val ingredient: List<String> = listOf(),
 )

@@ -6,15 +6,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.youcancook.gobong.databinding.ItemMainCardBinding
-import com.youcancook.gobong.model.Recipe
+import com.youcancook.gobong.model.Card
 
 class CardRecyclerViewListAdapter :
-    ListAdapter<Recipe, CardRecyclerViewListAdapter.ViewHolder>(diffUtil) {
+    ListAdapter<Card, CardRecyclerViewListAdapter.ViewHolder>(diffUtil) {
 
     inner class ViewHolder(val binding: ItemMainCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Recipe) {
+        fun bind(item: Card) {
             binding.item = item
         }
     }
@@ -34,12 +34,12 @@ class CardRecyclerViewListAdapter :
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Recipe>() {
-            override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
+        val diffUtil = object : DiffUtil.ItemCallback<Card>() {
+            override fun areItemsTheSame(oldItem: Card, newItem: Card): Boolean {
                 return oldItem.title == newItem.title
             }
 
-            override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
+            override fun areContentsTheSame(oldItem: Card, newItem: Card): Boolean {
                 return oldItem == newItem
             }
 

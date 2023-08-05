@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.youcancook.gobong.adapter.CardRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentHomeBinding
+import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Recipe
 import com.youcancook.gobong.ui.detail.DetailActivity
 
@@ -44,13 +45,13 @@ class HomeFragment : Fragment() {
 
         cardAdapter.submitList(
             listOf(
-                Recipe(),
-                Recipe(),
-                Recipe(),
-                Recipe(),
-                Recipe(),
-                Recipe(),
-                Recipe()
+                Card(),
+                Card(),
+                Card(),
+                Card(),
+                Card(),
+                Card(),
+                Card()
             )
         )
 

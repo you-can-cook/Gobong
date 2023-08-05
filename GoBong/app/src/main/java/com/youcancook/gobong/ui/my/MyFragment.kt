@@ -11,14 +11,16 @@ import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.GridItemDecorator
 import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentMyBinding
+import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Recipe
+import com.youcancook.gobong.model.RecipeStep
 
 class MyFragment : Fragment() {
 
     private var _binding: FragmentMyBinding? = null
     private val binding get() = _binding!!
 
-    private val myViewModel by lazy{
+    private val myViewModel by lazy {
         ViewModelProvider(this).get(MyViewModel::class.java)
     }
     private val gridAdapter = GridRecyclerViewListAdapter()
@@ -37,7 +39,7 @@ class MyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.run{
+        binding.run {
             vm = myViewModel
             lifecycleOwner = this@MyFragment.viewLifecycleOwner
         }
@@ -53,13 +55,13 @@ class MyFragment : Fragment() {
 
         gridAdapter.submitList(
             listOf(
-                Recipe(),
-                Recipe(),
-                Recipe(),
-                Recipe(),
-                Recipe(),
-                Recipe(),
-                Recipe()
+                Card(),
+                Card(),
+                Card(),
+                Card(),
+                Card(),
+                Card(),
+                Card()
             )
         )
     }
