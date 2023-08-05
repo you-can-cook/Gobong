@@ -24,6 +24,7 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
 
     @IBOutlet var tableView: UITableView!
     @IBOutlet var addFeedButton: UIButton!
+    var selectedIndexPath = 0
     
     var dummyData = [
         dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
@@ -32,11 +33,22 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
         dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5)
     ]
     
+    override func viewWillAppear(_ animated: Bool) {
+        setupNavigationBar()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
         setupUI()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDetailView",
+                let detailVC = segue.destination as? DetailViewController {
+            detailVC.information = dummyData[selectedIndexPath]
+        }
     }
     
 //    func refresh() {
@@ -48,6 +60,11 @@ extension ViewController {
     private func setupUI(){
         setupTableView()
         addFeedButton.setTitle("", for: .normal)
+        setupNavigationBar()
+    }
+    
+    private func setupNavigationBar(){
+        navigationController?.navigationBar.isHidden = true
     }
 }
 
@@ -71,6 +88,11 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource {
         
         cell.selectionStyle = .none
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        var selectedIndexPath = indexPath.item
+        self.performSegue(withIdentifier: "showDetailView", sender: self)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -13,6 +13,15 @@
 		80CE8AEE2A7A8DA5003DE318 /* FeedBoxCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80CE8AEC2A7A8DA5003DE318 /* FeedBoxCell.xib */; };
 		80CE8AF02A7AA75A003DE318 /* BookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CE8AEF2A7AA75A003DE318 /* BookmarkViewController.swift */; };
 		80CE8AF72A7CA1F8003DE318 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CE8AF62A7CA1F8003DE318 /* ProfileViewController.swift */; };
+		80CE8AFA2A7CC5D0003DE318 /* UserInformationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CE8AF82A7CC5D0003DE318 /* UserInformationCell.swift */; };
+		80CE8AFB2A7CC5D0003DE318 /* UserInformationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80CE8AF92A7CC5D0003DE318 /* UserInformationCell.xib */; };
+		80CE8AFD2A7CD246003DE318 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CE8AFC2A7CD246003DE318 /* DetailViewController.swift */; };
+		80CE8B062A7CD2CF003DE318 /* StepByStepTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CE8B042A7CD2CF003DE318 /* StepByStepTableViewCell.swift */; };
+		80CE8B072A7CD2CF003DE318 /* StepByStepTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80CE8B052A7CD2CF003DE318 /* StepByStepTableViewCell.xib */; };
+		80CE8B092A7CDD56003DE318 /* HashtagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CE8B082A7CDD56003DE318 /* HashtagCell.swift */; };
+		80CE8B0C2A7CDE38003DE318 /* HashtagCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CE8B0B2A7CDE38003DE318 /* HashtagCollectionCell.swift */; };
+		80CE8B0F2A7D3A8F003DE318 /* DetailTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80CE8B0D2A7D3A8F003DE318 /* DetailTitleCell.xib */; };
+		80CE8B102A7D3A8F003DE318 /* DetailTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CE8B0E2A7D3A8F003DE318 /* DetailTitleCell.swift */; };
 		80D2B5F92A791AD600B777D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D2B5F82A791AD600B777D1 /* AppDelegate.swift */; };
 		80D2B5FB2A791AD600B777D1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D2B5FA2A791AD600B777D1 /* SceneDelegate.swift */; };
 		80D2B5FD2A791AD600B777D1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D2B5FC2A791AD600B777D1 /* ViewController.swift */; };
@@ -33,6 +42,15 @@
 		80CE8AEC2A7A8DA5003DE318 /* FeedBoxCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedBoxCell.xib; sourceTree = "<group>"; };
 		80CE8AEF2A7AA75A003DE318 /* BookmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkViewController.swift; sourceTree = "<group>"; };
 		80CE8AF62A7CA1F8003DE318 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		80CE8AF82A7CC5D0003DE318 /* UserInformationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInformationCell.swift; sourceTree = "<group>"; };
+		80CE8AF92A7CC5D0003DE318 /* UserInformationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserInformationCell.xib; sourceTree = "<group>"; };
+		80CE8AFC2A7CD246003DE318 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		80CE8B042A7CD2CF003DE318 /* StepByStepTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepByStepTableViewCell.swift; sourceTree = "<group>"; };
+		80CE8B052A7CD2CF003DE318 /* StepByStepTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StepByStepTableViewCell.xib; sourceTree = "<group>"; };
+		80CE8B082A7CDD56003DE318 /* HashtagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashtagCell.swift; sourceTree = "<group>"; };
+		80CE8B0B2A7CDE38003DE318 /* HashtagCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashtagCollectionCell.swift; sourceTree = "<group>"; };
+		80CE8B0D2A7D3A8F003DE318 /* DetailTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailTitleCell.xib; sourceTree = "<group>"; };
+		80CE8B0E2A7D3A8F003DE318 /* DetailTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTitleCell.swift; sourceTree = "<group>"; };
 		80D2B5F52A791AD600B777D1 /* Gobong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gobong.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80D2B5F82A791AD600B777D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		80D2B5FA2A791AD600B777D1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -58,6 +76,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		80CE8B0A2A7CDE0F003DE318 /* Hashtag */ = {
+			isa = PBXGroup;
+			children = (
+				80CE8B0E2A7D3A8F003DE318 /* DetailTitleCell.swift */,
+				80CE8B0D2A7D3A8F003DE318 /* DetailTitleCell.xib */,
+				80CE8B082A7CDD56003DE318 /* HashtagCell.swift */,
+				80CE8B0B2A7CDE38003DE318 /* HashtagCollectionCell.swift */,
+			);
+			path = Hashtag;
+			sourceTree = "<group>";
+		};
 		80D2B5EC2A791AD600B777D1 = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +127,7 @@
 				80CE8AE92A7A8196003DE318 /* SearchViewController.swift */,
 				80CE8AEF2A7AA75A003DE318 /* BookmarkViewController.swift */,
 				80CE8AF62A7CA1F8003DE318 /* ProfileViewController.swift */,
+				80CE8AFC2A7CD246003DE318 /* DetailViewController.swift */,
 				80D2B6112A792B1600B777D1 /* Cell */,
 			);
 			path = ViewController;
@@ -110,6 +140,11 @@
 				80D2B60E2A792B0E00B777D1 /* FeedCell.xib */,
 				80CE8AEB2A7A8DA5003DE318 /* FeedBoxCell.swift */,
 				80CE8AEC2A7A8DA5003DE318 /* FeedBoxCell.xib */,
+				80CE8AF82A7CC5D0003DE318 /* UserInformationCell.swift */,
+				80CE8AF92A7CC5D0003DE318 /* UserInformationCell.xib */,
+				80CE8B042A7CD2CF003DE318 /* StepByStepTableViewCell.swift */,
+				80CE8B052A7CD2CF003DE318 /* StepByStepTableViewCell.xib */,
+				80CE8B0A2A7CDE0F003DE318 /* Hashtag */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -192,9 +227,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				80D2B6052A791AD900B777D1 /* LaunchScreen.storyboard in Resources */,
+				80CE8B0F2A7D3A8F003DE318 /* DetailTitleCell.xib in Resources */,
+				80CE8AFB2A7CC5D0003DE318 /* UserInformationCell.xib in Resources */,
 				80D2B6102A792B0E00B777D1 /* FeedCell.xib in Resources */,
 				80D2B6022A791AD900B777D1 /* Assets.xcassets in Resources */,
 				80CE8AEE2A7A8DA5003DE318 /* FeedBoxCell.xib in Resources */,
+				80CE8B072A7CD2CF003DE318 /* StepByStepTableViewCell.xib in Resources */,
 				80D2B6002A791AD600B777D1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -248,14 +286,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80CE8AFD2A7CD246003DE318 /* DetailViewController.swift in Sources */,
 				80CE8AEA2A7A8196003DE318 /* SearchViewController.swift in Sources */,
+				80CE8AFA2A7CC5D0003DE318 /* UserInformationCell.swift in Sources */,
+				80CE8B102A7D3A8F003DE318 /* DetailTitleCell.swift in Sources */,
 				80CE8AED2A7A8DA5003DE318 /* FeedBoxCell.swift in Sources */,
+				80CE8B092A7CDD56003DE318 /* HashtagCell.swift in Sources */,
 				80D2B5FD2A791AD600B777D1 /* ViewController.swift in Sources */,
 				80CE8AE82A7A8113003DE318 /* CustomTabBar.swift in Sources */,
+				80CE8B062A7CD2CF003DE318 /* StepByStepTableViewCell.swift in Sources */,
 				80CE8AF02A7AA75A003DE318 /* BookmarkViewController.swift in Sources */,
 				80D2B60F2A792B0E00B777D1 /* FeedCell.swift in Sources */,
 				80CE8AF72A7CA1F8003DE318 /* ProfileViewController.swift in Sources */,
 				80D2B5F92A791AD600B777D1 /* AppDelegate.swift in Sources */,
+				80CE8B0C2A7CDE38003DE318 /* HashtagCollectionCell.swift in Sources */,
 				80D2B5FB2A791AD600B777D1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

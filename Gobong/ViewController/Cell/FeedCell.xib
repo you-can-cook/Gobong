@@ -217,6 +217,7 @@
             <connections>
                 <outlet property="background" destination="hpV-vt-vD1" id="8Is-nN-u3a"/>
                 <outlet property="bookmarkCountLabel" destination="c5V-rX-Bir" id="fdc-HZ-mHJ"/>
+                <outlet property="bookmarkImage" destination="PiS-sY-wc8" id="deU-bL-5gm"/>
                 <outlet property="cookTimeLabel" destination="tfc-NW-Zzc" id="DGW-KY-6NY"/>
                 <outlet property="cookingToolsLabel" destination="8HZ-MJ-4W7" id="8fJ-bF-Z4v"/>
                 <outlet property="followingButton" destination="a9B-3f-lV6" id="myO-6W-GTy"/>
