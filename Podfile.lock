@@ -1,34 +1,46 @@
 PODS:
   - Alamofire (5.7.1)
   - AlignedCollectionViewFlowLayout (1.1.2)
+  - PryntTrimmerView (4.0.2)
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
     - RxSwift (= 6.5.0)
   - RxRelay (6.5.0):
     - RxSwift (= 6.5.0)
   - RxSwift (6.5.0)
+  - SteviaLayout (4.7.3)
+  - YPImagePicker (5.2.1):
+    - PryntTrimmerView (= 4.0.2)
+    - SteviaLayout (= 4.7.3)
 
 DEPENDENCIES:
   - Alamofire
   - AlignedCollectionViewFlowLayout
   - RxCocoa
   - RxSwift
+  - YPImagePicker
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - AlignedCollectionViewFlowLayout
+    - PryntTrimmerView
     - RxCocoa
     - RxRelay
     - RxSwift
+    - SteviaLayout
+    - YPImagePicker
 
 SPEC CHECKSUMS:
   Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
+  PryntTrimmerView: 6a43cc90df5d99addeabd33d4ba09b1365322130
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
+  SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
+  YPImagePicker: f36043210c10b0783034eb1947d6e06e31c461e4
 
-PODFILE CHECKSUM: d5991f92655e8ce253965bbde28d6219a5aa4d22
+PODFILE CHECKSUM: 6689c91e30dba14950a607b941a64a791fc8eae2
 
 COCOAPODS: 1.12.1

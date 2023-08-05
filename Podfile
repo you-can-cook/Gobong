@@ -10,6 +10,7 @@ target 'Gobong' do
 	pod 'RxSwift'
     	pod 'RxCocoa'
 	pod 'AlignedCollectionViewFlowLayout'
+	pod 'YPImagePicker'
 
 end
 

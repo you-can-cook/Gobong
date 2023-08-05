@@ -33,7 +33,29 @@ class DetailViewController: UIViewController {
 
 extension DetailViewController {
     private func setupUI(){
+        navigationBarSetup()
         navigationController?.navigationBar.isHidden = false
+    }
+    
+    private func navigationBarSetup(){
+        navigationItem.title = information.title
+        
+        let backItemButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTapped))
+        backItemButton.tintColor = .black
+        
+        let saveItemButton = UIBarButtonItem(image: UIImage(named: "BMark"), style: .plain, target: self, action: #selector(backButtonTapped))
+        saveItemButton.tintColor = .black
+        
+        navigationItem.leftBarButtonItem = backItemButton
+        navigationItem.rightBarButtonItem = saveItemButton
+    }
+    
+    @objc private func backButtonTapped(){
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func saveButtonTapped(){
+        //
     }
 }
 

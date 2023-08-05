@@ -20,8 +20,8 @@ class HashtagCell: UITableViewCell, UICollectionViewDelegateFlowLayout {
     
     let collectionView: SelfSizingCollectionView = {
         let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment: .left, verticalAlignment: .top)
-        alignedFlowLayout.minimumInteritemSpacing = 5
-        alignedFlowLayout.minimumLineSpacing = 5
+        alignedFlowLayout.minimumInteritemSpacing = 8
+        alignedFlowLayout.minimumLineSpacing = 8
         let collectionView = SelfSizingCollectionView(frame: .zero, collectionViewLayout: alignedFlowLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
