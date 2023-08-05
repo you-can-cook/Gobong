@@ -44,12 +44,12 @@ public class TokenManager {
     }
 
     private Date createAccessTokenExpirationTime() {
-        Date now = clockService.dateNow();
+        Date now = clockService.getCurrentDate();
         return new Date(now.getTime() + accessTokenExpirationSeconds * 1000);
     }
 
     private Date createRefreshTokenExpirationTime() {
-        Date now = clockService.dateNow();
+        Date now = clockService.getCurrentDate();
         return new Date(now.getTime() + refreshTokenExpirationSeconds * 1000);
     }
 
@@ -75,7 +75,7 @@ public class TokenManager {
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setClaims(claims)
-                .setIssuedAt(clockService.dateNow())
+                .setIssuedAt(clockService.getCurrentDate())
                 .setExpiration(expiredAt)
                 .signWith(SignatureAlgorithm.HS256, tokenSecret.getBytes(StandardCharsets.UTF_8))
                 .compact();

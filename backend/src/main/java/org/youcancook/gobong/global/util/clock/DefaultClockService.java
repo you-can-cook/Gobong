@@ -8,12 +8,12 @@ import java.util.Date;
 @Component
 public class DefaultClockService implements ClockService {
     @Override
-    public LocalDateTime localDateTimeNow() {
+    public LocalDateTime getCurrentDateTime() {
         return LocalDateTime.now();
     }
 
     @Override
-    public Date dateNow() {
+    public Date getCurrentDate() {
         return new Date();
     }
 }

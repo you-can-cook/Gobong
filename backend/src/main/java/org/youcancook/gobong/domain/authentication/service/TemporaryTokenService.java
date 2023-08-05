@@ -35,12 +35,12 @@ public class TemporaryTokenService {
     }
 
     private LocalDateTime createExpiredAt() {
-        return clockService.localDateTimeNow().plusSeconds(temporaryTokenExpirationSeconds);
+        return clockService.getCurrentDateTime().plusSeconds(temporaryTokenExpirationSeconds);
     }
 
     @Transactional
     public void validTemporaryToken(String token) {
-        LocalDateTime localDateTimeNow = clockService.localDateTimeNow();
+        LocalDateTime localDateTimeNow = clockService.getCurrentDateTime();
         temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, localDateTimeNow)
                 .ifPresentOrElse(
                         temporaryTokenRepository::delete,

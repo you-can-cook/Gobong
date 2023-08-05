@@ -37,7 +37,7 @@ class TokenManagerTest {
         String dateTimeOnTestEnv = "2023-08-25 10:15:30";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = format.parse(dateTimeOnTestEnv);
-        when(clockService.dateNow()).thenReturn(date);
+        when(clockService.getCurrentDate()).thenReturn(date);
 
         ReflectionTestUtils.setField(tokenManager, "tokenSecret", secretKey);
         ReflectionTestUtils.setField(tokenManager, "accessTokenExpirationSeconds", accessTokenExpirationSeconds);
@@ -58,7 +58,7 @@ class TokenManagerTest {
 
     private void testAccessToken(String accessToken) {
         Jws<Claims> claimsJws = Jwts.parser()
-                .setClock(() -> clockService.dateNow())
+                .setClock(() -> clockService.getCurrentDate())
                 .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
                 .parseClaimsJws(accessToken);
 
@@ -67,7 +67,7 @@ class TokenManagerTest {
         assertThat(claims.get("userId")).isEqualTo(1);
         assertThat(claims.getIssuer()).isEqualTo("gobong.youcancook.org");
 
-        Date expectedExpiredAt = new Date(clockService.dateNow().getTime() + accessTokenExpirationSeconds * 1000);
+        Date expectedExpiredAt = new Date(clockService.getCurrentDate().getTime() + accessTokenExpirationSeconds * 1000);
         assertThat(claims.getExpiration()).isEqualTo(expectedExpiredAt);
 
         JwsHeader header = claimsJws.getHeader();
@@ -76,7 +76,7 @@ class TokenManagerTest {
 
     private void testRefreshToken(String refreshToken) {
         Jws<Claims> claimsJws = Jwts.parser()
-                .setClock(() -> clockService.dateNow())
+                .setClock(() -> clockService.getCurrentDate())
                 .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
                 .parseClaimsJws(refreshToken);
 
@@ -85,7 +85,7 @@ class TokenManagerTest {
         assertThat(claims.get("userId")).isEqualTo(1);
         assertThat(claims.getIssuer()).isEqualTo("gobong.youcancook.org");
 
-        Date expectedExpiredAt = new Date(clockService.dateNow().getTime() + refreshTokenExpirationSeconds * 1000);
+        Date expectedExpiredAt = new Date(clockService.getCurrentDate().getTime() + refreshTokenExpirationSeconds * 1000);
         assertThat(claims.getExpiration()).isEqualTo(expectedExpiredAt);
 
         JwsHeader header = claimsJws.getHeader();

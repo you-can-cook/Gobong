@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 public interface ClockService {
-    LocalDateTime localDateTimeNow();
+    LocalDateTime getCurrentDateTime();
 
-    Date dateNow();
+    Date getCurrentDate();
 }
