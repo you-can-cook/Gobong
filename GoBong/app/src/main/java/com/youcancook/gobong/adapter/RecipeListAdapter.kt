@@ -2,6 +2,7 @@ package com.youcancook.gobong.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,19 +14,29 @@ import com.youcancook.gobong.model.RecipeAdd
 import com.youcancook.gobong.model.RecipeStep
 
 class RecipeListAdapter :
-    ListAdapter<RecipeStep, RecyclerView.ViewHolder>(diffUtil) {
+    ListAdapter<Recipe, RecyclerView.ViewHolder>(diffUtil) {
 
     inner class RecipeViewHolder(val binding: ItemRecipeBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        init{
+            binding.root.setOnClickListener {
 
-        fun bind(item: RecipeStep) {
+            }
+        }
+
+        fun bind(data: RecipeStep) {
+            binding.run {
+                item = data
+                levelTextView.text = "${adapterPosition + 1}단계"
+                dashDivider.isVisible = adapterPosition != currentList.size - 1
+            }
         }
     }
 
     inner class RecipeAddViewHolder(val binding: ItemRecipeAddBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: RecipeStep) {
+        fun bind(item: RecipeAdd) {
         }
     }
 
@@ -60,14 +71,14 @@ class RecipeListAdapter :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is RecipeViewHolder) {
-            holder.bind(currentList[position])
+            holder.bind(currentList[position] as RecipeStep)
         } else if (holder is RecipeAddViewHolder) {
-            holder.bind(currentList[position])
+            holder.bind(currentList[position] as RecipeAdd)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == currentList.size - 1) {
+        return if (currentList[position] is RecipeAdd) {
             1
         } else {
             0
@@ -75,12 +86,12 @@ class RecipeListAdapter :
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<RecipeStep>() {
-            override fun areItemsTheSame(oldItem: RecipeStep, newItem: RecipeStep): Boolean {
-                return oldItem.title == newItem.title
+        val diffUtil = object : DiffUtil.ItemCallback<Recipe>() {
+            override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
+                return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: RecipeStep, newItem: RecipeStep): Boolean {
+            override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
                 return oldItem == newItem
             }
 

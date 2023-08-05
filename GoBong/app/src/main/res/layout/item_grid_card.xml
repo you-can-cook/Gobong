@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.youcancook.gobong.model.Recipe" />
+            type="com.youcancook.gobong.model.Card" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,9 +15,9 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            setImageUrl="@{item.thumbnailUrl}"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            setImageUrl="@{item.thumbnailUrl}"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
