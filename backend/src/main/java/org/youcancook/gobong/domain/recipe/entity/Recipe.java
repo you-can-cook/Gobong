@@ -76,6 +76,11 @@ public class Recipe extends BaseTime {
                 .orElse(0.0);
     }
 
+    public void gatherFromDetails(){
+        gatherTotalTimeInSeconds();
+        gatherCookwares();
+    }
+
     public void gatherTotalTimeInSeconds(){
         this.totalTimeInSeconds = recipeDetails.stream()
                 .mapToInt(RecipeDetail::getCookTimeInSeconds)
