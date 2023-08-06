@@ -42,7 +42,7 @@ class RecipeServiceTest {
         String title = "주먹밥";
         List<UploadRecipeDetailRequest> details = new ArrayList<>();
         recipeService.createRecipe(userId, new CreateRecipeRequest(title, "주먹밥을 만들어요",
-                List.of("밥", "김"), Difficulty.EASY, null, details));
+                List.of("밥", "김"), "쉬워요", null, details));
         List<Recipe> actual = recipeRepository.findAll();
 
         assertThat(actual).hasSize(1);
@@ -61,7 +61,7 @@ class RecipeServiceTest {
         List<UploadRecipeDetailRequest> details = new ArrayList<>();
 
         recipeService.updateRecipe(userId, new UpdateRecipeRequest(recipeId, title, "주먹밥을 만들어요",
-                List.of("밥", "김"), Difficulty.EASY, null, details));
+                List.of("밥", "김"), "보통이에요", null, details));
 
         List<Recipe> actual = recipeRepository.findAll();
         assertThat(actual).hasSize(1);
@@ -82,7 +82,7 @@ class RecipeServiceTest {
         List<UploadRecipeDetailRequest> details = new ArrayList<>();
         assertThrows(RecipeAccessDeniedException.class, ()->
             recipeService.updateRecipe(user2Id, new UpdateRecipeRequest(recipeId, title, "주먹밥을 만들어요",
-                List.of("밥", "김"), Difficulty.EASY, null, details)));
+                List.of("밥", "김"), "어려워요", null, details)));
     }
 
 
