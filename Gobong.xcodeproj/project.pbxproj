@@ -25,6 +25,7 @@
 		80CE8B162A7F73FD003DE318 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CE8B152A7F73FD003DE318 /* RecipeCell.swift */; };
 		80CE8B1B2A7F7B18003DE318 /* DetailTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CE8B192A7F7B18003DE318 /* DetailTitleCell.swift */; };
 		80CE8B1C2A7F7B18003DE318 /* DetailTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80CE8B1A2A7F7B18003DE318 /* DetailTitleCell.xib */; };
+		80CE8B202A7F80F5003DE318 /* ProfileFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CE8B1F2A7F80F5003DE318 /* ProfileFeedCell.swift */; };
 		80D2B5F92A791AD600B777D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D2B5F82A791AD600B777D1 /* AppDelegate.swift */; };
 		80D2B5FB2A791AD600B777D1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D2B5FA2A791AD600B777D1 /* SceneDelegate.swift */; };
 		80D2B5FD2A791AD600B777D1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D2B5FC2A791AD600B777D1 /* ViewController.swift */; };
@@ -57,6 +58,7 @@
 		80CE8B152A7F73FD003DE318 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
 		80CE8B192A7F7B18003DE318 /* DetailTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTitleCell.swift; sourceTree = "<group>"; };
 		80CE8B1A2A7F7B18003DE318 /* DetailTitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailTitleCell.xib; sourceTree = "<group>"; };
+		80CE8B1F2A7F80F5003DE318 /* ProfileFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFeedCell.swift; sourceTree = "<group>"; };
 		80D2B5F52A791AD600B777D1 /* Gobong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gobong.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80D2B5F82A791AD600B777D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		80D2B5FA2A791AD600B777D1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 			children = (
 				80CE8AF92A7CC5D0003DE318 /* UserInformationCell.xib */,
 				80CE8AF82A7CC5D0003DE318 /* UserInformationCell.swift */,
+				80CE8B1F2A7F80F5003DE318 /* ProfileFeedCell.swift */,
 			);
 			path = ProfileView;
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 			files = (
 				80CE8AFD2A7CD246003DE318 /* DetailViewController.swift in Sources */,
 				80CE8AEA2A7A8196003DE318 /* SearchViewController.swift in Sources */,
+				80CE8B202A7F80F5003DE318 /* ProfileFeedCell.swift in Sources */,
 				80CE8AFA2A7CC5D0003DE318 /* UserInformationCell.swift in Sources */,
 				80CE8B1B2A7F7B18003DE318 /* DetailTitleCell.swift in Sources */,
 				80CE8B162A7F73FD003DE318 /* RecipeCell.swift in Sources */,
