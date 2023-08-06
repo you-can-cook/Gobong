@@ -96,7 +96,7 @@ public class Recipe extends BaseTime {
     public void clearDetails() {
         recipeDetails.clear();
     }
-
+  
     public void updateProperties(String title, String introduction, String ingredients,
                                  Difficulty difficulty, String thumbnailURL) {
         this.title = title;
