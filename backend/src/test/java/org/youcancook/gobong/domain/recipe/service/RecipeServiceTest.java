@@ -5,15 +5,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.youcancook.gobong.domain.recipe.dto.request.CreateRecipeRequest;
+import org.youcancook.gobong.domain.recipe.dto.request.UpdateRecipeRequest;
 import org.youcancook.gobong.domain.recipe.entity.Difficulty;
 import org.youcancook.gobong.domain.recipe.entity.Recipe;
 import org.youcancook.gobong.domain.recipe.exception.RecipeAccessDeniedException;
 import org.youcancook.gobong.domain.recipe.repository.RecipeRepository;
+import org.youcancook.gobong.domain.recipedetail.dto.request.UploadRecipeDetailRequest;
 import org.youcancook.gobong.domain.recipedetail.repository.RecipeDetailRepository;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
 import org.youcancook.gobong.domain.user.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,9 +40,9 @@ class RecipeServiceTest {
         User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
         Long userId = userRepository.save(user).getId();
         String title = "주먹밥";
-
-        recipeService.createRecipe(userId, title, "주먹밥을 만들어요",
-                List.of("밥", "김"), Difficulty.EASY, null);
+        List<UploadRecipeDetailRequest> details = new ArrayList<>();
+        recipeService.createRecipe(userId, new CreateRecipeRequest(title, "주먹밥을 만들어요",
+                List.of("밥", "김"), Difficulty.EASY, null, details));
         List<Recipe> actual = recipeRepository.findAll();
 
         assertThat(actual).hasSize(1);
@@ -54,9 +58,10 @@ class RecipeServiceTest {
         Long userId = userRepository.save(user).getId();
         Long recipeId = recipeRepository.save(recipe).getId();
         String title = "비빔밥";
+        List<UploadRecipeDetailRequest> details = new ArrayList<>();
 
-        recipeService.updateRecipe(userId, recipeId, title, "주먹밥을 만들어요",
-                List.of("밥", "김"), Difficulty.EASY, null);
+        recipeService.updateRecipe(userId, new UpdateRecipeRequest(recipeId, title, "주먹밥을 만들어요",
+                List.of("밥", "김"), Difficulty.EASY, null, details));
 
         List<Recipe> actual = recipeRepository.findAll();
         assertThat(actual).hasSize(1);
@@ -74,10 +79,10 @@ class RecipeServiceTest {
         Long user2Id = userRepository.save(user2).getId();
         Long recipeId = recipeRepository.save(recipe).getId();
         String title = "비빔밥";
-
+        List<UploadRecipeDetailRequest> details = new ArrayList<>();
         assertThrows(RecipeAccessDeniedException.class, ()->
-            recipeService.updateRecipe(user2Id, recipeId, title, "주먹밥을 만들어요",
-                List.of("밥", "김"), Difficulty.EASY, null));
+            recipeService.updateRecipe(user2Id, new UpdateRecipeRequest(recipeId, title, "주먹밥을 만들어요",
+                List.of("밥", "김"), Difficulty.EASY, null, details)));
     }
 
 
