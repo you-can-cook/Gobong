@@ -26,10 +26,17 @@ class DetailViewModel : ViewModel() {
     )
     val recipes: StateFlow<List<RecipeStep>> get() = _recipes
 
+    private val _activeRecipeStep = MutableStateFlow(0)
+    val activeRecipeStep: StateFlow<Int> get() = _activeRecipeStep
+
     private val _starCount = MutableStateFlow(0)
     val starCount: StateFlow<Int> get() = _starCount
 
     fun setStar(count: Int) {
         _starCount.value = count
+    }
+
+    fun activeRecipeStep(position: Int) {
+        _activeRecipeStep.value = position
     }
 }

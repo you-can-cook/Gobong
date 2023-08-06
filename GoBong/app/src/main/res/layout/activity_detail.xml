@@ -237,6 +237,7 @@
 
                 <TextView
                     android:id="@+id/recipeIntroTextView"
+                    setTextVisible="@{vm.cardInfo.description}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
@@ -249,45 +250,14 @@
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/ingredientGroup"
+                    ingredientChips="@{vm.cardInfo.ingredients}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="12dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/recipeIntroTextView">
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.GoBong.Chip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="자이언트 떡볶이" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.GoBong.Chip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="콕콕콕 스파게티" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.GoBong.Chip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="스트링 치즈" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.GoBong.Chip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="의성마늘 소시지 1개" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.GoBong.Chip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="모짜렐라(슈레드) 치즈" />
-
-                </com.google.android.material.chip.ChipGroup>
+                    app:layout_constraintTop_toBottomOf="@id/recipeIntroTextView" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"

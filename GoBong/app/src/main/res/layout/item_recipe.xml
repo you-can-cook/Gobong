@@ -8,6 +8,10 @@
         <variable
             name="item"
             type="com.youcancook.gobong.model.RecipeStep" />
+
+        <variable
+            name="isActivate"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +22,7 @@
         <TextView
             android:id="@+id/levelTextView"
             style="@style/TextAppearance.GoBong.SemiBold12"
+            isActivated="@{isActivate}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/background_recipe_step"
@@ -30,6 +35,7 @@
 
         <View
             android:id="@+id/dashDivider"
+            isActivated="@{isActivate}"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:background="@drawable/divider_dash_vertical"
@@ -40,6 +46,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/recipeBox"
+            isActivated="@{isActivate}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -67,6 +74,7 @@
             <ImageView
                 android:id="@+id/recipeImageView"
                 setImageUrl="@{item.photoUrl}"
+                setImageVisible="@{isActivate}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
