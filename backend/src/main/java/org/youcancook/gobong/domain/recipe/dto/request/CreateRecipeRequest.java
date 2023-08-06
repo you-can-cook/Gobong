@@ -2,11 +2,9 @@ package org.youcancook.gobong.domain.recipe.dto.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
-import org.youcancook.gobong.domain.recipe.entity.Difficulty;
 import org.youcancook.gobong.domain.recipedetail.dto.request.UploadRecipeDetailRequest;
 
 import java.util.List;
@@ -22,8 +20,8 @@ public class CreateRecipeRequest {
     private String introduction;
     private List<String> ingredients;
 
-    @NotNull(message = "난이도는 필수 입력 사항입니다.")
-    private Difficulty difficulty;
+    @NotBlank(message = "난이도는 필수 입력 사항입니다.")
+    private String difficulty;
     private String thumbnailURL;
 
     private List<@Valid UploadRecipeDetailRequest> recipeDetails;

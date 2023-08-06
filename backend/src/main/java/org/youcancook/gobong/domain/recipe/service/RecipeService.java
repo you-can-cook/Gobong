@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.youcancook.gobong.domain.recipe.dto.request.CreateRecipeRequest;
 import org.youcancook.gobong.domain.recipe.dto.request.UpdateRecipeRequest;
 import org.youcancook.gobong.domain.recipe.dto.response.CreateRecipeResponse;
+import org.youcancook.gobong.domain.recipe.entity.Difficulty;
 import org.youcancook.gobong.domain.recipe.entity.Recipe;
 import org.youcancook.gobong.domain.recipe.exception.RecipeAccessDeniedException;
 import org.youcancook.gobong.domain.recipe.exception.RecipeNotFoundException;
@@ -32,7 +33,7 @@ public class RecipeService {
 
         String parsedIngredients = String.join(",", request.getIngredients());
         Recipe recipe = new Recipe(user, request.getTitle(), request.getIntroduction(),
-                parsedIngredients, request.getDifficulty(), request.getThumbnailURL());
+                parsedIngredients, Difficulty.from(request.getDifficulty()), request.getThumbnailURL());
 
         Long recipeId = recipeRepository.save(recipe).getId();
         return new CreateRecipeResponse(recipeId);
@@ -46,7 +47,7 @@ public class RecipeService {
 
         String parsedIngredients = String.join(",", request.getIngredients());
         recipe.updateProperties(request.getTitle(), request.getIntroduction(),
-                parsedIngredients, request.getDifficulty(), request.getThumbnailURL());
+                parsedIngredients, Difficulty.from(request.getDifficulty()), request.getThumbnailURL());
     }
 
     public void validateUserRecipe(User user, Recipe recipe){
