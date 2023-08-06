@@ -85,10 +85,10 @@
 		80CE8B0A2A7CDE0F003DE318 /* Hashtag */ = {
 			isa = PBXGroup;
 			children = (
-				80CE8B082A7CDD56003DE318 /* HashtagCell.swift */,
-				80CE8B0B2A7CDE38003DE318 /* HashtagCollectionCell.swift */,
 				80CE8B192A7F7B18003DE318 /* DetailTitleCell.swift */,
 				80CE8B1A2A7F7B18003DE318 /* DetailTitleCell.xib */,
+				80CE8B082A7CDD56003DE318 /* HashtagCell.swift */,
+				80CE8B0B2A7CDE38003DE318 /* HashtagCollectionCell.swift */,
 			);
 			path = Hashtag;
 			sourceTree = "<group>";
