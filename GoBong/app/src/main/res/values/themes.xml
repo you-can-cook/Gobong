@@ -12,5 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
+
+        <item name="IngredientChips">@style/Widget.GoBong.Chip</item>
     </style>
 </resources>

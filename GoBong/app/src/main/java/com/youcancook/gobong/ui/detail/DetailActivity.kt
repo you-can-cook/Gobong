@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -18,7 +19,10 @@ import kotlinx.coroutines.launch
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private val detailViewModel: DetailViewModel by viewModels()
-    private val recipeAdapter = RecipeListAdapter()
+    private val recipeAdapter = RecipeListAdapter(onItemClick = {
+        detailViewModel.activeRecipeStep(it)
+    })
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
@@ -47,6 +51,18 @@ class DetailActivity : AppCompatActivity() {
                         for (i in 0 until it) {
                             stars[i].isSelected = true
                         }
+                    }
+                }
+
+            }
+
+        }
+
+        binding.run{
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    detailViewModel.activeRecipeStep.collectLatest {
+
                     }
                 }
 

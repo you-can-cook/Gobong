@@ -10,5 +10,11 @@ class Card(
     val level: String = "쉬워요",
     val star: String = "3.2공기",
     val description: String = "",
-    val ingredient: List<String> = listOf(),
+    val ingredients: List<String> = listOf(
+        "자이언트 떡볶이",
+        "콕콕콕 스파게티",
+        "스트링 치즈",
+        "의성마늘 소시지 1인",
+        "모짜렐라(슈레드) 치즈"
+    ),
 )
