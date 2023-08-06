@@ -35,7 +35,7 @@ class RatingServiceTest {
         User user = User.builder().nickname("쩝쩝박사").oAuthId("123")
                 .oAuthProvider(OAuthProvider.GOOGLE).build();
         Recipe recipe = Recipe.builder()
-                .title("주먹밥").difficulty(Difficulty.EASY).cookwares(0L).totalTimeInSeconds(10).build();
+                .title("주먹밥").difficulty(Difficulty.EASY).build();
 
         Long userId = userRepository.save(user).getId();
         Long recipeId = recipeRepository.save(recipe).getId();
@@ -53,7 +53,7 @@ class RatingServiceTest {
         User user = User.builder().nickname("쩝쩝박사").oAuthId("123")
                 .oAuthProvider(OAuthProvider.GOOGLE).build();
         Recipe recipe = Recipe.builder()
-                .title("주먹밥").difficulty(Difficulty.EASY).cookwares(0L).totalTimeInSeconds(10).build();
+                .title("주먹밥").difficulty(Difficulty.EASY).build();
 
         Long userId = userRepository.save(user).getId();
         Long recipeId = recipeRepository.save(recipe).getId();

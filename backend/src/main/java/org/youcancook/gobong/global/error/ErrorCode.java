@@ -44,7 +44,11 @@ public enum ErrorCode {
     // Temporary Token
     TEMPORARY_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "T004", "임시 토큰을 찾을 수 없습니다."),
 
+    // Difficulty Argument
+    INVALID_DIFFICULTY_ARGUMENT(HttpStatus.BAD_REQUEST, "D003", "난이도는 '쉬워요', '보통이에요', '어려워요' 중 하나여야 합니다."),
+
     ;
+
     private final HttpStatus status;
     private final String code;
     private final String message;
