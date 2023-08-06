@@ -18,7 +18,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var information: dummyFeedData!
-    var hashTag = ["면", "면 면", "면 면", "면", "모차렐라(슈레드) 치즈", "자이언트 떡볶이", "자이언트 떡볶이", "자이언트 떡볶이", "자이언트 떡볶이"]
+    var hashTag = ["면", "면 면", "면 면", "면", "모차렐라(슈레드) 치즈", "자이언트 떡볶이", "자이언트 떡볶이", "자이언트 떡볶이", "면 면"]
     
     var collectionViewHeight = 0
 

@@ -8,6 +8,7 @@
 import UIKit
 import Photos
 import YPImagePicker
+import AlignedCollectionViewFlowLayout
 
 class AddPostViewController: UIViewController {
 
@@ -15,25 +16,86 @@ class AddPostViewController: UIViewController {
     @IBOutlet weak var hardButton: UIButton!
     @IBOutlet weak var normalButton: UIButton!
     @IBOutlet weak var easyButton: UIButton!
-    @IBOutlet weak var collectionView: UICollectionViewCell!
-    @IBOutlet weak var introductionField: UIStackView!
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var introductionField: UITextField!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var postImage: UIImageView!
+    
+    var collectionViewHeightConstraint: NSLayoutConstraint!
+    var levelSelected: String = "" {
+        didSet{
+            if levelSelected == "easy" {
+                easyButton.layer.borderColor = UIColor(named: "pink")?.cgColor
+                easyButton.layer.borderWidth = 1
+                easyButton.backgroundColor = UIColor(named: "pink")
+                easyButton.titleLabel?.tintColor = .white
+                
+                normalButton.layer.borderColor = UIColor(named: "pink")?.cgColor
+                normalButton.layer.borderWidth = 1
+                normalButton.backgroundColor = .white
+                normalButton.titleLabel?.textColor = UIColor(named: "pink")
+                
+                hardButton.layer.borderColor = UIColor(named: "pink")?.cgColor
+                hardButton.layer.borderWidth = 1
+                hardButton.backgroundColor = .white
+                hardButton.titleLabel?.textColor = UIColor(named: "pink")
+            } else if levelSelected == "normal" {
+                easyButton.layer.borderColor = UIColor(named: "pink")?.cgColor
+                easyButton.layer.borderWidth = 1
+                easyButton.backgroundColor = .white
+                easyButton.titleLabel?.textColor = UIColor(named: "pink")
+                
+                normalButton.layer.borderColor = UIColor(named: "pink")?.cgColor
+                normalButton.layer.borderWidth = 1
+                normalButton.backgroundColor = UIColor(named: "pink")
+                normalButton.titleLabel?.tintColor = .white
+                
+                hardButton.layer.borderColor = UIColor(named: "pink")?.cgColor
+                hardButton.layer.borderWidth = 1
+                hardButton.backgroundColor = .white
+                hardButton.titleLabel?.textColor = UIColor(named: "pink")
+            } else if levelSelected == "hard" {
+                easyButton.layer.borderColor = UIColor(named: "pink")?.cgColor
+                easyButton.layer.borderWidth = 1
+                easyButton.backgroundColor = .white
+                easyButton.titleLabel?.textColor = UIColor(named: "pink")
+                
+                normalButton.layer.borderColor = UIColor(named: "pink")?.cgColor
+                normalButton.layer.borderWidth = 1
+                normalButton.backgroundColor = .white
+                normalButton.titleLabel?.textColor = UIColor(named: "pink")
+                
+                hardButton.layer.borderColor = UIColor(named: "pink")?.cgColor
+                hardButton.layer.borderWidth = 1
+                hardButton.backgroundColor = UIColor(named: "pink")
+                hardButton.titleLabel?.tintColor = .white
+            }
+        }
+    }
+    var ingredients: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         setupUI()
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
     }
-
+    
+    @objc private func viewTapped(){
+        introductionField.resignFirstResponder()
+        titleTextField.resignFirstResponder()
+    }
+    
 }
 
-extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     private func setupUI(){
         setupNavigationBar()
         setTapGesture()
-        setupYPImagePicker()
+        levelButtonUI()
+        textFieldUI()
+        collectionViewSetup()
     }
     
     private func setupNavigationBar(){
@@ -103,19 +165,133 @@ extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationCo
             completion(false)
         }
     }
-//
-//
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//        picker.dismiss(animated: true, completion: nil)
-//
-//        if let pickedImage = info[.originalImage] as? UIImage {
-//            postImage.image = pickedImage
-//        }
-//    }
-//
-//
-//    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-//        picker.dismiss(animated: true, completion: nil)
-//    }
+    
+    //TEXT FIELD
+    private func textFieldUI(){
+        introductionField.tintColor = UIColor(named: "pink")
+        introductionField.borderStyle = .roundedRect
+        introductionField.layer.borderWidth = 1
+        introductionField.layer.borderColor = UIColor(named: "gray")?.cgColor
+        
+        titleTextField.tintColor = UIColor(named: "pink")
+        titleTextField.borderStyle = .roundedRect
+        titleTextField.layer.borderWidth = 1
+        titleTextField.layer.borderColor = UIColor(named: "gray")?.cgColor
+        
+        titleTextField.delegate = self
+        introductionField.delegate = self
+    }
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        if let text = titleTextField.text, !text.isEmpty {
+            titleTextField.layer.borderWidth = 1
+            titleTextField.layer.borderColor = UIColor(named: "pink")?.cgColor
+        } else {
+            titleTextField.layer.borderWidth = 1
+            titleTextField.layer.borderColor = UIColor(named: "gray")?.cgColor
+        }
+        
+        if let text = introductionField.text, !text.isEmpty {
+            introductionField.layer.borderWidth = 1
+            introductionField.layer.borderColor = UIColor(named: "pink")?.cgColor
+        } else {
+            introductionField.layer.borderWidth = 1
+            introductionField.layer.borderColor = UIColor(named: "gray")?.cgColor
+        }
+        
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        introductionField.resignFirstResponder()
+        titleTextField.resignFirstResponder()
+    }
+    
+    //LEVEL
+    private func levelButtonUI(){
+        easyButton.layer.borderColor = UIColor(named: "gray")?.cgColor
+        easyButton.layer.borderWidth = 1
+        normalButton.layer.borderColor = UIColor(named: "gray")?.cgColor
+        normalButton.layer.borderWidth = 1
+        hardButton.layer.borderColor = UIColor(named: "gray")?.cgColor
+        hardButton.layer.borderWidth = 1
+    }
+    
+    @IBAction func hardButtonTapped(_ sender: Any) {
+        levelSelected = "hard"
+    }
+    
+    @IBAction func normalButtonTapped(_ sender: Any) {
+        levelSelected = "normal"
+    }
+    
+    @IBAction func easyButtonTapped(_ sender: Any) {
+        levelSelected = "easy"
+    }
+    
+
 }
+
+extension AddPostViewController: UICollectionViewDelegate, UICollectionViewDataSource, IngredientCellDelegate {
+    func textFieldDidPressReturn(in cell: AddIngredientCell) {
+        if let text = cell.textField.text {
+            ingredients.append(text)
+            print(ingredients)
+            collectionView.reloadData()
+            
+            collectionView.layoutIfNeeded()
+            
+            let contentHeight = collectionView.contentSize.height
+            collectionViewHeightConstraint.isActive = false
+            
+            let newHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: contentHeight)
+            newHeightConstraint.isActive = true
+            
+            collectionViewHeightConstraint = newHeightConstraint
+        }
+    }
+
+    
+    private func collectionViewSetup(){
+        let alignedFlowLayout = collectionView?.collectionViewLayout as? AlignedCollectionViewFlowLayout
+        alignedFlowLayout?.horizontalAlignment = .left
+        alignedFlowLayout?.verticalAlignment = .center
+        alignedFlowLayout?.minimumLineSpacing = 8
+        alignedFlowLayout?.minimumInteritemSpacing = 8
+        
+        collectionView.dataSource = self
+        collectionView.register(AddIngredientCell.self, forCellWithReuseIdentifier: "AddIngredientCell")
+        
+        collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 34)
+        collectionViewHeightConstraint.isActive = true
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return ingredients.count + 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddIngredientCell", for: indexPath) as! AddIngredientCell
+        
+        if indexPath.row != ingredients.count {
+            // Configure the cell with actual ingredient data
+            cell.textField.text = ingredients[indexPath.item]
+            cell.textField.isUserInteractionEnabled = false
+            cell.textField.layer.borderWidth = 1
+            cell.textField.layer.borderColor = UIColor(named: "pink")?.cgColor
+        } else {
+            // Reset the cell and configure it for adding
+            cell.textField.text = nil
+            cell.textField.layer.borderWidth = 1
+            cell.textField.layer.borderColor = UIColor(named: "gray")?.cgColor
+            cell.textField.placeholder = "추가하기"
+            cell.textField.isUserInteractionEnabled = true
+            
+            cell.delegate = self
+        }
+        
+        return cell
+    }
+
+}
+
 
