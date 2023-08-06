@@ -35,8 +35,7 @@ class ProfileViewController: UIViewController {
         setupUI()
         
         setupMainTableView()
-        setupUserInfo()
-//        setObservable()
+        setObservable()
     }
 
 }
@@ -53,32 +52,25 @@ extension ProfileViewController {
 
 //MARK: OBSERVABLE
 extension ProfileViewController {
-//    private func setObservable(){
-//        isShowingBlockView.subscribe(onNext: { [weak self] bool in
-//            guard let self = self else { return }
-//            if bool {
-//                ShowingBlockView = true
-//                self.collectionView.isHidden = false
-//                self.tableView.isHidden = true
-//            } else {
-//                ShowingBlockView = false
-//                self.collectionView.isHidden = true
-//                self.tableView.isHidden = false
-//            }
-//
-//        }).disposed(by: disposeBag)
-//    }
+    private func setObservable(){
+        isShowingBlockView.subscribe(onNext: { [weak self] bool in
+            guard let self = self else { return }
+            if bool {
+                ShowingBlockView = true
+                mainTableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+            } else {
+                ShowingBlockView = false
+                mainTableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+            }
+
+        }).disposed(by: disposeBag)
+    }
 }
 
 //MARK: UI
 extension ProfileViewController: UISearchBarDelegate {
-    private func setupUserInfo(){
-    }
-
     private func setupUI(){
         setupNavigationBar()
-//        tableViewSetup()
-//        collectionViewSetup()
     }
 
     private func setupNavigationBar(){
@@ -99,7 +91,9 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
         mainTableView.delegate = self
         mainTableView.dataSource = self
         mainTableView.separatorStyle = .none
+        mainTableView.showsVerticalScrollIndicator = false
         mainTableView.register(UINib(nibName: "UserInformationCell", bundle: nil), forCellReuseIdentifier: "UserInformationCell")
+        mainTableView.register(ProfileFeedCell.self, forCellReuseIdentifier: "ProfileFeedCell")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -107,113 +101,45 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        if indexPath.item == 0 {
+        if indexPath.item == 0 {
             let cell = mainTableView.dequeueReusableCell(withIdentifier: "UserInformationCell") as! UserInformationCell
             cell.configuration(img: nil, recipeCount: 0, followerCount: 0, followingCount: 0)
-        cell.selectionStyle = .none
+            cell.selectionStyle = .none
+            
             return cell
-//        }
+        } else {
+            if ShowingBlockView {
+                let cell = mainTableView.dequeueReusableCell(withIdentifier: "ProfileFeedCell") as! ProfileFeedCell
+                cell.dummyData = dummyData
+                cell.configuration(isShowingBlock: ShowingBlockView)
+                cell.collectionView.reloadData()
+                
+                return cell
+            } else {
+                let cell = mainTableView.dequeueReusableCell(withIdentifier: "ProfileFeedCell") as! ProfileFeedCell
+                cell.dummyData = dummyData
+                cell.configuration(isShowingBlock: ShowingBlockView)
+                cell.tableView.reloadData()
+                
+                return cell
+            }
+        }
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.item == 0 {
+            return 180
+        } else {
+            if ShowingBlockView {
+                return CGFloat(dummyData.count) * tableView.bounds.width / 3 - 2
+            } else {
+                // Calculate the height based on the dummy data count and cell height
+                let cellHeight: CGFloat = 314 // Adjust the expected cell height
+                return CGFloat(dummyData.count) * cellHeight
+            }
+        }
+    }
+
 }
 
 
-
-//extension ProfileViewController: UIController {
-//
-//}
-
-
-//
-////MARK: COLLECTION VIEW
-//extension ProfileViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-//    private func collectionViewSetup(){
-//        collectionView.delegate = self
-//        collectionView.dataSource = self
-//        collectionView.showsVerticalScrollIndicator = false
-//        collectionView.register(UINib(nibName: "FeedBoxCell", bundle: nil), forCellWithReuseIdentifier: "FeedBoxCell")
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return dummyData.count
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeedBoxCell", for: indexPath) as! FeedBoxCell
-//
-//        cell.img.image = UIImage(named: dummyData[indexPath.item].thumbnailImg)
-//
-//        NSLayoutConstraint.activate([
-//            cell.img.widthAnchor.constraint(equalToConstant: view.frame.width/3-2),
-//            cell.img.heightAnchor.constraint(equalToConstant: view.frame.width/3-2)
-//        ])
-//
-//        return cell
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        // Set the cell height to match the cellWidth so that the cell appears as a square
-//        return CGSize(width: (view.frame.width/3)-2, height: view.frame.width/3-2)
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 1)
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 3
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 0
-//    }
-//
-//}
-//
-////MARK: TABLEVIEW
-//extension ProfileViewController : UITableViewDelegate, UITableViewDataSource {
-//    private func tableViewSetup(){
-//        tableView.dataSource = self
-//        tableView.delegate = self
-//        tableView.separatorStyle = .none
-//        tableView.showsVerticalScrollIndicator = false
-//        tableView.register(UINib(nibName: "FeedCell", bundle: nil), forCellReuseIdentifier: "FeedCell")
-//    }
-//
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return dummyData.count
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as! FeedCell
-//
-//        let data = dummyData[indexPath.item]
-//        cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
-//        cell.followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-//
-//        cell.selectionStyle = .none
-//        return cell
-//    }
-//
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 314.0
-//    }
-//
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//            // This method will be called when either the table view or the parent scroll view is scrolled
-//            if scrollView == tableView {
-//                // If the table view is scrolled, synchronize its content offset with the parent scroll view
-//                scrollView.contentOffset.y = max(tableView.contentOffset.y, 0)
-//            } else {
-//                // If the parent scroll view is scrolled, apply the parallax effect to the header view
-//                let offset = scrollView.contentOffset.y
-//                if offset < 0 {
-//                    // The header view is enlarged when scrolling down (pull to refresh)
-//                    informationView.transform = CGAffineTransform(translationX: 0, y: offset)
-//                } else {
-//                    // Apply the parallax effect to the header view as the table view is scrolled up
-//                    informationView.transform = CGAffineTransform(translationX: 0, y: -offset)
-//                }
-//            }
-//        }
-//}
-//
