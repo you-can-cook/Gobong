@@ -12,7 +12,7 @@ class HashtagCollectionCell: UICollectionViewCell {
     let label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 10)
+        label.font = UIFont.boldSystemFont(ofSize: 10)
         label.numberOfLines = 1
         label.textAlignment = .center
         label.layer.cornerRadius = 15
