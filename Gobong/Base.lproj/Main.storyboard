@@ -408,7 +408,7 @@
                                                         <attributedString key="attributedText">
                                                             <fragment content="제목">
                                                                 <attributes>
-                                                                    <font key="NSFont" size="17" name=".AppleSDGothicNeoI-Regular"/>
+                                                                    <font key="NSFont" metaFont="system" size="17"/>
                                                                     <font key="NSOriginalFont" metaFont="system" size="17"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                 </attributes>

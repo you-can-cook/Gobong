@@ -35,7 +35,7 @@ class ProfileViewController: UIViewController {
         // Do any additional setup after loading the view.
         setupUI()
         setupUserInfo()
-        setupMainTableView
+        setupMainTableView()
 //        setObservable()
     }
 
@@ -91,6 +91,12 @@ extension ProfileViewController: UISearchBarDelegate {
         navigationItem.leftBarButtonItem = settingsButton
         
         navigationItem.title = "유저 이름"
+    }
+}
+
+extension ProfileViewController {
+    private func setupMainTableView(){
+        
     }
 }
 
