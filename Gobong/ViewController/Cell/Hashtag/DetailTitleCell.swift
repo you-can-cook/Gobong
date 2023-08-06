@@ -45,7 +45,5 @@ class DetailTitleCell: UITableViewCell {
         cookingToolsLabel.text = tools
         levelLabel.text = level
         starLabel.text = "\(stars)공기"
-        
-        
     }
 }
