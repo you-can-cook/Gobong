@@ -40,6 +40,8 @@ public class TokenManager {
                 .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .accessTokenExpiredAt(accessTokenExpiredAt)
+                .refreshTokenExpiredAt(refreshTokenExpiredAt)
                 .build();
     }
 
