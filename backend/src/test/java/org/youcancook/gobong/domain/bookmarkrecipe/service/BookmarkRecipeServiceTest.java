@@ -36,8 +36,7 @@ class BookmarkRecipeServiceTest {
     @DisplayName("북마크를 성공적으로 등록한다.")
     public void addBookmarkTest(){
         User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
-        Recipe recipe = Recipe.builder().title("주먹밥").difficulty(Difficulty.EASY).cookwares(0L)
-                .totalTimeInSeconds(0).build();
+        Recipe recipe = Recipe.builder().title("주먹밥").difficulty(Difficulty.EASY).build();
         userRepository.save(user);
         recipeRepository.save(recipe);
 
@@ -51,8 +50,7 @@ class BookmarkRecipeServiceTest {
     @DisplayName("북마크를 성공적으로 제거한다.")
     public void removeBookmarkTest(){
         User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
-        Recipe recipe = Recipe.builder().title("주먹밥").difficulty(Difficulty.EASY).cookwares(0L)
-                .totalTimeInSeconds(0).build();
+        Recipe recipe = Recipe.builder().title("주먹밥").difficulty(Difficulty.EASY).build();
         userRepository.save(user);
         recipeRepository.save(recipe);
 
@@ -78,8 +76,7 @@ class BookmarkRecipeServiceTest {
     @DisplayName("이미 북마크에 등록된 레시피를 다시 등록하면 예외를 발생한다.")
     public void concurrentTest(){
         User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
-        Recipe recipe = Recipe.builder().title("주먹밥").difficulty(Difficulty.EASY).cookwares(0L)
-                .totalTimeInSeconds(0).build();
+        Recipe recipe = Recipe.builder().title("주먹밥").difficulty(Difficulty.EASY).build();
         userRepository.save(user);
         recipeRepository.save(recipe);
 
