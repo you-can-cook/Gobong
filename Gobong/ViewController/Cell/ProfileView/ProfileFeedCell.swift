@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol profileFeedDelegete: Any {
+    func cellTapped(cell: ProfileFeedCell)
+}
+
 class ProfileFeedCell: UITableViewCell {
     
     var dummyData: [dummyFeedData] = []
+    var selectedIndexPath = 0
+    var delegate: profileFeedDelegete?
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -84,6 +90,11 @@ extension ProfileFeedCell : UICollectionViewDelegate, UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dummyData.count
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedIndexPath = indexPath.item
+        delegate?.cellTapped(cell: self)
+    }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeedBoxCell", for: indexPath) as! FeedBoxCell
@@ -131,6 +142,12 @@ extension ProfileFeedCell : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dummyData.count
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedIndexPath = indexPath.item
+        delegate?.cellTapped(cell: self)
+    }
+    
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as! FeedCell

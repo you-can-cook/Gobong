@@ -16,6 +16,7 @@ class BookmarkViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
     
+    var selectedIndexPath = 0
     
     var dummyData = [
         dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
@@ -29,8 +30,8 @@ class BookmarkViewController: UIViewController {
     private var isShowingBlockViewObservable : Observable<Bool> {
         return isShowingBlockView.asObservable()
     }
-    
     private let disposeBag = DisposeBag()
+    
     
     override func viewWillAppear(_ animated: Bool) {
     }
@@ -40,6 +41,13 @@ class BookmarkViewController: UIViewController {
         setupUI()
         setObservable()
         // Do any additional setup after loading the view.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDetailView",
+                let detailVC = segue.destination as? DetailViewController {
+            detailVC.information = dummyData[selectedIndexPath]
+        }
     }
 }
 
@@ -133,6 +141,11 @@ extension BookmarkViewController : UICollectionViewDelegate, UICollectionViewDat
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedIndexPath = indexPath.item
+        self.performSegue(withIdentifier: "showDetailView", sender: self)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         // Set the cell height to match the cellWidth so that the cell appears as a square
         return CGSize(width: (view.frame.width/3)-2, height: view.frame.width/3-2)
@@ -175,6 +188,11 @@ extension BookmarkViewController : UITableViewDelegate, UITableViewDataSource {
         
         cell.selectionStyle = .none
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedIndexPath = indexPath.item
+        self.performSegue(withIdentifier: "showDetailView", sender: self)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

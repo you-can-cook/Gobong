@@ -9,13 +9,18 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ProfileViewController: UIViewController {
-
+class ProfileViewController: UIViewController, profileFeedDelegete {
+    func cellTapped(cell: ProfileFeedCell) {
+        selectedIndexPath = cell.selectedIndexPath
+        self.performSegue(withIdentifier: "showDetailView", sender: self)
+    }
+    
     @IBOutlet weak var mainTableView: UITableView!
+    var selectedIndexPath = 0 
 
     var dummyData = [
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+        dummyFeedData(username: "1", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+        dummyFeedData(username: "2", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
         dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
         dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
 
@@ -36,6 +41,13 @@ class ProfileViewController: UIViewController {
         
         setupMainTableView()
         setObservable()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDetailView",
+           let detailVC = segue.destination as? DetailViewController {
+            detailVC.information = dummyData[selectedIndexPath]
+        }
     }
 
 }
@@ -113,6 +125,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
                 cell.dummyData = dummyData
                 cell.configuration(isShowingBlock: ShowingBlockView)
                 cell.collectionView.reloadData()
+                cell.delegate = self
                 
                 return cell
             } else {
@@ -120,6 +133,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
                 cell.dummyData = dummyData
                 cell.configuration(isShowingBlock: ShowingBlockView)
                 cell.tableView.reloadData()
+                cell.delegate = self
                 
                 return cell
             }
