@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.youcancook.gobong.domain.authentication.repository.RefreshTokenRepository;
+import org.youcancook.gobong.domain.user.dto.response.LoginResponse;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
 import org.youcancook.gobong.domain.user.exception.OAuthProviderNotFoundException;
@@ -54,10 +55,12 @@ class UserLoginServiceTest {
                 .thenReturn(null);
 
         // when
-        TokenDto result = userLoginService.login("kakao", oAuthId);
+        LoginResponse result = userLoginService.login("kakao", oAuthId);
 
         // then
-        assertThat(result).usingRecursiveComparison().isEqualTo(tokenDto);
+        assertThat(result.getGrantType()).isEqualTo(tokenDto.getGrantType());
+        assertThat(result.getAccessToken()).isEqualTo(tokenDto.getAccessToken());
+        assertThat(result.getRefreshToken()).isEqualTo(tokenDto.getRefreshToken());
     }
 
     @Test
