@@ -204,6 +204,8 @@ extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationCo
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         introductionField.resignFirstResponder()
         titleTextField.resignFirstResponder()
+        
+        return true
     }
     
     //LEVEL
@@ -231,6 +233,7 @@ extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationCo
 
 }
 
+//UI COLLECTION VIEW (재료)
 extension AddPostViewController: UICollectionViewDelegate, UICollectionViewDataSource, IngredientCellDelegate {
     func textFieldDidPressReturn(in cell: AddIngredientCell) {
         if let text = cell.textField.text {
@@ -250,7 +253,6 @@ extension AddPostViewController: UICollectionViewDelegate, UICollectionViewDataS
         }
     }
 
-    
     private func collectionViewSetup(){
         let alignedFlowLayout = collectionView?.collectionViewLayout as? AlignedCollectionViewFlowLayout
         alignedFlowLayout?.horizontalAlignment = .left
@@ -291,7 +293,19 @@ extension AddPostViewController: UICollectionViewDelegate, UICollectionViewDataS
         
         return cell
     }
-
 }
 
-
+//extension AddPostViewController: UITableViewDelegate, UITableViewDataSource {
+//    private func tableViewSetup(){
+//        
+//    }
+//    
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        <#code#>
+//    }
+//     
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        <#code#>
+//    }
+//    
+//}

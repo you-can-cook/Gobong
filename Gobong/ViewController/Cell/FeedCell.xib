@@ -36,7 +36,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="라면 박사학위" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U0O-qe-6WO">
-                                                <rect key="frame" x="56.000000000000007" y="17" width="65.666666666666686" height="14.333333333333336"/>
+                                                <rect key="frame" x="63.000000000000007" y="17" width="65.666666666666686" height="14.333333333333336"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -65,7 +65,7 @@
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstItem="U0O-qe-6WO" firstAttribute="leading" secondItem="pVq-jv-Nkq" secondAttribute="trailing" constant="8" symbolic="YES" id="0fk-2B-gIZ"/>
+                                            <constraint firstItem="U0O-qe-6WO" firstAttribute="leading" secondItem="pVq-jv-Nkq" secondAttribute="trailing" constant="15" id="0fk-2B-gIZ"/>
                                             <constraint firstItem="a9B-3f-lV6" firstAttribute="centerY" secondItem="UXw-zO-EOL" secondAttribute="centerY" id="6UY-Hx-5su"/>
                                             <constraint firstItem="pVq-jv-Nkq" firstAttribute="centerY" secondItem="UXw-zO-EOL" secondAttribute="centerY" id="7wN-9a-xeY"/>
                                             <constraint firstAttribute="trailing" secondItem="a9B-3f-lV6" secondAttribute="trailing" constant="16" id="DP1-1S-eqY"/>

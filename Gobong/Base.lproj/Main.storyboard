@@ -239,7 +239,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="cH0-rB-jaL"/>
                     <connections>
-                        <outlet property="tableView" destination="4GP-2C-uhe" id="u0v-oQ-TEe"/>
+                        <outlet property="mainTableView" destination="4GP-2C-uhe" id="lMf-cR-n30"/>
                         <segue destination="Rt5-em-RtD" kind="show" identifier="showDetailView" id="7X6-lR-vAV"/>
                     </connections>
                 </viewController>
@@ -725,7 +725,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="gWG-9A-qeq"/>
+        <segue reference="7X6-lR-vAV"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Button_Bookmark" width="28" height="28"/>
