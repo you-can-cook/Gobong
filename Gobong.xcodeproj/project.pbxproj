@@ -93,6 +93,26 @@
 			path = Hashtag;
 			sourceTree = "<group>";
 		};
+		80CE8B1D2A7F7E31003DE318 /* ProfileView */ = {
+			isa = PBXGroup;
+			children = (
+				80CE8AF92A7CC5D0003DE318 /* UserInformationCell.xib */,
+				80CE8AF82A7CC5D0003DE318 /* UserInformationCell.swift */,
+			);
+			path = ProfileView;
+			sourceTree = "<group>";
+		};
+		80CE8B1E2A7F7E55003DE318 /* Universal */ = {
+			isa = PBXGroup;
+			children = (
+				80D2B60D2A792B0E00B777D1 /* FeedCell.swift */,
+				80D2B60E2A792B0E00B777D1 /* FeedCell.xib */,
+				80CE8AEB2A7A8DA5003DE318 /* FeedBoxCell.swift */,
+				80CE8AEC2A7A8DA5003DE318 /* FeedBoxCell.xib */,
+			);
+			path = Universal;
+			sourceTree = "<group>";
+		};
 		80D2B5EC2A791AD600B777D1 = {
 			isa = PBXGroup;
 			children = (
@@ -143,16 +163,12 @@
 		80D2B6112A792B1600B777D1 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				80D2B60D2A792B0E00B777D1 /* FeedCell.swift */,
-				80D2B60E2A792B0E00B777D1 /* FeedCell.xib */,
-				80CE8AEB2A7A8DA5003DE318 /* FeedBoxCell.swift */,
-				80CE8AEC2A7A8DA5003DE318 /* FeedBoxCell.xib */,
-				80CE8AF82A7CC5D0003DE318 /* UserInformationCell.swift */,
-				80CE8AF92A7CC5D0003DE318 /* UserInformationCell.xib */,
+				80CE8B1E2A7F7E55003DE318 /* Universal */,
 				80CE8B042A7CD2CF003DE318 /* StepByStepTableViewCell.swift */,
 				80CE8B052A7CD2CF003DE318 /* StepByStepTableViewCell.xib */,
 				80CE8B132A7F712C003DE318 /* AddIngredientCell.swift */,
 				80CE8B152A7F73FD003DE318 /* RecipeCell.swift */,
+				80CE8B1D2A7F7E31003DE318 /* ProfileView */,
 				80CE8B0A2A7CDE0F003DE318 /* Hashtag */,
 			);
 			path = Cell;

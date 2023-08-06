@@ -31,11 +31,11 @@ class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
         setupUI()
-        setupUserInfo()
+        
         setupMainTableView()
+        setupUserInfo()
 //        setObservable()
     }
 
@@ -94,9 +94,25 @@ extension ProfileViewController: UISearchBarDelegate {
     }
 }
 
-extension ProfileViewController {
+extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
     private func setupMainTableView(){
-        
+        mainTableView.delegate = self
+        mainTableView.dataSource = self
+        mainTableView.separatorStyle = .none
+        mainTableView.register(UINib(nibName: "UserInformationCell", bundle: nil), forCellReuseIdentifier: "UserInformationCell")
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        if indexPath.item == 0 {
+            let cell = mainTableView.dequeueReusableCell(withIdentifier: "UserInformationCell") as! UserInformationCell
+            cell.configuration(img: nil, recipeCount: 0, followerCount: 0, followingCount: 0)
+        cell.selectionStyle = .none
+            return cell
+//        }
     }
 }
 
