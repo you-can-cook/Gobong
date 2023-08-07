@@ -238,7 +238,6 @@ extension AddPostViewController: UICollectionViewDelegate, UICollectionViewDataS
     func textFieldDidPressReturn(in cell: AddIngredientCell) {
         if let text = cell.textField.text {
             ingredients.append(text)
-            print(ingredients)
             collectionView.reloadData()
             
             collectionView.layoutIfNeeded()

@@ -73,13 +73,34 @@ extension SearchViewController {
             guard let self = self else { return }
             if bool {
                 ShowingBlockView = true
-                
                 self.collectionView.isHidden = false
                 self.tableView.isHidden = true
+                navigationItem.rightBarButtonItem = nil
+                
+                //NAVIGATION BAR
+                let filterButton = UIBarButtonItem(image: UIImage(named: "Filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
+                filterButton.tintColor = .black
+                
+                filterButton.imageInsets = UIEdgeInsets(top: 0.0, left: 50, bottom: 0, right: 30);
+                
+                let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "액자형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
+                tableViewToogleButton.tintColor = .black
+                
+                navigationItem.rightBarButtonItems = [tableViewToogleButton, filterButton]
             } else {
                 ShowingBlockView = false
                 self.collectionView.isHidden = true
                 self.tableView.isHidden = false
+                
+                //NAVIGATION BAR
+                let filterButton = UIBarButtonItem(image: UIImage(named: "Filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
+                filterButton.tintColor = .black
+                
+                filterButton.imageInsets = UIEdgeInsets(top: 0.0, left: 50, bottom: 0, right: 30);
+                let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "카드형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
+                tableViewToogleButton.tintColor = .black
+                
+                navigationItem.rightBarButtonItems = [tableViewToogleButton, filterButton]
             }
             
         }).disposed(by: disposeBag)
@@ -105,7 +126,7 @@ extension SearchViewController {
         
         filterButton.imageInsets = UIEdgeInsets(top: 0.0, left: 50, bottom: 0, right: 30);
 
-        let tableViewToogleButton = UIBarButtonItem(image: UIImage(systemName: "square.stack.3d.up.fill"), style: .plain, target: self, action: #selector(toogleButtonTapped))
+        let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "카드형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
         tableViewToogleButton.tintColor = .black
         
         navigationItem.rightBarButtonItems = [tableViewToogleButton, filterButton]
