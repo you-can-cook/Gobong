@@ -39,5 +39,7 @@ public class RecipeDetail {
         this.cookware = cookware;
         this.recipe = recipe;
         this.step = step;
+        recipe.addCookware(cookware);
+        recipe.addCookTime(cookTimeInSeconds);
     }
 }

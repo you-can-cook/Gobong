@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import org.youcancook.gobong.domain.recipe.entity.Cookware;
 import org.youcancook.gobong.domain.recipe.entity.Difficulty;
 import org.youcancook.gobong.domain.recipe.entity.Recipe;
@@ -105,41 +106,8 @@ class RecipeDetailServiceTest {
         List<RecipeDetail> actual = recipeDetailRepository.findAll();
         assertThat(actual).isEmpty();
     }
-
     @Test
-    @DisplayName("단계별 레시피의 조리도구가 정확하게 합산된다.")
-    public void gatherCookwareTest(){
-        User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
-        Recipe recipe = Recipe.builder().user(user).difficulty(Difficulty.EASY).title("주먹밥").build();
-        userRepository.save(user);
-        Long recipeId = recipeRepository.save(recipe).getId();
-
-        recipeDetailRepository.save(new RecipeDetail(recipe, "Content1", "", 30, 1L, 0));
-        recipeDetailRepository.save(new RecipeDetail(recipe, "Content2", "", 15, 2L, 1));
-        recipeDetailRepository.save(new RecipeDetail(recipe, "Content3", "", 10, 4L, 2));
-
-        long cookwares = recipeDetailService.gatherCookwares(recipeId);
-        assertThat(cookwares).isEqualTo(7L);
-    }
-
-    @Test
-    @DisplayName("단계별 레시피의 조리시간이 정확하게 합산된다.")
-    public void gatherCookTimeTest(){
-        User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
-        Recipe recipe = Recipe.builder().user(user).difficulty(Difficulty.EASY).title("주먹밥").build();
-        userRepository.save(user);
-        Long recipeId = recipeRepository.save(recipe).getId();
-
-        recipeDetailRepository.save(new RecipeDetail(recipe, "Content1", "", 30, 1L, 0));
-        recipeDetailRepository.save(new RecipeDetail(recipe, "Content2", "", 15, 2L, 1));
-        recipeDetailRepository.save(new RecipeDetail(recipe, "Content3", "", 10, 4L, 2));
-
-        int cookTimeInSeconds = recipeDetailService.gatherTotalCookTimeInSeconds(recipeId);
-        assertThat(cookTimeInSeconds).isEqualTo(55);
-    }
-
-
-    @Test
+    @Transactional
     @DisplayName("단계별 레시피 업데이트 시, 기존 항목들은 삭제된다.")
     public void checkDeleted(){
         User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
@@ -164,8 +132,8 @@ class RecipeDetailServiceTest {
         List<Recipe> recipeActual = recipeRepository.findAll();
         assertThat(recipeActual).hasSize(1);
 
-        assertThat(recipeDetailService.gatherTotalCookTimeInSeconds(recipeId)).isEqualTo(45);
-        assertThat(recipeDetailService.gatherCookwares(recipeId)).isEqualTo(5L);
+        assertThat(recipe.getTotalCookTimeInSeconds()).isEqualTo(45);
+        assertThat(recipe.getCookwares()).isEqualTo(5L);
     }
 
     @AfterEach

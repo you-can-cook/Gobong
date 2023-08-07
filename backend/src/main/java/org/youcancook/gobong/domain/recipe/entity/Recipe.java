@@ -37,6 +37,12 @@ public class Recipe extends BaseTime {
 
     private String thumbnailURL;
 
+    @Column(nullable = false)
+    private Long cookwares;
+
+    @Column(nullable = false)
+    private Integer totalCookTimeInSeconds;
+
     @OneToMany(mappedBy = "recipe")
     private List<Rating> rating = new ArrayList<>();
 
@@ -49,6 +55,8 @@ public class Recipe extends BaseTime {
         this.ingredients = ingredients;
         this.difficulty = difficulty;
         this.thumbnailURL = thumbnailURL;
+        cookwares = 0L;
+        totalCookTimeInSeconds = 0;
     }
 
     public void addRating(Rating rating){
@@ -69,5 +77,18 @@ public class Recipe extends BaseTime {
         this.ingredients = ingredients;
         this.difficulty = difficulty;
         this.thumbnailURL = thumbnailURL;
+    }
+
+    public void addCookware(Long cookware) {
+        this.cookwares |= cookware;
+    }
+
+    public void addCookTime(Integer cookTimeInSeconds) {
+        this.totalCookTimeInSeconds += cookTimeInSeconds;
+    }
+
+    public void clearDetails() {
+        this.cookwares = 0L;
+        this.totalCookTimeInSeconds = 0;
     }
 }

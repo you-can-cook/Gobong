@@ -12,6 +12,7 @@ import org.youcancook.gobong.domain.recipe.entity.Recipe;
 import org.youcancook.gobong.domain.recipe.exception.RecipeAccessDeniedException;
 import org.youcancook.gobong.domain.recipe.repository.RecipeRepository;
 import org.youcancook.gobong.domain.recipedetail.dto.request.UploadRecipeDetailRequest;
+import org.youcancook.gobong.domain.recipedetail.entity.RecipeDetail;
 import org.youcancook.gobong.domain.recipedetail.repository.RecipeDetailRepository;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
@@ -85,6 +86,29 @@ class RecipeServiceTest {
                 List.of("밥", "김"), "어려워요", null, details)));
     }
 
+    @Test
+    @DisplayName("단계별 레시피가 추가될 때, 시간이 자동으로 합산된다.")
+    public void addDetailsCheckTime(){
+        User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
+        Recipe recipe = Recipe.builder().user(user).difficulty(Difficulty.EASY).title("주먹밥").build();
+
+        new RecipeDetail(recipe, "Content", "", 1, 1L, 1);
+        new RecipeDetail(recipe, "Content", "", 2, 1L, 1);
+        new RecipeDetail(recipe, "Content", "", 3, 1L, 1);
+        assertThat(recipe.getTotalCookTimeInSeconds()).isEqualTo(6);
+    }
+
+    @Test
+    @DisplayName("단계별 레시피가 추가될 때, 조리도구가 자동으로 합산된다.")
+    public void addDetailsCheckCookwares(){
+        User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
+        Recipe recipe = Recipe.builder().user(user).difficulty(Difficulty.EASY).title("주먹밥").build();
+
+        new RecipeDetail(recipe, "Content", "", 1, 1L, 1);
+        new RecipeDetail(recipe, "Content", "", 2, 2L, 1);
+        new RecipeDetail(recipe, "Content", "", 3, 4L, 1);
+        assertThat(recipe.getCookwares()).isEqualTo(7L);
+    }
 
     @AfterEach
     void teardown(){
