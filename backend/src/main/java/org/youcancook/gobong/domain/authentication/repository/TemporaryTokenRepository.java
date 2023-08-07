@@ -7,5 +7,5 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface TemporaryTokenRepository extends JpaRepository<TemporaryToken, Long> {
-    Optional<TemporaryToken> findByTokenAndExpiredAtBefore(String token, LocalDateTime expiredAt);
+    Optional<TemporaryToken> findByTokenAndExpiredAtAfter(String token, LocalDateTime expiredAt);
 }
