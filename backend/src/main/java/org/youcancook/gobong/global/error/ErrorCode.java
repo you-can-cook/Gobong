@@ -28,6 +28,7 @@ public enum ErrorCode {
     OAUTH_PROVIDER_NOT_FOUND(HttpStatus.NOT_FOUND, "O004", "OAuth provider를 찾을 수 없습니다."),
 
     // User
+    DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "U001", "이미 등록된 닉네임입니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "U004", "유저를 찾을 수 없습니다."),
 
     // Recipe
