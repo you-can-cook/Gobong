@@ -13,7 +13,7 @@ public class SignupResponse {
     private String accessToken;
     private String refreshToken;
 
-    public static SignupResponse of(TokenDto tokenDto) {
+    public static SignupResponse From(TokenDto tokenDto) {
         return SignupResponse.builder()
                 .grantType(tokenDto.getGrantType())
                 .accessToken(tokenDto.getAccessToken())
