@@ -9,7 +9,6 @@ import org.youcancook.gobong.domain.recipe.repository.RecipeRepository;
 import org.youcancook.gobong.domain.recipedetail.dto.request.UploadRecipeDetailRequest;
 import org.youcancook.gobong.domain.recipedetail.entity.RecipeDetail;
 import org.youcancook.gobong.domain.recipedetail.repository.RecipeDetailRepository;
-import org.youcancook.gobong.domain.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -21,7 +20,6 @@ public class RecipeDetailService {
 
     private final RecipeRepository recipeRepository;
     private final RecipeDetailRepository recipeDetailRepository;
-    private final UserRepository userRepository;
 
     @Transactional
     public void uploadRecipeDetails(Long recipeId, List<UploadRecipeDetailRequest> requests){
