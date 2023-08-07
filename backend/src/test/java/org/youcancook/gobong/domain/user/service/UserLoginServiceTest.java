@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.youcancook.gobong.domain.authentication.repository.RefreshTokenRepository;
 import org.youcancook.gobong.domain.authentication.service.RefreshTokenService;
 import org.youcancook.gobong.domain.user.dto.response.LoginResponse;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
