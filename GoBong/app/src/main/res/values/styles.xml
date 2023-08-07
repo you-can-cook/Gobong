@@ -6,8 +6,27 @@
         <item name="chipStrokeWidth">1dp</item>
         <item name="checkedIconVisible">false</item>
         <item name="closeIconVisible">false</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/black</item>>
+        <item name="android:textAppearance">@style/TextAppearance.GoBong.SemiBold10</item>
         <item name="chipStrokeColor">@color/disabled_color</item>
+    </style>
+
+    <style name="Widget.GoBong.Chip.RecipeStepTool">
+        <item name="chipBackgroundColor">@color/disabled_color</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="closeIconVisible">false</item>
+        <item name="chipMinTouchTargetSize">20dp</item>
+        <item name="chipMinHeight">16dp</item>
+        <item name="chipStartPadding">0dp</item>\
+        <item name="chipEndPadding">0dp</item>
+        <item name="android:textColor">@color/charcoal_color</item>
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearanceOverlay.MaterialComponents.Chip.RecipeStepTool
+        </item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.MaterialComponents.Chip.RecipeStepTool" parent="">
+        <item name="chipCornerRadius">0dp</item>
     </style>
 
     <style name="Widget.GoBong.Chip.Add" parent="Widget.MaterialComponents.Chip.Entry">
@@ -15,8 +34,8 @@
         <item name="chipStrokeWidth">1dp</item>
         <item name="checkedIconVisible">false</item>
         <item name="closeIconVisible">false</item>
-        <item name="android:textColor">@color/selector_active</item>
-        <item name="chipStrokeColor">@color/selector_active</item>
+        <item name="android:textColor">@color/selector_select</item>
+        <item name="chipStrokeColor">@color/selector_select</item>
     </style>
 
 </resources>

@@ -8,11 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.youcancook.gobong.databinding.ItemMainCardBinding
 import com.youcancook.gobong.model.Card
 
-class CardRecyclerViewListAdapter :
+class CardRecyclerViewListAdapter(val onItemClick: (Card) -> Unit) :
     ListAdapter<Card, CardRecyclerViewListAdapter.ViewHolder>(diffUtil) {
 
     inner class ViewHolder(val binding: ItemMainCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.setOnClickListener {
+                onItemClick(currentList[adapterPosition])
+            }
+        }
 
         fun bind(item: Card) {
             binding.item = item

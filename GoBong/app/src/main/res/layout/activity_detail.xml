@@ -28,7 +28,8 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:titleEnabled="false">
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/toolbar"
@@ -40,13 +41,16 @@
                     app:menu="@menu/toolbar_menu"
                     app:navigationIcon="@drawable/icon_left_arrow"
                     app:title="@{vm.cardInfo.title}"
-                    app:titleCentered="true" />
+                    app:titleCentered="true"
+                    app:titleTextAppearance="@style/TextAppearance.GoBong.SemiBold16"
+                    tools:text="편의점 꿀조합 마크 정식" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -97,50 +101,13 @@
                     android:id="@+id/thumbnailImageView"
                     setImageUrl="@{vm.cardInfo.thumbnailUrl}"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintDimensionRatio="2.3:1"
+                    android:adjustViewBounds="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/followingButton"
                     tools:src="@drawable/example_img" />
-
-                <TextView
-                    android:id="@+id/titleTextView"
-                    style="@style/TextAppearance.GoBong.SemiBold16"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="4dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="@{vm.cardInfo.title}"
-                    app:layout_constraintEnd_toStartOf="@id/bookmarkImageView"
-                    app:layout_constraintStart_toStartOf="@id/profileImageView"
-                    app:layout_constraintTop_toBottomOf="@id/thumbnailImageView"
-                    tools:text="편의점 꿀조합 마크 정식wjdjdjdjdjdjdjdjdjdjdjdjfjfdjdfkjlf;jakfasdjfkla;jfalkdsf" />
-
-                <ImageView
-                    android:id="@+id/bookmarkImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginEnd="4dp"
-                    android:src="@drawable/selector_bookmark"
-                    app:layout_constraintBottom_toBottomOf="@id/bookmarkTextView"
-                    app:layout_constraintEnd_toStartOf="@id/bookmarkTextView"
-                    app:layout_constraintTop_toTopOf="@id/bookmarkTextView" />
-
-                <TextView
-                    android:id="@+id/bookmarkTextView"
-                    style="@style/TextAppearance.GoBong.Regular10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{vm.cardInfo.bookmark}"
-                    app:layout_constraintBottom_toBottomOf="@id/titleTextView"
-                    app:layout_constraintEnd_toEndOf="@id/followingButton"
-                    app:layout_constraintTop_toTopOf="@id/titleTextView"
-                    tools:text="324" />
 
                 <ImageView
                     android:id="@+id/timeImageView"
@@ -151,7 +118,7 @@
                     app:layout_constraintEnd_toStartOf="@id/toolImageView"
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+                    app:layout_constraintTop_toBottomOf="@id/thumbnailImageView" />
 
                 <TextView
                     android:id="@+id/timeTextView"
