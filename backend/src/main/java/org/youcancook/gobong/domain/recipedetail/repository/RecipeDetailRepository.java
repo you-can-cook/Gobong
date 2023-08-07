@@ -11,7 +11,7 @@ public interface RecipeDetailRepository extends JpaRepository<RecipeDetail, Long
 
     List<RecipeDetail> findAllByRecipeId(Long recipeId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("DELETE FROM RecipeDetail as rd where rd.recipe.id =:recipeId")
     void deleteAllByRecipeId(Long recipeId);
 }
