@@ -39,6 +39,5 @@ public class RecipeDetail {
         this.cookware = cookware;
         this.recipe = recipe;
         this.step = step;
-        recipe.getRecipeDetails().add(this);
     }
 }

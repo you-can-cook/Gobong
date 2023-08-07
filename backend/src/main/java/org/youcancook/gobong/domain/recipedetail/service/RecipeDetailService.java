@@ -9,6 +9,7 @@ import org.youcancook.gobong.domain.recipe.repository.RecipeRepository;
 import org.youcancook.gobong.domain.recipedetail.dto.request.UploadRecipeDetailRequest;
 import org.youcancook.gobong.domain.recipedetail.entity.RecipeDetail;
 import org.youcancook.gobong.domain.recipedetail.repository.RecipeDetailRepository;
+import org.youcancook.gobong.global.util.clock.bitwise.Bitwise;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -31,8 +32,6 @@ public class RecipeDetailService {
             uploadRecipeDetail(recipe, request.getContent(), request.getImageURL(),
                     request.getCookTimeInSeconds(), request.getCookware(), index);
         });
-
-        recipe.gatherFromDetails();
     }
 
     @Transactional
@@ -45,7 +44,21 @@ public class RecipeDetailService {
     @Transactional
     public void clearRecipeDetails(Recipe recipe){
         recipeDetailRepository.deleteAllByRecipeId(recipe.getId());
-        recipe.clearDetails();
     }
 
+    public long gatherCookwares(Long recipeId){
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
+        return recipeDetailRepository.findAllByRecipeId(recipeId)
+                .stream()
+                .mapToLong(RecipeDetail::getCookware)
+                .reduce(0L, Bitwise::or);
+    }
+
+    public int gatherTotalCookTimeInSeconds(Long recipeId){
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
+        return recipeDetailRepository.findAllByRecipeId(recipeId)
+                .stream()
+                .mapToInt(RecipeDetail::getCookTimeInSeconds)
+                .sum();
+    }
 }

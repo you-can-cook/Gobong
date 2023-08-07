@@ -45,8 +45,9 @@ class RecipeDetailServiceTest {
 
         String content = "밥을 비벼주세요";
         recipeDetailService.uploadRecipeDetail(recipe, content, "",
-                30, Cookware.MICROWAVE.getValue(), 1);
+                30, 1L, 1);
         List<RecipeDetail> actual = recipeDetailRepository.findAll();
+
         assertThat(actual).hasSize(1);
         assertThat(actual.get(0).getContent()).isEqualTo(content);
     }
@@ -61,8 +62,9 @@ class RecipeDetailServiceTest {
         Long recipeId = recipeRepository.save(recipe).getId();
 
         List<UploadRecipeDetailRequest> requests = List.of(
-            new UploadRecipeDetailRequest("Content1", "", 30, Cookware.MICROWAVE.getValue()),
-            new UploadRecipeDetailRequest("Content2", "", 15, Cookware.OVEN.getValue()));
+            new UploadRecipeDetailRequest("Content1", "", 30, 1L),
+            new UploadRecipeDetailRequest("Content2", "", 15, 2L)
+        );
 
         recipeDetailService.uploadRecipeDetails(recipeId, requests);
 
@@ -105,7 +107,40 @@ class RecipeDetailServiceTest {
     }
 
     @Test
-    @DisplayName("단계별 레시피 업데이트 시, 기존 항목들은 삭제되고 항목들이 성공적으로 계산된다.")
+    @DisplayName("단계별 레시피의 조리도구가 정확하게 합산된다.")
+    public void gatherCookwareTest(){
+        User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
+        Recipe recipe = Recipe.builder().user(user).difficulty(Difficulty.EASY).title("주먹밥").build();
+        userRepository.save(user);
+        Long recipeId = recipeRepository.save(recipe).getId();
+
+        recipeDetailRepository.save(new RecipeDetail(recipe, "Content1", "", 30, 1L, 0));
+        recipeDetailRepository.save(new RecipeDetail(recipe, "Content2", "", 15, 2L, 1));
+        recipeDetailRepository.save(new RecipeDetail(recipe, "Content3", "", 10, 4L, 2));
+
+        long cookwares = recipeDetailService.gatherCookwares(recipeId);
+        assertThat(cookwares).isEqualTo(7L);
+    }
+
+    @Test
+    @DisplayName("단계별 레시피의 조리시간이 정확하게 합산된다.")
+    public void gatherCookTimeTest(){
+        User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
+        Recipe recipe = Recipe.builder().user(user).difficulty(Difficulty.EASY).title("주먹밥").build();
+        userRepository.save(user);
+        Long recipeId = recipeRepository.save(recipe).getId();
+
+        recipeDetailRepository.save(new RecipeDetail(recipe, "Content1", "", 30, 1L, 0));
+        recipeDetailRepository.save(new RecipeDetail(recipe, "Content2", "", 15, 2L, 1));
+        recipeDetailRepository.save(new RecipeDetail(recipe, "Content3", "", 10, 4L, 2));
+
+        int cookTimeInSeconds = recipeDetailService.gatherTotalCookTimeInSeconds(recipeId);
+        assertThat(cookTimeInSeconds).isEqualTo(55);
+    }
+
+
+    @Test
+    @DisplayName("단계별 레시피 업데이트 시, 기존 항목들은 삭제된다.")
     public void checkDeleted(){
         User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
         Recipe recipe = Recipe.builder().user(user).difficulty(Difficulty.EASY).title("주먹밥").build();
@@ -118,18 +153,19 @@ class RecipeDetailServiceTest {
 
         List<UploadRecipeDetailRequest> requests = List.of(
                 new UploadRecipeDetailRequest("Content4", "", 30, 1L),
-                new UploadRecipeDetailRequest("Content5", "", 15, 4L));
+                new UploadRecipeDetailRequest("Content5", "", 15, 4L)
+        );
 
         recipeDetailService.uploadRecipeDetails(recipeId, requests);
 
-        List<RecipeDetail> actual = recipeDetailRepository.findAllByRecipeId(recipeId);
+        List<RecipeDetail> actual = recipeDetailRepository.findAll();
         assertThat(actual).hasSize(2);
 
         List<Recipe> recipeActual = recipeRepository.findAll();
         assertThat(recipeActual).hasSize(1);
 
-        assertThat(recipeActual.get(0).getCookwares()).isEqualTo(5L);
-        assertThat(recipeActual.get(0).getTotalTimeInSeconds()).isEqualTo(45);
+        assertThat(recipeDetailService.gatherTotalCookTimeInSeconds(recipeId)).isEqualTo(45);
+        assertThat(recipeDetailService.gatherCookwares(recipeId)).isEqualTo(5L);
     }
 
     @AfterEach
