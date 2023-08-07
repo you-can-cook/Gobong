@@ -3,8 +3,7 @@ package org.youcancook.gobong.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.youcancook.gobong.domain.authentication.entity.RefreshToken;
-import org.youcancook.gobong.domain.authentication.repository.RefreshTokenRepository;
+import org.youcancook.gobong.domain.authentication.service.RefreshTokenService;
 import org.youcancook.gobong.domain.user.dto.response.LoginResponse;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
@@ -18,7 +17,7 @@ import org.youcancook.gobong.global.util.token.TokenManager;
 public class UserLoginService {
 
     private final UserRepository userRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenService refreshTokenService;
     private final TokenManager tokenManager;
 
     @Transactional
@@ -26,17 +25,9 @@ public class UserLoginService {
         OAuthProvider oAuthProvider = OAuthProvider.from(provider);
         User user = userRepository.findByOAuthProviderAndOAuthId(oAuthProvider, oAuthId)
                 .orElseThrow(UserNotFoundException::new);
-        TokenDto tokenDto = tokenManager.createTokenDto(user.getId());
-        saveRefreshToken(user.getId(), tokenDto);
-        return LoginResponse.of(tokenDto);
-    }
 
-    private void saveRefreshToken(Long userId, TokenDto tokenDto) {
-        RefreshToken refreshToken = RefreshToken.builder()
-                .userId(userId)
-                .refreshToken(tokenDto.getRefreshToken())
-                .expiredAt(tokenDto.getRefreshTokenExpiredAt())
-                .build();
-        refreshTokenRepository.save(refreshToken);
+        TokenDto tokenDto = tokenManager.createTokenDto(user.getId());
+        refreshTokenService.saveRefreshToken(user.getId(), tokenDto);
+        return LoginResponse.of(tokenDto);
     }
 }

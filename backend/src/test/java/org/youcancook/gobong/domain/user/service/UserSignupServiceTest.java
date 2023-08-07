@@ -8,53 +8,63 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.youcancook.gobong.domain.authentication.service.RefreshTokenService;
-import org.youcancook.gobong.domain.user.dto.response.LoginResponse;
+import org.youcancook.gobong.domain.user.dto.SignupDto;
+import org.youcancook.gobong.domain.user.dto.response.SignupResponse;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
-import org.youcancook.gobong.domain.user.exception.OAuthProviderNotFoundException;
-import org.youcancook.gobong.domain.user.exception.UserNotFoundException;
+import org.youcancook.gobong.domain.user.exception.DuplicationNicknameException;
 import org.youcancook.gobong.domain.user.repository.UserRepository;
 import org.youcancook.gobong.global.util.token.TokenDto;
 import org.youcancook.gobong.global.util.token.TokenManager;
 
 import java.util.Date;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class UserLoginServiceTest {
+class UserSignupServiceTest {
 
     @InjectMocks
-    private UserLoginService userLoginService;
+    private UserSignupService userSignupService;
 
     @Mock
     private UserRepository userRepository;
 
     @Mock
-    private TokenManager tokenManager;
-
-    @Mock
     private RefreshTokenService refreshTokenService;
 
+    @Mock
+    private TokenManager tokenManager;
+
     @Test
-    @DisplayName("로그인 성공")
-    void loginSuccess() {
+    @DisplayName("회원가입 성공")
+    void signupSuccess() {
         // given
-        String oAuthId = "123456789";
-        User user = createTestUser(oAuthId);
         TokenDto tokenDto = createTestTokenDto();
-        when(userRepository.findByOAuthProviderAndOAuthId(OAuthProvider.KAKAO, oAuthId))
-                .thenReturn(Optional.of(user));
+        when(userRepository.existsByNickname("nickname"))
+                .thenReturn(false);
         when(tokenManager.createTokenDto(1L))
                 .thenReturn(tokenDto);
         doNothing().when(refreshTokenService).saveRefreshToken(1L, tokenDto);
+        when(userRepository.save(any(User.class)))
+                .then(invocation -> {
+                    User savedUser = invocation.getArgument(0);
+                    ReflectionTestUtils.setField(savedUser, "id", 1L);
+                    return savedUser;
+                });
 
         // when
-        LoginResponse result = userLoginService.login("kakao", oAuthId);
+        SignupDto signupDto = SignupDto.builder()
+                .oAuthProvider(OAuthProvider.KAKAO.name())
+                .nickname("nickname")
+                .oAuthId("123456789")
+                .profileImageURL("profileImageURL")
+                .build();
+        SignupResponse result = userSignupService.signup(signupDto);
 
         // then
         assertThat(result.getGrantType()).isEqualTo(tokenDto.getGrantType());
@@ -63,31 +73,21 @@ class UserLoginServiceTest {
     }
 
     @Test
-    @DisplayName("로그인 실패 - 잘못된 provider")
-    void loginFailByWrongProvider() {
-        assertThrows(OAuthProviderNotFoundException.class,
-                () -> userLoginService.login("wrong", "123456789"));
-    }
+    @DisplayName("회원가입 실패 - 중복된 닉네임")
+    void signupFailByDuplicatedNickname() {
+        // given
+        when(userRepository.existsByNickname(any(String.class)))
+                .thenReturn(true);
 
-    @Test
-    @DisplayName("로그인 실패 - 존재하지 않는 유저")
-    void loginFailByNotFoundUser() {
-        String oAuthId = "123456789";
-        when(userRepository.findByOAuthProviderAndOAuthId(OAuthProvider.KAKAO, oAuthId))
-                .thenReturn(Optional.empty());
-
-        assertThrows(UserNotFoundException.class,
-                () -> userLoginService.login("KAKAO", oAuthId));
-    }
-
-    private User createTestUser(String oAuthId) {
-        User user = User.builder()
+        // when
+        SignupDto signupDto = SignupDto.builder()
+                .oAuthProvider(OAuthProvider.KAKAO.name())
                 .nickname("nickname")
-                .oAuthProvider(OAuthProvider.KAKAO)
-                .oAuthId(oAuthId)
+                .oAuthId("123456789")
+                .profileImageURL("profileImageURL")
                 .build();
-        ReflectionTestUtils.setField(user, "id", 1L);
-        return user;
+        assertThrows(DuplicationNicknameException.class,
+                () -> userSignupService.signup(signupDto));
     }
 
     private TokenDto createTestTokenDto() {
