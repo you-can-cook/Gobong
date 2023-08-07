@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SignupRequest {
 
-    @NotBlank(message = "provider는 필수입니다.")
+    @NotBlank(message = "nickname은 필수입니다.")
     private String nickname;
 
     @NotBlank(message = "provider는 필수입니다.")
