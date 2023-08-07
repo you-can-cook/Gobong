@@ -50,7 +50,8 @@ public enum ErrorCode {
     // Difficulty Argument
     INVALID_DIFFICULTY_ARGUMENT(HttpStatus.BAD_REQUEST, "D003", "난이도는 '쉬워요', '보통이에요', '어려워요' 중 하나여야 합니다."),
 
-    ;
+    // S3 File upload
+    FAILED_TO_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "F001", "파일 업로드를 실패했습니다.");
 
     private final HttpStatus status;
     private final String code;

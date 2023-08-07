@@ -27,3 +27,15 @@ token:
   access-token-expiration-seconds: 7200 # 2시간
   refresh-token-expiration-seconds: 1209600 # 2주
   temporary-token-expiration-seconds: 600 # 10분
+
+cloud:
+  aws:
+    s3:
+      bucket: {{S3_BUCKET_NAME}}
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    credentials:
+      access-key: {{S3_ACCESS_KEY}}
+      secret-key: {{S3_SECRET_KEY}}
