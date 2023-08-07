@@ -32,12 +32,14 @@ public class RecipeDetail {
     private Integer step;
 
     @Builder
-    public RecipeDetail(String content, String imageURL, Integer cookTimeInSeconds, Long cookware, Recipe recipe) {
+    public RecipeDetail(Recipe recipe, String content, String imageURL, Integer cookTimeInSeconds, Long cookware, int step) {
         this.content = content;
         this.imageURL = imageURL;
         this.cookTimeInSeconds = cookTimeInSeconds;
         this.cookware = cookware;
         this.recipe = recipe;
-        recipe.getRecipeDetails().add(this);
+        this.step = step;
+        recipe.addCookware(cookware);
+        recipe.addCookTime(cookTimeInSeconds);
     }
 }

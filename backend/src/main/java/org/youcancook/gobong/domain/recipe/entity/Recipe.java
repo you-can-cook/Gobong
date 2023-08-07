@@ -7,9 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.youcancook.gobong.domain.BaseTime.BaseTime;
 import org.youcancook.gobong.domain.rating.entity.Rating;
-import org.youcancook.gobong.domain.recipedetail.entity.RecipeDetail;
 import org.youcancook.gobong.domain.user.entity.User;
-import org.youcancook.gobong.global.util.clock.bitwise.Bitwise;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,14 +38,10 @@ public class Recipe extends BaseTime {
     private String thumbnailURL;
 
     @Column(nullable = false)
-    private Integer totalTimeInSeconds;
-
-    @Column(nullable = false)
     private Long cookwares;
 
-    @OneToMany(mappedBy = "recipe")
-    @OrderBy("step asc")
-    private List<RecipeDetail> recipeDetails = new ArrayList<>();
+    @Column(nullable = false)
+    private Integer totalCookTimeInSeconds;
 
     @OneToMany(mappedBy = "recipe")
     private List<Rating> rating = new ArrayList<>();
@@ -61,8 +55,8 @@ public class Recipe extends BaseTime {
         this.ingredients = ingredients;
         this.difficulty = difficulty;
         this.thumbnailURL = thumbnailURL;
-        this.totalTimeInSeconds = 0;
-        this.cookwares = 0L;
+        cookwares = 0L;
+        totalCookTimeInSeconds = 0;
     }
 
     public void addRating(Rating rating){
@@ -76,23 +70,6 @@ public class Recipe extends BaseTime {
                 .orElse(0.0);
     }
 
-    public void gatherFromDetails(){
-        gatherTotalTimeInSeconds();
-        gatherCookwares();
-    }
-
-    public void gatherTotalTimeInSeconds(){
-        this.totalTimeInSeconds = recipeDetails.stream()
-                .mapToInt(RecipeDetail::getCookTimeInSeconds)
-                .sum();
-    }
-
-    public void gatherCookwares(){
-        this.cookwares = recipeDetails.stream()
-                .mapToLong(RecipeDetail::getCookware)
-                .reduce(0L, Bitwise::or);
-    }
-
     public void updateProperties(String title, String introduction, String ingredients,
                                  Difficulty difficulty, String thumbnailURL) {
         this.title = title;
@@ -100,5 +77,18 @@ public class Recipe extends BaseTime {
         this.ingredients = ingredients;
         this.difficulty = difficulty;
         this.thumbnailURL = thumbnailURL;
+    }
+
+    public void addCookware(Long cookware) {
+        this.cookwares |= cookware;
+    }
+
+    public void addCookTime(Integer cookTimeInSeconds) {
+        this.totalCookTimeInSeconds += cookTimeInSeconds;
+    }
+
+    public void clearDetails() {
+        this.cookwares = 0L;
+        this.totalCookTimeInSeconds = 0;
     }
 }
