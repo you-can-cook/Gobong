@@ -70,7 +70,7 @@ class TemporaryTokenServiceTest {
     void validTemporaryTokenFail() {
         // given
         final String token = UUID.randomUUID().toString();
-        when(temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, clockService.getCurrentDateTime()))
+        when(temporaryTokenRepository.findByTokenAndExpiredAtAfter(token, clockService.getCurrentDateTime()))
                 .thenReturn(Optional.empty());
 
         // when, then
@@ -78,7 +78,7 @@ class TemporaryTokenServiceTest {
                 () -> temporaryTokenService.validTemporaryToken(token));
 
         verify(temporaryTokenRepository, times(1))
-                .findByTokenAndExpiredAtBefore(token, clockService.getCurrentDateTime());
+                .findByTokenAndExpiredAtAfter(token, clockService.getCurrentDateTime());
     }
 
     @Test
@@ -86,7 +86,7 @@ class TemporaryTokenServiceTest {
     void validTemporaryTokenSuccess() {
         // given
         final String token = UUID.randomUUID().toString();
-        when(temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, clockService.getCurrentDateTime()))
+        when(temporaryTokenRepository.findByTokenAndExpiredAtAfter(token, clockService.getCurrentDateTime()))
                 .thenReturn(Optional.of(new TemporaryToken(token, LocalDateTime.now())));
         doNothing().when(temporaryTokenRepository).delete(any(TemporaryToken.class));
 
@@ -95,7 +95,7 @@ class TemporaryTokenServiceTest {
 
         // then
         verify(temporaryTokenRepository, times(1))
-                .findByTokenAndExpiredAtBefore(token, clockService.getCurrentDateTime());
+                .findByTokenAndExpiredAtAfter(token, clockService.getCurrentDateTime());
         verify(temporaryTokenRepository, times(1))
                 .delete(any(TemporaryToken.class));
     }

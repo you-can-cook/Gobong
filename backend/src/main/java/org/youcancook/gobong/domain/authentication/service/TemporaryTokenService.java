@@ -41,7 +41,7 @@ public class TemporaryTokenService {
     @Transactional
     public void validTemporaryToken(String token) {
         LocalDateTime localDateTimeNow = clockService.getCurrentDateTime();
-        temporaryTokenRepository.findByTokenAndExpiredAtBefore(token, localDateTimeNow)
+        temporaryTokenRepository.findByTokenAndExpiredAtAfter(token, localDateTimeNow)
                 .ifPresentOrElse(
                         temporaryTokenRepository::delete,
                         () -> {
