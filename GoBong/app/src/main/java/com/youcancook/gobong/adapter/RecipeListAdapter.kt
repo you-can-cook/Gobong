@@ -20,6 +20,8 @@ class RecipeListAdapter(val onItemClick: (Int) -> Unit) :
     private var activePosition = 0
 
     fun activeRecipeStep(position: Int) {
+        if (position == activePosition) return
+
         activePosition = position
 
         notifyItemChanged(lastActivePosition)

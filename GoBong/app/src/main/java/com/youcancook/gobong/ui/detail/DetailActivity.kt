@@ -24,8 +24,6 @@ class DetailActivity : AppCompatActivity() {
         detailViewModel.activeRecipeStep(it)
     })
 
-    private val recyclerViewsHeight = mutableListOf<Int>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
@@ -35,12 +33,6 @@ class DetailActivity : AppCompatActivity() {
             vm = detailViewModel
             lifecycleOwner = this@DetailActivity
             recyclerView.adapter = recipeAdapter
-        }
-
-        var sumHeight = 0
-        repeat(binding.recyclerView.childCount) {
-            sumHeight += binding.recyclerView.getChildAt(it).measuredHeight
-            recyclerViewsHeight[it] = sumHeight
         }
 
         binding.run {
@@ -65,46 +57,7 @@ class DetailActivity : AppCompatActivity() {
 
             }
 
-            recyclerView.isNestedScrollingEnabled = true
-//            nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-//                val child = v.getChildAt(0)
-//
-//                repeat(this.recyclerView.childCount) {
-//                    if (scrollY > oldScrollY) {
-//                        if (scrollY >= recyclerViewsHeight[it]) {
-//                            recipeAdapter.activeRecipeStep(it)
-//                            return@repeat
-//                        }
-//                    }
-//                }
-//            })
-
-            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-//                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-//
-//
-//                    recyclerView.get(0).layout
-//                    layoutManager.findFirstVisibleItemPosition()
-//                    val currentItem = layoutManager.findFirstVisibleItemPosition()
-//                    println("currentItem $currentItem ${recyclerView.childCount}")
-//                    println(
-//                        "${
-//                            layoutManager.scrollToPosition(
-//                                1
-//                            )
-//                        }"
-//                    )
-//                    layoutManager.scrollToPosition(4)
-
-                }
-            })
-
         }
-
-
-//
 
         binding.run {
             lifecycleScope.launch {
@@ -116,14 +69,6 @@ class DetailActivity : AppCompatActivity() {
 
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-//        binding.run {
-//
-//
-//        }
     }
 
 }
