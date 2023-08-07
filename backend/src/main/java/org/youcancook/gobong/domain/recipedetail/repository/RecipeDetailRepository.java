@@ -1,6 +1,8 @@
 package org.youcancook.gobong.domain.recipedetail.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.youcancook.gobong.domain.recipedetail.entity.RecipeDetail;
 
 import java.util.List;
@@ -8,4 +10,8 @@ import java.util.List;
 public interface RecipeDetailRepository extends JpaRepository<RecipeDetail, Long> {
 
     List<RecipeDetail> findAllByRecipeId(Long recipeId);
+
+    @Modifying
+    @Query("DELETE FROM RecipeDetail as rd where rd.recipe.id =:recipeId")
+    void deleteAllByRecipeId(Long recipeId);
 }

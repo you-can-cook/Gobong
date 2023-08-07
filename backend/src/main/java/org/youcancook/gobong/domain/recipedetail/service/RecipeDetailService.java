@@ -46,7 +46,7 @@ public class RecipeDetailService {
 
     @Transactional
     public void clearRecipeDetails(Recipe recipe){
-        recipeDetailRepository.deleteAll(recipe.getRecipeDetails());
+        recipeDetailRepository.deleteAllByRecipeId(recipe.getId());
         recipe.clearDetails();
     }
 
