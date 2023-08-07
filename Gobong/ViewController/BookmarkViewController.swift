@@ -72,10 +72,22 @@ extension BookmarkViewController {
                 ShowingBlockView = true
                 self.collectionView.isHidden = false
                 self.tableView.isHidden = true
+                
+                //NAVIGATION BAR
+                let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "액자형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
+                tableViewToogleButton.tintColor = .black
+                
+                navigationItem.rightBarButtonItem = tableViewToogleButton
             } else {
                 ShowingBlockView = false
                 self.collectionView.isHidden = true
                 self.tableView.isHidden = false
+                
+                //NAVIGATION BAR
+                let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "카드형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
+                tableViewToogleButton.tintColor = .black
+                
+                navigationItem.rightBarButtonItem = tableViewToogleButton
             }
             
         }).disposed(by: disposeBag)
@@ -106,7 +118,7 @@ extension BookmarkViewController: UISearchBarDelegate {
         
         let tableViewToogleButton = UIBarButtonItem(image: UIImage(systemName: "square.stack.3d.up.fill"), style: .plain, target: self, action: nil)
         tableViewToogleButton.tintColor = .white
-        let tableViewToogleButton2 = UIBarButtonItem(image: UIImage(systemName: "square.stack.3d.up.fill"), style: .plain, target: self, action: #selector(toogleButtonTapped))
+        let tableViewToogleButton2 = UIBarButtonItem(image: UIImage(named: "액자형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
         tableViewToogleButton2.tintColor = .black
         
         navigationItem.leftBarButtonItem = tableViewToogleButton

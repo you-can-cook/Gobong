@@ -70,9 +70,21 @@ extension ProfileViewController {
             if bool {
                 ShowingBlockView = true
                 mainTableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+                
+                //NAVIGATION BAR
+                let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "액자형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
+                tableViewToogleButton.tintColor = .black
+                
+                navigationItem.rightBarButtonItem = tableViewToogleButton
             } else {
                 ShowingBlockView = false
                 mainTableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+                
+                //NAVIGATION BAR
+                let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "카드형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
+                tableViewToogleButton.tintColor = .black
+                
+                navigationItem.rightBarButtonItem = tableViewToogleButton
             }
 
         }).disposed(by: disposeBag)
@@ -86,7 +98,7 @@ extension ProfileViewController: UISearchBarDelegate {
     }
 
     private func setupNavigationBar(){
-        let tableViewToogleButton = UIBarButtonItem(image: UIImage(systemName: "square.stack.3d.up.fill"), style: .plain, target: self, action: #selector(toogleButtonTapped))
+        let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "액자형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
         tableViewToogleButton.tintColor = .black
         let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gearshape.fill"), style: .plain, target: self, action: #selector(settingsButtonTapped))
         settingsButton.tintColor = .black
