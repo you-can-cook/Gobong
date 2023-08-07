@@ -30,6 +30,14 @@ fun setImageUrl(view: ImageView, url: String) {
         .into(view)
 }
 
+@BindingAdapter("setImageByteArray")
+fun setImageByteArray(view: ImageView, image: ByteArray?) {
+    Glide.with(view.context)
+        .load(image)
+        .placeholder(R.drawable.thumbnail_upload_placeholder)
+        .into(view)
+}
+
 
 @BindingAdapter("setNecessaryTextView")
 fun setNecessaryTextView(view: TextView, text: String) {
