@@ -29,7 +29,7 @@ public class UserController {
 
     @PostMapping("login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
-        temporaryTokenService.validTemporaryToken(request.getTemporaryToken());
+        temporaryTokenService.validateTemporaryToken(request.getTemporaryToken());
         LoginResponse response = userLoginService.login(request.getProvider(), request.getOauthId());
         return ResponseEntity.ok(response);
     }

@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.youcancook.gobong.domain.authentication.entity.TemporaryToken;
-import org.youcancook.gobong.domain.authentication.exception.TemporaryTokenFoundException;
+import org.youcancook.gobong.domain.authentication.exception.TemporaryTokenNotFoundException;
 import org.youcancook.gobong.domain.authentication.repository.TemporaryTokenRepository;
 import org.youcancook.gobong.global.util.clock.ClockService;
 
@@ -74,8 +74,8 @@ class TemporaryTokenServiceTest {
                 .thenReturn(Optional.empty());
 
         // when, then
-        assertThrows(TemporaryTokenFoundException.class,
-                () -> temporaryTokenService.validTemporaryToken(token));
+        assertThrows(TemporaryTokenNotFoundException.class,
+                () -> temporaryTokenService.validateTemporaryToken(token));
 
         verify(temporaryTokenRepository, times(1))
                 .findByTokenAndExpiredAtAfter(token, clockService.getCurrentDateTime());
@@ -91,7 +91,7 @@ class TemporaryTokenServiceTest {
         doNothing().when(temporaryTokenRepository).delete(any(TemporaryToken.class));
 
         // when
-        temporaryTokenService.validTemporaryToken(token);
+        temporaryTokenService.validateTemporaryToken(token);
 
         // then
         verify(temporaryTokenRepository, times(1))
