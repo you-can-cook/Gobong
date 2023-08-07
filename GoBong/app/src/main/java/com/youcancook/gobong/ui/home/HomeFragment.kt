@@ -15,7 +15,6 @@ import com.youcancook.gobong.ui.addRecipe.AddRecipeActivity
 import com.youcancook.gobong.ui.detail.DetailActivity
 
 class HomeFragment : Fragment() {
-
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val cardAdapter = CardRecyclerViewListAdapter(onItemClick = {

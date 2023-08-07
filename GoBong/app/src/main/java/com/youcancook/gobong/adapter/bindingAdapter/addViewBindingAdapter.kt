@@ -8,8 +8,10 @@ import com.youcancook.gobong.R
 @BindingAdapter("ingredientChips")
 fun <T> ingredientChips(view: ChipGroup, data: List<String>) {
 
+    //removeOldView
+    view.removeAllViews()
+
     for (dt in data) {
-        println("chipData $dt")
         view.addView(Chip(view.context, null, R.attr.IngredientChips).apply {
             text = dt
         })
@@ -18,6 +20,10 @@ fun <T> ingredientChips(view: ChipGroup, data: List<String>) {
 
 @BindingAdapter("recipeStepTools")
 fun <T> recipeStepTools(view: ChipGroup, data: List<String>) {
+
+    //removeOldView
+    val childCount = view.childCount
+    view.removeViews(1, childCount - 1)
 
     for (dt in data) {
         view.addView(Chip(view.context, null, R.attr.RecipeStepTools).apply {
