@@ -32,7 +32,7 @@ public class UserSignupService {
 
         TokenDto tokenDto = tokenManager.createTokenDto(user.getId());
         refreshTokenService.saveRefreshToken(user.getId(), tokenDto);
-        return SignupResponse.From(tokenDto);
+        return SignupResponse.from(tokenDto);
     }
 
     private User createUser(SignupDto signupDto) {
