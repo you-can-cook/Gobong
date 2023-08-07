@@ -17,7 +17,7 @@
         <item name="closeIconVisible">false</item>
         <item name="chipMinTouchTargetSize">20dp</item>
         <item name="chipMinHeight">16dp</item>
-        <item name="chipStartPadding">0dp</item>\
+        <item name="chipStartPadding">0dp</item>
         <item name="chipEndPadding">0dp</item>
         <item name="android:textColor">@color/charcoal_color</item>
         <item name="shapeAppearanceOverlay">
@@ -29,13 +29,21 @@
         <item name="chipCornerRadius">0dp</item>
     </style>
 
-    <style name="Widget.GoBong.Chip.Add" parent="Widget.MaterialComponents.Chip.Entry">
+    <style name="Widget.GoBong.Chip.Add">
         <item name="chipBackgroundColor">@color/white</item>
         <item name="chipStrokeWidth">1dp</item>
         <item name="checkedIconVisible">false</item>
         <item name="closeIconVisible">false</item>
         <item name="android:textColor">@color/selector_select</item>
+        <item name="android:textAppearance">@style/TextAppearance.GoBong.Regular14</item>
         <item name="chipStrokeColor">@color/selector_select</item>
+    </style>
+
+    <style name="Widget.GoBong.Toggle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textAppearance">@style/TextAppearance.GoBong.Regular14</item>
+        <item name="android:textColor">@color/selector_checked_text</item>
+        <item name="backgroundTint">@color/selector_checked_background</item>
+        <item name="strokeColor">@color/selector_checked</item>
     </style>
 
 </resources>
