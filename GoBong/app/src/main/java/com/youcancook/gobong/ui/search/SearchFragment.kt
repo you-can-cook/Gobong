@@ -1,5 +1,6 @@
 package com.youcancook.gobong.ui.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentSearchBinding
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Recipe
+import com.youcancook.gobong.ui.detail.DetailActivity
 
 class SearchFragment : Fragment() {
 
@@ -24,7 +26,10 @@ class SearchFragment : Fragment() {
     private val gridItemDecorator =
         GridItemDecorator()
 
-    private val linearAdapter = CardRecyclerViewListAdapter()
+    private val linearAdapter = CardRecyclerViewListAdapter(onItemClick = {
+        val intent = Intent(requireContext(), DetailActivity::class.java)
+        startActivity(intent)
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater,

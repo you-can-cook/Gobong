@@ -1,4 +1,4 @@
-package com.youcancook.gobong.adapter
+package com.youcancook.gobong.adapter.bindingAdapter
 
 import android.view.View
 import android.widget.ImageView
@@ -30,32 +30,6 @@ fun setImageUrl(view: ImageView, url: String) {
         .into(view)
 }
 
-@BindingAdapter("setImageVisible")
-fun setImageVisible(view: ImageView, visible: Boolean) {
-    view.isVisible = visible
-}
-
-@BindingAdapter("setTextVisible")
-fun setTextVisible(view: TextView, text: String) {
-    view.isVisible = text.isNotEmpty()
-}
-
-
-@BindingAdapter("setEmptyTextVisible")
-fun <T> setEmptyTextVisible(view: TextView, data: List<T>) {
-    view.isVisible = data.isEmpty()
-}
-
-@BindingAdapter("setRecyclerViewVisible")
-fun <T> setRecyclerViewVisible(view: RecyclerView, data: List<T>) {
-    view.isVisible = data.isNotEmpty()
-}
-
-@BindingAdapter("isActivated")
-fun <T> isActivated(view: View, activated: Boolean) {
-    view.isActivated = activated
-}
-
 
 @BindingAdapter("submitData")
 fun <T> submitData(view: RecyclerView, data: List<T>?) {
@@ -63,16 +37,6 @@ fun <T> submitData(view: RecyclerView, data: List<T>?) {
 
     val adapter = view.adapter as ListAdapter<T, RecyclerView.ViewHolder?>
     adapter.submitList(data)
-}
-
-@BindingAdapter("ingredientChips")
-fun <T> ingredientChips(view: ChipGroup, data: List<String>) {
-
-    for (dt in data) {
-        view.addView(Chip(view.context, null, R.attr.IngredientChips).apply {
-            text = dt
-        })
-    }
 }
 
 

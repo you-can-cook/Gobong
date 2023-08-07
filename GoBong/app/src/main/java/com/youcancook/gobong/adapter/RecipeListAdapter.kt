@@ -16,21 +16,23 @@ import com.youcancook.gobong.model.RecipeStep
 class RecipeListAdapter(val onItemClick: (Int) -> Unit) :
     ListAdapter<Recipe, RecyclerView.ViewHolder>(diffUtil) {
 
-    private var lastActivePosition = -1
+    private var lastActivePosition = 0
     private var activePosition = 0
+
+    fun activeRecipeStep(position: Int) {
+        activePosition = position
+
+        notifyItemChanged(lastActivePosition)
+        lastActivePosition = activePosition
+        notifyItemChanged(activePosition)
+    }
 
     inner class RecipeViewHolder(val binding: ItemRecipeBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.run {
                 root.setOnClickListener {
-                    activePosition = adapterPosition
-
-                    if (lastActivePosition != -1) {
-                        notifyItemChanged(lastActivePosition)
-                    }
-                    lastActivePosition = activePosition
-                    notifyItemChanged(activePosition)
+                    activeRecipeStep(adapterPosition)
                 }
             }
         }
@@ -38,7 +40,7 @@ class RecipeListAdapter(val onItemClick: (Int) -> Unit) :
         fun bind(data: RecipeStep) {
             binding.run {
                 item = data
-                isActivate = adapterPosition == activePosition
+                selected = adapterPosition == activePosition
                 levelTextView.text = "${adapterPosition + 1}단계"
                 dashDivider.isVisible = adapterPosition != currentList.size - 1
             }

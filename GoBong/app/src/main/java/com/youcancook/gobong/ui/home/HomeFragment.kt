@@ -11,13 +11,17 @@ import com.youcancook.gobong.adapter.CardRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentHomeBinding
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Recipe
+import com.youcancook.gobong.ui.addRecipe.AddRecipeActivity
 import com.youcancook.gobong.ui.detail.DetailActivity
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val cardAdapter = CardRecyclerViewListAdapter()
+    private val cardAdapter = CardRecyclerViewListAdapter(onItemClick = {
+        val intent = Intent(requireContext(), DetailActivity::class.java)
+        startActivity(intent)
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,9 +41,11 @@ class HomeFragment : Fragment() {
         binding.run {
             recyclerView.adapter = cardAdapter
             addRecipeButton.setOnClickListener {
-                val intent = Intent(requireContext(), DetailActivity::class.java)
-                startActivity(intent)
 
+                val intent = Intent(
+                    requireContext(), AddRecipeActivity::class.java
+                )
+                startActivity(intent)
             }
         }
 

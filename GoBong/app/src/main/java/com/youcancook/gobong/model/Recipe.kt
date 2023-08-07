@@ -4,7 +4,7 @@ sealed interface Recipe
 
 data class RecipeStep(
     val time: String = "",
-    val tool: List<String> = emptyList(),
+    val tools: List<String> = emptyList(),
     val photoUrl: String = "",
     val description: String = "",
 ) : Recipe

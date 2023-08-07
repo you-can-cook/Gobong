@@ -10,7 +10,7 @@
             type="com.youcancook.gobong.model.RecipeStep" />
 
         <variable
-            name="isActivate"
+            name="selected"
             type="Boolean" />
     </data>
 
@@ -22,7 +22,7 @@
         <TextView
             android:id="@+id/levelTextView"
             style="@style/TextAppearance.GoBong.SemiBold12"
-            isActivated="@{isActivate}"
+            isSelected="@{selected}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/background_recipe_step"
@@ -35,7 +35,7 @@
 
         <View
             android:id="@+id/dashDivider"
-            isActivated="@{isActivate}"
+            isSelected="@{selected}"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:background="@drawable/divider_dash_vertical"
@@ -46,7 +46,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/recipeBox"
-            isActivated="@{isActivate}"
+            isSelected="@{selected}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -57,27 +57,34 @@
             app:layout_constraintStart_toEndOf="@id/levelTextView"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/timeTextView"
-                style="@style/TextAppearance.GoBong.SemiBold10"
-                android:layout_width="wrap_content"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/timeToolChipGroup"
+                recipeStepTools="@{item.tools}"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/background_recipe_box_filled"
-                android:padding="2dp"
-                android:text="@{item.time}"
-                app:layout_constraintStart_toStartOf="@id/recipeBox"
-                app:layout_constraintTop_toTopOf="@id/recipeBox"
-                tools:text="3분" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.GoBong.Chip.RecipeStepTool"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{item.time}"
+                    tools:text="3분" />
+
+            </com.google.android.material.chip.ChipGroup>
+
 
             <ImageView
                 android:id="@+id/recipeImageView"
                 setImageUrl="@{item.photoUrl}"
-                setImageVisible="@{isActivate}"
+                setImageVisible="@{selected}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginHorizontal="12dp"
                 android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
                 android:background="@drawable/background_round_image"
@@ -85,14 +92,14 @@
                 android:src="@drawable/example_img"
                 app:layout_constraintEnd_toEndOf="@id/recipeBox"
                 app:layout_constraintStart_toStartOf="@id/recipeBox"
-                app:layout_constraintTop_toBottomOf="@id/timeTextView" />
+                app:layout_constraintTop_toBottomOf="@id/timeToolChipGroup" />
 
             <TextView
                 android:id="@+id/recipeDescriptionTextView"
                 style="@style/TextAppearance.GoBong.Regular14"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginHorizontal="12dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="12dp"
                 android:text="@{item.description}"
