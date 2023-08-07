@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.youcancook.gobong.domain.authentication.repository.RefreshTokenRepository;
+import org.youcancook.gobong.domain.authentication.service.RefreshTokenService;
 import org.youcancook.gobong.domain.user.dto.response.LoginResponse;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
@@ -22,7 +23,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,10 +36,10 @@ class UserLoginServiceTest {
     private UserRepository userRepository;
 
     @Mock
-    private RefreshTokenRepository refreshTokenRepository;
+    private TokenManager tokenManager;
 
     @Mock
-    private TokenManager tokenManager;
+    private RefreshTokenService refreshTokenService;
 
     @Test
     @DisplayName("로그인 성공")
@@ -51,8 +52,7 @@ class UserLoginServiceTest {
                 .thenReturn(Optional.of(user));
         when(tokenManager.createTokenDto(1L))
                 .thenReturn(tokenDto);
-        when(refreshTokenRepository.save(any()))
-                .thenReturn(null);
+        doNothing().when(refreshTokenService).saveRefreshToken(1L, tokenDto);
 
         // when
         LoginResponse result = userLoginService.login("kakao", oAuthId);
