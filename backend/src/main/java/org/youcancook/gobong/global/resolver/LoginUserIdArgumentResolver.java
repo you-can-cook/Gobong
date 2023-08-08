@@ -13,13 +13,13 @@ import org.youcancook.gobong.global.util.token.TokenManager;
 
 @Component
 @RequiredArgsConstructor
-public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
+public class LoginUserIdArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final TokenManager tokenManager;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        boolean hasUserIdAnnotation = parameter.hasParameterAnnotation(UserId.class);
+        boolean hasUserIdAnnotation = parameter.hasParameterAnnotation(LoginUserId.class);
         boolean isLongClass = Long.class.isAssignableFrom(parameter.getParameterType());
         return hasUserIdAnnotation && isLongClass;
     }
