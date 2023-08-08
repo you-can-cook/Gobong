@@ -130,22 +130,71 @@
                 app:layout_constraintTop_toBottomOf="@id/descriptionTextInputLayout"
                 tools:text="재료*" />
 
-            <com.google.android.material.chip.ChipGroup
+            <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/ingredientGroup"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                app:flexWrap="wrap"
                 app:layout_constraintEnd_toEndOf="@id/thumbnailImageView"
                 app:layout_constraintStart_toStartOf="@id/thumbnailImageView"
                 app:layout_constraintTop_toBottomOf="@id/ingredientTextView">
 
                 <com.google.android.material.chip.Chip
+                    style="@style/Widget.GoBong.Chip.Added"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="오감자" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.GoBong.Chip.Added"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="슬라이스치즈" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.GoBong.Chip.Added"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="스트링치즈" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.GoBong.Chip.Added"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="베이컨" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.GoBong.Chip.Added"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="콕콕콕 스파게티" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.GoBong.Chip.Added"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="모짜렐라(슈레드) 치즈" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.GoBong.Chip.Added"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="의성마늘 소시 1개" />
+
+                <EditText
+                    style="@style/Widget.GoBong.EditText.IngredientAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="입력칸" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/addIngredientButton"
                     style="@style/Widget.GoBong.Chip.Add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="추가하기" />
-
-            </com.google.android.material.chip.ChipGroup>
+            </com.google.android.flexbox.FlexboxLayout>
 
             <TextView
                 android:id="@+id/levelTextView"

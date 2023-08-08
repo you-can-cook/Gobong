@@ -14,6 +14,7 @@
         <item name="android:windowLightStatusBar">true</item>
 
         <item name="IngredientChips">@style/Widget.GoBong.Chip</item>
+        <item name="IngredientEditChips">@style/Widget.GoBong.EditText.IngredientAdd</item>
         <item name="RecipeStepTools">@style/Widget.GoBong.Chip.RecipeStepTool</item>
     </style>
 </resources>
