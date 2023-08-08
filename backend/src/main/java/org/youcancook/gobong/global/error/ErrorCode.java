@@ -23,6 +23,7 @@ public enum ErrorCode {
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "A003", "유효하지 않은 토큰입니다."),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "A004", "만료된 토큰입니다."),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "A005", "Unauthorized"),
+    INVALID_TOKEN_TYPE(HttpStatus.UNAUTHORIZED, "A006", "잘못된 토큰 타입입니다."),
 
     // OAuth
     OAUTH_PROVIDER_NOT_FOUND(HttpStatus.NOT_FOUND, "O004", "OAuth provider를 찾을 수 없습니다."),
