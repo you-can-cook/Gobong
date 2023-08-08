@@ -2,9 +2,11 @@ package com.youcancook.gobong.ui.addRecipe
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.children
+import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityAddRecipeBinding
@@ -49,6 +51,16 @@ class AddRecipeActivity : AppCompatActivity() {
 
             thumbnailImageView.setOnClickListener {
                 imageLoader.getImageFromGallery()
+            }
+
+            addIngredientButton.setOnClickListener {
+//                ingredientGroup.addView(
+//                    EditText(
+//                        this@AddRecipeActivity,
+//                        null,
+//                        R.attr.IngredientEditChips
+//                    ).apply { setText("11!!") }, 0
+//                )
             }
         }
     }
