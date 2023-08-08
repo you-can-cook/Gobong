@@ -8,5 +8,5 @@
         android:dashWidth="4dp"
         android:dashGap="2dp" />
 
-    <solid android:color="@color/disabled_color" />
+    <solid android:color="@color/gray1" />
 </shape>

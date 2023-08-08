@@ -14,7 +14,6 @@ import com.youcancook.gobong.adapter.GridItemDecorator
 import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentSearchBinding
 import com.youcancook.gobong.model.Card
-import com.youcancook.gobong.model.Recipe
 import com.youcancook.gobong.ui.detail.DetailActivity
 
 class SearchFragment : Fragment() {

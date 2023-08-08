@@ -1,22 +1,26 @@
 package com.youcancook.gobong.ui.addRecipe
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.children
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
-import com.youcancook.gobong.R
+import com.youcancook.gobong.adapter.RecipeListAdapter
 import com.youcancook.gobong.adapter.bindingAdapter.addIngredient
 import com.youcancook.gobong.databinding.ActivityAddRecipeBinding
+import com.youcancook.gobong.model.RecipeAdd
 import com.youcancook.gobong.util.ImageLoader
 
 class AddRecipeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddRecipeBinding
     private val addRecipeViewModel: AddRecipeViewModel by viewModels()
+    private val imageLoader = ImageLoader(this)
+    private val addStepBottomSheet = RecipeStepBottomFragment()
+    private val recipeAdapter = RecipeListAdapter(onItemClick = {
+
+    }, onAddItemClick = {
+        addStepBottomSheet.show(supportFragmentManager, RecipeStepBottomFragment.TAG)
+    })
 
     private val closeAlertDialog: AlertDialog by lazy {
         AlertDialog.Builder(this)
@@ -31,7 +35,6 @@ class AddRecipeActivity : AppCompatActivity() {
             .create()
     }
 
-    private val imageLoader = ImageLoader(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddRecipeBinding.inflate(layoutInflater)
@@ -74,6 +77,14 @@ class AddRecipeActivity : AppCompatActivity() {
                     }
                 }
             }
+
+            recyclerView.adapter = recipeAdapter
+
+            recipeAdapter.submitList(
+                listOf(
+                    RecipeAdd()
+                )
+            )
         }
     }
 }
