@@ -136,7 +136,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             let firstline = 16
             var imageHeight: CGFloat = 0
             let last = calculateLabelSizeRecipe(text: data.description).height
-            if data.img != nil {
+            if data.img != nil || cell.isFolded {
                 if let image = UIImage(named: data.img!) {
                     let maxWidth: CGFloat = CGFloat(view.bounds.width/1.5)
                     let maxHeight: CGFloat = 130
@@ -151,6 +151,15 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             
             return CGFloat(firstline) + imageHeight + last + 57
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? RecipeCell else {
+            return
+        }
+        
+        // Toggle the visibility of the image in the selected cell
+        cell.toggleImageViewVisibility()
     }
     
 }

@@ -8,7 +8,11 @@
 import UIKit
 
 class FeedCell: UITableViewCell {
-
+    
+    @IBOutlet weak var starStack: UIStackView!
+    @IBOutlet weak var levelStack: UIStackView!
+    @IBOutlet weak var toolStack: UIStackView!
+    @IBOutlet weak var timeStack: UIStackView!
     @IBOutlet weak var background: UIView!
     @IBOutlet weak var followingButton: UIButton!
     @IBOutlet weak var starLabel: UILabel!
@@ -29,6 +33,11 @@ class FeedCell: UITableViewCell {
         followingButton.titleLabel?.adjustsFontSizeToFitWidth = true
         followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         setBackgroundShadow()
+        
+        starStack.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 50)
+        levelStack.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 50)
+        toolStack.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+        timeStack.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
     }
     
     func setBackgroundShadow(){
