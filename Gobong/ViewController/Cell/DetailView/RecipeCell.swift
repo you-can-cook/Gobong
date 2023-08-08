@@ -9,7 +9,8 @@ import UIKit
 
 class RecipeCell: UITableViewCell {
     
-    // Declare UI elements you want in your cell
+    var isFolded = true
+    
     let stepLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -182,7 +183,6 @@ class RecipeCell: UITableViewCell {
             mainUIView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0)
         ])
         
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -218,7 +218,16 @@ class RecipeCell: UITableViewCell {
         }
         descriptionLabel.text = description
     }
-  
+    
+    func toggleImageViewVisibility(){
+        if isFolded {
+            isFolded = false
+            UIimage.isHidden = true
+        } else {
+            isFolded = true
+            UIimage.isHidden = false
+        }
+    }
 
 }
 
