@@ -6,9 +6,11 @@ import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.children
+import androidx.core.view.isVisible
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.youcancook.gobong.R
+import com.youcancook.gobong.adapter.bindingAdapter.addIngredient
 import com.youcancook.gobong.databinding.ActivityAddRecipeBinding
 import com.youcancook.gobong.util.ImageLoader
 
@@ -45,6 +47,10 @@ class AddRecipeActivity : AppCompatActivity() {
         }
 
         binding.run {
+            rootLayout.setOnClickListener {
+                addIngredientEditText.clearFocus()
+            }
+
             closeButton.setOnClickListener {
                 closeAlertDialog.show()
             }
@@ -54,13 +60,19 @@ class AddRecipeActivity : AppCompatActivity() {
             }
 
             addIngredientButton.setOnClickListener {
-//                ingredientGroup.addView(
-//                    EditText(
-//                        this@AddRecipeActivity,
-//                        null,
-//                        R.attr.IngredientEditChips
-//                    ).apply { setText("11!!") }, 0
-//                )
+                addIngredientEditText.clearFocus()
+                addIngredientEditText.isVisible = true
+            }
+
+            addIngredientEditText.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus.not()) {
+                    val oldText = addRecipeViewModel.getIngredientInputText()
+                    if (oldText.isNotEmpty()) {
+                        ingredientGroup.addIngredient(oldText)
+                        addIngredientEditText.text.clear()
+                        addIngredientEditText.isVisible = false
+                    }
+                }
             }
         }
     }

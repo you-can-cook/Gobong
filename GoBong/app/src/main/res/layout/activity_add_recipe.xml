@@ -15,8 +15,11 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rootLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             tools:context=".ui.addRecipe.AddRecipeActivity">
 
             <ImageView
@@ -140,53 +143,15 @@
                 app:layout_constraintStart_toStartOf="@id/thumbnailImageView"
                 app:layout_constraintTop_toBottomOf="@id/ingredientTextView">
 
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.GoBong.Chip.Added"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="오감자" />
-
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.GoBong.Chip.Added"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="슬라이스치즈" />
-
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.GoBong.Chip.Added"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="스트링치즈" />
-
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.GoBong.Chip.Added"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="베이컨" />
-
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.GoBong.Chip.Added"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="콕콕콕 스파게티" />
-
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.GoBong.Chip.Added"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="모짜렐라(슈레드) 치즈" />
-
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.GoBong.Chip.Added"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="의성마늘 소시 1개" />
-
                 <EditText
+                    android:id="@+id/addIngredientEditText"
                     style="@style/Widget.GoBong.EditText.IngredientAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="입력칸" />
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:text="@={vm.ingredientInput}"
+                    android:visibility="gone" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/addIngredientButton"

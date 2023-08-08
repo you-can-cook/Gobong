@@ -1,6 +1,9 @@
 package com.youcancook.gobong.adapter.bindingAdapter
 
+import android.view.ViewGroup
+import androidx.core.view.marginEnd
 import androidx.databinding.BindingAdapter
+import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.youcancook.gobong.R
@@ -32,4 +35,22 @@ fun <T> recipeStepTools(view: ChipGroup, data: List<String>) {
     }
 }
 
+
+fun FlexboxLayout.addIngredient(data: String) {
+
+    val dp = resources.displayMetrics.density.toInt()
+    val ViewGrouplayoutParams = FlexboxLayout.LayoutParams(
+        ViewGroup.LayoutParams.WRAP_CONTENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT
+    )
+    ViewGrouplayoutParams.setMargins(0, 0, 4 * dp, 0)
+
+    addView(Chip(context, null, R.attr.IngredientAddedChips).apply {
+        text = data
+        layoutParams = ViewGrouplayoutParams
+        setOnCloseIconClickListener {
+            this@addIngredient.removeView(it)
+        }
+    }, childCount - 2)
+}
 

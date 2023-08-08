@@ -2,5 +2,6 @@
 <resources>
     <attr name="IngredientChips" format="reference" />
     <attr name="IngredientEditChips" format="reference" />
+    <attr name="IngredientAddedChips" format="reference" />
     <attr name="RecipeStepTools" format="reference" />
 </resources>
