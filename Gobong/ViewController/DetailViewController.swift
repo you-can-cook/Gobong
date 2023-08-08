@@ -65,7 +65,6 @@ extension DetailViewController {
     }
     
     @objc private func saveButtonTapped(){
-        //
     }
 }
 
@@ -131,6 +130,8 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             return CGFloat(100 + addLine)
             
         } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell") as! RecipeCell
+            cell.layoutIfNeeded()
             let data = recipeInformation[indexPath.item-2]
             let firstline = 16
             var imageHeight: CGFloat = 0
@@ -144,12 +145,14 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
                     let imageWidth = image.size.width
                     imageHeight = min(maxHeight, min(imageWidth * aspectRatio, maxWidth))
                 }
+                
                 return CGFloat(firstline) + imageHeight + last + 87
             }
             
             return CGFloat(firstline) + imageHeight + last + 57
         }
     }
+    
 }
 
 extension DetailViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
