@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.BottomSheetRecipeStepBinding
+import com.youcancook.gobong.util.ImageLoader
 
 class RecipeStepBottomFragment : BottomSheetDialogFragment() {
     private lateinit var binding: BottomSheetRecipeStepBinding

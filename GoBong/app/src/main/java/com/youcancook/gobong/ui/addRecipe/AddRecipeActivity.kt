@@ -1,6 +1,9 @@
 package com.youcancook.gobong.ui.addRecipe
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -9,12 +12,14 @@ import com.youcancook.gobong.adapter.RecipeListAdapter
 import com.youcancook.gobong.adapter.bindingAdapter.addIngredient
 import com.youcancook.gobong.databinding.ActivityAddRecipeBinding
 import com.youcancook.gobong.model.RecipeAdd
+import com.youcancook.gobong.ui.ImageActivity
 import com.youcancook.gobong.util.ImageLoader
 
 class AddRecipeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddRecipeBinding
     private val addRecipeViewModel: AddRecipeViewModel by viewModels()
-    private val imageLoader = ImageLoader(this)
+
+    private var imagePickActivityLauncher: ActivityResultLauncher<Intent>? = null
     private val addStepBottomSheet = RecipeStepBottomFragment()
     private val recipeAdapter = RecipeListAdapter(onItemClick = {
 
@@ -44,10 +49,15 @@ class AddRecipeActivity : AppCompatActivity() {
             vm = addRecipeViewModel
             lifecycleOwner = this@AddRecipeActivity
         }
-
-        imageLoader.setLauncher {
-            addRecipeViewModel.setThumbnailByteArray(it)
-        }
+        imagePickActivityLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                    println("restul!!")
+                    val imageData = result.data?.getByteArrayExtra(ImageActivity.IMAGE_DATA_TAG)
+                        ?: return@registerForActivityResult
+                    addRecipeViewModel.setThumbnailByteArray(imageData)
+                }
+            }
 
         binding.run {
             rootLayout.setOnClickListener {
@@ -59,7 +69,7 @@ class AddRecipeActivity : AppCompatActivity() {
             }
 
             thumbnailImageView.setOnClickListener {
-                imageLoader.getImageFromGallery()
+                getImageFromGallery()
             }
 
             addIngredientButton.setOnClickListener {
@@ -85,6 +95,12 @@ class AddRecipeActivity : AppCompatActivity() {
                     RecipeAdd()
                 )
             )
+        }
+    }
+
+    private fun getImageFromGallery() {
+        Intent(this, ImageActivity::class.java).run {
+            imagePickActivityLauncher?.launch(this)
         }
     }
 }
