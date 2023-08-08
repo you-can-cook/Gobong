@@ -241,7 +241,7 @@
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:background="@color/disabled_color"
+                    android:background="@color/gray1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/recyclerView" />

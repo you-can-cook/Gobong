@@ -1,7 +1,6 @@
 package com.youcancook.gobong.adapter.bindingAdapter
 
 import android.view.ViewGroup
-import androidx.core.view.marginEnd
 import androidx.databinding.BindingAdapter
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.chip.Chip

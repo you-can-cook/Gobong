@@ -12,8 +12,6 @@ import com.youcancook.gobong.adapter.GridItemDecorator
 import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentMyBinding
 import com.youcancook.gobong.model.Card
-import com.youcancook.gobong.model.Recipe
-import com.youcancook.gobong.model.RecipeStep
 
 class MyFragment : Fragment() {
 

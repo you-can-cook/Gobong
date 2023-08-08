@@ -8,5 +8,6 @@
     <string name="recipe_add_ingredient_text">재료*</string>
     <string name="recipe_add_level_text">난이도*</string>
     <string name="recipe_add_recipe_text">레시피*</string>
+    <string name="recipe_add_time_text">소요시간*</string>
 
 </resources>

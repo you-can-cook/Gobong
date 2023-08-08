@@ -9,8 +9,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="primary_color">#FFFF0D9E</color>
-    <color name="disabled_color">#FFE0E0E0</color>
-    <color name="disabled_text_color">#FF7C7C7C</color>
+    <color name="gray1">#FFECECEC</color>
+    <color name="gray2">#FFD6D6D6</color>
     <color name="charcoal_color">#FF969696</color>
     <color name="icon_color">#FF7C7C7C</color>
     <color name="red">#FFFF0D0D</color>
