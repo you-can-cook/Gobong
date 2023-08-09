@@ -51,8 +51,7 @@ class AddRecipeActivity : AppCompatActivity() {
         }
         imagePickActivityLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == AppCompatActivity.RESULT_OK) {
-                    println("restul!!")
+                if (result.resultCode == RESULT_OK) {
                     val imageData = result.data?.getByteArrayExtra(ImageActivity.IMAGE_DATA_TAG)
                         ?: return@registerForActivityResult
                     addRecipeViewModel.setThumbnailByteArray(imageData)

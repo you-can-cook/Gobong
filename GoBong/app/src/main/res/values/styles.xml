@@ -82,6 +82,17 @@
         <item name="android:textAppearance">@style/TextAppearance.GoBong.Regular14</item>
     </style>
 
+    <style name="Widget.GoBong.Chip.Filter" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/selector_checked_background</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="closeIconVisible">false</item>
+        <item name="chipMinTouchTargetSize">40dp</item>
+        <item name="android:textColor">@color/selector_checked_text</item>
+        <item name="android:textAppearance">@style/TextAppearance.GoBong.Regular14</item>
+        <item name="chipStrokeColor">@color/selector_checked</item>
+        <item name="chipStrokeWidth">1dp</item>
+    </style>
+
     <!-- Toggle -->
     <style name="Widget.GoBong.Toggle" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textAppearance">@style/TextAppearance.GoBong.Regular14</item>
@@ -107,6 +118,7 @@
     <!-- Button -->
     <style name="Widget.GoBong.Button" parent="Widget.MaterialComponents.Button">
         <item name="materialThemeOverlay">@style/ThemeOverlay.GoBong.Button</item>
+        <item name="android:enabled">true</item>
     </style>
 
     <style name="Widget.GoBong.Button.Big" parent="Widget.MaterialComponents.Button">

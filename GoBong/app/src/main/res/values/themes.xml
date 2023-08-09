@@ -17,6 +17,7 @@
         <item name="IngredientEditChips">@style/Widget.GoBong.EditText.IngredientAdd</item>
         <item name="IngredientAddedChips">@style/Widget.GoBong.Chip.Added</item>
         <item name="RecipeStepTools">@style/Widget.GoBong.Chip.RecipeStepTool</item>
+        <item name="FilterChips">@style/Widget.GoBong.Chip.Filter</item>
 
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.GoBong.BottomSheetDialog</item>
         <item name="materialButtonStyle">@style/Widget.GoBong.Button</item>
