@@ -1,14 +1,14 @@
 package org.youcancook.gobong.global.util.token;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.youcancook.gobong.global.util.clock.ClockService;
+import org.youcancook.gobong.global.util.token.exception.ExpiredTokenException;
+import org.youcancook.gobong.global.util.token.exception.InvalidTokenException;
+import org.youcancook.gobong.global.util.token.exception.InvalidTokenTypeException;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -28,6 +28,8 @@ public class TokenManager {
     private Long refreshTokenExpirationSeconds;
 
     private final ClockService clockService;
+
+    private final String USER_INFO_KEY = "userId";
 
     public TokenDto createTokenDto(Long userId) {
         Date accessTokenExpiredAt = createAccessTokenExpirationTime();
@@ -65,10 +67,10 @@ public class TokenManager {
         return buildJwt(expiredAt, claims);
     }
 
-    private Claims createClaims(Long userId, TokenType access) {
+    private Claims createClaims(Long userId, TokenType tokenType) {
         Claims claims = Jwts.claims();
-        claims.put("userId", userId);
-        claims.put(Claims.SUBJECT, access.name());
+        claims.put(USER_INFO_KEY, userId);
+        claims.put(Claims.SUBJECT, tokenType.name());
         claims.put(Claims.ISSUER, "gobong.youcancook.org");
         return claims;
     }
@@ -81,5 +83,55 @@ public class TokenManager {
                 .setExpiration(expiredAt)
                 .signWith(SignatureAlgorithm.HS256, tokenSecret.getBytes(StandardCharsets.UTF_8))
                 .compact();
+    }
+
+    public Long getUserIdFromAccessToken(String token) {
+        Claims claims = getClaimsFromToken(token);
+        validateAccessTokenType(claims);
+        return getUserIdFromClaims(claims);
+    }
+
+    public Long getUserIdFromRefreshToken(String token) {
+        Claims claims = getClaimsFromToken(token);
+        validateRefreshTokenType(claims);
+        return getUserIdFromClaims(claims);
+    }
+
+    private void validateAccessTokenType(Claims claims) {
+        String tokenType = claims.getSubject();
+        if (!TokenType.ACCESS.name().equals(tokenType)) {
+            throw new InvalidTokenTypeException();
+        }
+    }
+
+    private void validateRefreshTokenType(Claims claims) {
+        String tokenType = claims.getSubject();
+        if (!TokenType.REFRESH.name().equals(tokenType)) {
+            throw new InvalidTokenTypeException();
+        }
+    }
+
+    private Long getUserIdFromClaims(Claims claims) {
+        Object userIdObject = claims.get(USER_INFO_KEY);
+        String userIdString = String.valueOf(userIdObject);
+        return Long.valueOf(userIdString);
+    }
+
+    private Claims getClaimsFromToken(String token) {
+        try {
+            return Jwts.parser()
+                    .setSigningKey(tokenSecret.getBytes(StandardCharsets.UTF_8))
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            log.error("토큰 기한 만료", e);
+            throw new ExpiredTokenException();
+        } catch (JwtException e) {
+            log.error("잘못된 jwt token", e);
+            throw new InvalidTokenException();
+        } catch (Exception e) {
+            log.error("jwt token 검증 중 에러 발생", e);
+            throw new InvalidTokenException();
+        }
     }
 }
