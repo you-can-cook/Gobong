@@ -8,8 +8,13 @@
 import UIKit
 import AlignedCollectionViewFlowLayout
 
+protocol RecipeCellDelegate : Any {
+    func collectionViewTapped(sender: RecipeCell)
+}
+
 class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    var delegate: RecipeCellDelegate?
     var tools = [String]()
     
     let stepLabel: UILabel = {
@@ -59,13 +64,26 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         return image
     }()
     
+    let dottedLine: DashedLineView = {
+       let view = DashedLineView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     let firstLineView = UIView()
     let infoStackView = UIStackView()
+    
+    let informationView = UIView()
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
+        collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(collectionViewTapped)))
+    }
+    
+    @objc func collectionViewTapped(){
+        delegate?.collectionViewTapped(sender: self)
     }
     
     private func setupUI(){
@@ -85,7 +103,6 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         let stepView = UIView()
         stepView.translatesAutoresizingMaskIntoConstraints = false
         
-        let informationView = UIView()
         informationView.translatesAutoresizingMaskIntoConstraints = false
         informationView.layer.borderWidth = 1
         informationView.layer.borderColor = UIColor(named: "darkGray")?.cgColor
@@ -145,7 +162,7 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
             
             collectionView.leadingAnchor.constraint(equalTo: firstLineView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: firstLineView.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: firstLineView.topAnchor, constant: 8),
+            collectionView.topAnchor.constraint(equalTo: firstLineView.topAnchor, constant: 6),
 
         ])
         
@@ -163,6 +180,16 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
             subMainView.topAnchor.constraint(equalTo: mainUIView.topAnchor, constant: 5),
             subMainView.trailingAnchor.constraint(equalTo: mainUIView.trailingAnchor, constant: -16),
             subMainView.bottomAnchor.constraint(equalTo: mainUIView.bottomAnchor, constant: -24)
+        ])
+    
+        dottedLine.backgroundColor = UIColor(named: "gray")
+        
+        mainUIView.addSubview(dottedLine)
+        NSLayoutConstraint.activate([
+            dottedLine.topAnchor.constraint(equalTo: stepView.bottomAnchor),
+            dottedLine.leadingAnchor.constraint(equalTo: stepView.centerXAnchor, constant: -3),
+            dottedLine.bottomAnchor.constraint(equalTo: mainUIView.bottomAnchor),
+            dottedLine.widthAnchor.constraint(equalToConstant: 1)
         ])
         
         contentView.addSubview(mainUIView)
@@ -183,6 +210,7 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
     }
     
     func configuration(step: Int, time: [String], tool: [String], image: String?, description: String, isFolded: Bool) {
+        
         stepLabel.text = "\(step)단계"
         
         tools.append(contentsOf: time)
@@ -225,7 +253,9 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HashtagCollectionCell", for: indexPath) as! HashtagCollectionCell
         cell.setText2("\(tools[indexPath.item])")
         cell.label.backgroundColor = UIColor(named: "softGray")
+        cell.label.textColor = UIColor(named: "gray")
         cell.label.layer.borderWidth = 0
+
         return cell
     }
     
@@ -245,3 +275,22 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
 
 }
 
+class DashedLineView: UIView {
+    var strokeColor: UIColor = UIColor(named: "softGray")! // Default color is black
+
+    override func draw(_ rect: CGRect) {
+        let dashPattern: [CGFloat] = [2, 2] // Adjust the pattern as needed
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: bounds.width/2, y: 0))
+        path.addLine(to: CGPoint(x: bounds.width/2, y: bounds.height))
+        strokeColor.setStroke()
+        path.setLineDash(dashPattern, count: 2, phase: 0)
+        path.stroke()
+    }
+    
+    func changeStrokeColor(color: UIColor) {
+        strokeColor = color
+        setNeedsDisplay() // This will trigger a redraw
+    }
+
+}
