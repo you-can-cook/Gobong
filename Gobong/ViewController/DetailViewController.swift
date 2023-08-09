@@ -73,7 +73,12 @@ extension DetailViewController {
     }
 }
 
-extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
+extension DetailViewController: UITableViewDelegate, UITableViewDataSource, RecipeCellDelegate {
+    func collectionViewTapped(sender: RecipeCell) {
+        guard let indexPath = tableView.indexPath(for: sender) else { return }
+        tableView(tableView, didSelectRowAt: indexPath)
+    }
+    
     func tableViewSetup(){
         tableView.dataSource = self
         tableView.delegate = self
@@ -111,11 +116,26 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as! RecipeCell
             let data = recipeInformation[indexPath.item-2]
             cell.configuration(step: indexPath.item-1, time: data.time, tool: data.tool, image: data.img, description: data.description, isFolded: isFolded[indexPath.item-2])
+            cell.delegate = self
             
             if !isFolded[indexPath.item-2] {
                 cell.toggleImageViewVisibility(isFolded: isFolded[indexPath.item-2], image: data.img)
+                cell.informationView.layer.borderColor = UIColor(named: "pink")?.cgColor
+                cell.dottedLine.backgroundColor = UIColor(named: "pink")
+                cell.stepLabelBackground.tintColor = UIColor(named: "pink")
+                cell.stepLabel.textColor = .white
             } else {
                 cell.toggleImageViewVisibility(isFolded: isFolded[indexPath.item-2], image: data.img)
+                cell.informationView.layer.borderColor = UIColor(named: "gray")?.cgColor
+                cell.dottedLine.backgroundColor = UIColor(named: "gray")
+                cell.stepLabelBackground.tintColor = UIColor(named: "softGray")
+                cell.stepLabel.textColor = UIColor(named: "gray")
+            }
+            
+            if indexPath.item - 1 == recipeInformation.count  {
+                cell.dottedLine.isHidden = true
+            } else {
+                cell.dottedLine.isHidden = false
             }
             
             cell.selectionStyle = .none
@@ -153,10 +173,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             
             if firstline/(view.bounds.width/1.5) > 1 {
                 let line = firstline/(view.bounds.width/1.8)
-                firstline = ceil(line) * 30
-                print(ceil(line))
-                print(firstline)
-                
+                firstline = ceil(line) * 31
             } else {
                 firstline = 30
             }
@@ -183,8 +200,19 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        isFolded[indexPath.item-2].toggle()
-        tableView.reloadRows(at: [indexPath], with: .automatic)
+        if indexPath.item > 1 {
+            let allTrueValues = Array(repeating: true, count: isFolded.count)
+            let lastFolded = isFolded.firstIndex(where: {$0 == false})
+            
+            isFolded = allTrueValues
+            isFolded[indexPath.item-2].toggle()
+            
+            if let lastFolded = lastFolded {
+                tableView.reloadRows(at: [indexPath, IndexPath(row: lastFolded+2, section: 0)], with: .automatic)
+            } else {
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+        }
     }
     
 }
