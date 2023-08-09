@@ -1,11 +1,13 @@
 package com.youcancook.gobong.adapter.bindingAdapter
 
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.youcancook.gobong.R
+import com.youcancook.gobong.model.Tool
 
 @BindingAdapter("ingredientChips")
 fun <T> ingredientChips(view: ChipGroup, data: List<String>) {
@@ -34,6 +36,34 @@ fun <T> recipeStepTools(view: ChipGroup, data: List<String>) {
     }
 }
 
+@BindingAdapter("filterChips")
+fun <T> ChipGroup.filterChips(filterChips: List<Tool>) {
+
+    //removeOldView
+    removeAllViews()
+
+    for (dt in filterChips.filter { it.isVisible }) {
+        addView(Chip(context, null, R.attr.FilterChips).apply {
+            text = dt.toolName
+            isChecked = dt.isChecked
+        })
+    }
+}
+
+@BindingAdapter("selectedChips")
+fun <T> ChipGroup.selectedChips(selectedChips: List<Tool>) {
+    //removeOldView
+    removeViews(0, childCount - 1)
+
+    println("Selected ${selectedChips.joinToString(" ")}")
+    for (dt in selectedChips.filter { it.isChecked }) {
+        addView(Chip(context, null, R.attr.FilterChips).apply {
+            text = dt.toolName
+            isChecked = true
+            isVisible = dt.isVisible
+        }, childCount - 1)
+    }
+}
 
 fun FlexboxLayout.addIngredient(data: String) {
 

@@ -60,8 +60,9 @@
             app:layout_constraintStart_toStartOf="@id/photoImageView"
             app:layout_constraintTop_toBottomOf="@id/photoImageView" />
 
-        <com.google.android.flexbox.FlexboxLayout
+        <com.google.android.material.chip.ChipGroup
             android:id="@+id/toolsLayout"
+            selectedChips="@{vm.tools}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -76,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:text="· · ·" />
 
-        </com.google.android.flexbox.FlexboxLayout>
+        </com.google.android.material.chip.ChipGroup>
 
         <TextView
             android:id="@+id/timeTextView"
