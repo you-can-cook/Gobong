@@ -9,8 +9,6 @@ import UIKit
 
 class RecipeCell: UITableViewCell {
     
-    var isFolded = true
-    
     let stepLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -204,14 +202,19 @@ class RecipeCell: UITableViewCell {
         return totalHeight
     }
     
-    func configuration(step: Int, time: Int, tool: String, image: String?, description: String) {
+    func configuration(step: Int, time: Int, tool: String, image: String?, description: String, isFolded: Bool) {
         stepLabel.text = "\(step)단계"
         timeLabel.text = "\(time)분"
         toolLabel.text = tool
-        if image != nil{
-            UIimage.isHidden = false
-            UIimage.image = UIImage(named: image!)
-            firstLineView.heightAnchor.constraint(equalToConstant: 28).isActive = false
+        if !isFolded{
+            if image != nil{
+                UIimage.isHidden = false
+                UIimage.image = UIImage(named: image!)
+                firstLineView.heightAnchor.constraint(equalToConstant: 28).isActive = false
+            } else {
+                UIimage.isHidden = true
+                firstLineView.heightAnchor.constraint(equalToConstant: 28).isActive = true
+            }
         } else {
             UIimage.isHidden = true
             firstLineView.heightAnchor.constraint(equalToConstant: 28).isActive = true
@@ -219,13 +222,19 @@ class RecipeCell: UITableViewCell {
         descriptionLabel.text = description
     }
     
-    func toggleImageViewVisibility(){
-        if isFolded {
-            isFolded = false
-            UIimage.isHidden = true
+    func toggleImageViewVisibility(isFolded: Bool, image: String?){
+        if !isFolded {
+            if image != nil{
+                UIimage.isHidden = false
+                UIimage.image = UIImage(named: image ?? "dummyImg")
+                firstLineView.heightAnchor.constraint(equalToConstant: 28).isActive = false
+            } else {
+                UIimage.isHidden = true
+                firstLineView.heightAnchor.constraint(equalToConstant: 28).isActive = true
+            }
         } else {
-            isFolded = true
-            UIimage.isHidden = false
+            UIimage.isHidden = true
+            firstLineView.heightAnchor.constraint(equalToConstant: 28).isActive = true
         }
     }
 

@@ -33,11 +33,6 @@ class FeedCell: UITableViewCell {
         followingButton.titleLabel?.adjustsFontSizeToFitWidth = true
         followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         setBackgroundShadow()
-        
-        starStack.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 50)
-        levelStack.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 50)
-        toolStack.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
-        timeStack.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
     }
     
     func setBackgroundShadow(){
