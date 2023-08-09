@@ -16,6 +16,7 @@ fun setImageVisible(view: ImageView, visible: Boolean) {
 
 @BindingAdapter("setTextVisible")
 fun setTextVisible(view: TextView, text: String) {
+    println("text ${text} ${text.isNotEmpty()}")
     view.isVisible = text.isNotEmpty()
 }
 

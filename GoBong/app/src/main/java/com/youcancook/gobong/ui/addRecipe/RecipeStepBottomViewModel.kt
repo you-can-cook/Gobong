@@ -1,6 +1,8 @@
 package com.youcancook.gobong.ui.addRecipe
 
 import androidx.lifecycle.ViewModel
+import com.youcancook.gobong.model.Recipe
+import com.youcancook.gobong.model.RecipeAdd
 import com.youcancook.gobong.model.RecipeStepAdded
 import com.youcancook.gobong.model.Tool
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,6 +39,15 @@ class RecipeStepBottomViewModel : ViewModel() {
     val second: StateFlow<String> get() = _second
 
     val descriptionInputText = MutableStateFlow("")
+
+    fun setOldRecipe(recipe: RecipeStepAdded) {
+        _thumbnailByteArray.value = recipe.photoUrl
+        checkTools(recipe.tools)
+        val times = recipe.time.split(" ")
+        _minute.value = times[0].removeSuffix("분")
+        _second.value = times[1].removeSuffix("초")
+        descriptionInputText.value = recipe.description
+    }
 
     fun setThumbnailByteArray(byteArray: ByteArray) {
         _thumbnailByteArray.value = byteArray
@@ -109,6 +120,12 @@ class RecipeStepBottomViewModel : ViewModel() {
     }
 
     fun resetSave() {
+        _thumbnailByteArray.value = ByteArray(0)
+        _tools.value = _tools.value.map { it.copy(isChecked = false) }
+        _minute.value = "0"
+        _second.value = "0"
+        descriptionInputText.value = ""
+
         _isSavedSuccess.value = false
     }
 }
