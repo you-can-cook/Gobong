@@ -10,8 +10,8 @@ import RxSwift
 import RxCocoa
 
 struct dummyHowTo {
-    var time: Int
-    var tool: String
+    var time: [String]
+    var tool: [String]
     var img: String?
     var description: String
 }
@@ -19,15 +19,16 @@ struct dummyHowTo {
 class DetailViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    var labelSizeCache: [String: CGSize] = [:]
     
     var information: dummyFeedData!
     var hashTag = ["면", "면 면", "면 면", "면", "모차렐라(슈레드) 치즈", "자이언트 떡볶이", "자이언트 떡볶이", "자이언트 떡볶이", "면 면"]
     var recipeInformation = [
-        dummyHowTo(time: 3, tool: "전자레인지", img: nil, description: "자이언트 떡볶이를 순서대로 3분 조리"),
-        dummyHowTo(time: 3, tool: "전자레인지", img:"dummyImg", description: "자이언트 떡볶이를 순서대로 3분 조리"),
-        dummyHowTo(time: 3, tool: "전자레인지", img:"dummyImg" ,description: "자이언트 떡볶이를 순서대로 3분 조리"),
-        dummyHowTo(time: 3, tool: "전자레인지", img:"dummyImg" ,description: "자이언트 떡볶이를 순서대로 3분 조리"),
-        dummyHowTo(time: 3, tool: "전자레인지", img:"dummyImg" ,description: "자이 언트 떡 볶이를 순 서대로  3분 조리자이 언트 떡볶 이를 순서대로 3분 조리자이언트 떡볶이를 순서대로 3분 조리자이언트 떡볶이를 순서대로 3분 조리")
+        dummyHowTo(time: ["3분"], tool: ["전자레인지", "전자레인지", "전자레인지", "전자레인지", "전자레인지", "전자레인지", "면", "면"], img: nil, description: "자이언트 떡볶이를 순서대로 3분 조리"),
+        dummyHowTo(time: ["3분"], tool: ["전자레인지", "전자레인지", "전자레인지", "면"], img:"dummyImg", description: "자이언트 떡볶이를 순서대로 3분 조리"),
+        dummyHowTo(time: ["3분"], tool: ["전자레인지"], img:"dummyImg" ,description: "자이언트 떡볶이를 순서대로 3분 조리"),
+        dummyHowTo(time: ["3분"], tool: ["전자레인지"], img:"dummyImg" ,description: "자이언트 떡볶이를 순서대로 3분 조리"),
+        dummyHowTo(time: ["3분"], tool: ["전자레인지"], img:"dummyImg" ,description: "자이 언트 떡 볶이를 순 서대로  3분 조리자이 언트 떡볶 이를 순서대로 3분 조리자이언트 떡볶이를 순서대로 3분 조리자이언트 떡볶이를 순서대로 3분 조리")
     ]
     
     var isFolded = [Bool]()
@@ -144,7 +145,22 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell") as! RecipeCell
             cell.layoutIfNeeded()
             let data = recipeInformation[indexPath.item-2]
-            let firstline = 16
+            
+            var firstline = data.time.map({calculateLabelSize(text: $0).width}).reduce(0, +)
+            firstline += data.tool.map({calculateLabelSize(text: $0).width}).reduce(0, +)
+            firstline += CGFloat(data.time.count * 12) + 32
+            firstline += CGFloat(data.tool.count * 12) + 32
+            
+            if firstline/(view.bounds.width/1.5) > 1 {
+                let line = firstline/(view.bounds.width/1.8)
+                firstline = ceil(line) * 30
+                print(ceil(line))
+                print(firstline)
+                
+            } else {
+                firstline = 30
+            }
+            
             var imageHeight: CGFloat = 0
             let last = calculateLabelSizeRecipe(text: data.description).height
             if !isFolded[indexPath.item-2] {
@@ -158,20 +174,15 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
                         imageHeight = min(maxHeight, min(imageWidth * aspectRatio, maxWidth))
                     }
                     
-                    return CGFloat(firstline) + imageHeight + last + 87
+                    return CGFloat(firstline) + imageHeight + last + 77
                 }
             }
             
-            return CGFloat(firstline) + imageHeight + last + 57
+            return CGFloat(firstline) + imageHeight + last + 47
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? RecipeCell else {
-            return
-        }
-        
-        let data = recipeInformation[indexPath.item-2]
         isFolded[indexPath.item-2].toggle()
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
@@ -196,15 +207,25 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func calculateLabelSize(text: String) -> CGSize {
+        if let cachedSize = labelSizeCache[text] {
+            return cachedSize
+        }
+        
         let label = UILabel()
         label.numberOfLines = 0
         label.text = text
         label.font = UIFont.systemFont(ofSize: 10)
         label.sizeToFit()
-        return label.frame.size
+        let calculatedSize = label.frame.size
+        labelSizeCache[text] = calculatedSize // Cache the calculated size
+        return calculatedSize
     }
-    
+
     func calculateLabelSizeRecipe(text: String) -> CGSize {
+        if let cachedSize = labelSizeCache[text] {
+            return cachedSize
+        }
+        
         let label = UILabel()
         label.numberOfLines = 0
         label.text = text
@@ -221,8 +242,10 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
             context: nil
         )
         
-        return boundingRect.size
+        let calculatedSize = boundingRect.size
+        labelSizeCache[text] = calculatedSize
+        return calculatedSize
     }
 
-
+    
 }

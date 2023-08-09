@@ -28,12 +28,7 @@ class HashtagCollectionCell: UICollectionViewCell {
         contentView.addSubview(label)
         
         // Set up constraints to make the label hug its content
-        NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: contentView.topAnchor),
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
+        
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -43,6 +38,24 @@ class HashtagCollectionCell: UICollectionViewCell {
     // Helper method to set the text of the label
     func setText(_ text: String) {
         label.text = text
+        
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: contentView.topAnchor),
+            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+    }
+    
+    func setText2(_ text: String) {
+        label.text = text
+        
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
+        ])
     }
     
 }
