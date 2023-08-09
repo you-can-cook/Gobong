@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class TemporaryTokenService {
 
     @Value("${token.temporary-token-expiration-seconds}")
@@ -38,15 +39,15 @@ public class TemporaryTokenService {
         return clockService.getCurrentDateTime().plusSeconds(temporaryTokenExpirationSeconds);
     }
 
-    @Transactional
-    public void validateTemporaryToken(String token) {
+    public Long findTemporaryTokenId(String token) {
         LocalDateTime localDateTimeNow = clockService.getCurrentDateTime();
-        temporaryTokenRepository.findByTokenAndExpiredAtAfter(token, localDateTimeNow)
-                .ifPresentOrElse(
-                        temporaryTokenRepository::delete,
-                        () -> {
-                            throw new TemporaryTokenNotFoundException();
-                        }
-                );
+        TemporaryToken temporaryToken = temporaryTokenRepository.findByTokenAndExpiredAtAfter(token, localDateTimeNow)
+                .orElseThrow(TemporaryTokenNotFoundException::new);
+        return temporaryToken.getId();
+    }
+
+    @Transactional
+    public void deleteTemporaryToken(Long temporaryTokenId) {
+        temporaryTokenRepository.deleteById(temporaryTokenId);
     }
 }
