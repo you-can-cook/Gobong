@@ -5,11 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.youcancook.gobong.global.util.token.TokenManager;
+import org.youcancook.gobong.global.util.token.exception.EmptyAuthorizationException;
+import org.youcancook.gobong.global.util.token.exception.NotBearerGrantTypeException;
 
 @Component
 @RequiredArgsConstructor
@@ -28,9 +31,28 @@ public class LoginUserIdArgumentResolver implements HandlerMethodArgumentResolve
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        token = token.split(" ")[1];
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        validateHasAuthorizationHeader(authorizationHeader);
+        validateGrantType(authorizationHeader);
+        String token = extractToken(authorizationHeader);
         return tokenManager.getUserIdFromAccessToken(token);
     }
 
+    private void validateHasAuthorizationHeader(String authorizationHeader) {
+        if (!StringUtils.hasText(authorizationHeader)) {
+            throw new EmptyAuthorizationException();
+        }
+    }
+
+    private void validateGrantType(String authorizationHeader) {
+        String[] authorizations = authorizationHeader.split(" ");
+        if (authorizations.length < 2 || (!"Bearer".equalsIgnoreCase(authorizations[0]))) {
+            throw new NotBearerGrantTypeException();
+        }
+    }
+
+    private String extractToken(String authorizationHeader) {
+        return authorizationHeader.split(" ")[1];
+    }
 }
