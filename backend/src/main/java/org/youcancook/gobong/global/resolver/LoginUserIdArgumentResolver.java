@@ -19,6 +19,7 @@ import org.youcancook.gobong.global.util.token.exception.NotBearerGrantTypeExcep
 public class LoginUserIdArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final TokenManager tokenManager;
+    private final String grantTokenType = "Bearer";
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -46,13 +47,12 @@ public class LoginUserIdArgumentResolver implements HandlerMethodArgumentResolve
     }
 
     private void validateGrantType(String authorizationHeader) {
-        String[] authorizations = authorizationHeader.split(" ");
-        if (authorizations.length < 2 || (!"Bearer".equalsIgnoreCase(authorizations[0]))) {
+        if (!authorizationHeader.startsWith(grantTokenType)) {
             throw new NotBearerGrantTypeException();
         }
     }
 
     private String extractToken(String authorizationHeader) {
-        return authorizationHeader.split(" ")[1];
+        return authorizationHeader.substring(grantTokenType.length()).trim();
     }
 }
