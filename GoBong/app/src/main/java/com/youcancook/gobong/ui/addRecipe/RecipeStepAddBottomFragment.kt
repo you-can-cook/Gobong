@@ -8,15 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.chip.Chip
+import com.google.android.material.snackbar.Snackbar
 import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.BottomSheetRecipeStepAddBinding
 import com.youcancook.gobong.ui.ImageActivity
-import com.youcancook.gobong.util.ImageLoader
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class RecipeStepAddBottomFragment : Fragment() {
     private var _binding: BottomSheetRecipeStepAddBinding? = null
@@ -69,31 +72,42 @@ class RecipeStepAddBottomFragment : Fragment() {
             }
 
             tenSecondChip.setOnClickListener {
-                secondEditTextView.setText(secondEditTextView.text.toString().toInt() + 10)
-                if (secondEditTextView.text.toString().toInt() >= 60) {
-                    minuteEditTextView.setText(minuteEditTextView.text.toString().toInt() + 1)
-                }
+                recipeAddBottomViewModel.addSecond(10)
             }
 
             thirtySecondChip.setOnClickListener {
-                secondEditTextView.setText(secondEditTextView.text.toString().toInt() + 30)
-                if (secondEditTextView.text.toString().toInt() >= 60) {
-                    minuteEditTextView.setText(minuteEditTextView.text.toString().toInt() + 1)
-                }
+                recipeAddBottomViewModel.addSecond(30)
             }
 
             oneMinuteChip.setOnClickListener {
-                minuteEditTextView.setText(minuteEditTextView.text.toString().toInt() + 1)
+                recipeAddBottomViewModel.addMinute(1)
             }
 
             fiveMinuteChip.setOnClickListener {
-                minuteEditTextView.setText(minuteEditTextView.text.toString().toInt() + 5)
+                recipeAddBottomViewModel.addMinute(5)
 
             }
 
             tenMinuteChip.setOnClickListener {
-                minuteEditTextView.setText(minuteEditTextView.text.toString().toInt() + 10)
+                recipeAddBottomViewModel.addMinute(10)
+            }
 
+            resetTimeImageView.setOnClickListener {
+                recipeAddBottomViewModel.clearTime()
+            }
+
+            completeButton.setOnClickListener {
+                recipeAddBottomViewModel.saveRecipeStep()
+            }
+        }
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                recipeAddBottomViewModel.snackBarMessage.collectLatest {
+                    if (it.isNotEmpty()) {
+                        Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }

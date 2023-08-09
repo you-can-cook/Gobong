@@ -1,6 +1,7 @@
 package com.youcancook.gobong.adapter.bindingAdapter
 
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -18,7 +19,6 @@ fun setTextVisible(view: TextView, text: String) {
     view.isVisible = text.isNotEmpty()
 }
 
-
 @BindingAdapter("setEmptyTextVisible")
 fun <T> setEmptyTextVisible(view: TextView, data: List<T>) {
     view.isVisible = data.isEmpty()
@@ -32,4 +32,13 @@ fun <T> setRecyclerViewVisible(view: RecyclerView, data: List<T>) {
 @BindingAdapter("isSelected")
 fun <T> isSelected(view: View, selected: Boolean) {
     view.isSelected = selected
+}
+
+@BindingAdapter(value = ["minute", "second"], requireAll = true)
+fun isRecipeStepAddButtonEnabled(
+    view: Button,
+    minute: String,
+    second: String,
+) {
+    view.isEnabled = (minute == "0" && second == "0").not()
 }

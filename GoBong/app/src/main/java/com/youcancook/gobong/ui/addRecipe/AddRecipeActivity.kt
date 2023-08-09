@@ -13,7 +13,6 @@ import com.youcancook.gobong.adapter.bindingAdapter.addIngredient
 import com.youcancook.gobong.databinding.ActivityAddRecipeBinding
 import com.youcancook.gobong.model.RecipeAdd
 import com.youcancook.gobong.ui.ImageActivity
-import com.youcancook.gobong.util.ImageLoader
 
 class AddRecipeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddRecipeBinding
@@ -21,6 +20,12 @@ class AddRecipeActivity : AppCompatActivity() {
 
     private var imagePickActivityLauncher: ActivityResultLauncher<Intent>? = null
     private val addStepBottomSheet = RecipeStepBottomFragment()
+        .apply {
+            setOnDismissListener {
+                //TODO 빈 값이면 리턴
+                addRecipeViewModel.addNewRecipeStep(it)
+            }
+        }
     private val recipeAdapter = RecipeListAdapter(onItemClick = {
 
     }, onAddItemClick = {
@@ -49,6 +54,7 @@ class AddRecipeActivity : AppCompatActivity() {
             vm = addRecipeViewModel
             lifecycleOwner = this@AddRecipeActivity
         }
+
         imagePickActivityLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
@@ -82,18 +88,13 @@ class AddRecipeActivity : AppCompatActivity() {
                     if (oldText.isNotEmpty()) {
                         ingredientGroup.addIngredient(oldText)
                         addIngredientEditText.text.clear()
-                        addIngredientEditText.isVisible = false
                     }
+                    addIngredientEditText.isVisible = false
                 }
             }
 
             recyclerView.adapter = recipeAdapter
 
-            recipeAdapter.submitList(
-                listOf(
-                    RecipeAdd()
-                )
-            )
         }
     }
 

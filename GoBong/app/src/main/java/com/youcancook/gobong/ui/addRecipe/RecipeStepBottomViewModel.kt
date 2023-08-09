@@ -1,12 +1,19 @@
 package com.youcancook.gobong.ui.addRecipe
 
 import androidx.lifecycle.ViewModel
+import com.youcancook.gobong.model.RecipeStepAdded
 import com.youcancook.gobong.model.Tool
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filter
 
 class RecipeStepBottomViewModel : ViewModel() {
+    private val _isSavedSuccess = MutableStateFlow(false)
+    val isSavedSuccess: StateFlow<Boolean> get() = _isSavedSuccess
+
+    private val _snackBarMessage = MutableStateFlow("")
+    val snackBarMessage: StateFlow<String> get() = _snackBarMessage
+
+
     private val _thumbnailByteArray = MutableStateFlow(byteArrayOf(0))
     val thumbnailByteArray: StateFlow<ByteArray> get() = _thumbnailByteArray
 
@@ -22,6 +29,14 @@ class RecipeStepBottomViewModel : ViewModel() {
         )
     )
     val tools: StateFlow<List<Tool>> get() = _tools
+
+    private val _minute = MutableStateFlow("0")
+    val minute: StateFlow<String> get() = _minute
+
+    private val _second = MutableStateFlow("0")
+    val second: StateFlow<String> get() = _second
+
+    val descriptionInputText = MutableStateFlow("")
 
     fun setThumbnailByteArray(byteArray: ByteArray) {
         _thumbnailByteArray.value = byteArray
@@ -52,5 +67,48 @@ class RecipeStepBottomViewModel : ViewModel() {
         }
     }
 
+    fun clearTime() {
+        _minute.value = "0"
+        _second.value = "0"
+    }
 
+    fun addMinute(min: Int) {
+        _minute.value = (_minute.value.toInt() + min).toString()
+    }
+
+    fun addSecond(sec: Int) {
+        _second.value = (_second.value.toInt() + sec).toString()
+
+        if (_second.value >= "60") {
+            _second.value = (_second.value.toInt() - 60).toString()
+            addMinute(1)
+        }
+    }
+
+    fun saveRecipeStep() {
+        try {
+            isSaveValidate()
+            _isSavedSuccess.value = true
+        } catch (e: Exception) {
+            _snackBarMessage.value = e.message ?: ""
+        }
+    }
+
+    private fun isSaveValidate() {
+        if (_thumbnailByteArray.value.isEmpty() && descriptionInputText.value.isEmpty())
+            throw java.lang.Exception("사진이나 설명을 입력해주세요")
+    }
+
+    fun getNewRecipeStep(): RecipeStepAdded {
+        return RecipeStepAdded(
+            "${minute.value}분 ${second.value}초",
+            tools.value.filter { it.isChecked }.map { it.toolName },
+            thumbnailByteArray.value,
+            descriptionInputText.value
+        )
+    }
+
+    fun resetSave() {
+        _isSavedSuccess.value = false
+    }
 }

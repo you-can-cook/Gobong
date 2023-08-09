@@ -103,11 +103,13 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/minuteEditTextView"
                 style="@style/TextAppearance.GoBong.Regular14"
+                time="@{vm.minute}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="00"
-                android:textColor="@color/charcoal_color" />
+                android:inputType="numberDecimal"
+                android:textColor="@color/charcoal_color"
+                tools:text="00" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -135,11 +137,13 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/secondEditTextView"
                 style="@style/TextAppearance.GoBong.Regular14"
+                time="@{vm.second}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="00"
-                android:textColor="@color/charcoal_color" />
+                android:inputType="numberDecimal"
+                android:textColor="@color/charcoal_color"
+                tools:text="00" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -155,6 +159,7 @@
             app:layout_constraintTop_toTopOf="@id/minuteEditTextViewLayout" />
 
         <ImageView
+            android:id="@+id/resetTimeImageView"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginStart="8dp"
@@ -238,12 +243,16 @@
                 android:gravity="top"
                 android:hint="자세한 조리 과정을 입력하세요"
                 android:lines="5"
+                android:text="@={vm.descriptionInputText}"
                 android:textColor="@color/charcoal_color" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:id="@+id/completeButton"
             style="@style/Widget.GoBong.Button.Big"
+            minute="@{vm.minute}"
+            second="@{vm.second}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

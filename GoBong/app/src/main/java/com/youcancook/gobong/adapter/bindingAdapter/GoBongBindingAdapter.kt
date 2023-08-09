@@ -26,7 +26,13 @@ fun setImageUrl(view: ImageView, url: String) {
     Glide.with(view.context)
         .load(url)
         .placeholder(R.drawable.example_img)
-        .circleCrop()
+        .into(view)
+}
+
+@BindingAdapter("setImageUrlWithEmpty")
+fun setImageUrlWithEmpty(view: ImageView, url: String) {
+    Glide.with(view.context)
+        .load(url)
         .into(view)
 }
 
@@ -35,6 +41,13 @@ fun setImageByteArray(view: ImageView, image: ByteArray?) {
     Glide.with(view.context)
         .load(image)
         .placeholder(R.drawable.thumbnail_add_placeholder)
+        .into(view)
+}
+
+@BindingAdapter("setImageByteArrayWithEmpty")
+fun setImageByteArrayWithEmpty(view: ImageView, image: ByteArray?) {
+    Glide.with(view.context)
+        .load(image)
         .into(view)
 }
 
@@ -56,6 +69,7 @@ fun setNecessaryTextView(view: TextView, text: String) {
 
 @BindingAdapter("submitData")
 fun <T> submitData(view: RecyclerView, data: List<T>?) {
+    println("submitDatat $data")
     data ?: return
 
     val adapter = view.adapter as ListAdapter<T, RecyclerView.ViewHolder?>
