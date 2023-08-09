@@ -1,10 +1,10 @@
 package com.youcancook.gobong.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityImageBinding
 
