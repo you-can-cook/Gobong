@@ -30,6 +30,8 @@ class DetailViewController: UIViewController {
         dummyHowTo(time: 3, tool: "전자레인지", img:"dummyImg" ,description: "자이 언트 떡 볶이를 순 서대로  3분 조리자이 언트 떡볶 이를 순서대로 3분 조리자이언트 떡볶이를 순서대로 3분 조리자이언트 떡볶이를 순서대로 3분 조리")
     ]
     
+    var isFolded = [Bool]()
+    
     var collectionViewHeight = 0
 
     override func viewDidLoad() {
@@ -38,6 +40,8 @@ class DetailViewController: UIViewController {
         // Do any additional setup after loading the view.
         setupUI()
         tableViewSetup()
+        
+        isFolded = Array(repeating: true, count: recipeInformation.count)
     }
 }
 
@@ -105,7 +109,14 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
         else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as! RecipeCell
             let data = recipeInformation[indexPath.item-2]
-            cell.configuration(step: indexPath.item-1, time: data.time, tool: data.tool, image: data.img, description: data.description)
+            cell.configuration(step: indexPath.item-1, time: data.time, tool: data.tool, image: data.img, description: data.description, isFolded: isFolded[indexPath.item-2])
+            
+            if !isFolded[indexPath.item-2] {
+                cell.toggleImageViewVisibility(isFolded: isFolded[indexPath.item-2], image: data.img)
+            } else {
+                cell.toggleImageViewVisibility(isFolded: isFolded[indexPath.item-2], image: data.img)
+            }
+            
             cell.selectionStyle = .none
             return cell
         }
@@ -136,17 +147,19 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             let firstline = 16
             var imageHeight: CGFloat = 0
             let last = calculateLabelSizeRecipe(text: data.description).height
-            if data.img != nil || cell.isFolded {
-                if let image = UIImage(named: data.img!) {
-                    let maxWidth: CGFloat = CGFloat(view.bounds.width/1.5)
-                    let maxHeight: CGFloat = 130
-                    let aspectRatio: CGFloat = 16 / 9  // 1.91:1
-
-                    let imageWidth = image.size.width
-                    imageHeight = min(maxHeight, min(imageWidth * aspectRatio, maxWidth))
+            if !isFolded[indexPath.item-2] {
+                if data.img != nil {
+                    if let image = UIImage(named: data.img!) {
+                        let maxWidth: CGFloat = CGFloat(view.bounds.width/1.5)
+                        let maxHeight: CGFloat = 130
+                        let aspectRatio: CGFloat = 16 / 9  // 1.91:1
+                        
+                        let imageWidth = image.size.width
+                        imageHeight = min(maxHeight, min(imageWidth * aspectRatio, maxWidth))
+                    }
+                    
+                    return CGFloat(firstline) + imageHeight + last + 87
                 }
-                
-                return CGFloat(firstline) + imageHeight + last + 87
             }
             
             return CGFloat(firstline) + imageHeight + last + 57
@@ -158,8 +171,9 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             return
         }
         
-        // Toggle the visibility of the image in the selected cell
-        cell.toggleImageViewVisibility()
+        let data = recipeInformation[indexPath.item-2]
+        isFolded[indexPath.item-2].toggle()
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
     
 }
