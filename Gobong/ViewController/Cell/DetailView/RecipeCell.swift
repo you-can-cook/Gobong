@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import AlignedCollectionViewFlowLayout
 
-class RecipeCell: UITableViewCell {
+class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    var tools = [String]()
     
     let stepLabel: UILabel = {
         let label = UILabel()
@@ -27,26 +30,14 @@ class RecipeCell: UITableViewCell {
         return image
     }()
     
-    let timeLabel: PaddingLabel = {
-        let label = PaddingLabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 10)
-        label.textColor = UIColor(named: "darkGray")
-        label.backgroundColor = UIColor(named: "softGray")
-        label.paddingLeft = 3
-        label.paddingRight = 3
-        return label
-    }()
-    
-    let toolLabel: PaddingLabel = {
-        let label = PaddingLabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 10)
-        label.textColor = UIColor(named: "darkGray")
-        label.backgroundColor = UIColor(named: "softGray")
-        label.paddingLeft = 3
-        label.paddingRight = 3
-        return label
+    let collectionView: SelfSizingCollectionView = {
+        let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment: .left, verticalAlignment: .top)
+        alignedFlowLayout.minimumInteritemSpacing = 8
+        alignedFlowLayout.minimumLineSpacing = 0
+        let collectionView = SelfSizingCollectionView(frame: .zero, collectionViewLayout: alignedFlowLayout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return collectionView
     }()
     
     let descriptionLabel: PaddingLabel = {
@@ -69,22 +60,24 @@ class RecipeCell: UITableViewCell {
     }()
     
     let firstLineView = UIView()
+    let infoStackView = UIStackView()
     
-    // Other UI elements can be added similarly
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
     }
     
     private func setupUI(){
+        //collection view setup
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(HashtagCollectionCell.self, forCellWithReuseIdentifier: "HashtagCollectionCell")
+        collectionView.collectionViewLayout.invalidateLayout()
+        
+        //====
         let mainUIView = UIView()
         mainUIView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let infoStackView = UIStackView()
-        infoStackView.axis = .vertical
-        infoStackView.spacing = 0
-        infoStackView.distribution = .fill
-        infoStackView.translatesAutoresizingMaskIntoConstraints = false
         
         let subMainView = UIView()
         subMainView.translatesAutoresizingMaskIntoConstraints = false
@@ -96,6 +89,11 @@ class RecipeCell: UITableViewCell {
         informationView.translatesAutoresizingMaskIntoConstraints = false
         informationView.layer.borderWidth = 1
         informationView.layer.borderColor = UIColor(named: "darkGray")?.cgColor
+        
+        infoStackView.axis = .vertical
+        infoStackView.spacing = 5
+        infoStackView.distribution = .fill
+        infoStackView.translatesAutoresizingMaskIntoConstraints = false
         
         firstLineView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -109,14 +107,14 @@ class RecipeCell: UITableViewCell {
         
         infoStackView.addArrangedSubview(firstLineView)
         
-        firstLineView.addSubview(timeLabel)
-        firstLineView.addSubview(toolLabel)
+        firstLineView.addSubview(collectionView)
         
         infoStackView.addArrangedSubview(UIimage)
         infoStackView.addArrangedSubview(descriptionLabel)
         
         descriptionLabel.backgroundColor = .white
         
+        //left side
         NSLayoutConstraint.activate([
             stepLabelBackground.leadingAnchor.constraint(equalTo: stepView.leadingAnchor),
             stepLabelBackground.topAnchor.constraint(equalTo: stepView.topAnchor),
@@ -125,11 +123,9 @@ class RecipeCell: UITableViewCell {
             
             stepLabel.centerXAnchor.constraint(equalTo: stepView.centerXAnchor, constant: -3),
             stepLabel.centerYAnchor.constraint(equalTo: stepView.centerYAnchor),
-            // Add more constraints as needed
         ])
         
-        //-=======
-        
+        //right side
         NSLayoutConstraint.activate([
             stepView.leadingAnchor.constraint(equalTo: subMainView.leadingAnchor, constant: 0),
             stepView.topAnchor.constraint(equalTo: subMainView.topAnchor, constant: 0),
@@ -146,21 +142,18 @@ class RecipeCell: UITableViewCell {
             firstLineView.leadingAnchor.constraint(equalTo: infoStackView.leadingAnchor),
             firstLineView.trailingAnchor.constraint(equalTo: infoStackView.trailingAnchor),
             firstLineView.topAnchor.constraint(equalTo: infoStackView.topAnchor),
+            
+            collectionView.leadingAnchor.constraint(equalTo: firstLineView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: firstLineView.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: firstLineView.topAnchor, constant: 8),
+
         ])
         
-        
         NSLayoutConstraint.activate([
-            timeLabel.leadingAnchor.constraint(equalTo: firstLineView.leadingAnchor, constant: 0),
-            timeLabel.topAnchor.constraint(equalTo: firstLineView.topAnchor, constant: 12),
-            timeLabel.heightAnchor.constraint(equalToConstant: 16),
-            
-            toolLabel.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: 4),
-            toolLabel.topAnchor.constraint(equalTo: firstLineView.topAnchor, constant: 12),
-            toolLabel.heightAnchor.constraint(equalToConstant: 16),
-            
             UIimage.leadingAnchor.constraint(equalTo: informationView.leadingAnchor, constant: 12),
             UIimage.trailingAnchor.constraint(equalTo: informationView.trailingAnchor, constant: -12),
             UIimage.heightAnchor.constraint(lessThanOrEqualToConstant: 130),
+            UIimage.widthAnchor.constraint(equalTo: informationView.widthAnchor, constant: -24)
             
         ])
         
@@ -181,43 +174,31 @@ class RecipeCell: UITableViewCell {
             mainUIView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0)
         ])
         
+        collectionView.invalidateIntrinsicContentSize()
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func calculateHeightForData(_ data: dummyHowTo) -> CGFloat {
-        let timeLabelHeight : CGFloat = 16.0
-        let descriptionLabelHeight = descriptionLabel.intrinsicContentSize.height
-        
-        var imageHeight: CGFloat = 0
-        if let image = UIimage.image {
-            // Calculate the proportional height based on the aspect ratio
-            let aspectRatio = image.size.width / image.size.height
-            imageHeight = contentView.frame.width / aspectRatio
-        }
-        let totalHeight = timeLabelHeight + imageHeight + descriptionLabelHeight
-        
-        return totalHeight
-    }
-    
-    func configuration(step: Int, time: Int, tool: String, image: String?, description: String, isFolded: Bool) {
+    func configuration(step: Int, time: [String], tool: [String], image: String?, description: String, isFolded: Bool) {
         stepLabel.text = "\(step)단계"
-        timeLabel.text = "\(time)분"
-        toolLabel.text = tool
+        
+        tools.append(contentsOf: time)
+        tools.append(contentsOf: tool)
+        
+        collectionView.reloadData()
+        
         if !isFolded{
             if image != nil{
                 UIimage.isHidden = false
                 UIimage.image = UIImage(named: image!)
-                firstLineView.heightAnchor.constraint(equalToConstant: 28).isActive = false
             } else {
                 UIimage.isHidden = true
-                firstLineView.heightAnchor.constraint(equalToConstant: 28).isActive = true
             }
         } else {
             UIimage.isHidden = true
-            firstLineView.heightAnchor.constraint(equalToConstant: 28).isActive = true
         }
         descriptionLabel.text = description
     }
@@ -227,15 +208,39 @@ class RecipeCell: UITableViewCell {
             if image != nil{
                 UIimage.isHidden = false
                 UIimage.image = UIImage(named: image ?? "dummyImg")
-                firstLineView.heightAnchor.constraint(equalToConstant: 28).isActive = false
             } else {
                 UIimage.isHidden = true
-                firstLineView.heightAnchor.constraint(equalToConstant: 28).isActive = true
             }
         } else {
             UIimage.isHidden = true
-            firstLineView.heightAnchor.constraint(equalToConstant: 28).isActive = true
         }
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return tools.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HashtagCollectionCell", for: indexPath) as! HashtagCollectionCell
+        cell.setText2("\(tools[indexPath.item])")
+        cell.label.backgroundColor = UIColor(named: "softGray")
+        cell.label.layer.borderWidth = 0
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let labelSize = calculateLabelSize(text: tools[indexPath.item])
+        return CGSize(width: labelSize.width + 24, height: labelSize.height + 20)
+    }
+    
+    func calculateLabelSize(text: String) -> CGSize {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.text = text
+        label.font = UIFont.systemFont(ofSize: 10)
+        label.sizeToFit()
+        return label.frame.size
     }
 
 }
