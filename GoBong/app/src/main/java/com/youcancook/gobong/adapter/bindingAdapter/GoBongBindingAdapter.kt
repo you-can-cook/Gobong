@@ -3,12 +3,14 @@ package com.youcancook.gobong.adapter.bindingAdapter
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.chip.Chip
 import com.youcancook.gobong.R
 
 
@@ -66,10 +68,18 @@ fun setNecessaryTextView(view: TextView, text: String) {
     view.text = wordToSpan
 }
 
+@BindingAdapter("recipeStepTime")
+fun recipeStepTime(view: Chip, text: String) {
+    view.text = if (text.contains("0초")) {
+        text.split(" ")[0]
+    } else {
+        text
+    }
+}
+
 
 @BindingAdapter("submitData")
 fun <T> submitData(view: RecyclerView, data: List<T>?) {
-    println("submitDatat $data")
     data ?: return
 
     val adapter = view.adapter as ListAdapter<T, RecyclerView.ViewHolder?>

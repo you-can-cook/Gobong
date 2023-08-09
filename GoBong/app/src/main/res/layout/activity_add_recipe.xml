@@ -33,6 +33,19 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/uploadTextView"
+                style="@style/TextAppearance.GoBong.SemiBold16"
+                setTextVisible="@{vm.titleInput}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                android:text="게시"
+                android:textColor="@color/primary_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
                 android:id="@+id/thumbnailTextView"
                 style="@style/TextAppearance.GoBong.SemiBold12"
                 setNecessaryTextView="@{@string/recipe_add_thumbnail_text}"
@@ -86,7 +99,8 @@
                     style="@style/TextAppearance.GoBong.Regular14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="제목을 입력하세요" />
+                    android:hint="제목을 입력하세요"
+                    android:text="@={vm.titleInput}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,7 +131,8 @@
                     style="@style/TextAppearance.GoBong.Regular14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="레시피에 대한 소개를 입력하세요" />
+                    android:hint="레시피에 대한 소개를 입력하세요"
+                    android:text="@={vm.descriptionInput}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -220,11 +235,11 @@
                 tools:text="레시피*" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                submitData="@{vm.recipes}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                submitData="@{vm.recipes}"
-                android:id="@+id/recyclerView"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

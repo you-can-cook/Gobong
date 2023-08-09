@@ -71,9 +71,9 @@
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.GoBong.Chip.RecipeStepTool"
+                    recipeStepTime="@{item.time}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{item.time}"
                     tools:text="3분" />
 
             </com.google.android.material.chip.ChipGroup>
@@ -97,9 +97,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
                 android:layout_marginTop="8dp"
-                android:adjustViewBounds="true"
                 android:background="@drawable/background_round_image"
                 android:clipToOutline="true"
+                android:scaleType="centerCrop"
                 android:src="@drawable/example_img"
                 app:layout_constraintEnd_toEndOf="@id/recipeBox"
                 app:layout_constraintStart_toStartOf="@id/recipeBox"

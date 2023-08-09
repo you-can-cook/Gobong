@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.BottomSheetRecipeStepBinding
 import com.youcancook.gobong.model.Recipe
+import com.youcancook.gobong.model.RecipeStepAdded
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -20,6 +21,7 @@ class RecipeStepBottomFragment : BottomSheetDialogFragment() {
     private lateinit var binding: BottomSheetRecipeStepBinding
     private val recipeAddBottomViewModel: RecipeStepBottomViewModel by activityViewModels()
     private var onDismissListener: (Recipe) -> Unit? = { }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,6 +48,10 @@ class RecipeStepBottomFragment : BottomSheetDialogFragment() {
                 }
             }
         }
+    }
+
+    fun setOldRecipe(recipe: RecipeStepAdded) {
+        recipeAddBottomViewModel.setOldRecipe(recipe)
     }
 
     fun setOnDismissListener(listener: (Recipe) -> Unit) {

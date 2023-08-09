@@ -2,19 +2,32 @@ package com.youcancook.gobong.ui.addRecipe
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.chip.Chip
+import com.google.android.material.snackbar.Snackbar
+import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.RecipeListAdapter
 import com.youcancook.gobong.adapter.bindingAdapter.addIngredient
 import com.youcancook.gobong.databinding.ActivityAddRecipeBinding
 import com.youcancook.gobong.model.RecipeAdd
+import com.youcancook.gobong.model.RecipeStepAdded
 import com.youcancook.gobong.ui.ImageActivity
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class AddRecipeActivity : AppCompatActivity() {
+    private var isEdit = false
+    private var editId = 0L
     private lateinit var binding: ActivityAddRecipeBinding
     private val addRecipeViewModel: AddRecipeViewModel by viewModels()
 
@@ -23,12 +36,27 @@ class AddRecipeActivity : AppCompatActivity() {
         .apply {
             setOnDismissListener {
                 //TODO 빈 값이면 리턴
-                addRecipeViewModel.addNewRecipeStep(it)
+                if (isEdit) {
+                    val view = it as RecipeStepAdded
+                    addRecipeViewModel.replaceNewRecipeStep(view.copy(id = editId))
+                } else {
+                    addRecipeViewModel.addNewRecipeStep(it)
+                }
+                isEdit = false
             }
         }
     private val recipeAdapter = RecipeListAdapter(onItemClick = {
 
+    }, onEditItemClick = {
+        addStepBottomSheet.show(supportFragmentManager, RecipeStepBottomFragment.TAG)
+        addStepBottomSheet.apply {
+            //TODO 레시피 수정
+            isEdit = true
+            editId = it.id
+            setOldRecipe(it as RecipeStepAdded)
+        }
     }, onAddItemClick = {
+        isEdit = false
         addStepBottomSheet.show(supportFragmentManager, RecipeStepBottomFragment.TAG)
     })
 
@@ -73,6 +101,17 @@ class AddRecipeActivity : AppCompatActivity() {
                 closeAlertDialog.show()
             }
 
+            uploadTextView.setOnClickListener {
+                val ingredients = ingredientGroup.children.filter {
+                    it.id != R.id.addIngredientEditText
+                            && it.id != R.id.addIngredientButton
+                }.map {
+                    val view = it as Chip
+                    view.text.toString()
+                }.toList()
+                addRecipeViewModel.uploadNewRecipePost(ingredients)
+            }
+
             thumbnailImageView.setOnClickListener {
                 getImageFromGallery()
             }
@@ -93,8 +132,33 @@ class AddRecipeActivity : AppCompatActivity() {
                 }
             }
 
+            levelGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
+                val view = findViewById<Button>(checkedId)
+                addRecipeViewModel.setLevel(view.text.toString())
+            }
+
             recyclerView.adapter = recipeAdapter
 
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                addRecipeViewModel.snackBarMessage.collectLatest {
+                    if (it.isNotEmpty()) {
+                        Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                addRecipeViewModel.isSavedSuccess.collectLatest {
+                    if (it) {
+                        finish()
+                    }
+                }
+            }
         }
     }
 

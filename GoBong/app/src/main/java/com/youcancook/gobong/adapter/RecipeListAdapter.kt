@@ -14,7 +14,10 @@ import com.youcancook.gobong.model.RecipeAdd
 import com.youcancook.gobong.model.RecipeStep
 import com.youcancook.gobong.model.RecipeStepAdded
 
-class RecipeListAdapter(val onItemClick: (Int) -> Unit, val onAddItemClick: () -> Unit = {}) :
+class RecipeListAdapter(
+    val onItemClick: (Int) -> Unit, val onEditItemClick: (Recipe) -> Unit = {},
+    val onAddItemClick: () -> Unit = {},
+) :
     ListAdapter<Recipe, RecyclerView.ViewHolder>(diffUtil) {
 
     private var lastActivePosition = 0
@@ -66,6 +69,10 @@ class RecipeListAdapter(val onItemClick: (Int) -> Unit, val onAddItemClick: () -
                 selected = adapterPosition == activePosition
                 levelTextView.text = "${adapterPosition + 1}단계"
                 dashDivider.isVisible = adapterPosition != currentList.size - 1
+
+                editTextView.setOnClickListener {
+                    onEditItemClick(currentList[adapterPosition])
+                }
             }
         }
     }
