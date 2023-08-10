@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.youcancook.gobong.domain.rating.entity.Rating;
+import org.youcancook.gobong.domain.rating.repository.RatingRepository;
 import org.youcancook.gobong.domain.recipe.dto.request.CreateRecipeRequest;
 import org.youcancook.gobong.domain.recipe.dto.request.UpdateRecipeRequest;
 import org.youcancook.gobong.domain.recipe.entity.Difficulty;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
@@ -34,6 +37,9 @@ class RecipeServiceTest {
     RecipeRepository recipeRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    RatingRepository ratingRepository;
+
 
     @Test
     @DisplayName("레시피를 성공적으로 등록한다.")
@@ -76,7 +82,7 @@ class RecipeServiceTest {
         User user2 = User.builder().nickname("쩝쩝학사").oAuthProvider(OAuthProvider.KAKAO).oAuthId("125").build();
         Recipe recipe = Recipe.builder().user(user1).difficulty(Difficulty.EASY).title("주먹밥").build();
 
-        Long user1Id = userRepository.save(user1).getId();
+        userRepository.save(user1);
         Long user2Id = userRepository.save(user2).getId();
         Long recipeId = recipeRepository.save(recipe).getId();
         String title = "비빔밥";
@@ -108,6 +114,90 @@ class RecipeServiceTest {
         new RecipeDetail(recipe, "Content", "", 2, 2L, 1);
         new RecipeDetail(recipe, "Content", "", 3, 4L, 1);
         assertThat(recipe.getCookwares()).isEqualTo(7L);
+    }
+
+    @Test
+    @DisplayName("레시피를 성공적으로 삭제한다.")
+    public void deleteRecipe(){
+        User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
+        Recipe recipe = Recipe.builder().user(user).difficulty(Difficulty.EASY).title("주먹밥").build();
+
+        Long userId = userRepository.save(user).getId();
+        Long recipeId = recipeRepository.save(recipe).getId();
+
+        recipeService.deleteRecipe(userId, recipeId);
+
+        List<Recipe> actual = recipeRepository.findAll();
+        assertThat(actual).isEmpty();
+    }
+
+    @Test
+    @DisplayName("레시피를 삭제하면, 단계별 레시피도 함께 삭제된다.")
+    public void deleteDetailWhenRecipeDeleted(){
+        User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
+        Recipe recipe = Recipe.builder().user(user).difficulty(Difficulty.EASY).title("주먹밥").build();
+
+        Long userId = userRepository.save(user).getId();
+        Long recipeId = recipeRepository.save(recipe).getId();
+
+        RecipeDetail r1 = new RecipeDetail(recipe, "Content", "", 1, 1L, 1);
+        RecipeDetail r2 = new RecipeDetail(recipe, "Content", "", 2, 1L, 1);
+        RecipeDetail r3 = new RecipeDetail(recipe, "Content", "", 3, 1L, 1);
+        recipeDetailRepository.save(r1);
+        recipeDetailRepository.save(r2);
+        recipeDetailRepository.save(r3);
+
+        recipeService.deleteRecipe(userId, recipeId);
+
+        List<RecipeDetail> actual = recipeDetailRepository.findAll();
+        assertThat(actual).isEmpty();
+    }
+
+    @Test
+    @DisplayName("레시피를 삭제하면, 해당 레시피에 작성된 평점도 함께 삭제된다.")
+    public void deleteRatingWhenRecipeDeleted(){
+        User user1 = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
+        User user2 = User.builder().nickname("쩝쩝학사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("125").build();
+
+        Recipe recipe = Recipe.builder().user(user1).difficulty(Difficulty.EASY).title("주먹밥").build();
+
+        Long userId = userRepository.save(user1).getId();
+        userRepository.save(user2);
+        Long recipeId = recipeRepository.save(recipe).getId();
+
+        Rating rating = new Rating(user2, recipe, 5);
+        ratingRepository.save(rating);
+
+        recipeService.deleteRecipe(userId, recipeId);
+
+        List<Rating> actual = ratingRepository.findAll();
+        assertThat(actual).isEmpty();
+    }
+
+
+    @Test
+    @DisplayName("유저가 작성한 레시피의 경우, 검증이 통과한다.")
+    public void validateUserOk(){
+        User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
+        Recipe recipe = Recipe.builder().user(user).difficulty(Difficulty.EASY).title("주먹밥").build();
+
+        userRepository.save(user);
+        recipeRepository.save(recipe);
+
+        assertDoesNotThrow(() -> recipeService.validateUserRecipe(user, recipe));
+    }
+
+    @Test
+    @DisplayName("유저가 작성하지 않은 레시피의 경우, 검증에서 예외를 발생한다.")
+    public void validateUserNotOk(){
+        User user1 = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
+        User user2 = User.builder().nickname("쩝쩝학사").oAuthProvider(OAuthProvider.KAKAO).oAuthId("125").build();
+        Recipe recipe = Recipe.builder().user(user1).difficulty(Difficulty.EASY).title("주먹밥").build();
+
+        userRepository.save(user1);
+        userRepository.save(user2);
+        recipeRepository.save(recipe);
+        assertThrows(RecipeAccessDeniedException.class, () -> recipeService.validateUserRecipe(user2, recipe));
     }
 
     @AfterEach
