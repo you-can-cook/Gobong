@@ -38,12 +38,20 @@
                     android:layout_height="match_parent"
                     app:layout_collapseMode="pin"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-                    app:menu="@menu/toolbar_menu"
                     app:navigationIcon="@drawable/icon_left_arrow"
                     app:title="@{vm.cardInfo.title}"
                     app:titleCentered="true"
                     app:titleTextAppearance="@style/TextAppearance.GoBong.SemiBold16"
-                    tools:text="편의점 꿀조합 마크 정식" />
+                    tools:text="편의점 꿀조합 마크 정식" >
+
+                    <ImageView
+                        android:id="@+id/bookmarkImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/selector_bookmark"
+                        android:layout_gravity="end"/>
+                </com.google.android.material.appbar.MaterialToolbar>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 

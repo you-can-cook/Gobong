@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class DetailViewModel : ViewModel() {
+    private val _isMine = MutableStateFlow(false)
+    val isMine: StateFlow<Boolean> get() = _isMine
 
     private val _cardInfo = MutableStateFlow(Card())
     val cardInfo: StateFlow<Card> get() = _cardInfo
