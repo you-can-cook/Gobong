@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.GridItemDecorator
@@ -16,8 +17,9 @@ class BookmarkFragment : Fragment() {
 
     private var _binding: FragmentBookmarkBinding? = null
     private val binding get() = _binding!!
+    private val bookmarkViewModel: BookmarkViewModel by viewModels()
 
-    private val gridAdapter = GridRecyclerViewListAdapter(3,onItemClick = {
+    private val gridAdapter = GridRecyclerViewListAdapter(3, onItemClick = {
 
     })
     private val gridItemDecorator =
@@ -34,6 +36,11 @@ class BookmarkFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.run {
+            vm = bookmarkViewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
 
         binding.run {
             recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
@@ -57,19 +64,6 @@ class BookmarkFragment : Fragment() {
 
             setGridRecyclerView()
         }
-
-
-        gridAdapter.submitList(
-            listOf(
-                Card(),
-                Card(),
-                Card(),
-                Card(),
-                Card(),
-                Card(),
-                Card()
-            )
-        )
     }
 
     private fun setGridRecyclerView() {

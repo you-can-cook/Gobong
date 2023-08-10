@@ -136,6 +136,8 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
+                    setRecyclerViewVisible="@{vm.recipes}"
+                    submitData="@{vm.recipes}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="42dp"
@@ -143,6 +145,32 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/recipeTextView"
                     tools:listitem="@layout/item_grid_card" />
+
+                <ImageView
+                    android:id="@+id/emptyImageView"
+                    setEmptyImageVisible="@{vm.recipes}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="205dp"
+                    android:src="@drawable/icon_empty_my"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recipeTextView" />
+
+                <TextView
+                    style="@style/TextAppearance.GoBong.Regular14"
+                    setEmptyTextVisible="@{vm.recipes}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:text="피드에 게시된 레시피가 없습니다.\n먼저 레시피를 추가해보세요!"
+                    android:textColor="@color/charcoal_color"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/emptyImageView" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

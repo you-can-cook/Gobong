@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.youcancook.gobong.R
@@ -22,9 +23,8 @@ class MyFragment : Fragment() {
     private var _binding: FragmentMyBinding? = null
     private val binding get() = _binding!!
 
-    private val myViewModel by lazy {
-        ViewModelProvider(this).get(MyViewModel::class.java)
-    }
+    private val myViewModel: MyViewModel by viewModels()
+
     private val gridAdapter = GridRecyclerViewListAdapter(3, onItemClick = {
         val intent = Intent(requireContext(), DetailActivity::class.java)
         startActivity(intent)

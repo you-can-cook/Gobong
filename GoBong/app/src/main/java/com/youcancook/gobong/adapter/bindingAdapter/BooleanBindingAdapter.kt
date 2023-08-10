@@ -1,5 +1,6 @@
 package com.youcancook.gobong.adapter.bindingAdapter
 
+import android.media.Image
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -22,6 +23,11 @@ fun setTextVisible(view: TextView, text: String) {
 
 @BindingAdapter("setEmptyTextVisible")
 fun <T> setEmptyTextVisible(view: TextView, data: List<T>) {
+    view.isVisible = data.isEmpty()
+}
+
+@BindingAdapter("setEmptyImageVisible")
+fun <T> setEmptyTextVisible(view: ImageView, data: List<T>) {
     view.isVisible = data.isEmpty()
 }
 
