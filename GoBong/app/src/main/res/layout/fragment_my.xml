@@ -16,6 +16,15 @@
         tools:context=".ui.bookmark.BookmarkFragment">
 
         <ImageView
+            android:id="@+id/toggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/selector_toggle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -26,10 +35,10 @@
 
         <ImageView
             android:id="@+id/profileImageView"
+            setProfileImageUrl="@{vm.user.profileUrl}"
             android:layout_width="88dp"
             android:layout_height="0dp"
             android:layout_marginTop="27dp"
-            setProfileImageUrl="@{vm.user.profileUrl}"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,33 +63,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
+            android:text="@{vm.user.recipe}"
             app:layout_constraintEnd_toStartOf="@id/followerNumberTextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/nicknameTextView"
-            tools:text="5"
-            android:text="@{vm.user.recipe}"/>
+            tools:text="5" />
 
         <TextView
             android:id="@+id/followerNumberTextView"
             style="@style/TextAppearance.GoBong.SemiBold16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{vm.user.follower}"
             app:layout_constraintEnd_toStartOf="@id/followingNumberTextView"
             app:layout_constraintStart_toEndOf="@id/recipeNumberTextView"
             app:layout_constraintTop_toTopOf="@id/recipeNumberTextView"
-            tools:text="137"
-            android:text="@{vm.user.follower}"/>
+            tools:text="137" />
 
         <TextView
             android:id="@+id/followingNumberTextView"
             style="@style/TextAppearance.GoBong.SemiBold16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{vm.user.following}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/followerNumberTextView"
             app:layout_constraintTop_toTopOf="@id/recipeNumberTextView"
-            tools:text="486"
-            android:text="@{vm.user.following}"/>
+            tools:text="486" />
 
 
         <TextView

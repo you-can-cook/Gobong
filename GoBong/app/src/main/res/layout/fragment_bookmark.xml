@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.bookmark.BookmarkFragment">
 
+    <ImageView
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/selector_toggle"
+        app:layout_constraintBottom_toBottomOf="@id/bookmarkTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bookmarkTextView" />
+
     <TextView
         android:id="@+id/bookmarkTextView"
         style="@style/TextAppearance.GoBong.SemiBold16"
