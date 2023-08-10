@@ -3,6 +3,7 @@ package org.youcancook.gobong.domain.recipe.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.youcancook.gobong.domain.bookmarkrecipe.repository.BookmarkRecipeRepository;
 import org.youcancook.gobong.domain.rating.repository.RatingRepository;
 import org.youcancook.gobong.domain.recipe.dto.request.CreateRecipeRequest;
 import org.youcancook.gobong.domain.recipe.dto.request.UpdateRecipeRequest;
@@ -28,6 +29,7 @@ public class RecipeService {
     private final RecipeDetailRepository recipeDetailRepository;
     private final UserRepository userRepository;
     private final RatingRepository ratingRepository;
+    private final BookmarkRecipeRepository bookmarkRecipeRepository;
 
     @Transactional
     public CreateRecipeResponse createRecipe(Long userId, CreateRecipeRequest request){
@@ -58,6 +60,7 @@ public class RecipeService {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
         validateUserRecipe(user, recipe);
 
+        bookmarkRecipeRepository.deleteAllByRecipeId(recipeId);
         recipeDetailRepository.deleteAllByRecipeId(recipeId);
         ratingRepository.deleteAllByRecipeId(recipeId);
         recipeRepository.delete(recipe);
