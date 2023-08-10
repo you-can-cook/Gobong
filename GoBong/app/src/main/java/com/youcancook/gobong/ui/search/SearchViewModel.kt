@@ -7,18 +7,19 @@ import kotlinx.coroutines.flow.StateFlow
 
 class SearchViewModel : ViewModel() {
 
-    private val _recipes = MutableStateFlow<List<Card>>(
-        listOf(
-            Card(),
-            Card(),
-            Card(),
-            Card(),
-            Card(),
-            Card(),
-            Card()
-        )
-    )
-    val recipes :StateFlow<List<Card>> get() = _recipes
+    //    private val _recipes = MutableStateFlow<List<Card>>(
+//        listOf(
+//            Card(),
+//            Card(),
+//            Card(),
+//            Card(),
+//            Card(),
+//            Card(),
+//            Card()
+//        )
+//    )
+    private val _recipes = MutableStateFlow<List<Card>>(emptyList())
+    val recipes: StateFlow<List<Card>> get() = _recipes
 
 
 }
