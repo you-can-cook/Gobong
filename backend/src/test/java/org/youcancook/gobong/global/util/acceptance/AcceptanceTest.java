@@ -5,16 +5,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.ActiveProfiles;
+import org.youcancook.gobong.global.util.service.DatabaseCleaner;
 
 import static io.restassured.RestAssured.UNDEFINED_PORT;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("acceptance")
 public class AcceptanceTest {
 
     @Autowired
-    private DatabaseCleanup databaseCleanup;
+    private DatabaseCleaner databaseCleaner;
 
     @LocalServerPort
     public int port;
@@ -22,8 +21,8 @@ public class AcceptanceTest {
     void setUp(){
         if (RestAssured.port == UNDEFINED_PORT){
             RestAssured.port = port;
-            databaseCleanup.afterPropertiesSet();
+            databaseCleaner.afterPropertiesSet();
         }
-        databaseCleanup.execute();
+        databaseCleaner.execute();
     }
 }
