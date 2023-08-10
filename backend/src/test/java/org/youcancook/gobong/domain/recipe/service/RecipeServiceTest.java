@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.youcancook.gobong.domain.bookmarkrecipe.entity.BookmarkRecipe;
+import org.youcancook.gobong.domain.bookmarkrecipe.repository.BookmarkRecipeRepository;
 import org.youcancook.gobong.domain.rating.entity.Rating;
 import org.youcancook.gobong.domain.rating.repository.RatingRepository;
 import org.youcancook.gobong.domain.recipe.dto.request.CreateRecipeRequest;
@@ -39,6 +41,8 @@ class RecipeServiceTest {
     UserRepository userRepository;
     @Autowired
     RatingRepository ratingRepository;
+    @Autowired
+    BookmarkRecipeRepository bookmarkRecipeRepository;
 
 
     @Test
@@ -174,6 +178,28 @@ class RecipeServiceTest {
         assertThat(actual).isEmpty();
     }
 
+    @Test
+    @DisplayName("레시피를 삭제하면, 해당 레시피를 저장한 북마크도 함께 삭제된다.")
+    public void deleteBookmarksWhenRecipeDeleted(){
+        User user1 = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
+        User user2 = User.builder().nickname("쩝쩝학사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("125").build();
+        User user3 = User.builder().nickname("쩝쩝석사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("127").build();
+        Recipe recipe = Recipe.builder().user(user1).difficulty(Difficulty.EASY).title("주먹밥").build();
+
+        Long userId = userRepository.save(user1).getId();
+        userRepository.save(user2);
+        userRepository.save(user3);
+        Long recipeId = recipeRepository.save(recipe).getId();
+
+        BookmarkRecipe bookmark1 = new BookmarkRecipe(user2, recipe);
+        BookmarkRecipe bookmark2 = new BookmarkRecipe(user3, recipe);
+        bookmarkRecipeRepository.save(bookmark1);
+        bookmarkRecipeRepository.save(bookmark2);
+
+        recipeService.deleteRecipe(userId, recipeId);
+        List<BookmarkRecipe> actual = bookmarkRecipeRepository.findAll();
+        assertThat(actual).isEmpty();
+    }
 
     @Test
     @DisplayName("유저가 작성한 레시피의 경우, 검증이 통과한다.")
