@@ -12,7 +12,8 @@ import org.youcancook.gobong.domain.user.entity.User;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(uniqueConstraints = {
+@Table(name = "rating",
+        uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "recipe_id"})
 })
 public class Rating {
@@ -22,6 +23,7 @@ public class Rating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "rating_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

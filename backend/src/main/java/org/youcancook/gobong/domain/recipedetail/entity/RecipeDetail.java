@@ -10,9 +10,12 @@ import org.youcancook.gobong.domain.recipe.entity.Recipe;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "recipe_detail")
 public class RecipeDetail {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "recipe_detail_id")
     private Long id;
 
     private String content;
