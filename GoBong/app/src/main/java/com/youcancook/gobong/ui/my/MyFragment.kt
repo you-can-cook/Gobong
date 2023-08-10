@@ -57,7 +57,7 @@ class MyFragment : Fragment() {
 
         binding.run {
 
-            toggleButton.setOnClickListener {
+            toolbar.setNavigationOnClickListener {
                 if (it.isSelected) {
                     setGridRecyclerView()
                 } else {
