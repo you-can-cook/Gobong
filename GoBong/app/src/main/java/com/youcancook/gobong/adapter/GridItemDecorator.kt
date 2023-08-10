@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 
 class GridItemDecorator() :
     ItemDecoration() {
-    var halfMargin = 0
+    var margin = 0
 
     override fun getItemOffsets(
         outRect: Rect,
@@ -21,15 +21,17 @@ class GridItemDecorator() :
         val index = (view.layoutParams as GridLayoutManager.LayoutParams).spanIndex
 
         val position = parent.getChildLayoutPosition(view)
+
         if (index == 0) {
-            outRect.right = halfMargin
+            outRect.left = 0
         } else {
-            outRect.left = halfMargin
+            outRect.left = margin
         }
+
         if (position < 2) {
             outRect.top = 0
         } else {
-            outRect.top = halfMargin
+            outRect.top = margin
         }
     }
 }

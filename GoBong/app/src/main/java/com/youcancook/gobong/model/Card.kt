@@ -1,6 +1,6 @@
 package com.youcancook.gobong.model
 
-class Card(
+data class Card(
     val user: User = User(),
     val thumbnailUrl: String = "",
     val title: String = "내 레시피 대박임",

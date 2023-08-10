@@ -18,7 +18,9 @@ class BookmarkFragment : Fragment() {
     private var _binding: FragmentBookmarkBinding? = null
     private val binding get() = _binding!!
 
-    private val gridAdapter = GridRecyclerViewListAdapter()
+    private val gridAdapter = GridRecyclerViewListAdapter(3,onItemClick = {
+
+    })
     private val gridItemDecorator =
         GridItemDecorator()
 
@@ -27,9 +29,6 @@ class BookmarkFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        val notificationsViewModel =
-            ViewModelProvider(this).get(BookmarkViewModel::class.java)
-
         _binding = FragmentBookmarkBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -40,11 +39,26 @@ class BookmarkFragment : Fragment() {
         binding.run {
             recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
             recyclerView.addItemDecoration(gridItemDecorator.also {
-                it.halfMargin =
-                    requireContext().resources.getDimension(R.dimen.grid_half_margin).toInt()
+                it.margin =
+                    requireContext().resources.getDimension(R.dimen.grid_margin).toInt()
             })
             recyclerView.adapter = gridAdapter
         }
+
+        binding.run {
+
+            toggleButton.setOnClickListener {
+                if (it.isSelected) {
+                    setGridRecyclerView()
+                } else {
+                    setLinearRecyclerView()
+                }
+                it.isSelected = it.isSelected.not()
+            }
+
+            setGridRecyclerView()
+        }
+
 
         gridAdapter.submitList(
             listOf(
@@ -58,6 +72,27 @@ class BookmarkFragment : Fragment() {
             )
         )
     }
+
+    private fun setGridRecyclerView() {
+        binding.run {
+            recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
+            gridAdapter.spanCount = 3
+            recyclerView.removeItemDecoration(gridItemDecorator)
+            recyclerView.addItemDecoration(gridItemDecorator.also { decorator ->
+                decorator.margin =
+                    requireContext().resources.getDimension(R.dimen.grid_margin)
+                        .toInt()
+            })
+            recyclerView.adapter = gridAdapter
+        }
+    }
+
+    private fun setLinearRecyclerView() {
+        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
+        gridAdapter.spanCount = 1
+        gridAdapter.notifyItemRangeChanged(0, gridAdapter.itemCount)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

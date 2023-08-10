@@ -4,38 +4,24 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.youcancook.gobong.databinding.ItemMainCardBinding
 import com.youcancook.gobong.model.Card
 
 class CardRecyclerViewListAdapter(val onItemClick: (Card) -> Unit) :
-    ListAdapter<Card, CardRecyclerViewListAdapter.ViewHolder>(diffUtil) {
+    ListAdapter<Card, CardViewHolder>(diffUtil) {
 
-    inner class ViewHolder(val binding: ItemMainCardBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        init {
-            binding.root.setOnClickListener {
-                onItemClick(currentList[adapterPosition])
-            }
-        }
-
-        fun bind(item: Card) {
-            binding.item = item
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
+        return CardViewHolder(
             ItemMainCardBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ), this@CardRecyclerViewListAdapter,
+            onItemClick
         )
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 
