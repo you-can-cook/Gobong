@@ -31,6 +31,10 @@ class DetailActivity : AppCompatActivity() {
         }
 
         binding.run {
+            toolbar.setNavigationOnClickListener {
+                finish()
+            }
+
             val stars = listOf(star1, star2, star3, star4, star5)
 
             for ((index, star) in stars.withIndex()) {

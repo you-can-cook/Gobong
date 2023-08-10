@@ -7,15 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.youcancook.gobong.R
-import com.youcancook.gobong.adapter.CardRecyclerViewListAdapter
 import com.youcancook.gobong.adapter.GridItemDecorator
 import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentSearchBinding
-import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.ui.detail.DetailActivity
 
 class SearchFragment : Fragment() {

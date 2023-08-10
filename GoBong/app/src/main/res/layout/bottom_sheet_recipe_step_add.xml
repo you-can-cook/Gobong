@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.youcancook.gobong.ui.addRecipe.RecipeStepBottomViewModel" />
+            type="com.youcancook.gobong.ui.addRecipe.bottom.RecipeStepBottomViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

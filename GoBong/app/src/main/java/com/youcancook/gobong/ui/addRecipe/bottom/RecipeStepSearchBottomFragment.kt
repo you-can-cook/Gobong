@@ -1,4 +1,4 @@
-package com.youcancook.gobong.ui.addRecipe
+package com.youcancook.gobong.ui.addRecipe.bottom
 
 import android.os.Bundle
 import android.view.LayoutInflater

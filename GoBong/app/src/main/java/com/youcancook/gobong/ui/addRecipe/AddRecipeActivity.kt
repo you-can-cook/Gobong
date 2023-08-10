@@ -19,9 +19,9 @@ import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.RecipeListAdapter
 import com.youcancook.gobong.adapter.bindingAdapter.addIngredient
 import com.youcancook.gobong.databinding.ActivityAddRecipeBinding
-import com.youcancook.gobong.model.RecipeAdd
 import com.youcancook.gobong.model.RecipeStepAdded
 import com.youcancook.gobong.ui.ImageActivity
+import com.youcancook.gobong.ui.addRecipe.bottom.RecipeStepBottomFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
