@@ -76,9 +76,7 @@ class FollowServiceTest {
                 .thenReturn(true);
 
         // when
-        assertThrows(AlreadyFollowException.class, () -> {
-            followService.follow(follower.getId(), followee.getId());
-        });
+        assertThrows(AlreadyFollowException.class, () -> followService.follow(follower.getId(), followee.getId()));
     }
 
     @Test
@@ -123,9 +121,7 @@ class FollowServiceTest {
                 .thenReturn(Optional.empty());
 
         // when
-        assertThrows(NotFollowException.class, () -> {
-            followService.unfollow(follower.getId(), followee.getId());
-        });
+        assertThrows(NotFollowException.class, () -> followService.unfollow(follower.getId(), followee.getId()));
     }
 
     private User createTestUser(Long userId) {
