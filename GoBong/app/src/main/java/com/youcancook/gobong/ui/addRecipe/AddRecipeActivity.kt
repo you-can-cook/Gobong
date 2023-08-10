@@ -14,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.chip.Chip
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.RecipeListAdapter
@@ -61,7 +62,7 @@ class AddRecipeActivity : AppCompatActivity() {
     })
 
     private val closeAlertDialog: AlertDialog by lazy {
-        AlertDialog.Builder(this)
+        MaterialAlertDialogBuilder(this)
             .setMessage("레시피 게시를 종료하시겠습니까?")
             .setPositiveButton("네") { _, _ ->
                 finish()

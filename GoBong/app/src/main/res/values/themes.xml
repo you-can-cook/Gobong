@@ -21,5 +21,6 @@
 
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.GoBong.BottomSheetDialog</item>
         <item name="materialButtonStyle">@style/Widget.GoBong.Button</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.GoBong.MaterialAlertDialog</item>
     </style>
 </resources>

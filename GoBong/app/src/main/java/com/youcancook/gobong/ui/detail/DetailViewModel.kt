@@ -23,7 +23,7 @@ class DetailViewModel : ViewModel() {
                 "1분 30분", listOf("전자레인지"), "", "전자레인지에 1분 30초 돌리기"
             ),
             RecipeStep(
-                "1분 30분", listOf("전자레인지","오븐"), "", "전자레인지에 1분 30초 돌리기"
+                "1분 30분", listOf("전자레인지", "오븐"), "", "전자레인지에 1분 30초 돌리기"
             ),
             RecipeStep(
                 "1분 30분", listOf("전자레인지"), "", "전자레인지에 1분 30초 돌리기"
@@ -35,7 +35,7 @@ class DetailViewModel : ViewModel() {
                 "1분 30분", listOf("전자레인지"), "", "전자레인지에 1분 30초 돌리기"
             ),
             RecipeStep(
-                "1분 30분", listOf("전자레인지","오븐","에어프라이어","믹서기","가스레인지"), "", "전자레인지에 1분 30초 돌리기"
+                "1분 30분", listOf("전자레인지", "오븐", "에어프라이어", "믹서기", "가스레인지"), "", "전자레인지에 1분 30초 돌리기"
             ),
             RecipeStep(
                 "1분 30분", listOf("전자레인지"), "", "전자레인지에 1분 30초 돌리기"
@@ -53,6 +53,8 @@ class DetailViewModel : ViewModel() {
     fun setStar(count: Int) {
         _starCount.value = count
     }
+
+    fun getStar() = _starCount.value
 
     fun activeRecipeStep(position: Int) {
         _activeRecipeStep.value = position
