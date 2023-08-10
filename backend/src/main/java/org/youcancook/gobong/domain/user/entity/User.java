@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.youcancook.gobong.domain.follow.entity.Follow;
 import org.youcancook.gobong.domain.recipe.entity.Recipe;
 
 import java.util.ArrayList;
@@ -35,9 +34,6 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Recipe> recipes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "following")
-    private List<Follow> following = new ArrayList<>();
 
     @Builder
     public User(String nickname, String oAuthId, OAuthProvider oAuthProvider, String profileImageURL) {
