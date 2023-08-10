@@ -1,21 +1,31 @@
 //
-//  RecipeCell.swift
+//  AddedRecipeCell.swift
 //  Gobong
 //
-//  Created by Ebbyy on 2023/08/06.
+//  Created by Ebbyy on 2023/08/09.
 //
 
 import UIKit
 import AlignedCollectionViewFlowLayout
 
-protocol RecipeCellDelegate : Any {
-    func collectionViewTapped(sender: RecipeCell)
+
+protocol AddedRecipeCellDelegate  : Any {
+    func collectionViewTapped(sender: AddedRecipeCell)
 }
 
-class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class AddedRecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    var delegate: RecipeCellDelegate?
     var tools = [String]()
+    var delegate: AddedRecipeCellDelegate?
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupUI()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     let stepLabel: UILabel = {
         let label = UILabel()
@@ -35,6 +45,35 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         return image
     }()
     
+    let dottedLine: DashedLineView = {
+       let view = DashedLineView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    let infoStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 5
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    let informationView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor(named: "darkGray")?.cgColor
+        return view
+    }()
+    
+    let firstLineView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     let collectionView: SelfSizingCollectionView = {
         let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment: .left, verticalAlignment: .top)
         alignedFlowLayout.minimumInteritemSpacing = 8
@@ -43,6 +82,14 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         return collectionView
+    }()
+    
+    let UIimage: UIImageView = {
+        let image = UIImageView()
+        image.contentMode = .scaleAspectFill
+        image.layer.cornerRadius = 4
+        image.translatesAutoresizingMaskIntoConstraints = false
+        return image
     }()
     
     let descriptionLabel: PaddingLabel = {
@@ -56,44 +103,38 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         return label
     }()
     
-    let UIimage: UIImageView = {
-        let image = UIImageView()
-        image.contentMode = .scaleAspectFill
-        image.layer.cornerRadius = 4
-        image.translatesAutoresizingMaskIntoConstraints = false
-        return image
+    let editButton: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "수정하기"
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor = .black
+        return label
     }()
-    
-    let dottedLine: DashedLineView = {
-        let view = DashedLineView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    let firstLineView = UIView()
-    let infoStackView = UIStackView()
-    
-    let informationView = UIView()
-    
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
-        collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(collectionViewTapped)))
-    }
-    
+
     @objc func collectionViewTapped(){
         delegate?.collectionViewTapped(sender: self)
     }
     
+    @objc func editButtonTapped(){
+        print("Tapped")
+    }
+    
     private func setupUI(){
-        //collection view setup
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(HashtagCollectionCell.self, forCellWithReuseIdentifier: "HashtagCollectionCell")
         collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(collectionViewTapped)))
+        editButton.isUserInteractionEnabled = true
+        descriptionLabel.isUserInteractionEnabled = true
+
+        editButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(collectionViewTapped)))
         
-        //====
+        UIimage.backgroundColor = .black
+        descriptionLabel.backgroundColor = .white
+
+        
         let mainUIView = UIView()
         mainUIView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -103,35 +144,12 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         let stepView = UIView()
         stepView.translatesAutoresizingMaskIntoConstraints = false
         
-        informationView.translatesAutoresizingMaskIntoConstraints = false
-        informationView.layer.borderWidth = 1
-        informationView.layer.borderColor = UIColor(named: "darkGray")?.cgColor
-        
-        infoStackView.axis = .vertical
-        infoStackView.spacing = 5
-        infoStackView.distribution = .fill
-        infoStackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        firstLineView.translatesAutoresizingMaskIntoConstraints = false
-        
         subMainView.addSubview(stepView)
         subMainView.addSubview(informationView)
         
         stepView.addSubview(stepLabelBackground)
         stepView.addSubview(stepLabel)
         
-        informationView.addSubview(infoStackView)
-        
-        infoStackView.addArrangedSubview(firstLineView)
-        
-        firstLineView.addSubview(collectionView)
-        
-        infoStackView.addArrangedSubview(UIimage)
-        infoStackView.addArrangedSubview(descriptionLabel)
-        
-        descriptionLabel.backgroundColor = .white
-        
-        //left side
         NSLayoutConstraint.activate([
             stepLabelBackground.leadingAnchor.constraint(equalTo: stepView.leadingAnchor),
             stepLabelBackground.topAnchor.constraint(equalTo: stepView.topAnchor),
@@ -140,10 +158,7 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
             
             stepLabel.centerXAnchor.constraint(equalTo: stepView.centerXAnchor, constant: -3),
             stepLabel.centerYAnchor.constraint(equalTo: stepView.centerYAnchor),
-        ])
-        
-        //right side
-        NSLayoutConstraint.activate([
+            
             stepView.leadingAnchor.constraint(equalTo: subMainView.leadingAnchor, constant: 0),
             stepView.topAnchor.constraint(equalTo: subMainView.topAnchor, constant: 0),
             stepView.widthAnchor.constraint(equalToConstant: 48),
@@ -152,7 +167,19 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
             informationView.topAnchor.constraint(equalTo: subMainView.topAnchor, constant: 0),
             informationView.trailingAnchor.constraint(equalTo: subMainView.trailingAnchor, constant: 0),
             informationView.bottomAnchor.constraint(equalTo: subMainView.bottomAnchor, constant: 15),
-            
+        ])
+        
+        //====================
+        informationView.addSubview(infoStackView)
+        
+        infoStackView.addArrangedSubview(firstLineView)
+        infoStackView.addArrangedSubview(UIimage)
+        infoStackView.addArrangedSubview(descriptionLabel)
+        
+        firstLineView.addSubview(collectionView)
+        firstLineView.addSubview(editButton)
+        
+        NSLayoutConstraint.activate([
             infoStackView.topAnchor.constraint(equalTo: informationView.topAnchor, constant: 0),
             infoStackView.bottomAnchor.constraint(equalTo: informationView.bottomAnchor),
             
@@ -161,27 +188,27 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
             firstLineView.topAnchor.constraint(equalTo: infoStackView.topAnchor),
             
             collectionView.leadingAnchor.constraint(equalTo: firstLineView.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: firstLineView.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: firstLineView.topAnchor, constant: 6),
             
-        ])
-        
-        NSLayoutConstraint.activate([
+            editButton.leadingAnchor.constraint(equalTo: collectionView.trailingAnchor, constant: 2),
+            editButton.trailingAnchor.constraint(equalTo: firstLineView.trailingAnchor),
+            editButton.topAnchor.constraint(equalTo: firstLineView.topAnchor, constant: 13),
+            
             UIimage.leadingAnchor.constraint(equalTo: informationView.leadingAnchor, constant: 12),
             UIimage.trailingAnchor.constraint(equalTo: informationView.trailingAnchor, constant: -12),
             UIimage.heightAnchor.constraint(lessThanOrEqualToConstant: 130),
             UIimage.widthAnchor.constraint(equalTo: informationView.widthAnchor, constant: -24)
-            
         ])
+        
         
         mainUIView.addSubview(subMainView)
         NSLayoutConstraint.activate([
-            subMainView.leadingAnchor.constraint(equalTo: mainUIView.leadingAnchor, constant: 16),
+            subMainView.leadingAnchor.constraint(equalTo: mainUIView.leadingAnchor, constant: 0),
             subMainView.topAnchor.constraint(equalTo: mainUIView.topAnchor, constant: 5),
-            subMainView.trailingAnchor.constraint(equalTo: mainUIView.trailingAnchor, constant: -16),
+            subMainView.trailingAnchor.constraint(equalTo: mainUIView.trailingAnchor, constant: 0),
             subMainView.bottomAnchor.constraint(equalTo: mainUIView.bottomAnchor, constant: -24)
         ])
-        
+    
         dottedLine.backgroundColor = UIColor(named: "gray")
         
         mainUIView.addSubview(dottedLine)
@@ -201,16 +228,12 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
             mainUIView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0)
         ])
         
-        collectionView.invalidateIntrinsicContentSize()
         
+        descriptionLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(collectionViewTapped)))
+        editButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(editButtonTapped)))
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+ 
     func configuration(step: Int, time: [String], tool: [String], image: String?, description: String, isFolded: Bool) {
-        
         stepLabel.text = "\(step)단계"
         
         tools.append(contentsOf: time)
@@ -219,7 +242,7 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         collectionView.reloadData()
         
         if !isFolded{
-            if image != nil{
+            if image != nil {
                 UIimage.isHidden = false
                 UIimage.image = UIImage(named: image!)
             } else {
@@ -244,6 +267,7 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         }
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return tools.count
     }
@@ -255,7 +279,7 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         cell.label.textColor = UIColor(named: "darkGray")
         cell.label.layer.borderWidth = 0
         cell.label.font = UIFont.systemFont(ofSize: 12)
-        
+
         return cell
     }
     
@@ -272,6 +296,4 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         label.sizeToFit()
         return label.frame.size
     }
-    
 }
-

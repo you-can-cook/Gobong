@@ -12,6 +12,7 @@ import AlignedCollectionViewFlowLayout
 
 class AddPostViewController: UIViewController {
 
+    @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var hardButton: UIButton!
     @IBOutlet weak var normalButton: UIButton!
@@ -20,6 +21,7 @@ class AddPostViewController: UIViewController {
     @IBOutlet weak var introductionField: UITextField!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var postImage: UIImageView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     var collectionViewHeightConstraint: NSLayoutConstraint!
     var levelSelected: String = "" {
@@ -72,7 +74,12 @@ class AddPostViewController: UIViewController {
             }
         }
     }
+    
     var ingredients: [String] = []
+    var recipes =  [dummyHowTo(time: ["3분"], tool: ["전자레인지"], img: "dummyImg" ,description: "자이언트 떡볶이를 순서대로 3분 조리"),
+                    dummyHowTo(time: ["3분"], tool: ["전자레인지"], img: "dummyImg" ,description: "자이언트 떡볶이를 순서대로 3분 조리")]
+    var isFolded = [Bool]()
+    var tableViewCellHeight: [CGFloat] = [CGFloat(123), CGFloat(123), CGFloat(127)]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,6 +87,7 @@ class AddPostViewController: UIViewController {
         // Do any additional setup after loading the view.
         setupUI()
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
+        isFolded = Array(repeating: true, count: recipes.count)
     }
     
     @objc private func viewTapped(){
@@ -96,6 +104,7 @@ extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationCo
         levelButtonUI()
         textFieldUI()
         collectionViewSetup()
+        tableViewSetup()
     }
     
     private func setupNavigationBar(){
@@ -112,6 +121,10 @@ extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationCo
     //IMAGE
     private func setupYPImagePicker() -> YPImagePickerConfiguration{
         var config = YPImagePickerConfiguration()
+        config.screens = [.library]
+        config.showsPhotoFilters = false
+        config.shouldSaveNewPicturesToAlbum = false
+        config.showsCrop = .rectangle(ratio: (16/9))
         
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: 168.0, height: 168.0))
         let newCapturePhotoImage = renderer.image { context in
@@ -230,144 +243,17 @@ extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationCo
         levelSelected = "easy"
     }
     
-
-}
-
-//UI COLLECTION VIEW (재료)
-extension AddPostViewController: UICollectionViewDelegate, UICollectionViewDataSource, IngredientCellDelegate, AddButtonIngredientCellDelegate {
-    func deleteButtonTapped(in cell: AddIngredientCell) {
-        guard let indexPath = collectionView.indexPath(for: cell) else {
-            return
-        }
-        
-        ingredients.remove(at: indexPath.row)
-        collectionView.reloadData()
-        
-        collectionView.performBatchUpdates(nil) { [weak self] _ in
-            self?.collectionView.collectionViewLayout.invalidateLayout()
-        }
-        
-        // Update the height constraint of the collection view based on content size
-        let contentHeight = collectionView.contentSize.height
-        collectionViewHeightConstraint.constant = contentHeight
-        
-        UIView.animate(withDuration: 0.1) {
-            // Update the layout
-            self.view.layoutIfNeeded()
-        }
-    }
     
-    func textFieldDidPressReturn(in cell: AddIngredientCell) {
-        cell.deleteButton.isUserInteractionEnabled = true
-        if let text = cell.textField.text {
-            ingredients.removeLast()
-            ingredients.append(text)
-            
-            if cell.textField.text != " " {
-                cell.textField.isUserInteractionEnabled = false
-            }
-        }
-    }
-    
-    func textFieldChanged(in cell: AddIngredientCell) {
-        guard let indexPath = collectionView.indexPath(for: cell) else {
-            return
-        }
-        
-        cell.deleteButton.isUserInteractionEnabled = false
-        
-        collectionView.performBatchUpdates(nil) { [weak self] _ in
-            self?.collectionView.collectionViewLayout.invalidateLayout()
-        }
-        
-        // Update the height constraint of the collection view based on content size
-        let contentHeight = collectionView.contentSize.height
-        collectionViewHeightConstraint.constant = contentHeight
-        self.view.layoutIfNeeded()
-    }
-    
-    func addButtonTapped(in cell: AddButtonIngredientCell) {
-        if ingredients.last != " " {
-            ingredients.append(" ")
-            collectionView.reloadData()
-            
-            collectionView.performBatchUpdates(nil) { [weak self] _ in
-                self?.collectionView.collectionViewLayout.invalidateLayout()
-            }
-            
-            // Update the height constraint of the collection view based on content size
-            let contentHeight = collectionView.contentSize.height
-            collectionViewHeightConstraint.constant = contentHeight
-            
-            UIView.animate(withDuration: 0.1) {
-                // Update the layout
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
-
-    private func collectionViewSetup(){
-        let alignedFlowLayout = collectionView?.collectionViewLayout as? AlignedCollectionViewFlowLayout
-        alignedFlowLayout?.horizontalAlignment = .left
-        alignedFlowLayout?.verticalAlignment = .center
-        alignedFlowLayout?.minimumLineSpacing = 8
-        alignedFlowLayout?.minimumInteritemSpacing = 8
-        
-        collectionView.dataSource = self
-        collectionView.register(AddIngredientCell.self, forCellWithReuseIdentifier: "AddIngredientCell")
-        collectionView.register(AddButtonIngredientCell.self, forCellWithReuseIdentifier: "AddButtonIngredientCell")
-        
-        collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 34)
-        collectionViewHeightConstraint.isActive = true
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return ingredients.count + 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.row != ingredients.count {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddIngredientCell", for: indexPath) as! AddIngredientCell
-            // Configure the cell with actual ingredient data
-            
-            cell.delegate = self
-            cell.view.tintColor = UIColor(named: "pink")
-            cell.view.layer.borderColor = UIColor(named: "pink")?.cgColor
-            cell.textField.text = ingredients[indexPath.row]
-            cell.textField.textColor = UIColor(named: "pink")
-            cell.deleteButton.isHidden = false
-            cell.textField.isHidden = false
-            
-            if ingredients[indexPath.item] != " " {
-                cell.textField.isUserInteractionEnabled = false
-            } else {
-                cell.textField.isUserInteractionEnabled = true
-            }
-            
-            cell.textField.trailingAnchor.constraint(equalTo: cell.deleteButton.leadingAnchor, constant: 2).isActive = true
-            return cell
-        } else {
-            // Reset the cell and configure it for adding
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddButtonIngredientCell", for: indexPath) as! AddButtonIngredientCell
-            cell.delegate = self
-            
-            return cell
-        }
-        
+    func tableViewSetup(){
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
+//        tableView.isScrollEnabled = false
+        tableView.register(AddRecipeCell.self, forCellReuseIdentifier: "AddRecipeCell")
+        tableView.register(AddedRecipeCell.self, forCellReuseIdentifier: "AddedRecipeCell")
+        tableViewHeight.constant = 127
     }
 }
 
-//extension AddPostViewController: UITableViewDelegate, UITableViewDataSource {
-//    private func tableViewSetup(){
-//        
-//    }
-//    
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        <#code#>
-//    }
-//     
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        <#code#>
-//    }
-//    
-//}
+
