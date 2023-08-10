@@ -4,13 +4,14 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.youcancook.gobong.global.validation.annotation.UserNickname;
 
 @Getter
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class SignupRequest {
 
-    @NotBlank(message = "nickname은 필수입니다.")
+    @UserNickname
     private String nickname;
 
     @NotBlank(message = "provider는 필수입니다.")

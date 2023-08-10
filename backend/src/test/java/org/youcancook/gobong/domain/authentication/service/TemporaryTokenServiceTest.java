@@ -66,8 +66,8 @@ class TemporaryTokenServiceTest {
     }
 
     @Test
-    @DisplayName("토큰 검증 - 토큰이 만료 되었을 때")
-    void validTemporaryTokenFail() {
+    @DisplayName("토큰 찾기 실패")
+    void findTemporaryTokenFail() {
         // given
         final String token = UUID.randomUUID().toString();
         when(temporaryTokenRepository.findByTokenAndExpiredAtAfter(token, clockService.getCurrentDateTime()))
@@ -75,28 +75,45 @@ class TemporaryTokenServiceTest {
 
         // when, then
         assertThrows(TemporaryTokenNotFoundException.class,
-                () -> temporaryTokenService.validateTemporaryToken(token));
+                () -> temporaryTokenService.findTemporaryTokenId(token));
 
         verify(temporaryTokenRepository, times(1))
                 .findByTokenAndExpiredAtAfter(token, clockService.getCurrentDateTime());
     }
 
     @Test
-    @DisplayName("토큰 검증 - 토큰이 만료 되지 않았을 때")
-    void validTemporaryTokenSuccess() {
+    @DisplayName("토큰 찾기 성공")
+    void findTemporaryTokenSuccess() {
         // given
         final String token = UUID.randomUUID().toString();
+        TemporaryToken temporaryToken = new TemporaryToken(token, clockService.getCurrentDateTime().plusMinutes(10));
+        ReflectionTestUtils.setField(temporaryToken, "id", 1L);
         when(temporaryTokenRepository.findByTokenAndExpiredAtAfter(token, clockService.getCurrentDateTime()))
-                .thenReturn(Optional.of(new TemporaryToken(token, LocalDateTime.now())));
-        doNothing().when(temporaryTokenRepository).delete(any(TemporaryToken.class));
+                .thenReturn(Optional.of(temporaryToken));
 
         // when
-        temporaryTokenService.validateTemporaryToken(token);
+        Long temporaryTokenId = temporaryTokenService.findTemporaryTokenId(token);
+
+        // then
+        assertThat(temporaryTokenId).isEqualTo(temporaryToken.getId());
+        verify(temporaryTokenRepository, times(1))
+                .findByTokenAndExpiredAtAfter(token, clockService.getCurrentDateTime());
+    }
+
+    @Test
+    @DisplayName("토큰 삭제")
+    void deleteTemporaryToken() {
+        // given
+        final String token = UUID.randomUUID().toString();
+        TemporaryToken temporaryToken = new TemporaryToken(token, clockService.getCurrentDateTime());
+        ReflectionTestUtils.setField(temporaryToken, "id", 1L);
+        doNothing().when(temporaryTokenRepository).deleteById(temporaryToken.getId());
+
+        // when
+        temporaryTokenService.deleteTemporaryToken(temporaryToken.getId());
 
         // then
         verify(temporaryTokenRepository, times(1))
-                .findByTokenAndExpiredAtAfter(token, clockService.getCurrentDateTime());
-        verify(temporaryTokenRepository, times(1))
-                .delete(any(TemporaryToken.class));
+                .deleteById(temporaryToken.getId());
     }
 }

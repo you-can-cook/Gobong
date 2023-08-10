@@ -16,6 +16,7 @@ import org.youcancook.gobong.domain.authentication.repository.RefreshTokenReposi
 import org.youcancook.gobong.domain.authentication.repository.TemporaryTokenRepository;
 import org.youcancook.gobong.domain.authentication.service.TemporaryTokenService;
 import org.youcancook.gobong.domain.user.dto.request.LoginRequest;
+import org.youcancook.gobong.domain.user.dto.request.SignupRequest;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
 import org.youcancook.gobong.domain.user.repository.UserRepository;
@@ -162,6 +163,85 @@ class UserControllerTest {
 
         List<RefreshToken> refreshTokens = refreshTokenRepository.findAll();
         assertThat(refreshTokens).hasSize(0);
+    }
+
+    @Test
+    @DisplayName("회원가입 성공")
+    void signupSuccess() throws Exception {
+        // given
+        String temporaryToken = temporaryTokenService.saveTemporaryToken();
+
+        // when
+        SignupRequest signupRequest = new SignupRequest("nickname", "KAKAO", "oauthId", temporaryToken, "profileImageURL");
+        String request = objectMapper.writeValueAsString(signupRequest);
+        ResultActions resultActions =
+                mockMvc.perform(post("/api/users/signup")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(request))
+                        .andDo(print());
+
+        // then
+        List<RefreshToken> refreshTokens = refreshTokenRepository.findAll();
+        assertThat(refreshTokens).hasSize(1);
+
+        List<TemporaryToken> temporaryTokens = temporaryTokenRepository.findAll();
+        assertThat(temporaryTokens).hasSize(0);
+
+        List<User> users = userRepository.findAll();
+        assertThat(users).hasSize(1);
+        User user = users.get(0);
+        assertThat(user.getNickname()).isEqualTo(signupRequest.getNickname());
+        assertThat(user.getProfileImageURL()).isEqualTo(signupRequest.getProfileImageURL());
+        assertThat(user.getOAuthProvider()).isEqualTo(OAuthProvider.KAKAO);
+        assertThat(user.getOAuthId()).isEqualTo(signupRequest.getOauthId());
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.grantType").value("Bearer"))
+                .andExpect(jsonPath("$.accessToken").exists())
+                .andExpect(jsonPath("$.refreshToken").value(refreshTokens.get(0).getRefreshToken()));
+    }
+
+    @Test
+    @DisplayName("회원가입 실패 - 닉네임은 한글, 영어, 숫자로 10자 이내만 가능")
+    void signupFailByNickname() throws Exception {
+        List<String> failNicknames = List.of(" ", "", "\t", "\n", "@", "ab ", " ab", "a b",
+                "12345678910", "abcdefghijh", "가나다라마바사아자차카", "ㄱㄴㄷ");
+
+        for (String failNickname : failNicknames) {
+            SignupRequest signupRequest
+                    = new SignupRequest(failNickname, "KAKAO", "oauthId", "temporaryToken", "profileImageURL");
+            String request = objectMapper.writeValueAsString(signupRequest);
+            mockMvc.perform(post("/api/users/signup")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(request))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_VALUE.getCode()))
+                    .andExpect(jsonPath("$.message").value("닉네임은 한글, 영어, 숫자로 10자 이내만 가능합니다."))
+                    .andDo(print());
+        }
+    }
+
+    @Test
+    @DisplayName("회원가입 실패 - 중복된 닉네임")
+    void signupFailByDuplicationNickname() throws Exception {
+        // given
+        String temporaryToken = temporaryTokenService.saveTemporaryToken();
+        User savedUser = saveTestUser();
+
+        // when
+        SignupRequest signupRequest = new SignupRequest(savedUser.getNickname(), "KAKAO", "oauthId", temporaryToken, "profileImageURL");
+        String request = objectMapper.writeValueAsString(signupRequest);
+
+        mockMvc.perform(post("/api/users/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andExpect(jsonPath("$.code").value(ErrorCode.DUPLICATE_NICKNAME.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.DUPLICATE_NICKNAME.getMessage()))
+                .andDo(print());
+
+        List<TemporaryToken> temporaryTokens = temporaryTokenRepository.findAll();
+        assertThat(temporaryTokens).hasSize(1);
     }
 
     private User saveTestUser() {

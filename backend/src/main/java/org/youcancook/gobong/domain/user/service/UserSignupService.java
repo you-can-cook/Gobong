@@ -23,9 +23,7 @@ public class UserSignupService {
 
     @Transactional
     public SignupResponse signup(SignupDto signupDto) {
-        if (isDuplicateNickname(signupDto.getNickname())) {
-            throw new DuplicationNicknameException();
-        }
+        validateDuplicateNickname(signupDto.getNickname());
 
         User user = createUser(signupDto);
         userRepository.save(user);
@@ -33,6 +31,16 @@ public class UserSignupService {
         TokenDto tokenDto = tokenManager.createTokenDto(user.getId());
         refreshTokenService.saveRefreshToken(user.getId(), tokenDto);
         return SignupResponse.from(tokenDto);
+    }
+
+    private void validateDuplicateNickname(String nickname) {
+        if (isDuplicateNickname(nickname)) {
+            throw new DuplicationNicknameException();
+        }
+    }
+
+    public boolean isDuplicateNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
     }
 
     private User createUser(SignupDto signupDto) {
@@ -43,9 +51,5 @@ public class UserSignupService {
                 .nickname(signupDto.getNickname())
                 .profileImageURL(signupDto.getProfileImageURL())
                 .build();
-    }
-
-    public boolean isDuplicateNickname(String nickname) {
-        return userRepository.existsByNickname(nickname);
     }
 }
