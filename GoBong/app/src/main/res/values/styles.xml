@@ -150,6 +150,10 @@
         <item name="shapeAppearance">@style/ShapeAppearance.GoBong.MediumComponent</item>
     </style>
 
+    <style name="MaterialAlertDialog.GoBong.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textAppearance">@style/TextAppearance.GoBong.Bold20</item>
+    </style>
+
     <style name="ShapeAppearance.GoBong.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
