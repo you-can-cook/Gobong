@@ -82,8 +82,8 @@ class FollowControllerTest {
                         .header("Authorization", "Bearer " + accessToken)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value(ErrorCode.ALREADY_FOLLOW.getCode()))
-                .andExpect(jsonPath("$.message").value(ErrorCode.ALREADY_FOLLOW.getMessage()))
+                .andExpect(jsonPath("$.code").value(ErrorCode.ALREADY_FOLLOWING.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.ALREADY_FOLLOWING.getMessage()))
                 .andDo(print());
     }
 
@@ -124,8 +124,8 @@ class FollowControllerTest {
                         .header("Authorization", "Bearer " + accessToken)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value(ErrorCode.NOT_FOLLOW.getCode()))
-                .andExpect(jsonPath("$.message").value(ErrorCode.NOT_FOLLOW.getMessage()))
+                .andExpect(jsonPath("$.code").value(ErrorCode.NOT_FOLLOWING.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.NOT_FOLLOWING.getMessage()))
                 .andDo(print());
     }
 

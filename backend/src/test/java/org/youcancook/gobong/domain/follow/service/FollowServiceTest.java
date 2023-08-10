@@ -9,8 +9,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.youcancook.gobong.domain.follow.entity.Follow;
-import org.youcancook.gobong.domain.follow.exception.AlreadyFollowException;
-import org.youcancook.gobong.domain.follow.exception.NotFollowException;
+import org.youcancook.gobong.domain.follow.exception.AlreadyFollowingException;
+import org.youcancook.gobong.domain.follow.exception.NotFollowingException;
 import org.youcancook.gobong.domain.follow.repository.FollowRepository;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
@@ -76,7 +76,7 @@ class FollowServiceTest {
                 .thenReturn(true);
 
         // when
-        assertThrows(AlreadyFollowException.class, () -> followService.follow(follower.getId(), followee.getId()));
+        assertThrows(AlreadyFollowingException.class, () -> followService.follow(follower.getId(), followee.getId()));
     }
 
     @Test
@@ -121,7 +121,7 @@ class FollowServiceTest {
                 .thenReturn(Optional.empty());
 
         // when
-        assertThrows(NotFollowException.class, () -> followService.unfollow(follower.getId(), followee.getId()));
+        assertThrows(NotFollowingException.class, () -> followService.unfollow(follower.getId(), followee.getId()));
     }
 
     private User createTestUser(Long userId) {

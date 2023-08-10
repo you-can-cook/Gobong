@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.youcancook.gobong.domain.follow.entity.Follow;
-import org.youcancook.gobong.domain.follow.exception.AlreadyFollowException;
-import org.youcancook.gobong.domain.follow.exception.NotFollowException;
+import org.youcancook.gobong.domain.follow.exception.AlreadyFollowingException;
+import org.youcancook.gobong.domain.follow.exception.NotFollowingException;
 import org.youcancook.gobong.domain.follow.repository.FollowRepository;
 import org.youcancook.gobong.domain.user.entity.User;
 import org.youcancook.gobong.domain.user.exception.UserNotFoundException;
@@ -25,7 +25,7 @@ public class FollowService {
         User followee = userRepository.findById(followeeId)
                 .orElseThrow(UserNotFoundException::new);
 
-        validateAlreadyFollow(follower, followee);
+        validateAlreadyFollowing(follower, followee);
 
         Follow follow = Follow.builder()
                 .follower(follower)
@@ -34,9 +34,9 @@ public class FollowService {
         followRepository.save(follow);
     }
 
-    private void validateAlreadyFollow(User follower, User followee) {
+    private void validateAlreadyFollowing(User follower, User followee) {
         if (followRepository.existsByFollowerAndFollowee(follower, followee)) {
-            throw new AlreadyFollowException();
+            throw new AlreadyFollowingException();
         }
     }
 
@@ -48,7 +48,7 @@ public class FollowService {
                 .orElseThrow(UserNotFoundException::new);
 
         Follow follow = followRepository.findByFollowerAndFollowee(follower, followee)
-                .orElseThrow(NotFollowException::new);
+                .orElseThrow(NotFollowingException::new);
         followRepository.delete(follow);
     }
 }

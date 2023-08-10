@@ -56,8 +56,8 @@ public enum ErrorCode {
     FAILED_TO_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "F001", "파일 업로드를 실패했습니다."),
 
     // Follow
-    ALREADY_FOLLOW(HttpStatus.BAD_REQUEST, "F101", "이미 팔로우한 사용자입니다."),
-    NOT_FOLLOW(HttpStatus.BAD_REQUEST, "F102", "팔로우하지 않은 사용자입니다."),
+    ALREADY_FOLLOWING(HttpStatus.BAD_REQUEST, "F101", "이미 팔로우한 사용자입니다."),
+    NOT_FOLLOWING(HttpStatus.BAD_REQUEST, "F102", "팔로우하지 않은 사용자입니다."),
     ;
 
     private final HttpStatus status;
