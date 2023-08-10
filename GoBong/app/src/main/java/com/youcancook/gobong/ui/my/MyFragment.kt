@@ -1,5 +1,6 @@
 package com.youcancook.gobong.ui.my
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,9 @@ import com.youcancook.gobong.adapter.GridItemDecorator
 import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentMyBinding
 import com.youcancook.gobong.model.Card
+import com.youcancook.gobong.ui.detail.DetailActivity
+import com.youcancook.gobong.ui.my.follow.FollowActivity
+import com.youcancook.gobong.ui.my.setting.SettingActivity
 
 class MyFragment : Fragment() {
 
@@ -22,8 +26,10 @@ class MyFragment : Fragment() {
         ViewModelProvider(this).get(MyViewModel::class.java)
     }
     private val gridAdapter = GridRecyclerViewListAdapter(3, onItemClick = {
-
+        val intent = Intent(requireContext(), DetailActivity::class.java)
+        startActivity(intent)
     })
+
     private val gridItemDecorator =
         GridItemDecorator()
 
@@ -66,7 +72,26 @@ class MyFragment : Fragment() {
                 it.isSelected = it.isSelected.not()
             }
 
+            toolbar.setOnMenuItemClickListener {
+                if (it.itemId == R.id.toolbar_my_setting) {
+                    val intent = Intent(requireContext(), SettingActivity::class.java)
+                    startActivity(intent)
+                }
+                return@setOnMenuItemClickListener true
+            }
+
             setGridRecyclerView()
+
+            followerNumberTextView.setOnClickListener {
+                val intent = Intent(requireContext(), FollowActivity::class.java)
+                startActivity(intent)
+            }
+
+            //TODO 팔로잉 팔로워에 따라서 시작 위치 변경
+            followingNumberTextView.setOnClickListener {
+                val intent = Intent(requireContext(), FollowActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         gridAdapter.submitList(
@@ -80,6 +105,7 @@ class MyFragment : Fragment() {
                 Card()
             )
         )
+
     }
 
     private fun setGridRecyclerView() {

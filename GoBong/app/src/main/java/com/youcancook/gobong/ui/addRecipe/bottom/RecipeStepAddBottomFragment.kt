@@ -1,4 +1,4 @@
-package com.youcancook.gobong.ui.addRecipe
+package com.youcancook.gobong.ui.addRecipe.bottom
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent

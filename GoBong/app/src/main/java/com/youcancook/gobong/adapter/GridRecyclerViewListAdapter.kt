@@ -3,10 +3,8 @@ package com.youcancook.gobong.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.youcancook.gobong.databinding.ItemGridCardBinding
 import com.youcancook.gobong.databinding.ItemMainCardBinding
 import com.youcancook.gobong.model.Card

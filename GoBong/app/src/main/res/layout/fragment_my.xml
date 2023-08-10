@@ -12,7 +12,7 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         tools:context=".ui.detail.DetailActivity">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -56,8 +56,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/profileImageView"
@@ -105,7 +104,6 @@
                     app:layout_constraintTop_toTopOf="@id/recipeNumberTextView"
                     tools:text="486" />
 
-
                 <TextView
                     android:id="@+id/recipeTextView"
                     style="@style/TextAppearance.GoBong.Regular14"
@@ -141,7 +139,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="42dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/recipeTextView"
