@@ -39,6 +39,7 @@
 		80D2B6052A791AD900B777D1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80D2B6032A791AD900B777D1 /* LaunchScreen.storyboard */; };
 		80D2B60F2A792B0E00B777D1 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D2B60D2A792B0E00B777D1 /* FeedCell.swift */; };
 		80D2B6102A792B0E00B777D1 /* FeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80D2B60E2A792B0E00B777D1 /* FeedCell.xib */; };
+		80D3F1E72A8688F1009313CB /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1E62A8688F1009313CB /* FilterViewController.swift */; };
 		80E3C01E2A83CEBB00845A9B /* Recipe_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */; };
 		80E3C0212A83CF6F00845A9B /* 재료_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0202A83CF6F00845A9B /* 재료_AddPost.swift */; };
 		80E3C0242A83D0E900845A9B /* DashedLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0232A83D0E900845A9B /* DashedLineView.swift */; };
@@ -84,6 +85,7 @@
 		80D2B6062A791AD900B777D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		80D2B60D2A792B0E00B777D1 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		80D2B60E2A792B0E00B777D1 /* FeedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedCell.xib; sourceTree = "<group>"; };
+		80D3F1E62A8688F1009313CB /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe_AddPost.swift; sourceTree = "<group>"; };
 		80E3C0202A83CF6F00845A9B /* 재료_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "재료_AddPost.swift"; sourceTree = "<group>"; };
 		80E3C0232A83D0E900845A9B /* DashedLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedLineView.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				80CE8AEF2A7AA75A003DE318 /* BookmarkViewController.swift */,
 				80CE8AF62A7CA1F8003DE318 /* ProfileViewController.swift */,
 				80CE8AFC2A7CD246003DE318 /* DetailViewController.swift */,
+				80D3F1E62A8688F1009313CB /* FilterViewController.swift */,
 				80E3C01C2A83CEA100845A9B /* AddPostView */,
 				80D2B6112A792B1600B777D1 /* Cell */,
 				8029E5502A851D3D00C927F0 /* TestViewController.swift */,
@@ -390,6 +393,7 @@
 				80E3C01E2A83CEBB00845A9B /* Recipe_AddPost.swift in Sources */,
 				80CE8AF02A7AA75A003DE318 /* BookmarkViewController.swift in Sources */,
 				80D2B60F2A792B0E00B777D1 /* FeedCell.swift in Sources */,
+				80D3F1E72A8688F1009313CB /* FilterViewController.swift in Sources */,
 				80E3C0212A83CF6F00845A9B /* 재료_AddPost.swift in Sources */,
 				80CE8AF72A7CA1F8003DE318 /* ProfileViewController.swift in Sources */,
 				80D2B5F92A791AD600B777D1 /* AppDelegate.swift in Sources */,

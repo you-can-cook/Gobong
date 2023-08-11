@@ -331,6 +331,7 @@
                         <outlet property="collectionView" destination="Cx5-D7-hwR" id="tp4-ax-9ho"/>
                         <outlet property="tableView" destination="suW-Ng-w91" id="B2A-4P-b5D"/>
                         <segue destination="Rt5-em-RtD" kind="show" identifier="showDetailView" id="aw6-BK-YBx"/>
+                        <segue destination="TrC-py-hTt" kind="show" identifier="showFilterView" id="fqE-xz-AnD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VfR-SA-Mhg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -682,11 +683,11 @@
             <objects>
                 <viewController id="cWW-KD-ItQ" customClass="AddDetailPostViewController" customModule="Gobong" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="C0v-VV-gTZ">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="832"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ArG-0l-6wG">
-                                <rect key="frame" x="16" y="20" width="361" height="822"/>
+                                <rect key="frame" x="16" y="20" width="361" height="812"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="28" translatesAutoresizingMaskIntoConstraints="NO" id="ctJ-yc-gXF">
                                         <rect key="frame" x="0.0" y="0.0" width="361" height="721"/>
@@ -1079,7 +1080,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Nh3-eP-V3q"/>
-                    <size key="freeformSize" width="393" height="852"/>
+                    <size key="freeformSize" width="393" height="842"/>
                     <connections>
                         <outlet property="add10MinButton" destination="f6q-mH-keJ" id="KZZ-uV-x8V"/>
                         <outlet property="add10Sec" destination="MGA-OO-84R" id="D50-U4-f9F"/>
@@ -1282,6 +1283,385 @@
             </objects>
             <point key="canvasLocation" x="-369" y="1137"/>
         </scene>
+        <!--Filter View Controller-->
+        <scene sceneID="mBl-Qt-N1S">
+            <objects>
+                <viewController id="TrC-py-hTt" customClass="FilterViewController" customModule="Gobong" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0zv-vP-SB5">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lfn-vG-82b">
+                                <rect key="frame" x="0.0" y="103" width="393" height="666"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uDb-35-HYZ">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="516.66666666666663"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="36" translatesAutoresizingMaskIntoConstraints="NO" id="qqh-1q-GCH">
+                                                <rect key="frame" x="16" y="0.0" width="361" height="516.66666666666663"/>
+                                                <subviews>
+                                                    <searchBar contentMode="redraw" text="" placeholder="제목, @닉네임" translatesAutoresizingMaskIntoConstraints="NO" id="1Zs-OE-FNw">
+                                                        <rect key="frame" x="0.0" y="0.0" width="361" height="56"/>
+                                                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="TrC-py-hTt" id="pOi-kA-sn9"/>
+                                                        </connections>
+                                                    </searchBar>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Z7I-If-fiM">
+                                                        <rect key="frame" x="0.0" y="92" width="361" height="49.333333333333343"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="정렬" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NN7-aM-m8k">
+                                                                <rect key="frame" x="0.0" y="0.0" width="361" height="14.333333333333334"/>
+                                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7rV-c1-rN0">
+                                                                <rect key="frame" x="0.0" y="18.333333333333343" width="361" height="31"/>
+                                                                <subviews>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gQd-dc-5Ud">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="180.66666666666666" height="31"/>
+                                                                        <color key="backgroundColor" name="pink"/>
+                                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                        <state key="normal" title="Button"/>
+                                                                        <buttonConfiguration key="configuration" style="plain" title="최신순">
+                                                                            <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
+                                                                        </buttonConfiguration>
+                                                                        <connections>
+                                                                            <action selector="byNewestTapped:" destination="TrC-py-hTt" eventType="touchUpInside" id="Zy1-sG-IAA"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wtU-h1-w1g">
+                                                                        <rect key="frame" x="180.66666666666663" y="0.0" width="180.33333333333337" height="31"/>
+                                                                        <color key="tintColor" name="gray"/>
+                                                                        <state key="normal" title="Button"/>
+                                                                        <buttonConfiguration key="configuration" style="plain" title="인기순">
+                                                                            <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
+                                                                        </buttonConfiguration>
+                                                                        <connections>
+                                                                            <action selector="byPopularityTapped:" destination="TrC-py-hTt" eventType="touchUpInside" id="38z-cB-I8M"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                </subviews>
+                                                            </stackView>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="beA-Ne-C4V">
+                                                        <rect key="frame" x="0.0" y="177.33333333333331" width="361" height="50.333333333333343"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="난이도" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cP7-hj-ccI">
+                                                                <rect key="frame" x="0.0" y="0.0" width="361" height="14.333333333333334"/>
+                                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0UJ-VR-thr">
+                                                                <rect key="frame" x="0.0" y="18.333333333333371" width="361" height="32"/>
+                                                                <subviews>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rh0-2s-E1m">
+                                                                        <rect key="frame" x="0.0" y="0.66666666666662877" width="60.333333333333336" height="31"/>
+                                                                        <color key="tintColor" name="pink"/>
+                                                                        <state key="normal" title="Button"/>
+                                                                        <buttonConfiguration key="configuration" style="plain" title="쉬워요">
+                                                                            <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
+                                                                        </buttonConfiguration>
+                                                                        <connections>
+                                                                            <action selector="easyTapped:" destination="TrC-py-hTt" eventType="touchUpInside" id="HEB-GD-IWj"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zo0-E8-NgQ">
+                                                                        <rect key="frame" x="64.333333333333314" y="0.66666666666662877" width="84.666666666666686" height="31"/>
+                                                                        <color key="tintColor" name="gray"/>
+                                                                        <state key="normal" title="Button"/>
+                                                                        <buttonConfiguration key="configuration" style="plain" title="보통이에요">
+                                                                            <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
+                                                                        </buttonConfiguration>
+                                                                        <connections>
+                                                                            <action selector="normalTapped:" destination="TrC-py-hTt" eventType="touchUpInside" id="X3F-xt-fTR"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mHo-rB-yT4">
+                                                                        <rect key="frame" x="153" y="0.66666666666662877" width="72.666666666666686" height="31"/>
+                                                                        <color key="tintColor" name="gray"/>
+                                                                        <state key="normal" title="Button"/>
+                                                                        <buttonConfiguration key="configuration" style="plain" title="어려워요">
+                                                                            <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
+                                                                        </buttonConfiguration>
+                                                                        <connections>
+                                                                            <action selector="hardTapped:" destination="TrC-py-hTt" eventType="touchUpInside" id="UAS-WN-ilh"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                </subviews>
+                                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                <constraints>
+                                                                    <constraint firstItem="zo0-E8-NgQ" firstAttribute="leading" secondItem="rh0-2s-E1m" secondAttribute="trailing" constant="4" id="07G-39-4aW"/>
+                                                                    <constraint firstItem="mHo-rB-yT4" firstAttribute="centerY" secondItem="0UJ-VR-thr" secondAttribute="centerY" id="7Ow-xV-77q"/>
+                                                                    <constraint firstItem="mHo-rB-yT4" firstAttribute="leading" secondItem="zo0-E8-NgQ" secondAttribute="trailing" constant="4" id="9FY-Ce-YSL"/>
+                                                                    <constraint firstItem="rh0-2s-E1m" firstAttribute="leading" secondItem="0UJ-VR-thr" secondAttribute="leading" id="DDn-cC-RQZ"/>
+                                                                    <constraint firstAttribute="height" constant="32" id="oZu-VT-jrx"/>
+                                                                    <constraint firstItem="rh0-2s-E1m" firstAttribute="centerY" secondItem="0UJ-VR-thr" secondAttribute="centerY" id="tTd-00-TkL"/>
+                                                                    <constraint firstItem="zo0-E8-NgQ" firstAttribute="centerY" secondItem="0UJ-VR-thr" secondAttribute="centerY" id="zg8-NL-LCr"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ZWl-nQ-cCF">
+                                                        <rect key="frame" x="0.0" y="263.66666666666669" width="361" height="48.333333333333314"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="소요 시간" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2bQ-Cp-ojo">
+                                                                <rect key="frame" x="0.0" y="0.0" width="361" height="14.333333333333334"/>
+                                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eFh-7n-FQj" customClass="StepSlider">
+                                                                <rect key="frame" x="0.0" y="18.333333333333314" width="361" height="30"/>
+                                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="30" id="emA-g2-KfH"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Axo-OW-Fnl">
+                                                        <rect key="frame" x="0.0" y="348" width="361" height="82.333333333333314"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="별점" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ebL-85-j4x">
+                                                                <rect key="frame" x="0.0" y="0.0" width="361" height="14.333333333333334"/>
+                                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ift-Nl-AvA">
+                                                                <rect key="frame" x="0.0" y="18.333333333333314" width="361" height="64"/>
+                                                                <subviews>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rli-6y-bGA">
+                                                                        <rect key="frame" x="0.0" y="2" width="57" height="31"/>
+                                                                        <color key="tintColor" name="gray"/>
+                                                                        <state key="normal" title="Button"/>
+                                                                        <buttonConfiguration key="configuration" style="plain" title="5공기">
+                                                                            <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
+                                                                        </buttonConfiguration>
+                                                                        <connections>
+                                                                            <action selector="fiveStarTapped:" destination="TrC-py-hTt" eventType="touchUpInside" id="4UF-HC-ARP"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pPM-on-phH">
+                                                                        <rect key="frame" x="60.999999999999993" y="2" width="85.333333333333314" height="31"/>
+                                                                        <color key="tintColor" name="gray"/>
+                                                                        <state key="normal" title="Button"/>
+                                                                        <buttonConfiguration key="configuration" style="plain" title="4공기 이상">
+                                                                            <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
+                                                                        </buttonConfiguration>
+                                                                        <connections>
+                                                                            <action selector="fourStarTapped:" destination="TrC-py-hTt" eventType="touchUpInside" id="Bit-Xn-p9T"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1aI-Fb-ZaG">
+                                                                        <rect key="frame" x="150.33333333333334" y="2" width="85" height="31"/>
+                                                                        <color key="tintColor" name="gray"/>
+                                                                        <state key="normal" title="Button"/>
+                                                                        <buttonConfiguration key="configuration" style="plain" title="3공기 이상">
+                                                                            <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
+                                                                        </buttonConfiguration>
+                                                                        <connections>
+                                                                            <action selector="threeStarTapped:" destination="TrC-py-hTt" eventType="touchUpInside" id="lOT-AD-BsM"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tfs-DD-SXg">
+                                                                        <rect key="frame" x="239.33333333333334" y="2" width="84.666666666666657" height="31"/>
+                                                                        <color key="tintColor" name="gray"/>
+                                                                        <state key="normal" title="Button"/>
+                                                                        <buttonConfiguration key="configuration" style="plain" title="2공기 이상">
+                                                                            <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
+                                                                        </buttonConfiguration>
+                                                                        <connections>
+                                                                            <action selector="twoStarTapped:" destination="TrC-py-hTt" eventType="touchUpInside" id="4lg-3r-TWo"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pX6-qD-suD">
+                                                                        <rect key="frame" x="0.0" y="37" width="82.666666666666671" height="31"/>
+                                                                        <color key="tintColor" name="gray"/>
+                                                                        <state key="normal" title="Button"/>
+                                                                        <buttonConfiguration key="configuration" style="plain" title="1공기 이상">
+                                                                            <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
+                                                                        </buttonConfiguration>
+                                                                        <connections>
+                                                                            <action selector="oneStarTapped:" destination="TrC-py-hTt" eventType="touchUpInside" id="My3-cQ-xJM"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                </subviews>
+                                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                <constraints>
+                                                                    <constraint firstItem="Tfs-DD-SXg" firstAttribute="leading" secondItem="1aI-Fb-ZaG" secondAttribute="trailing" constant="4" id="AXc-ep-o4E"/>
+                                                                    <constraint firstItem="1aI-Fb-ZaG" firstAttribute="top" secondItem="Ift-Nl-AvA" secondAttribute="top" constant="2" id="B5y-ie-9Ga"/>
+                                                                    <constraint firstItem="Tfs-DD-SXg" firstAttribute="top" secondItem="Ift-Nl-AvA" secondAttribute="top" constant="2" id="Drz-Kk-hMm"/>
+                                                                    <constraint firstItem="pX6-qD-suD" firstAttribute="top" secondItem="rli-6y-bGA" secondAttribute="bottom" constant="4" id="FXw-Bd-Au7"/>
+                                                                    <constraint firstItem="pX6-qD-suD" firstAttribute="top" secondItem="rli-6y-bGA" secondAttribute="bottom" constant="4" id="MnO-XZ-vj2"/>
+                                                                    <constraint firstItem="pX6-qD-suD" firstAttribute="leading" secondItem="Ift-Nl-AvA" secondAttribute="leading" id="V28-0u-Idm"/>
+                                                                    <constraint firstItem="pPM-on-phH" firstAttribute="leading" secondItem="rli-6y-bGA" secondAttribute="trailing" constant="4" id="iA0-4t-eNZ"/>
+                                                                    <constraint firstItem="rli-6y-bGA" firstAttribute="leading" secondItem="Ift-Nl-AvA" secondAttribute="leading" id="kO5-97-PW7"/>
+                                                                    <constraint firstItem="rli-6y-bGA" firstAttribute="top" secondItem="Ift-Nl-AvA" secondAttribute="top" constant="2" id="p5A-sJ-KXz"/>
+                                                                    <constraint firstItem="1aI-Fb-ZaG" firstAttribute="leading" secondItem="pPM-on-phH" secondAttribute="trailing" constant="4" id="p7q-Pt-IWs"/>
+                                                                    <constraint firstItem="pPM-on-phH" firstAttribute="top" secondItem="Ift-Nl-AvA" secondAttribute="top" constant="2" id="t0k-sf-FPo"/>
+                                                                    <constraint firstAttribute="height" constant="64" id="yrv-KR-Oqu"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="uxR-2x-345">
+                                                        <rect key="frame" x="0.0" y="466.33333333333337" width="361" height="50.333333333333371"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="조리 도구" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ykW-Lf-GnP">
+                                                                <rect key="frame" x="0.0" y="0.0" width="361" height="14.333333333333334"/>
+                                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="JgZ-f0-64f">
+                                                                <rect key="frame" x="0.0" y="18.333333333333258" width="361" height="32"/>
+                                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="32" id="bVU-hS-oPh"/>
+                                                                </constraints>
+                                                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="bk5-lC-8Uv">
+                                                                    <size key="itemSize" width="128" height="128"/>
+                                                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                                </collectionViewFlowLayout>
+                                                                <cells>
+                                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="KWw-ZY-p2f">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="r4N-CQ-nMK">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                                                            <autoresizingMask key="autoresizingMask"/>
+                                                                        </collectionViewCellContentView>
+                                                                    </collectionViewCell>
+                                                                </cells>
+                                                            </collectionView>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstItem="qqh-1q-GCH" firstAttribute="top" secondItem="uDb-35-HYZ" secondAttribute="top" id="4H1-gw-cjj"/>
+                                            <constraint firstAttribute="bottom" secondItem="qqh-1q-GCH" secondAttribute="bottom" id="Ehi-Mk-6Tn"/>
+                                            <constraint firstAttribute="trailing" secondItem="qqh-1q-GCH" secondAttribute="trailing" constant="16" id="ahD-pN-C3l"/>
+                                            <constraint firstItem="qqh-1q-GCH" firstAttribute="leading" secondItem="uDb-35-HYZ" secondAttribute="leading" constant="16" id="faw-xA-IlG"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="uDb-35-HYZ" secondAttribute="trailing" id="SsG-s2-wjV"/>
+                                    <constraint firstAttribute="bottom" secondItem="uDb-35-HYZ" secondAttribute="bottom" id="Vyw-sd-o5J"/>
+                                    <constraint firstItem="uDb-35-HYZ" firstAttribute="leading" secondItem="Lfn-vG-82b" secondAttribute="leading" id="XMZ-cg-t1f"/>
+                                    <constraint firstItem="uDb-35-HYZ" firstAttribute="width" secondItem="Lfn-vG-82b" secondAttribute="width" id="ggO-Q3-Yfc"/>
+                                    <constraint firstItem="uDb-35-HYZ" firstAttribute="top" secondItem="Lfn-vG-82b" secondAttribute="top" id="yzV-xY-nsI"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="puW-Vn-kJP"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="AeO-hi-DGw"/>
+                            </scrollView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MrJ-mg-yYC">
+                                <rect key="frame" x="16" y="689" width="361" height="80"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1LF-jX-rP5">
+                                        <rect key="frame" x="0.0" y="15" width="100" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="PxD-2n-6Cd"/>
+                                            <constraint firstAttribute="width" constant="100" id="WKr-WK-Zw2"/>
+                                        </constraints>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="arrow.counterclockwise" catalog="system">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="초기화">
+                                                    <attributes>
+                                                        <font key="NSFont" size="16" name="AppleSDGothicNeo-Bold"/>
+                                                        <font key="NSOriginalFont" size="12" name="Helvetica"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="right" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="defaultButtonTapped:" destination="TrC-py-hTt" eventType="touchUpInside" id="KZl-VL-geA"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VGN-Ua-FPK">
+                                        <rect key="frame" x="116" y="18" width="245" height="44"/>
+                                        <color key="backgroundColor" name="pink"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="SEP-lp-0Hu"/>
+                                            <constraint firstAttribute="width" constant="245" id="lN0-Zq-IVg"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="검색하기">
+                                                    <attributes>
+                                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                        <font key="NSFont" size="16" name="AppleSDGothicNeo-SemiBold"/>
+                                                        <font key="NSOriginalFont" size="12" name="Helvetica"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="searchButtonTapped:" destination="TrC-py-hTt" eventType="touchUpInside" id="rIh-nP-XI9"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="1LF-jX-rP5" firstAttribute="centerY" secondItem="MrJ-mg-yYC" secondAttribute="centerY" id="8pi-Ne-6GI"/>
+                                    <constraint firstAttribute="height" constant="80" id="HNF-Jz-h1O"/>
+                                    <constraint firstAttribute="trailing" secondItem="VGN-Ua-FPK" secondAttribute="trailing" id="SDg-AB-3SF"/>
+                                    <constraint firstItem="VGN-Ua-FPK" firstAttribute="centerY" secondItem="MrJ-mg-yYC" secondAttribute="centerY" id="nhl-AW-Zqe"/>
+                                    <constraint firstItem="1LF-jX-rP5" firstAttribute="leading" secondItem="MrJ-mg-yYC" secondAttribute="leading" id="rtm-h3-K6M"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="OW9-bF-R8b"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="MrJ-mg-yYC" firstAttribute="leading" secondItem="OW9-bF-R8b" secondAttribute="leading" constant="16" id="4Mz-np-X9W"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="MrJ-mg-yYC" secondAttribute="bottom" id="HgY-hb-4Pm"/>
+                            <constraint firstItem="Lfn-vG-82b" firstAttribute="leading" secondItem="OW9-bF-R8b" secondAttribute="leading" id="Jul-lK-Fg8"/>
+                            <constraint firstItem="OW9-bF-R8b" firstAttribute="trailing" secondItem="Lfn-vG-82b" secondAttribute="trailing" id="NWM-Jv-0uM"/>
+                            <constraint firstItem="Lfn-vG-82b" firstAttribute="bottom" secondItem="OW9-bF-R8b" secondAttribute="bottom" id="noZ-9m-iVf"/>
+                            <constraint firstItem="OW9-bF-R8b" firstAttribute="trailing" secondItem="MrJ-mg-yYC" secondAttribute="trailing" constant="16" id="r8W-7F-oHm"/>
+                            <constraint firstItem="Lfn-vG-82b" firstAttribute="top" secondItem="OW9-bF-R8b" secondAttribute="top" id="sDV-ek-euM"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="YwN-sh-hGe"/>
+                    <size key="freeformSize" width="393" height="852"/>
+                    <connections>
+                        <outlet property="byNewestButton" destination="gQd-dc-5Ud" id="Ns8-uq-mbv"/>
+                        <outlet property="byPopularityButton" destination="wtU-h1-w1g" id="dq3-La-qVY"/>
+                        <outlet property="collectionView" destination="KWw-ZY-p2f" id="zol-fj-WIr"/>
+                        <outlet property="defaultButton" destination="1LF-jX-rP5" id="2qJ-ZC-CYi"/>
+                        <outlet property="easyButton" destination="rh0-2s-E1m" id="BNV-se-zui"/>
+                        <outlet property="fiveStarButton" destination="rli-6y-bGA" id="Odp-oO-dof"/>
+                        <outlet property="fourStarButton" destination="pPM-on-phH" id="dec-6k-nAq"/>
+                        <outlet property="hardButton" destination="mHo-rB-yT4" id="nog-xu-BWC"/>
+                        <outlet property="normalButton" destination="zo0-E8-NgQ" id="dOu-KZ-uLP"/>
+                        <outlet property="oneStarButton" destination="pX6-qD-suD" id="CQx-kO-VAF"/>
+                        <outlet property="searchBar" destination="1Zs-OE-FNw" id="eac-lo-7xF"/>
+                        <outlet property="searchButton" destination="VGN-Ua-FPK" id="gkF-0u-rS8"/>
+                        <outlet property="stepSlider" destination="eFh-7n-FQj" id="xad-HE-lPv"/>
+                        <outlet property="threeStarButton" destination="1aI-Fb-ZaG" id="gWJ-Oz-XK6"/>
+                        <outlet property="twoStarButton" destination="Tfs-DD-SXg" id="d5M-Fb-dJB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YK6-aR-9HC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="417.55725190839695" y="1885.9154929577467"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="PJJ-pG-0jB">
             <objects>
@@ -1467,13 +1847,14 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="2fQ-Pv-clo"/>
+        <segue reference="aw6-BK-YBx"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Button_Bookmark" width="28" height="28"/>
         <image name="Button_Mypage" width="28" height="28"/>
         <image name="Button_Search" width="28" height="28"/>
         <image name="Subtract" width="24" height="24"/>
+        <image name="arrow.counterclockwise" catalog="system" width="113" height="128"/>
         <image name="chevron.backward" catalog="system" width="97" height="128"/>
         <image name="plus.circle.fill" catalog="system" width="128" height="123"/>
         <image name="uploadPhoto" width="345" height="230"/>
