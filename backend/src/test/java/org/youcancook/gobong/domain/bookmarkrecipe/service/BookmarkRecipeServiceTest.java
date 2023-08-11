@@ -5,7 +5,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.youcancook.gobong.domain.bookmarkrecipe.entity.BookmarkRecipe;
 import org.youcancook.gobong.domain.bookmarkrecipe.exception.AlreadyBookmarkedRecipeException;
 import org.youcancook.gobong.domain.bookmarkrecipe.exception.BookmarkRecipeNotFoundException;
@@ -16,12 +15,13 @@ import org.youcancook.gobong.domain.recipe.repository.RecipeRepository;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
 import org.youcancook.gobong.domain.user.repository.UserRepository;
+import org.youcancook.gobong.global.util.service.ServiceTest;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
+@ServiceTest
 class BookmarkRecipeServiceTest {
     @Autowired
     UserRepository userRepository;

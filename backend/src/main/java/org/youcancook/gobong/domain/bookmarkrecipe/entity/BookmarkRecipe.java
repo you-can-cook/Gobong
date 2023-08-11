@@ -11,13 +11,15 @@ import org.youcancook.gobong.domain.user.entity.User;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(uniqueConstraints = {
+@Table(name = "bookmark_recipe",
+        uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "recipe_id"})
 })
 public class BookmarkRecipe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "bookmark_recipe_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

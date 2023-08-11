@@ -15,9 +15,12 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "recipe")
 public class Recipe extends BaseTime {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "recipe_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
