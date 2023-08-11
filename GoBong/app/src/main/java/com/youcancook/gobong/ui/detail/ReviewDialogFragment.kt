@@ -1,14 +1,9 @@
 package com.youcancook.gobong.ui.detail
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.DialogReviewBinding
 
 class ReviewDialogFragment(val onDismissListener: (Int) -> Unit) : DialogFragment() {

@@ -1,6 +1,5 @@
 package com.youcancook.gobong.adapter.bindingAdapter
 
-import android.media.Image
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
