@@ -23,13 +23,13 @@ import com.youcancook.gobong.databinding.ActivityAddRecipeBinding
 import com.youcancook.gobong.model.RecipeStepAdded
 import com.youcancook.gobong.ui.ImageActivity
 import com.youcancook.gobong.ui.addRecipe.bottom.RecipeStepBottomFragment
+import com.youcancook.gobong.ui.base.BaseActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class AddRecipeActivity : AppCompatActivity() {
+class AddRecipeActivity : BaseActivity<ActivityAddRecipeBinding>(R.layout.activity_add_recipe) {
     private var isEdit = false
     private var editId = 0L
-    private lateinit var binding: ActivityAddRecipeBinding
     private val addRecipeViewModel: AddRecipeViewModel by viewModels()
 
     private var imagePickActivityLauncher: ActivityResultLauncher<Intent>? = null
@@ -76,8 +76,6 @@ class AddRecipeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddRecipeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         binding.run {
             vm = addRecipeViewModel

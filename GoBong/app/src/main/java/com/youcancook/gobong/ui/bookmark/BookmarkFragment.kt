@@ -11,12 +11,11 @@ import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.GridItemDecorator
 import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentBookmarkBinding
+import com.youcancook.gobong.ui.base.NetworkFragment
 
-class BookmarkFragment : Fragment() {
+class BookmarkFragment : NetworkFragment<FragmentBookmarkBinding,BookmarkViewModel>(R.layout.fragment_bookmark) {
 
-    private var _binding: FragmentBookmarkBinding? = null
-    private val binding get() = _binding!!
-    private val bookmarkViewModel: BookmarkViewModel by viewModels()
+    override val viewModel: BookmarkViewModel by viewModels()
 
     private val gridAdapter = GridRecyclerViewListAdapter(3, onItemClick = {
 
@@ -24,22 +23,12 @@ class BookmarkFragment : Fragment() {
     private val gridItemDecorator =
         GridItemDecorator()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        _binding = FragmentBookmarkBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         binding.run {
-            vm = bookmarkViewModel
-            lifecycleOwner = viewLifecycleOwner
+            vm = viewModel
         }
+
+        super.onViewCreated(view, savedInstanceState)
 
         binding.run {
             recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
@@ -85,8 +74,4 @@ class BookmarkFragment : Fragment() {
         gridAdapter.notifyItemRangeChanged(0, gridAdapter.itemCount)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

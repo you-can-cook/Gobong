@@ -12,14 +12,14 @@ import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.GridItemDecorator
 import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentSearchBinding
+import com.youcancook.gobong.ui.base.NetworkFragment
 import com.youcancook.gobong.ui.detail.DetailActivity
 import com.youcancook.gobong.ui.search.filter.FilterActivity
 
-class SearchFragment : Fragment() {
+class SearchFragment :
+    NetworkFragment<FragmentSearchBinding, SearchViewModel>(R.layout.fragment_search) {
 
-    private var _binding: FragmentSearchBinding? = null
-    private val binding get() = _binding!!
-    private val searchViewModel: SearchViewModel by viewModels()
+    override val viewModel: SearchViewModel by viewModels()
 
     private val gridAdapter = GridRecyclerViewListAdapter(3, onItemClick = {
         val intent = Intent(requireContext(), DetailActivity::class.java)
@@ -27,22 +27,12 @@ class SearchFragment : Fragment() {
     })
     private val gridItemDecorator = GridItemDecorator()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         binding.run {
-            vm = searchViewModel
-            lifecycleOwner = viewLifecycleOwner
+            vm = viewModel
         }
+
+        super.onViewCreated(view, savedInstanceState)
 
         binding.run {
 
@@ -84,8 +74,4 @@ class SearchFragment : Fragment() {
         gridAdapter.notifyItemRangeChanged(0, gridAdapter.itemCount)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

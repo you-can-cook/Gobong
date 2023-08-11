@@ -13,16 +13,14 @@ import com.youcancook.gobong.adapter.GridItemDecorator
 import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentMyBinding
 import com.youcancook.gobong.model.Card
+import com.youcancook.gobong.ui.base.NetworkFragment
 import com.youcancook.gobong.ui.detail.DetailActivity
 import com.youcancook.gobong.ui.my.follow.FollowActivity
 import com.youcancook.gobong.ui.my.setting.SettingActivity
 
-class MyFragment : Fragment() {
+class MyFragment : NetworkFragment<FragmentMyBinding, MyViewModel>(R.layout.fragment_my) {
 
-    private var _binding: FragmentMyBinding? = null
-    private val binding get() = _binding!!
-
-    private val myViewModel: MyViewModel by viewModels()
+    override val viewModel: MyViewModel by viewModels()
 
     private val gridAdapter = GridRecyclerViewListAdapter(3, onItemClick = {
         val intent = Intent(requireContext(), DetailActivity::class.java)
@@ -32,26 +30,16 @@ class MyFragment : Fragment() {
     private val gridItemDecorator =
         GridItemDecorator()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        _binding = FragmentMyBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.run {
+            vm = viewModel
+        }
+
         super.onViewCreated(view, savedInstanceState)
 
         gridItemDecorator.also {
             it.margin =
                 requireContext().resources.getDimension(R.dimen.grid_margin).toInt()
-        }
-
-        binding.run {
-            vm = myViewModel
-            lifecycleOwner = this@MyFragment.viewLifecycleOwner
         }
 
         binding.run {
@@ -93,18 +81,6 @@ class MyFragment : Fragment() {
             }
         }
 
-        gridAdapter.submitList(
-            listOf(
-                Card(),
-                Card(),
-                Card(),
-                Card(),
-                Card(),
-                Card(),
-                Card()
-            )
-        )
-
     }
 
     private fun setGridRecyclerView() {
@@ -127,8 +103,4 @@ class MyFragment : Fragment() {
         gridAdapter.notifyItemRangeChanged(0, gridAdapter.itemCount)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }
