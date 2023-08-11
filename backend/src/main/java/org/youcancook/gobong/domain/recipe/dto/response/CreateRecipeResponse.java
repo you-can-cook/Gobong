@@ -1,11 +1,10 @@
 package org.youcancook.gobong.domain.recipe.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class CreateRecipeResponse {
     private Long id;
