@@ -25,7 +25,7 @@ public class UserSignupService {
     @Transactional
     public SignupResponse signup(SignupDto signupDto) {
         validateDuplicateNickname(signupDto.getNickname());
-        validateExistUser(signupDto.getOAuthId(), signupDto.getOAuthProvider());
+        validateExistUser(signupDto.getOAuthProvider(), signupDto.getOAuthId());
 
         User user = createUser(signupDto);
         userRepository.save(user);
@@ -45,7 +45,7 @@ public class UserSignupService {
         return userRepository.existsByNickname(nickname);
     }
 
-    private void validateExistUser(String oAuthId, OAuthProvider oAuthProvider) {
+    private void validateExistUser(OAuthProvider oAuthProvider, String oAuthId) {
         if (userRepository.existsByOAuthProviderAndOAuthId(oAuthProvider, oAuthId)) {
             throw new AlreadyExistUserException();
         }
