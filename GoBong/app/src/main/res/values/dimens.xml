@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="grid_margin">4dp</dimen>
+    <dimen name="mtrl_slider_track_side_padding">8dp</dimen>
+    <dimen name="mtrl_slider_widget_height">12dp</dimen>
 </resources>

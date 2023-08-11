@@ -25,6 +25,7 @@
         <item name="materialAlertDialogTitleTextStyle">
             @style/MaterialAlertDialog.GoBong.Title.Text
         </item>
+        <item name="sliderStyle">@style/Widget.GoBong.Slider</item>
     </style>
 
     <style name="Theme.GoBong.Login">

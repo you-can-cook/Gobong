@@ -13,21 +13,21 @@
         <action
             android:id="@+id/action_settingFragment_to_settingProfileFragment"
             app:destination="@id/settingProfileFragment"
-            app:enterAnim="@anim/slid_in_right"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_settingFragment_to_settingNotificationFragment"
             app:destination="@id/settingNotificationFragment"
-            app:enterAnim="@anim/slid_in_right"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_settingFragment_to_settingQuitFragment"
             app:destination="@id/settingQuitFragment"
-            app:enterAnim="@anim/slid_in_right"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
