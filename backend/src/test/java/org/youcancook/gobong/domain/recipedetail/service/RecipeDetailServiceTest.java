@@ -4,7 +4,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import org.youcancook.gobong.domain.recipe.entity.Cookware;
 import org.youcancook.gobong.domain.recipe.entity.Difficulty;
@@ -17,13 +16,14 @@ import org.youcancook.gobong.domain.recipedetail.repository.RecipeDetailReposito
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
 import org.youcancook.gobong.domain.user.repository.UserRepository;
+import org.youcancook.gobong.global.util.service.ServiceTest;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
+@ServiceTest
 class RecipeDetailServiceTest {
 
     @Autowired
