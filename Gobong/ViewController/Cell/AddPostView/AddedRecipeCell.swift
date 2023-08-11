@@ -126,8 +126,10 @@ class AddedRecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionVi
         collectionView.register(HashtagCollectionCell.self, forCellWithReuseIdentifier: "HashtagCollectionCell")
         collectionView.collectionViewLayout.invalidateLayout()
         collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(collectionViewTapped)))
+        collectionView.isScrollEnabled = false
         editButton.isUserInteractionEnabled = true
         descriptionLabel.isUserInteractionEnabled = true
+    
 
         editButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(collectionViewTapped)))
         
@@ -189,6 +191,7 @@ class AddedRecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionVi
             
             collectionView.leadingAnchor.constraint(equalTo: firstLineView.leadingAnchor),
             collectionView.topAnchor.constraint(equalTo: firstLineView.topAnchor, constant: 6),
+            collectionView.bottomAnchor.constraint(equalTo: firstLineView.bottomAnchor),
             
             editButton.leadingAnchor.constraint(equalTo: collectionView.trailingAnchor, constant: 2),
             editButton.trailingAnchor.constraint(equalTo: firstLineView.trailingAnchor),
@@ -233,7 +236,7 @@ class AddedRecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionVi
         editButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(editButtonTapped)))
     }
  
-    func configuration(step: Int, time: [String], tool: [String], image: String?, description: String, isFolded: Bool) {
+    func configuration(step: Int, time: [String], tool: [String], image: UIImage?, description: String, isFolded: Bool) {
         stepLabel.text = "\(step)단계"
         
         tools.append(contentsOf: time)
@@ -244,7 +247,7 @@ class AddedRecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionVi
         if !isFolded{
             if image != nil {
                 UIimage.isHidden = false
-                UIimage.image = UIImage(named: image!)
+                UIimage.image = image
             } else {
                 UIimage.isHidden = true
             }
@@ -254,16 +257,22 @@ class AddedRecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionVi
         descriptionLabel.text = description
     }
     
-    func toggleImageViewVisibility(isFolded: Bool, image: String?){
+    func toggleImageViewVisibility(isFolded: Bool, image: UIImage?){
         if !isFolded {
             if image != nil{
                 UIimage.isHidden = false
-                UIimage.image = UIImage(named: image ?? "dummyImg")
+                UIimage.image = image
             } else {
                 UIimage.isHidden = true
             }
+            collectionView.isUserInteractionEnabled = false
+            descriptionLabel.isUserInteractionEnabled = false
+            UIimage.isUserInteractionEnabled = false
         } else {
             UIimage.isHidden = true
+            collectionView.isUserInteractionEnabled = true
+            descriptionLabel.isUserInteractionEnabled = true
+            UIimage.isUserInteractionEnabled = true
         }
     }
     

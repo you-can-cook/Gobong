@@ -72,14 +72,15 @@ class AddPostViewController: UIViewController {
                 hardButton.backgroundColor = UIColor(named: "pink")
                 hardButton.titleLabel?.tintColor = .white
             }
+            checkOK()
         }
     }
     
     var ingredients: [String] = []
-    var recipes =  [dummyHowTo(time: ["3분"], tool: ["전자레인지"], img: "dummyImg" ,description: "자이언트 떡볶이를 순서대로 3분 조리"),
-                    dummyHowTo(time: ["3분"], tool: ["전자레인지"], img: "dummyImg" ,description: "자이언트 떡볶이를 순서대로 3분 조리")]
+    var recipes =  [dummyHowTo(time: ["3분"], tool: ["전자레인지"], img: UIImage(named: "dummyImg") ,description: "자이언트 떡볶이를 순서대로 3분 조리"),
+                    dummyHowTo(time: ["3분"], tool: ["전자레인지"], img: UIImage(named: "dummyImg") ,description: "자이언트 떡볶이를 순서대로 3분 조리")]
     var isFolded = [Bool]()
-    var tableViewCellHeight: [CGFloat] = [CGFloat(123), CGFloat(123), CGFloat(127)]
+    var tableViewCellHeight: [CGFloat] = [CGFloat(0), CGFloat(0), CGFloat(127)]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,6 +89,14 @@ class AddPostViewController: UIViewController {
         setupUI()
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
         isFolded = Array(repeating: true, count: recipes.count)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showAddDetailPost" {
+            if let VC = segue.destination as? AddDetailPostViewController {
+                VC.delegate = self
+            }
+        }
     }
     
     @objc private func viewTapped(){
@@ -149,6 +158,7 @@ extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationCo
                     picker.didFinishPicking { [unowned picker] items, _ in
                         if let photo = items.singlePhoto {
                             self.postImage.image = photo.image
+                            self.checkOK()
                         }
                         picker.dismiss(animated: true, completion: nil)
                     }
@@ -212,6 +222,8 @@ extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationCo
             introductionField.layer.borderColor = UIColor(named: "gray")?.cgColor
         }
         
+        checkOK()
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -256,4 +268,52 @@ extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationCo
     }
 }
 
+//get passed data
+extension AddPostViewController: AddDetailPostDelegate {
+    func passData(controller: AddDetailPostViewController) {
+        let description = controller.descriptionTextField.text == "자세한 조리 과정을 입력하세요" ? "" : controller.descriptionTextField.text
+        var minute = controller.minuteField.text ?? ""
+        var second = controller.secondField.text ?? ""
+        
+        if minute != "" {
+            minute += "분"
+        }
+        
+        if second != "" {
+            second += "분"
+        }
+        
+        var newRecipe: dummyHowTo
+        
+        if controller.postImage.image != UIImage(named: "uploadPhoto") {
+            newRecipe = dummyHowTo(time: ["\(minute)\(second)"], tool: controller.tools, img: controller.postImage.image, description: description ?? "")
+        } else {
+            newRecipe = dummyHowTo(time: ["\(minute)\(second)"], tool: controller.tools, description: description ?? "")
+        }
+        
+        recipes.append(newRecipe)
+        isFolded.append(true)
+        tableViewCellHeight.insert(0, at: tableViewCellHeight.count - 1)
+        
+        tableView.reloadData()
+        reloadHeight()
+        checkOK()
+    }
+    
+    func checkOK(){
+        if postImage.image != UIImage(named: "uploadPhoto") && titleTextField.text != "" && ingredients.count != 0 && (easyButton.backgroundColor == UIColor(named: "pink") || normalButton.backgroundColor == UIColor(named: "pink") || hardButton.backgroundColor == UIColor(named: "pink")) && recipes.count != 0 {
+            
+            let postButton = UIBarButtonItem(title: "게시", style: .plain, target: self, action: #selector(postButtonTapped))
+            postButton.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)], for: .normal)
+            postButton.tintColor = UIColor(named: "pink")
+            navigationItem.rightBarButtonItem = postButton
+        } else {
+            navigationItem.rightBarButtonItem = nil
+        }
+    }
+
+    @objc private func postButtonTapped(){
+        navigationController?.popViewController(animated: true)
+    }
+}
 

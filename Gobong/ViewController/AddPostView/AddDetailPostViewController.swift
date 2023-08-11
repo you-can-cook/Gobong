@@ -8,8 +8,15 @@
 import UIKit
 import YPImagePicker
 import Photos
+import AlignedCollectionViewFlowLayout
+
+protocol AddDetailPostDelegate: Any {
+    func passData(controller: AddDetailPostViewController)
+}
 
 class AddDetailPostViewController: UIViewController {
+    
+    var delegate: AddDetailPostDelegate?
 
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var descriptionTextField: UITextView!
@@ -23,16 +30,40 @@ class AddDetailPostViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var postImage: UIImageView!
     
+    @IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
+    var tools = [String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         setupUI()
         setTapGesture()
+        collectionViewSetup()
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showSearchToolBar" {
+            if let VC = segue.destination as? SearchToolsViewController {
+                VC.delegate = self
+                VC.selectedTools = tools
+                VC.forFilter = tools
+            }
+        }
+    }
+    
+
+    @IBAction func saveButton(_ sender: Any) {
+        if saveButton.backgroundColor == UIColor(named: "pink") {
+            delegate?.passData(controller: self)
+        }
+        
+        self.dismiss(animated: true)
     }
 }
 
-extension AddDetailPostViewController: UITextFieldDelegate {
+extension AddDetailPostViewController: UITextFieldDelegate, UITextViewDelegate {
     private func setupUI(){
         add10Sec.layer.cornerRadius = 16
         add30secButton.layer.cornerRadius = 16
@@ -58,6 +89,9 @@ extension AddDetailPostViewController: UITextFieldDelegate {
         
         minuteField.delegate = self
         secondField.delegate = self
+        descriptionTextField.delegate = self
+        
+        descriptionTextField.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         
     }
     
@@ -76,6 +110,27 @@ extension AddDetailPostViewController: UITextFieldDelegate {
         }
     }
 
+    //text view
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if descriptionTextField.text == "자세한 조리 과정을 입력하세요" {
+            descriptionTextField.textColor = .black
+            descriptionTextField.layer.borderColor = UIColor(named: "pink")?.cgColor
+            descriptionTextField.text = ""
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if descriptionTextField.text == "" {
+            descriptionTextField.textColor = .gray
+            descriptionTextField.layer.borderColor = UIColor(named: "gray")?.cgColor
+            descriptionTextField.text = "자세한 조리 과정을 입력하세요"
+        }
+        checkOkNext()
+    }
+    
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        checkOkNext()
+    }
     
     private func setupYPImagePicker() -> YPImagePickerConfiguration{
         var config = YPImagePickerConfiguration()
@@ -90,7 +145,7 @@ extension AddDetailPostViewController: UITextFieldDelegate {
             symbolImage?.draw(in: CGRect(x: 0, y: 0, width: 168.0, height: 168.0))
         }
         let finalCapturePhotoImage = newCapturePhotoImage ?? config.icons.capturePhotoImage
-        config.icons.capturePhotoImage = newCapturePhotoImage
+        config.icons.capturePhotoImage = finalCapturePhotoImage
     
         return config
     }
@@ -247,4 +302,92 @@ extension AddDetailPostViewController: UITextFieldDelegate {
         }
 
     }
+}
+
+extension AddDetailPostViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SearchToolsDelegate {
+    func passToolData(controller: SearchToolsViewController) {
+        tools = controller.selectedTools
+        collectionView.reloadData()
+        updateHeight()
+    }
+    
+    private func collectionViewSetup(){
+        let alignedFlowLayout = collectionView?.collectionViewLayout as? AlignedCollectionViewFlowLayout
+        alignedFlowLayout?.horizontalAlignment = .left
+        alignedFlowLayout?.verticalAlignment = .center
+        alignedFlowLayout?.minimumLineSpacing = 8
+        alignedFlowLayout?.minimumInteritemSpacing = 8
+        
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        
+        collectionView.register(HashtagCollectionCell.self, forCellWithReuseIdentifier: "HashtagCollectionCell")
+        
+        collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 34)
+        collectionViewHeightConstraint.isActive = true
+        collectionView.invalidateIntrinsicContentSize()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return tools.count + 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HashtagCollectionCell", for: indexPath) as! HashtagCollectionCell
+        if indexPath.item != tools.count {
+            cell.setText3(tools[indexPath.item])
+            cell.label.font = UIFont.systemFont(ofSize: 14)
+            cell.label.textColor = UIColor.white
+            cell.view.backgroundColor = UIColor(named: "pink")
+            cell.label.layer.borderColor = UIColor(named: "pink")?.cgColor
+        } else {
+            cell.setText("•••")
+            cell.label.font = UIFont.systemFont(ofSize: 14)
+            cell.label.textColor = UIColor(named: "gray")
+            cell.isUserInteractionEnabled = true
+        }
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.item != tools.count {
+        } else {
+            performSegue(withIdentifier: "showSearchToolBar", sender: self)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if indexPath.item != tools.count {
+            let labelSize = calculateLabelSize(text: tools[indexPath.item])
+            return CGSize(width: labelSize.width + 24, height: labelSize.height + 16)
+        } else {
+            let labelSize = calculateLabelSize(text: "•••")
+            return CGSize(width: labelSize.width + 24, height: labelSize.height + 16)
+        }
+    }
+    
+    func calculateLabelSize(text: String) -> CGSize {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.text = text
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.sizeToFit()
+        let calculatedSize = label.frame.size
+        return calculatedSize
+    }
+    
+    func updateHeight(){
+        collectionView.performBatchUpdates(nil) { [weak self] _ in
+            self?.collectionView.collectionViewLayout.invalidateLayout()
+        }
+        
+        let contentHeight = collectionView.contentSize.height
+        collectionViewHeightConstraint.constant = contentHeight
+        
+        UIView.animate(withDuration: 0.1) {
+            // Update the layout
+            self.view.layoutIfNeeded()
+        }
+    }
+    
 }

@@ -209,7 +209,7 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configuration(step: Int, time: [String], tool: [String], image: String?, description: String, isFolded: Bool) {
+    func configuration(step: Int, time: [String], tool: [String], image: UIImage?, description: String, isFolded: Bool) {
         
         stepLabel.text = "\(step)단계"
         
@@ -221,7 +221,7 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         if !isFolded{
             if image != nil{
                 UIimage.isHidden = false
-                UIimage.image = UIImage(named: image!)
+                UIimage.image = image
             } else {
                 UIimage.isHidden = true
             }
@@ -231,11 +231,11 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         descriptionLabel.text = description
     }
     
-    func toggleImageViewVisibility(isFolded: Bool, image: String?){
+    func toggleImageViewVisibility(isFolded: Bool, image: UIImage?){
         if !isFolded {
             if image != nil{
                 UIimage.isHidden = false
-                UIimage.image = UIImage(named: image ?? "dummyImg")
+                UIimage.image = UIImage(named: "dummyImg") ?? UIImage(named: "dummyImg")
             } else {
                 UIimage.isHidden = true
             }

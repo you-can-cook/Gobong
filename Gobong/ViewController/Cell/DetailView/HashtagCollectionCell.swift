@@ -12,6 +12,7 @@ class HashtagCollectionCell: UICollectionViewCell {
     let label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         label.font = UIFont.boldSystemFont(ofSize: 10)
         label.numberOfLines = 1
         label.textAlignment = .center
@@ -21,13 +22,20 @@ class HashtagCollectionCell: UICollectionViewCell {
         return label
     }()
     
+    let view: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 15
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         // Add the label to the cell's contentView
-        contentView.addSubview(label)
         
-        // Set up constraints to make the label hug its content
+        contentView.addSubview(view)
+        contentView.addSubview(label)
         
     }
 
@@ -55,6 +63,21 @@ class HashtagCollectionCell: UICollectionViewCell {
             label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
+        ])
+    }
+    
+    func setText3(_ text: String) {
+        label.text = text
+        
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: contentView.topAnchor),
+            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            view.topAnchor.constraint(equalTo: contentView.topAnchor),
+            view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
     
