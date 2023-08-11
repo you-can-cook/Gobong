@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.lifecycleScope
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
@@ -15,7 +14,6 @@ import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.youcancook.gobong.databinding.ActivityLoginBinding
 import com.youcancook.gobong.ui.ACCESS_TOKEN
-import com.youcancook.gobong.ui.dataStore
 import com.youcancook.gobong.util.NATIVE_APP_KEY
 import kotlinx.coroutines.launch
 

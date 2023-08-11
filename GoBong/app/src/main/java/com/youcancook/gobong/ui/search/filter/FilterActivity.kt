@@ -1,8 +1,7 @@
 package com.youcancook.gobong.ui.search.filter
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.youcancook.gobong.R
+import androidx.appcompat.app.AppCompatActivity
 import com.youcancook.gobong.databinding.ActivityFilterBinding
 
 class FilterActivity : AppCompatActivity() {

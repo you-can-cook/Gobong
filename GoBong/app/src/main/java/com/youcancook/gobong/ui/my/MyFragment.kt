@@ -2,17 +2,13 @@ package com.youcancook.gobong.ui.my
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.GridItemDecorator
 import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentMyBinding
-import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.ui.base.NetworkFragment
 import com.youcancook.gobong.ui.detail.DetailActivity
 import com.youcancook.gobong.ui.my.follow.FollowActivity
