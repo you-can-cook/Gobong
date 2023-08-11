@@ -159,4 +159,29 @@
         <item name="cornerSize">12dp</item>
     </style>
 
+    <!-- Slider -->
+
+    <style name="Widget.GoBong.Slider" parent="Widget.MaterialComponents.Slider">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.GoBong.Slider</item>
+        <item name="labelStyle">@style/Widget.GoBong.Tooltip</item>
+        <item name="thumbColor">@color/white</item>
+        <item name="thumbStrokeColor">@color/primary_color</item>
+        <item name="thumbStrokeWidth">4dp</item>
+        <item name="trackHeight">7dp</item>
+        <item name="thumbRadius">8dp</item>
+        <item name="trackColorActive">@color/primary_color</item>
+        <item name="trackColorInactive">@color/gray1</item>
+        <item name="trackCornerRadius">4dp</item>
+    </style>
+
+    <style name="ThemeOverlay.GoBong.Slider" parent="Widget.AppCompat.SeekBar">
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorOnPrimary">@color/primary_color</item>
+        <item name="colorOnSurface">@color/gray1</item>
+    </style>
+
+    <style name="Widget.GoBong.Tooltip" parent="Widget.MaterialComponents.Tooltip">
+        <item name="android:textAppearance">@style/TextAppearance.GoBong.Regular10</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

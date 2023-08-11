@@ -13,6 +13,7 @@ import com.youcancook.gobong.adapter.GridItemDecorator
 import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentSearchBinding
 import com.youcancook.gobong.ui.detail.DetailActivity
+import com.youcancook.gobong.ui.search.filter.FilterActivity
 
 class SearchFragment : Fragment() {
 
@@ -52,6 +53,11 @@ class SearchFragment : Fragment() {
                     setLinearRecyclerView()
                 }
                 it.isSelected = it.isSelected.not()
+            }
+
+            filterButton.setOnClickListener {
+                val intent = Intent(requireContext(), FilterActivity::class.java)
+                startActivity(intent)
             }
 
             setGridRecyclerView()
