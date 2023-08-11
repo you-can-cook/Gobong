@@ -59,7 +59,7 @@ class UserSignupServiceTest {
 
         // when
         SignupDto signupDto = SignupDto.builder()
-                .oAuthProvider(OAuthProvider.KAKAO.name())
+                .oAuthProvider(OAuthProvider.KAKAO)
                 .nickname("nickname")
                 .oAuthId("123456789")
                 .profileImageURL("profileImageURL")
@@ -81,7 +81,7 @@ class UserSignupServiceTest {
 
         // when
         SignupDto signupDto = SignupDto.builder()
-                .oAuthProvider(OAuthProvider.KAKAO.name())
+                .oAuthProvider(OAuthProvider.KAKAO)
                 .nickname("nickname")
                 .oAuthId("123456789")
                 .profileImageURL("profileImageURL")

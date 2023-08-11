@@ -13,7 +13,10 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "user")
+@Table(name = "user",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"oauth_id", "oauth_provider"})
+        })
 public class User {
 
     @Id
