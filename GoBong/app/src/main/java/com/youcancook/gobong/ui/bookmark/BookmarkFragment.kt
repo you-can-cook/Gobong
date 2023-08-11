@@ -11,7 +11,6 @@ import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.GridItemDecorator
 import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentBookmarkBinding
-import com.youcancook.gobong.model.Card
 
 class BookmarkFragment : Fragment() {
 

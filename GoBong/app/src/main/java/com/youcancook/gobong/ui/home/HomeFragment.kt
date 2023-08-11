@@ -7,11 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.youcancook.gobong.adapter.CardRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentHomeBinding
-import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.ui.addRecipe.AddRecipeActivity
 import com.youcancook.gobong.ui.detail.DetailActivity
 

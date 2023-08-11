@@ -13,7 +13,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.RecipeListAdapter
 import com.youcancook.gobong.databinding.ActivityDetailBinding
-import com.youcancook.gobong.databinding.DialogReviewBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
