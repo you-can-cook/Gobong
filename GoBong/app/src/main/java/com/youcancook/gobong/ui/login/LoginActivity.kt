@@ -1,5 +1,6 @@
 package com.youcancook.gobong.ui.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -93,9 +94,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun saveToken(token: String) {
-        dataStore.edit { settings ->
-            settings[ACCESS_TOKEN] = token
+    private fun saveToken(token: String) {
+        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+        with(sharedPref.edit()) {
+            putString(ACCESS_TOKEN, token)
+            apply()
         }
     }
 }
