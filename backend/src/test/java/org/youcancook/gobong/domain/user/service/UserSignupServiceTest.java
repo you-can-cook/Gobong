@@ -12,6 +12,7 @@ import org.youcancook.gobong.domain.user.dto.SignupDto;
 import org.youcancook.gobong.domain.user.dto.response.SignupResponse;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
+import org.youcancook.gobong.domain.user.exception.AlreadyExistUserException;
 import org.youcancook.gobong.domain.user.exception.DuplicationNicknameException;
 import org.youcancook.gobong.domain.user.repository.UserRepository;
 import org.youcancook.gobong.global.util.token.TokenDto;
@@ -46,6 +47,8 @@ class UserSignupServiceTest {
         // given
         TokenDto tokenDto = createTestTokenDto();
         when(userRepository.existsByNickname("nickname"))
+                .thenReturn(false);
+        when(userRepository.existsByOAuthProviderAndOAuthId(any(OAuthProvider.class), any(String.class)))
                 .thenReturn(false);
         when(tokenManager.createTokenDto(1L))
                 .thenReturn(tokenDto);
@@ -87,6 +90,26 @@ class UserSignupServiceTest {
                 .profileImageURL("profileImageURL")
                 .build();
         assertThrows(DuplicationNicknameException.class,
+                () -> userSignupService.signup(signupDto));
+    }
+
+    @Test
+    @DisplayName("회원가입 실패 - 이미 존재하는 유저")
+    void signupFailByExitUser() {
+        // given
+        when(userRepository.existsByNickname(any(String.class)))
+                .thenReturn(false);
+        when(userRepository.existsByOAuthProviderAndOAuthId(any(OAuthProvider.class), any(String.class)))
+                .thenReturn(true);
+
+        // when
+        SignupDto signupDto = SignupDto.builder()
+                .oAuthProvider(OAuthProvider.KAKAO)
+                .nickname("nickname")
+                .oAuthId("123456789")
+                .profileImageURL("profileImageURL")
+                .build();
+        assertThrows(AlreadyExistUserException.class,
                 () -> userSignupService.signup(signupDto));
     }
 

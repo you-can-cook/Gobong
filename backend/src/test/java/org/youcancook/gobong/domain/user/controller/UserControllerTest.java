@@ -244,6 +244,27 @@ class UserControllerTest {
         assertThat(temporaryTokens).hasSize(1);
     }
 
+    @Test
+    @DisplayName("회원가입 실패 - 이미 존재하는 유저")
+    void signupFailByExitUser() throws Exception {
+        // given
+        String temporaryToken = temporaryTokenService.saveTemporaryToken();
+        User savedUser = saveTestUser();
+
+        // when
+        SignupRequest signupRequest = new SignupRequest("notExits", savedUser.getOAuthProvider().name(), savedUser.getOAuthId(), temporaryToken, "profileImageURL");
+        String request = objectMapper.writeValueAsString(signupRequest);
+        mockMvc.perform(post("/api/users/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andExpect(jsonPath("$.code").value(ErrorCode.ALREADY_EXIST_USER.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.ALREADY_EXIST_USER.getMessage()))
+                .andDo(print());
+
+        List<TemporaryToken> temporaryTokens = temporaryTokenRepository.findAll();
+        assertThat(temporaryTokens).hasSize(1);
+    }
+
     private User saveTestUser() {
         User user = User.builder()
                 .oAuthId("12345678")
