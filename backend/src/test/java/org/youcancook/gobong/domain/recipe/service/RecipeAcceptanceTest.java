@@ -90,7 +90,7 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
                 .contentType(ContentType.JSON)
                 .body(updateRequest)
                 .auth().oauth2(accessToken)
-                .when().post("/api/recipes/" + recipeId + "/update")
+                .when().put("/api/recipes/" + recipeId)
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract();

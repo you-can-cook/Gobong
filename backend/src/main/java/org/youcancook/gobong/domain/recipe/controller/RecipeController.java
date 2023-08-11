@@ -24,7 +24,7 @@ public class RecipeController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("{recipeId}/update")
+    @PutMapping("{recipeId}")
     public ResponseEntity<Void> updateRecipe(@LoginUserId Long userId,
                                              @RequestBody @Valid UpdateRecipeRequest request){
         recipeService.updateRecipe(userId, request);
