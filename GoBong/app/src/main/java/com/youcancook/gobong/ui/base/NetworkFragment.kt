@@ -17,9 +17,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 abstract class NetworkFragment<T : ViewDataBinding, VM : NetworkViewModel>(
-    @LayoutRes private val layoutRes: Int
-) :
-    BaseFragment<T>(layoutRes) {
+    @LayoutRes private val layoutRes: Int,
+) : BaseFragment<T>(layoutRes) {
 
     abstract val viewModel: VM
 
