@@ -1,6 +1,5 @@
 package com.youcancook.gobong.ui.my
 
-import androidx.lifecycle.ViewModel
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.User
 import com.youcancook.gobong.ui.base.NetworkViewModel

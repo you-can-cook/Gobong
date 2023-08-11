@@ -1,6 +1,5 @@
 package com.youcancook.gobong.ui.home
 
-import androidx.lifecycle.ViewModel
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.ui.base.NetworkViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
