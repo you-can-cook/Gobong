@@ -63,44 +63,58 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
             tableViewCellHeight[indexPath.item] = 127
             return 127
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "AddedRecipeCell") as! AddedRecipeCell
-            cell.layoutIfNeeded()
-            let data = recipes[indexPath.item]
-            
-            var firstline = data.time.map({calculateLabelSize(text: $0).width}).reduce(0, +)
-            firstline += data.tool.map({calculateLabelSize(text: $0).width}).reduce(0, +)
-            firstline += CGFloat(data.time.count * 12) + 32
-            firstline += CGFloat(data.tool.count * 12) + 32
-            
-            if firstline/(view.bounds.width/1.6) > 1 {
-                let line = firstline/(view.bounds.width/1.8)
-                firstline = ceil(line) * 31
-            } else {
-                firstline = 30
-            }
-            
-            var imageHeight: CGFloat = 0
-            let last = calculateLabelSizeRecipe(text: data.description).height
-            if !isFolded[indexPath.item] {
-                if data.img != nil {
-                    if let image = UIImage(named: data.img!) {
-                        let maxWidth: CGFloat = CGFloat(view.bounds.width/1.5)
-                        let maxHeight: CGFloat = 130
-                        let aspectRatio: CGFloat = 16 / 9  // 1.91:1
-                        
-                        let imageWidth = image.size.width
-                        imageHeight = min(maxHeight, min(imageWidth * aspectRatio, maxWidth))
-                    }
-                    tableViewCellHeight[indexPath.item] = CGFloat(firstline) + imageHeight + last + 77
-                    
-                    reloadHeight()
-                    return CGFloat(firstline) + imageHeight + last + 77
+            if tableViewCellHeight[indexPath.item] == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "AddedRecipeCell") as! AddedRecipeCell
+                cell.layoutIfNeeded()
+                let data = recipes[indexPath.item]
+                
+                var firstline = data.time.map({calculateLabelSize(text: $0).width}).reduce(0, +)
+                firstline += data.tool.map({calculateLabelSize(text: $0).width}).reduce(0, +)
+                firstline += CGFloat(data.time.count * 12) + 32
+                firstline += CGFloat(data.tool.count * 12) + 32
+                
+                if firstline/(view.bounds.width/1.6) > 1 {
+                    let line = firstline/(view.bounds.width/1.8)
+                    firstline = ceil(line) * 31
+                } else {
+                    firstline = 30
                 }
+                
+                var imageHeight: CGFloat = 0
+                var last: CGFloat = 0
+                
+                if data.description != "" {
+                    last = calculateLabelSizeRecipe(text: data.description).height
+                } else {
+                    last = -5
+                }
+                
+                if !isFolded[indexPath.item] {
+                    if data.img != nil {
+                        if let image = UIImage(named: "dummyImg") {
+                            let maxWidth: CGFloat = CGFloat(view.bounds.width/1.5)
+                            let maxHeight: CGFloat = 130
+                            let aspectRatio: CGFloat = 16 / 9  // 1.91:1
+                            
+                            let imageWidth = image.size.width
+                            imageHeight = min(maxHeight, min(imageWidth * aspectRatio, maxWidth))
+                        }
+                        
+                        tableViewCellHeight[indexPath.item] = CGFloat(firstline) + imageHeight + last + 77
+                        
+                        reloadHeight()
+                        return CGFloat(firstline) + imageHeight + last + 77
+                    }
+                }
+                tableViewCellHeight[indexPath.item] = CGFloat(firstline) + imageHeight + last + 47
+                
+                
+                reloadHeight()
+                return CGFloat(firstline) + imageHeight + last + 47
             }
-            tableViewCellHeight[indexPath.item] = CGFloat(firstline) + imageHeight + last + 47
-            
-            reloadHeight()
-            return CGFloat(firstline) + imageHeight + last + 47
+            else {
+                return tableViewCellHeight[indexPath.item]
+            }
         }
     }
     
@@ -115,8 +129,11 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
             isFolded[indexPath.item].toggle()
             
             if let lastFolded = lastFolded {
+                tableViewCellHeight[indexPath.item] = 0
+                tableViewCellHeight[lastFolded] = 0
                 tableView.reloadRows(at: [indexPath, IndexPath(row: lastFolded, section: 0)], with: .automatic)
             } else {
+                tableViewCellHeight[indexPath.item] = 0
                 tableView.reloadRows(at: [indexPath], with: .automatic)
             }
         }

@@ -12,7 +12,7 @@ import RxCocoa
 struct dummyHowTo {
     var time: [String]
     var tool: [String]
-    var img: String?
+    var img: UIImage?
     var description: String
 }
 
@@ -25,10 +25,10 @@ class DetailViewController: UIViewController {
     var hashTag = ["면", "면 면", "면 면", "면", "모차렐라(슈레드) 치즈", "자이언트 떡볶이", "자이언트 떡볶이", "자이언트 떡볶이", "면 면"]
     var recipeInformation = [
         dummyHowTo(time: ["3분"], tool: ["전자레인지", "전자레인지", "전자레인지", "전자레인지", "전자레인지", "전자레인지", "면", "면"], img: nil, description: "자이언트 떡볶이를 순서대로 3분 조리"),
-        dummyHowTo(time: ["3분"], tool: ["전자레인지", "전자레인지", "전자레인지", "면"], img:"dummyImg", description: "자이언트 떡볶이를 순서대로 3분 조리"),
-        dummyHowTo(time: ["3분"], tool: ["전자레인지"], img:"dummyImg" ,description: "자이언트 떡볶이를 순서대로 3분 조리"),
-        dummyHowTo(time: ["3분"], tool: ["전자레인지"], img:"dummyImg" ,description: "자이언트 떡볶이를 순서대로 3분 조리"),
-        dummyHowTo(time: ["3분"], tool: ["전자레인지"], img:"dummyImg" ,description: "자이 언트 떡 볶이를 순 서대로  3분 조리자이 언트 떡볶 이를 순서대로 3분 조리자이언트 떡볶이를 순서대로 3분 조리자이언트 떡볶이를 순서대로 3분 조리")
+        dummyHowTo(time: ["3분"], tool: ["전자레인지", "전자레인지", "전자레인지", "면"], img: UIImage(named: "dummyImg"), description: "자이언트 떡볶이를 순서대로 3분 조리"),
+        dummyHowTo(time: ["3분"], tool: ["전자레인지"], img: UIImage(named: "dummyImg") ,description: "자이언트 떡볶이를 순서대로 3분 조리"),
+        dummyHowTo(time: ["3분"], tool: ["전자레인지"], img: UIImage(named: "dummyImg") ,description: "자이언트 떡볶이를 순서대로 3분 조리"),
+        dummyHowTo(time: ["3분"], tool: ["전자레인지"], img: UIImage(named: "dummyImg") ,description: "자이 언트 떡 볶이를 순 서대로  3분 조리자이 언트 떡볶 이를 순서대로 3분 조리자이언트 떡볶이를 순서대로 3분 조리자이언트 떡볶이를 순서대로 3분 조리")
     ]
     
     var isFolded = [Bool]()
@@ -182,7 +182,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
             let last = calculateLabelSizeRecipe(text: data.description).height
             if !isFolded[indexPath.item-2] {
                 if data.img != nil {
-                    if let image = UIImage(named: data.img!) {
+                    if let image = data.img {
                         let maxWidth: CGFloat = CGFloat(view.bounds.width/1.5)
                         let maxHeight: CGFloat = 130
                         let aspectRatio: CGFloat = 16 / 9  // 1.91:1

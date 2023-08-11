@@ -11,7 +11,7 @@ target 'Gobong' do
     	pod 'RxCocoa'
 	pod 'AlignedCollectionViewFlowLayout'
 	pod 'YPImagePicker'
-
+	pod 'IQKeyboardManagerSwift'
 end
 
 post_install do |installer|

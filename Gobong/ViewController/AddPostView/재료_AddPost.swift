@@ -31,6 +31,7 @@ extension AddPostViewController: UICollectionViewDelegate, UICollectionViewDataS
             // Update the layout
             self.view.layoutIfNeeded()
         }
+        checkOK()
     }
     
     func textFieldDidPressReturn(in cell: AddIngredientCell) {
@@ -43,6 +44,7 @@ extension AddPostViewController: UICollectionViewDelegate, UICollectionViewDataS
                 cell.textField.isUserInteractionEnabled = false
             }
         }
+        checkOK()
     }
     
     func textFieldChanged(in cell: AddIngredientCell) {

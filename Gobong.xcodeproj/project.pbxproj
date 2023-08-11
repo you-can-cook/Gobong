@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		8029E54F2A84F1FD00C927F0 /* AddDetailPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8029E54E2A84F1FD00C927F0 /* AddDetailPostViewController.swift */; };
 		8029E5512A851D3D00C927F0 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8029E5502A851D3D00C927F0 /* TestViewController.swift */; };
+		8029E5532A86066400C927F0 /* SearchToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8029E5522A86066400C927F0 /* SearchToolsViewController.swift */; };
+		8029E5562A860CBF00C927F0 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8029E5552A860CBF00C927F0 /* Model.swift */; };
 		80CE8AE82A7A8113003DE318 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CE8AE72A7A8113003DE318 /* CustomTabBar.swift */; };
 		80CE8AEA2A7A8196003DE318 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CE8AE92A7A8196003DE318 /* SearchViewController.swift */; };
 		80CE8AED2A7A8DA5003DE318 /* FeedBoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CE8AEB2A7A8DA5003DE318 /* FeedBoxCell.swift */; };
@@ -50,6 +52,8 @@
 		2D508E52F6B78B8632109249 /* Pods_Gobong.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gobong.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8029E54E2A84F1FD00C927F0 /* AddDetailPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDetailPostViewController.swift; sourceTree = "<group>"; };
 		8029E5502A851D3D00C927F0 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		8029E5522A86066400C927F0 /* SearchToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchToolsViewController.swift; sourceTree = "<group>"; };
+		8029E5552A860CBF00C927F0 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Model.swift; path = ../../../../Documents/Model.swift; sourceTree = "<group>"; };
 		80CE8AE72A7A8113003DE318 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		80CE8AE92A7A8196003DE318 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		80CE8AEB2A7A8DA5003DE318 /* FeedBoxCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedBoxCell.swift; sourceTree = "<group>"; };
@@ -100,6 +104,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8029E5542A860CAD00C927F0 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8029E5552A860CBF00C927F0 /* Model.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		80CE8B0A2A7CDE0F003DE318 /* DetailView */ = {
 			isa = PBXGroup;
 			children = (
@@ -156,6 +168,7 @@
 			children = (
 				80D2B5F82A791AD600B777D1 /* AppDelegate.swift */,
 				80D2B5FA2A791AD600B777D1 /* SceneDelegate.swift */,
+				8029E5542A860CAD00C927F0 /* Model */,
 				80D2B60C2A79278700B777D1 /* ViewController */,
 				80D2B5FE2A791AD600B777D1 /* Main.storyboard */,
 				80D2B6012A791AD900B777D1 /* Assets.xcassets */,
@@ -174,7 +187,6 @@
 				80CE8AEF2A7AA75A003DE318 /* BookmarkViewController.swift */,
 				80CE8AF62A7CA1F8003DE318 /* ProfileViewController.swift */,
 				80CE8AFC2A7CD246003DE318 /* DetailViewController.swift */,
-				8029E54E2A84F1FD00C927F0 /* AddDetailPostViewController.swift */,
 				80E3C01C2A83CEA100845A9B /* AddPostView */,
 				80D2B6112A792B1600B777D1 /* Cell */,
 				8029E5502A851D3D00C927F0 /* TestViewController.swift */,
@@ -202,6 +214,8 @@
 				80CE8B112A7E4530003DE318 /* AddPostViewController.swift */,
 				80E3C0202A83CF6F00845A9B /* 재료_AddPost.swift */,
 				80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */,
+				8029E54E2A84F1FD00C927F0 /* AddDetailPostViewController.swift */,
+				8029E5522A86066400C927F0 /* SearchToolsViewController.swift */,
 			);
 			path = AddPostView;
 			sourceTree = "<group>";
@@ -353,6 +367,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8029E5532A86066400C927F0 /* SearchToolsViewController.swift in Sources */,
 				80CE8AFD2A7CD246003DE318 /* DetailViewController.swift in Sources */,
 				80CE8AEA2A7A8196003DE318 /* SearchViewController.swift in Sources */,
 				80E3C0282A83D37700845A9B /* AddedRecipeCell.swift in Sources */,
@@ -367,6 +382,7 @@
 				80CE8B122A7E4530003DE318 /* AddPostViewController.swift in Sources */,
 				80CE8AED2A7A8DA5003DE318 /* FeedBoxCell.swift in Sources */,
 				80CE8B092A7CDD56003DE318 /* HashtagCell.swift in Sources */,
+				8029E5562A860CBF00C927F0 /* Model.swift in Sources */,
 				8029E5512A851D3D00C927F0 /* TestViewController.swift in Sources */,
 				80D2B5FD2A791AD600B777D1 /* ViewController.swift in Sources */,
 				80CE8B2C2A831F88003DE318 /* SelfSizingCollectionView.swift in Sources */,
