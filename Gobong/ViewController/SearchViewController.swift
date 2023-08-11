@@ -25,6 +25,14 @@ class SearchViewController: UIViewController {
         dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5)
     ]
     
+    var filteredData = [
+        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5)
+    ]
+    var isSearching = false
+    
     private var ShowingBlockView = true
     private var isShowingBlockView = PublishSubject<Bool>()
     private var isShowingBlockViewObservable : Observable<Bool> {
@@ -35,6 +43,7 @@ class SearchViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         isShowingBlockView.onNext(true)
+        tabBarController?.tabBar.isHidden = false
     }
 
     override func viewDidLoad() {
@@ -43,6 +52,7 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setObservable()
+        setupSearchBar()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -57,7 +67,7 @@ class SearchViewController: UIViewController {
 //MARK: BUTTON FUNC
 extension SearchViewController {
     @objc private func filterButtonTapped(){
-        
+        performSegue(withIdentifier: "showFilterView", sender: self)
     }
     
     @objc private func toogleButtonTapped(){
@@ -81,12 +91,13 @@ extension SearchViewController {
                 let filterButton = UIBarButtonItem(image: UIImage(named: "Filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
                 filterButton.tintColor = .black
                 
-                filterButton.imageInsets = UIEdgeInsets(top: 0.0, left: 50, bottom: 0, right: 30);
-                
+        //        filterButton.imageInsets = UIEdgeInsets(top: 0.0, left: 50, bottom: 0, right: 30);
+
                 let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "액자형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
                 tableViewToogleButton.tintColor = .black
                 
-                navigationItem.rightBarButtonItems = [tableViewToogleButton, filterButton]
+                navigationItem.rightBarButtonItems = [filterButton]
+                navigationItem.leftBarButtonItem = tableViewToogleButton
             } else {
                 ShowingBlockView = false
                 self.collectionView.isHidden = true
@@ -96,11 +107,13 @@ extension SearchViewController {
                 let filterButton = UIBarButtonItem(image: UIImage(named: "Filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
                 filterButton.tintColor = .black
                 
-                filterButton.imageInsets = UIEdgeInsets(top: 0.0, left: 50, bottom: 0, right: 30);
+        //        filterButton.imageInsets = UIEdgeInsets(top: 0.0, left: 50, bottom: 0, right: 30);
+
                 let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "카드형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
                 tableViewToogleButton.tintColor = .black
                 
-                navigationItem.rightBarButtonItems = [tableViewToogleButton, filterButton]
+                navigationItem.rightBarButtonItems = [filterButton]
+                navigationItem.leftBarButtonItem = tableViewToogleButton
             }
             
         }).disposed(by: disposeBag)
@@ -124,19 +137,48 @@ extension SearchViewController {
         let filterButton = UIBarButtonItem(image: UIImage(named: "Filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
         filterButton.tintColor = .black
         
-        filterButton.imageInsets = UIEdgeInsets(top: 0.0, left: 50, bottom: 0, right: 30);
+//        filterButton.imageInsets = UIEdgeInsets(top: 0.0, left: 50, bottom: 0, right: 30);
 
         let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "카드형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
         tableViewToogleButton.tintColor = .black
         
-        navigationItem.rightBarButtonItems = [tableViewToogleButton, filterButton]
+        navigationItem.rightBarButtonItems = [filterButton]
+        navigationItem.leftBarButtonItem = tableViewToogleButton
     }
 }
 
 //MARK: SEARCH BAR
-extension SearchViewController {
+extension SearchViewController: UISearchBarDelegate {
     private func setupSearchBar(){
         searchBar.placeholder = "검색어를 입력하세요"
+        searchBar.delegate = self
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        collectionView.isHidden = true
+        tableView.isHidden = true
+        
+        navigationItem.leftBarButtonItem = nil
+        let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(doneSearching))
+        cancelButton.tintColor = .black
+        
+        let filterButton = UIBarButtonItem(image: UIImage(named: "Filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
+        filterButton.tintColor = .black
+        
+        navigationItem.rightBarButtonItems = [cancelButton, filterButton]
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        //search for the data
+        
+        //show it with block view first..
+        isShowingBlockView.onNext(true)
+    }
+    
+    
+    
+    @objc private func doneSearching(){
+        isSearching = false
     }
 }
 
@@ -156,7 +198,11 @@ extension SearchViewController : UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeedBoxCell", for: indexPath) as! FeedBoxCell
         
-        cell.img.image = UIImage(named: dummyData[indexPath.item].thumbnailImg)
+        if !isSearching {
+            cell.img.image = UIImage(named: dummyData[indexPath.item].thumbnailImg)
+        } else {
+            cell.img.image = UIImage(named: filteredData[indexPath.item].thumbnailImg)
+        }
         
         NSLayoutConstraint.activate([
             cell.img.widthAnchor.constraint(equalToConstant: view.frame.width/3-2),
@@ -207,9 +253,15 @@ extension SearchViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as! FeedCell
         
-        let data = dummyData[indexPath.item]
-        cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
-        cell.followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12) 
+        if !isSearching {
+            let data = dummyData[indexPath.item]
+            cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
+            cell.followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        } else {
+            let data = filteredData[indexPath.item]
+            cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
+            cell.followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        }
         
         cell.selectionStyle = .none
         return cell

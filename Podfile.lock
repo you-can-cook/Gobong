@@ -9,6 +9,7 @@ PODS:
   - RxRelay (6.5.0):
     - RxSwift (= 6.5.0)
   - RxSwift (6.5.0)
+  - StepSlider (1.8.0)
   - SteviaLayout (4.7.3)
   - YPImagePicker (5.2.1):
     - PryntTrimmerView (= 4.0.2)
@@ -20,6 +21,7 @@ DEPENDENCIES:
   - IQKeyboardManagerSwift
   - RxCocoa
   - RxSwift
+  - StepSlider
   - YPImagePicker
 
 SPEC REPOS:
@@ -31,6 +33,7 @@ SPEC REPOS:
     - RxCocoa
     - RxRelay
     - RxSwift
+    - StepSlider
     - SteviaLayout
     - YPImagePicker
 
@@ -42,9 +45,10 @@ SPEC CHECKSUMS:
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
+  StepSlider: 890db727e779fa99cb32afffc5887c1109e151f4
   SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
   YPImagePicker: f36043210c10b0783034eb1947d6e06e31c461e4
 
-PODFILE CHECKSUM: b9e8b78c7fa01fd4ee37e7cc63af25d69cb19800
+PODFILE CHECKSUM: 06a49a88e113cd4c79e16fe5544b41da4b800bb2
 
 COCOAPODS: 1.12.1

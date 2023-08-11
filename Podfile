@@ -12,6 +12,7 @@ target 'Gobong' do
 	pod 'AlignedCollectionViewFlowLayout'
 	pod 'YPImagePicker'
 	pod 'IQKeyboardManagerSwift'
+	pod 'StepSlider'
 end
 
 post_install do |installer|
