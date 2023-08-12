@@ -21,6 +21,9 @@ abstract class NetworkActivity<T : ViewDataBinding, VM : NetworkViewModel>(
 
     abstract val viewModel: VM
 
+    var onSuccess: () -> Unit = {}
+    var onFail: () -> Unit = {}
+
     private val loadingDialog: AlertDialog by lazy {
         val dialogView = DialogLoadingBinding.inflate(this.layoutInflater)
         AlertDialog.Builder(this)
@@ -57,10 +60,12 @@ abstract class NetworkActivity<T : ViewDataBinding, VM : NetworkViewModel>(
 
                         NetworkState.SUCCESS -> {
                             loadingDialog.dismiss()
+                            onSuccess()
                         }
 
                         NetworkState.FAIL -> {
                             loadingDialog.dismiss()
+                            onFail()
                         }
                     }
                 }

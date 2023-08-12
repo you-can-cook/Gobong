@@ -4,11 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.model.repository.UserRepository
 import com.youcancook.gobong.ui.base.NetworkViewModel
 import com.youcancook.gobong.util.NetworkState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class LoginViewModel(
     private val repository: UserRepository,
@@ -20,7 +18,7 @@ class LoginViewModel(
     private val _provider = MutableStateFlow("")
     val provider: StateFlow<String> get() = _provider
 
-    fun getTemporaryToken() {
+    fun makeTemporaryToken() {
         viewModelScope.launch {
             setNetworkState(NetworkState.LOADING)
             try {
@@ -35,6 +33,9 @@ class LoginViewModel(
     }
 
     private suspend fun requestTemporaryToken() {
-        _temporaryToken.value = repository.getTemporaryToken()
+        _temporaryToken.value = repository.makeTemporaryToken()
     }
+
+    fun getTemporaryToken() = _temporaryToken.value
+
 }

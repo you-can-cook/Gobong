@@ -19,13 +19,15 @@ class RoutingActivity : AppCompatActivity() {
         super.onStart()
 
         //TODO 로그인 확인
-        if (isTokenExpired()) {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-        } else {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
+//        if (isTokenExpired()) {
+//            val intent = Intent(this, LoginActivity::class.java)
+//            startActivity(intent)
+//        } else {
+//            val intent = Intent(this, MainActivity::class.java)
+//            startActivity(intent)
+//        }
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
         finish()
     }
 
