@@ -197,10 +197,10 @@
             </objects>
             <point key="canvasLocation" x="2844" y="1640"/>
         </scene>
-        <!--View Controller-->
+        <!--Follow View Controller-->
         <scene sceneID="CJz-SM-X9F">
             <objects>
-                <viewController id="OjU-DQ-Cli" sceneMemberID="viewController">
+                <viewController id="OjU-DQ-Cli" customClass="FollowViewController" customModule="Gobong" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="yY7-dt-dzu">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -212,13 +212,38 @@
                                         <rect key="frame" x="0.0" y="0.0" width="196.66666666666666" height="50"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="팔로워"/>
+                                        <buttonConfiguration key="configuration" style="plain">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="팔로워">
+                                                    <attributes>
+                                                        <font key="NSFont" size="12" name="AppleSDGothicNeo-SemiBold"/>
+                                                        <font key="NSOriginalFont" metaFont="cellTitle"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="followerTapped:" destination="OjU-DQ-Cli" eventType="touchUpInside" id="ciq-st-H7k"/>
+                                            <action selector="followerTapped:" destination="Od5-ER-zr3" eventType="touchUpInside" id="pUD-YU-Sau"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JuO-I0-o6F">
                                         <rect key="frame" x="196.66666666666663" y="0.0" width="196.33333333333337" height="50"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="팔로잉"/>
+                                        <buttonConfiguration key="configuration" style="plain">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="팔로잉">
+                                                    <attributes>
+                                                        <font key="NSFont" size="12" name="AppleSDGothicNeo-SemiBold"/>
+                                                        <font key="NSOriginalFont" metaFont="cellTitle"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="followingTapped:" destination="OjU-DQ-Cli" eventType="touchUpInside" id="o4b-ff-jvy"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -243,8 +268,14 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="cvW-RI-voH"/>
+                    <connections>
+                        <outlet property="followerButton" destination="Vjf-dE-cfu" id="x6z-6Z-fuk"/>
+                        <outlet property="followingButton" destination="JuO-I0-o6F" id="AQW-Kb-jAY"/>
+                        <outlet property="tableView" destination="acc-6k-qzl" id="qh8-et-0hJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PjW-r6-mF7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="Od5-ER-zr3" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="417.55725190839695" y="-1147.1830985915494"/>
         </scene>
@@ -292,7 +323,7 @@
                     <connections>
                         <outlet property="mainTableView" destination="4GP-2C-uhe" id="lMf-cR-n30"/>
                         <segue destination="Rt5-em-RtD" kind="show" identifier="showDetailView" id="7X6-lR-vAV"/>
-                        <segue destination="OjU-DQ-Cli" kind="show" id="4LO-n6-n8v"/>
+                        <segue destination="OjU-DQ-Cli" kind="show" identifier="showFollowView" id="4LO-n6-n8v"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QDZ-t4-GSZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

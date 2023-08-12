@@ -7,16 +7,35 @@
 
 import UIKit
 
+protocol UserInformationDelegate: Any {
+    func followingTapped(controller: UserInformationCell)
+    func followersTapped(controller: UserInformationCell)
+}
+
 class UserInformationCell: UITableViewCell {
     
+    @IBOutlet weak var followingStack: UIStackView!
+    @IBOutlet weak var followerStack: UIStackView!
     @IBOutlet weak var profileImg: UIImageView!
     @IBOutlet weak var recipeCountLabel: UILabel!
     @IBOutlet weak var followerCountLabel: UILabel!
     @IBOutlet weak var followingCountLabel: UILabel!
+    
+    var delegate: UserInformationDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        followerStack.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(followerTapped)))
+        followingStack.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(followingTapped)))
+    }
+    
+    @objc private func followerTapped(){
+        delegate?.followersTapped(controller: self)
+    }
+    
+    @objc private func followingTapped(){
+        delegate?.followingTapped(controller: self)
     }
     
     func configuration(img: String?, recipeCount: Int, followerCount: Int, followingCount: Int){

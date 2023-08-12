@@ -108,7 +108,9 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="followerCountLabel" destination="QJv-2P-U5H" id="Tzx-YY-1lJ"/>
+                <outlet property="followerStack" destination="gDE-jz-412" id="qGe-Va-Nz5"/>
                 <outlet property="followingCountLabel" destination="VJh-TD-AUM" id="obm-f1-ayy"/>
+                <outlet property="followingStack" destination="yiu-O4-V3X" id="N6R-tM-gm3"/>
                 <outlet property="profileImg" destination="9CC-fR-t40" id="yTe-7r-Stw"/>
                 <outlet property="recipeCountLabel" destination="fYF-Jf-MeP" id="3HG-Yd-QUh"/>
             </connections>
