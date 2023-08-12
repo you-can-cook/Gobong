@@ -1,4 +1,8 @@
 package com.youcancook.gobong.model.repository
 
-class GoBongRepository {
+import com.youcancook.gobong.model.datasource.GoBongRemoteDataSource
+
+class GoBongRepository(
+    private val goBongDataSource: GoBongRemoteDataSource,
+) {
 }

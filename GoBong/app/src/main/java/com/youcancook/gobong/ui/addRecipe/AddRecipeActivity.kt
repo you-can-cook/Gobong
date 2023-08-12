@@ -22,11 +22,11 @@ import com.youcancook.gobong.databinding.ActivityAddRecipeBinding
 import com.youcancook.gobong.model.RecipeStepAdded
 import com.youcancook.gobong.ui.ImageActivity
 import com.youcancook.gobong.ui.addRecipe.bottom.RecipeStepBottomFragment
-import com.youcancook.gobong.ui.base.BaseActivity
+import com.youcancook.gobong.ui.base.GoBongActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class AddRecipeActivity : BaseActivity<ActivityAddRecipeBinding>(R.layout.activity_add_recipe) {
+class AddRecipeActivity : GoBongActivity<ActivityAddRecipeBinding>(R.layout.activity_add_recipe) {
     private var isEdit = false
     private var editId = 0L
     private val addRecipeViewModel: AddRecipeViewModel by viewModels()

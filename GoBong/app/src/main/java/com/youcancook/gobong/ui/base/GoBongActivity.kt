@@ -5,11 +5,16 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.youcancook.gobong.GoBongApplication
 
-abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes private val layoutRes: Int) :
+abstract class GoBongActivity<T : ViewDataBinding>(@LayoutRes private val layoutRes: Int) :
     AppCompatActivity() {
     private var _binding: T? = null
     val binding get() = _binding!!
+
+    val appContainer by lazy {
+        (application as GoBongApplication).container
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

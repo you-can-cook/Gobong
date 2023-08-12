@@ -8,14 +8,18 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.youcancook.gobong.GoBongApplication
 
-abstract class BaseFragment<
+abstract class GoBongFragment<
         T : ViewDataBinding,
         >(@LayoutRes private val layoutRes: Int) :
     Fragment() {
 
     private var _binding: T? = null
     val binding get() = _binding!!
+    val  appContainer by lazy{
+        (requireActivity().application as GoBongApplication).container
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

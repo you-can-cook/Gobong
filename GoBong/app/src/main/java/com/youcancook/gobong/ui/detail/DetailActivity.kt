@@ -12,12 +12,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.RecipeListAdapter
 import com.youcancook.gobong.databinding.ActivityDetailBinding
-import com.youcancook.gobong.ui.base.BaseActivity
+import com.youcancook.gobong.ui.base.GoBongActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class DetailActivity : BaseActivity<ActivityDetailBinding>(R.layout.activity_detail) {
+class DetailActivity : GoBongActivity<ActivityDetailBinding>(R.layout.activity_detail) {
     private val detailViewModel: DetailViewModel by viewModels()
     private val recipeAdapter = RecipeListAdapter(onItemClick = {
         detailViewModel.activeRecipeStep(it)
