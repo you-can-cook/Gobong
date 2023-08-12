@@ -254,21 +254,54 @@
                                 <rect key="frame" x="16" y="153" width="361" height="616"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MvV-fh-0Wy">
+                                <rect key="frame" x="0.0" y="153" width="393" height="616"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="KfF-zE-ER1">
+                                        <rect key="frame" x="114.00000000000001" y="251.66666666666666" width="165.33333333333337" height="112.66666666666666"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="프로필 이미지 Empty" translatesAutoresizingMaskIntoConstraints="NO" id="ujK-4I-5dd">
+                                                <rect key="frame" x="50.666666666666657" y="0.0" width="64" height="64"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J9U-Wg-suq">
+                                                <rect key="frame" x="0.0" y="79" width="165.33333333333334" height="33.666666666666657"/>
+                                                <color key="tintColor" name="softGray"/>
+                                                <string key="text">회원님이 팔로우하는 사람들이
+여기에 표시됩니다.</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" name="gray"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="KfF-zE-ER1" firstAttribute="centerY" secondItem="MvV-fh-0Wy" secondAttribute="centerY" id="0gG-6z-0xd"/>
+                                    <constraint firstItem="KfF-zE-ER1" firstAttribute="centerX" secondItem="MvV-fh-0Wy" secondAttribute="centerX" id="uNy-vW-NeZ"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="XeN-ln-lE7"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="FRU-Kc-UVr" firstAttribute="leading" secondItem="XeN-ln-lE7" secondAttribute="leading" id="0Kq-vw-64x"/>
+                            <constraint firstItem="XeN-ln-lE7" firstAttribute="bottom" secondItem="MvV-fh-0Wy" secondAttribute="bottom" id="0Rp-xT-sez"/>
                             <constraint firstItem="acc-6k-qzl" firstAttribute="leading" secondItem="XeN-ln-lE7" secondAttribute="leading" constant="16" id="3r9-dY-v7e"/>
+                            <constraint firstItem="MvV-fh-0Wy" firstAttribute="leading" secondItem="XeN-ln-lE7" secondAttribute="leading" id="664-Ev-V6l"/>
                             <constraint firstItem="acc-6k-qzl" firstAttribute="trailing" secondItem="XeN-ln-lE7" secondAttribute="trailing" constant="-16" id="Ihm-N9-P8b"/>
                             <constraint firstItem="FRU-Kc-UVr" firstAttribute="top" secondItem="XeN-ln-lE7" secondAttribute="top" id="Keg-zx-FVi"/>
+                            <constraint firstItem="XeN-ln-lE7" firstAttribute="trailing" secondItem="MvV-fh-0Wy" secondAttribute="trailing" id="VQQ-4u-Gel"/>
                             <constraint firstItem="XeN-ln-lE7" firstAttribute="trailing" secondItem="FRU-Kc-UVr" secondAttribute="trailing" id="WyX-op-TR5"/>
                             <constraint firstItem="acc-6k-qzl" firstAttribute="top" secondItem="FRU-Kc-UVr" secondAttribute="bottom" id="dpe-tu-g6l"/>
                             <constraint firstItem="acc-6k-qzl" firstAttribute="bottom" secondItem="XeN-ln-lE7" secondAttribute="bottom" id="jlq-iX-gtv"/>
+                            <constraint firstItem="MvV-fh-0Wy" firstAttribute="top" secondItem="FRU-Kc-UVr" secondAttribute="bottom" id="m58-fq-uiR"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="cvW-RI-voH"/>
+                    <navigationItem key="navigationItem" style="editor" id="cvW-RI-voH"/>
                     <connections>
+                        <outlet property="emptyStateLabel" destination="J9U-Wg-suq" id="F5A-bh-dib"/>
+                        <outlet property="emptyStateView" destination="MvV-fh-0Wy" id="OlD-v6-OVa"/>
                         <outlet property="followerButton" destination="Vjf-dE-cfu" id="x6z-6Z-fuk"/>
                         <outlet property="followingButton" destination="JuO-I0-o6F" id="AQW-Kb-jAY"/>
                         <outlet property="tableView" destination="acc-6k-qzl" id="qh8-et-0hJ"/>
@@ -1962,6 +1995,7 @@
         <image name="chevron.backward" catalog="system" width="97" height="128"/>
         <image name="plus.circle.fill" catalog="system" width="128" height="123"/>
         <image name="uploadPhoto" width="345" height="230"/>
+        <image name="프로필 이미지 Empty" width="64" height="64"/>
         <namedColor name="gray">
             <color red="0.58823529411764708" green="0.58823529411764708" blue="0.58823529411764708" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

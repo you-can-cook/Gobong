@@ -19,21 +19,20 @@ class FollowViewController: UIViewController, FollowDelegate {
         if followStateTapped == "followers" {
             followerData[indexPath.item].following.toggle()
             tableView.reloadRows(at: [indexPath], with: .none)
-        } else if followStateTapped == "following" {
+        } else if followStateTapped == "followings" {
             followingData[indexPath.item].following.toggle()
             tableView.reloadRows(at: [indexPath], with: .none)
         }
     }
     
-
+    
+    @IBOutlet weak var emptyStateLabel: UILabel!
+    @IBOutlet weak var emptyStateView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var followingButton: UIButton!
     @IBOutlet weak var followerButton: UIButton!
     
-    var followingData = [
-        dummyProfileData(name: "배고파용", following: true),
-        dummyProfileData(name: "닉넴", following: true)
-    ]
+    var followingData = [dummyProfileData]()
     
     var followerData = [
         dummyProfileData(name: "asdas", following: false),
@@ -41,23 +40,34 @@ class FollowViewController: UIViewController, FollowDelegate {
     ]
     
     var followStateTapped = ""
-    
-    override func viewWillAppear(_ animated: Bool) {
-        tabBarController?.tabBar.isHidden = true
-    }
+    var username = "유저 이름"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         followStateUI()
         tableViewSetup()
+        setupNavigationBar()
+    }
+    
+    private func setupNavigationBar(){
+        navigationItem.title = username
+        
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButton))
+        backButton.tintColor = .black
+        
+        navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc private func backButton(){
+        navigationController?.popViewController(animated: true)
     }
     
     private func followStateUI(){
         if followStateTapped == "followers" {
-            //get data if nil
-            
+            //get data
+            checkIfEmpty()
             
             followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
             followingButton.titleLabel?.textColor = UIColor(named: "softGray")
@@ -70,17 +80,17 @@ class FollowViewController: UIViewController, FollowDelegate {
             followerButton.titleLabel?.textColor = .black
             let bottomBorder2 = CALayer()
             bottomBorder2.backgroundColor = UIColor(named: "pink")?.cgColor// Set the border color
-            bottomBorder2.frame = CGRect(x: 0, y: followerButton.frame.height - 1, width: followerButton.frame.width, height: 1)
+            bottomBorder2.frame = CGRect(x: 0, y: followerButton.frame.height - 1, width: followingButton.frame.width, height: 1)
             followerButton.layer.addSublayer(bottomBorder2)
         } else {
-            //get data if nil
-            
+            //get data
+            checkIfEmpty()
             
             followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
             followingButton.titleLabel?.textColor = .black
             let bottomBorder = CALayer()
             bottomBorder.backgroundColor = UIColor(named: "pink")?.cgColor// Set the border color
-            bottomBorder.frame = CGRect(x: 0, y: followingButton.frame.height - 1, width: followingButton.frame.width, height: 1)
+            bottomBorder.frame = CGRect(x: 0, y: followerButton.frame.height - 1, width: followingButton.frame.width, height: 1)
             followingButton.layer.addSublayer(bottomBorder)
             
             followerButton.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
@@ -91,7 +101,7 @@ class FollowViewController: UIViewController, FollowDelegate {
             followerButton.layer.addSublayer(bottomBorder2)
         }
     }
-
+    
     @IBAction func followerTapped(_ sender: Any) {
         followStateTapped = "followers"
         followStateUI()
@@ -102,6 +112,28 @@ class FollowViewController: UIViewController, FollowDelegate {
         followStateTapped = "followings"
         followStateUI()
         tableView.reloadData()
+    }
+    
+    private func checkIfEmpty(){
+        if followStateTapped == "followers" {
+            if followerData.isEmpty {
+                tableView.isHidden = true
+                emptyStateView.isHidden = false
+                emptyStateLabel.text = "회원님을 팔로우하는 모든 사람이 \n여기에 표시됩니다."
+            } else {
+                tableView.isHidden = false
+                emptyStateView.isHidden = true
+            }
+        } else {
+            if followingData.isEmpty {
+                tableView.isHidden = true
+                emptyStateView.isHidden = false
+                emptyStateLabel.text = "회원님이 팔로우하는 사람들이 \n여기에 표시됩니다."
+            } else {
+                tableView.isHidden = false
+                emptyStateView.isHidden = true
+            }
+        }
     }
 }
 
