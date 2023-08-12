@@ -16,7 +16,6 @@ fun setImageVisible(view: ImageView, visible: Boolean) {
 
 @BindingAdapter("setTextVisible")
 fun setTextVisible(view: TextView, text: String) {
-    println("text ${text} ${text.isNotEmpty()}")
     view.isVisible = text.isNotEmpty()
 }
 
@@ -47,4 +46,12 @@ fun isRecipeStepAddButtonEnabled(
     second: String,
 ) {
     view.isEnabled = (minute == "0" && second == "0").not()
+}
+
+@BindingAdapter("isButtonEnabled")
+fun isButtonEnabled(
+    view: Button,
+    text: String,
+) {
+    view.isEnabled = text.isNotEmpty()
 }
