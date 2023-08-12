@@ -105,7 +105,7 @@ extension ProfileViewController {
 //MARK: DELEGATE
 extension ProfileViewController: UserInformationDelegate{
     func followingTapped(controller: UserInformationCell) {
-        followStateTapped = "following"
+        followStateTapped = "followings"
         performSegue(withIdentifier: "showFollowView", sender: self)
     }
     
