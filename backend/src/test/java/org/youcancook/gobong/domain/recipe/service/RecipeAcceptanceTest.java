@@ -95,4 +95,31 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
                 .statusCode(HttpStatus.OK.value())
                 .extract();
     }
+
+    @Test
+    @DisplayName("북마크한 레시피를 조회한다.")
+    public void getBookmarks(){
+        String accessToken1 = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
+        String accessToken2 = AcceptanceUtils.signUpAndGetToken("냠냠학사", "GOOGLE", "1223");
+        CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "쉽게 만드는 주먹밥", List.of("밥", "김"), "쉬워요", null, List.of(
+                new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, 0L),
+                new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, 0L)
+        ));
+
+        for(int i = 0; i < 5; i++){
+            Long recipeId = AcceptanceUtils.createDummyRecipe(accessToken1, request).as(CreateRecipeResponse.class).getId();
+            RestAssured.given().log().all()
+                    .auth().oauth2(accessToken2)
+                    .when().post("/api/bookmarks/" + recipeId)
+                    .then().log().all()
+                    .statusCode(HttpStatus.OK.value());
+        }
+
+        RestAssured.given().log().all()
+                .auth().oauth2(accessToken2)
+                .when().get("/api/recipes/bookmarks?page=0&count=5")
+                .then().log().all()
+                .extract();
+
+    }
 }
