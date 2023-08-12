@@ -27,6 +27,9 @@ class UserViewModel(
 
     private val _token = MutableStateFlow(UserToken("", ""))
 
+    private val _isTokenExpired = MutableStateFlow(false)
+    val isTokenExpired: StateFlow<Boolean> get() = _isTokenExpired
+
     fun setLoginAuth(auth: LoginAuth) {
         _loginAuth.value = auth
     }
@@ -36,6 +39,12 @@ class UserViewModel(
     }
 
     fun getToken() = _token.value
+
+    fun isTokenExpired(token: UserToken) {
+        viewModelScope.launch {
+            _isTokenExpired.value = repository.isTokenExpired(token)
+        }
+    }
 
     fun registerNickname() {
         if (nicknameInput.value.isEmpty()) {

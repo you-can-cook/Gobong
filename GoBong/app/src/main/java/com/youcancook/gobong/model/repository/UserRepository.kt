@@ -20,4 +20,8 @@ class UserRepository(
         return userDataSource.requestRegister(registerUser)
 
     }
+
+    suspend fun isTokenExpired(userToken: UserToken):Boolean{
+        return userDataSource.checkTokenExpired()
+    }
 }

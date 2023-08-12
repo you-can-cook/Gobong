@@ -5,7 +5,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.youcancook.gobong.GoBongApplication
+import com.youcancook.gobong.ui.GoBongApplication
 
 abstract class GoBongActivity<T : ViewDataBinding>(@LayoutRes private val layoutRes: Int) :
     AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.youcancook.gobong
+package com.youcancook.gobong.ui
 
 import android.app.Application
 import android.util.Log
