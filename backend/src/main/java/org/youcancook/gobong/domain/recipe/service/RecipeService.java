@@ -6,7 +6,9 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.youcancook.gobong.domain.bookmarkrecipe.dto.TotalBookmarkDto;
 import org.youcancook.gobong.domain.bookmarkrecipe.repository.BookmarkRecipeRepository;
+import org.youcancook.gobong.domain.rating.dto.RatingDto;
 import org.youcancook.gobong.domain.rating.repository.RatingRepository;
 import org.youcancook.gobong.domain.recipe.dto.request.CreateRecipeRequest;
 import org.youcancook.gobong.domain.recipe.dto.request.UpdateRecipeRequest;
@@ -24,6 +26,7 @@ import org.youcancook.gobong.domain.user.exception.UserNotFoundException;
 import org.youcancook.gobong.domain.user.repository.UserRepository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -79,23 +82,35 @@ public class RecipeService {
     }
 
     public BookmarkedRecipesResponse getAllBookmarkedRecipes(Long userId, Integer page, int count){
+        // 1 -> ID 모으기
         Slice<Recipe> bookmarkedRecipes = recipeRepository.findByBookmarkedRecipes(
                 userId,
                 PageRequest.of(page, count, Sort.by("createdAt").descending())
         );
 
-        List<BookmarkedRecipeResponse> responses = bookmarkedRecipes.getContent().stream()
-                .map(recipe -> new BookmarkedRecipeResponse(
-                        recipe.getId(),
-                        recipe.getUser().getId(),
-                        recipe.getTotalCookTimeInSeconds(),
-                        recipe.getThumbnailURL(),
-                        recipe.getDifficulty().getDescription(),
-                        recipe.getAverageRating(),
-                        recipe.getCookwares(),
-                        recipe.getBookmarks().size()
-                ))
-                .collect(Collectors.toList());
+        List<Long> recipeIds = bookmarkedRecipes.getContent().stream().map(Recipe::getId).toList();
+
+        // 2 -> ID에 따른 Rating 찾기
+        Map<Long, Double> averageRatings = ratingRepository.getAverageRatings(recipeIds).stream().collect(Collectors.toMap(
+                RatingDto::getRecipeId, RatingDto::getAverageScore
+        ));
+
+        // 3 -> ID에 따른 북마크 수 찾기
+        Map<Long, Long> totalBookmarks = bookmarkRecipeRepository.getTotalBookmarks(recipeIds).stream().collect(Collectors.toMap(
+                TotalBookmarkDto::getRecipeId, TotalBookmarkDto::getTotalBookmarkCount
+        ));
+
+        List<BookmarkedRecipeResponse> responses = bookmarkedRecipes.getContent().stream().map(recipe -> new BookmarkedRecipeResponse(
+                recipe.getId(),
+                recipe.getUser().getId(),
+                recipe.getTotalCookTimeInSeconds(),
+                recipe.getThumbnailURL(),
+                recipe.getDifficulty().getDescription(),
+                averageRatings.get(recipe.getId()),
+                recipe.getCookwares(),
+                totalBookmarks.get(recipe.getId()).intValue()
+        )).collect(Collectors.toList());
+
         return new BookmarkedRecipesResponse(bookmarkedRecipes.isLast(), responses);
     }
 }
