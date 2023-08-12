@@ -43,7 +43,6 @@ public class Rating {
         this.user = user;
         this.recipe = recipe;
         this.score = score;
-        this.recipe.addRating(this);
     }
     public void updateScore(Integer score) {
         validateRatingRange(score);
