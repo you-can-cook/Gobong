@@ -44,6 +44,9 @@
 		80D3F1F02A879562009313CB /* FollowStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1EE2A879562009313CB /* FollowStateCell.swift */; };
 		80D3F1F12A879563009313CB /* FollowStateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80D3F1EF2A879562009313CB /* FollowStateCell.xib */; };
 		80D3F1F32A87C99D009313CB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1F22A87C99D009313CB /* LoginViewController.swift */; };
+		80D3F1F52A87F0F4009313CB /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1F42A87F0F4009313CB /* Server.swift */; };
+		80D3F1F72A87F5CF009313CB /* APIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1F62A87F5CF009313CB /* APIModel.swift */; };
+		80D3F1F92A87FDAF009313CB /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1F82A87FDAF009313CB /* SignUpViewController.swift */; };
 		80E3C01E2A83CEBB00845A9B /* Recipe_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */; };
 		80E3C0212A83CF6F00845A9B /* 재료_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0202A83CF6F00845A9B /* 재료_AddPost.swift */; };
 		80E3C0242A83D0E900845A9B /* DashedLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0232A83D0E900845A9B /* DashedLineView.swift */; };
@@ -94,6 +97,9 @@
 		80D3F1EE2A879562009313CB /* FollowStateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowStateCell.swift; sourceTree = "<group>"; };
 		80D3F1EF2A879562009313CB /* FollowStateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FollowStateCell.xib; sourceTree = "<group>"; };
 		80D3F1F22A87C99D009313CB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		80D3F1F42A87F0F4009313CB /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
+		80D3F1F62A87F5CF009313CB /* APIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModel.swift; sourceTree = "<group>"; };
+		80D3F1F82A87FDAF009313CB /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe_AddPost.swift; sourceTree = "<group>"; };
 		80E3C0202A83CF6F00845A9B /* 재료_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "재료_AddPost.swift"; sourceTree = "<group>"; };
 		80E3C0232A83D0E900845A9B /* DashedLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedLineView.swift; sourceTree = "<group>"; };
@@ -118,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				8029E5552A860CBF00C927F0 /* Model.swift */,
+				80D3F1F62A87F5CF009313CB /* APIModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -180,6 +187,7 @@
 			children = (
 				80D2B5F82A791AD600B777D1 /* AppDelegate.swift */,
 				80D2B5FA2A791AD600B777D1 /* SceneDelegate.swift */,
+				80D3F1F42A87F0F4009313CB /* Server.swift */,
 				8029E5542A860CAD00C927F0 /* Model */,
 				80D2B60C2A79278700B777D1 /* ViewController */,
 				80D2B5FE2A791AD600B777D1 /* Main.storyboard */,
@@ -203,6 +211,7 @@
 				80E3C01C2A83CEA100845A9B /* AddPostView */,
 				80D2B6112A792B1600B777D1 /* Cell */,
 				8029E5502A851D3D00C927F0 /* TestViewController.swift */,
+				80D3F1F82A87FDAF009313CB /* SignUpViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -291,6 +300,7 @@
 				80D2B5F22A791AD600B777D1 /* Frameworks */,
 				80D2B5F32A791AD600B777D1 /* Resources */,
 				41114789EDED84D9A4CBB6DD /* [CP] Embed Pods Frameworks */,
+				125DA19BC2CC636FA21CBCE1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -353,6 +363,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		125DA19BC2CC636FA21CBCE1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Gobong/Pods-Gobong-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Gobong/Pods-Gobong-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Gobong/Pods-Gobong-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		41114789EDED84D9A4CBB6DD /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -399,6 +426,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80D3F1F52A87F0F4009313CB /* Server.swift in Sources */,
 				8029E5532A86066400C927F0 /* SearchToolsViewController.swift in Sources */,
 				80CE8AFD2A7CD246003DE318 /* DetailViewController.swift in Sources */,
 				80CE8AEA2A7A8196003DE318 /* SearchViewController.swift in Sources */,
@@ -426,6 +454,7 @@
 				80D3F1E72A8688F1009313CB /* FilterViewController.swift in Sources */,
 				80E3C0212A83CF6F00845A9B /* 재료_AddPost.swift in Sources */,
 				80CE8AF72A7CA1F8003DE318 /* ProfileViewController.swift in Sources */,
+				80D3F1F72A87F5CF009313CB /* APIModel.swift in Sources */,
 				80D2B5F92A791AD600B777D1 /* AppDelegate.swift in Sources */,
 				80D3F1F02A879562009313CB /* FollowStateCell.swift in Sources */,
 				80CE8B222A80E33F003DE318 /* PaddingLabel.swift in Sources */,
@@ -433,6 +462,7 @@
 				80CE8B0C2A7CDE38003DE318 /* HashtagCollectionCell.swift in Sources */,
 				80CE8B142A7F712C003DE318 /* AddIngredientCell.swift in Sources */,
 				80D2B5FB2A791AD600B777D1 /* SceneDelegate.swift in Sources */,
+				80D3F1F92A87FDAF009313CB /* SignUpViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -583,7 +613,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Gobong/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "사진 라이브러리에 접근하여 사진을 업로드하려고 합니다.";
-				INFOPLIST_KEY_NSCameraUsageDescription = "접근하여 사진을 업로드하려고 합니다.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "사진 라이브러리에 접근하여 사진을 업로드하려고 합니다.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "마이크 접근하여 사진을 업로드하려고 합니다.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진 라이브러리에 접근하여 사진을 업로드하려고 합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -615,7 +646,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Gobong/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "사진 라이브러리에 접근하여 사진을 업로드하려고 합니다.";
-				INFOPLIST_KEY_NSCameraUsageDescription = "접근하여 사진을 업로드하려고 합니다.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "사진 라이브러리에 접근하여 사진을 업로드하려고 합니다.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "마이크 접근하여 사진을 업로드하려고 합니다.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진 라이브러리에 접근하여 사진을 업로드하려고 합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;

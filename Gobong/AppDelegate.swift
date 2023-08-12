@@ -7,6 +7,7 @@
 
 import UIKit
 import IQKeyboardManagerSwift
+import KakaoSDKCommon
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.shouldShowToolbarPlaceholder = false
         IQKeyboardManager.shared.toolbarTintColor = UIColor(named: "pink")
+        
+        KakaoSDK.initSDK(appKey: "cea3443f6d3146a05128d120e286be92")
         return true
     }
 
