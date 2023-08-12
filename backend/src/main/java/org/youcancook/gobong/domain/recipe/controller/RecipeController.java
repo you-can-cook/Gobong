@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.youcancook.gobong.domain.recipe.dto.request.CreateRecipeRequest;
 import org.youcancook.gobong.domain.recipe.dto.request.UpdateRecipeRequest;
+import org.youcancook.gobong.domain.recipe.dto.response.BookmarkedRecipesResponse;
 import org.youcancook.gobong.domain.recipe.dto.response.CreateRecipeResponse;
 import org.youcancook.gobong.domain.recipe.service.RecipeService;
 import org.youcancook.gobong.global.resolver.LoginUserId;
@@ -36,5 +37,13 @@ public class RecipeController {
 
         recipeService.deleteRecipe(userId, recipeId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/bookmarks")
+    public ResponseEntity<BookmarkedRecipesResponse> getBookmarkedRecipes(@LoginUserId Long userId,
+                                                                          @RequestParam("page") final Integer page,
+                                                                          @RequestParam("count") final int count){
+        BookmarkedRecipesResponse allBookmarkedRecipes = recipeService.getAllBookmarkedRecipes(userId, page, count);
+        return ResponseEntity.ok(allBookmarkedRecipes);
     }
 }
