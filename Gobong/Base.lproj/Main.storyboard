@@ -197,6 +197,57 @@
             </objects>
             <point key="canvasLocation" x="2844" y="1640"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="CJz-SM-X9F">
+            <objects>
+                <viewController id="OjU-DQ-Cli" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="yY7-dt-dzu">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FRU-Kc-UVr">
+                                <rect key="frame" x="0.0" y="103" width="393" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vjf-dE-cfu">
+                                        <rect key="frame" x="0.0" y="0.0" width="196.66666666666666" height="50"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="팔로워"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JuO-I0-o6F">
+                                        <rect key="frame" x="196.66666666666663" y="0.0" width="196.33333333333337" height="50"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="팔로잉"/>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="FnV-Zw-p8e"/>
+                                </constraints>
+                            </stackView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="acc-6k-qzl">
+                                <rect key="frame" x="16" y="153" width="361" height="616"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="XeN-ln-lE7"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="FRU-Kc-UVr" firstAttribute="leading" secondItem="XeN-ln-lE7" secondAttribute="leading" id="0Kq-vw-64x"/>
+                            <constraint firstItem="acc-6k-qzl" firstAttribute="leading" secondItem="XeN-ln-lE7" secondAttribute="leading" constant="16" id="3r9-dY-v7e"/>
+                            <constraint firstItem="acc-6k-qzl" firstAttribute="trailing" secondItem="XeN-ln-lE7" secondAttribute="trailing" constant="-16" id="Ihm-N9-P8b"/>
+                            <constraint firstItem="FRU-Kc-UVr" firstAttribute="top" secondItem="XeN-ln-lE7" secondAttribute="top" id="Keg-zx-FVi"/>
+                            <constraint firstItem="XeN-ln-lE7" firstAttribute="trailing" secondItem="FRU-Kc-UVr" secondAttribute="trailing" id="WyX-op-TR5"/>
+                            <constraint firstItem="acc-6k-qzl" firstAttribute="top" secondItem="FRU-Kc-UVr" secondAttribute="bottom" id="dpe-tu-g6l"/>
+                            <constraint firstItem="acc-6k-qzl" firstAttribute="bottom" secondItem="XeN-ln-lE7" secondAttribute="bottom" id="jlq-iX-gtv"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="cvW-RI-voH"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PjW-r6-mF7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="417.55725190839695" y="-1147.1830985915494"/>
+        </scene>
         <!--Profile View Controller-->
         <scene sceneID="Rqb-gV-Y2f">
             <objects>
@@ -241,6 +292,7 @@
                     <connections>
                         <outlet property="mainTableView" destination="4GP-2C-uhe" id="lMf-cR-n30"/>
                         <segue destination="Rt5-em-RtD" kind="show" identifier="showDetailView" id="7X6-lR-vAV"/>
+                        <segue destination="OjU-DQ-Cli" kind="show" id="4LO-n6-n8v"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QDZ-t4-GSZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1868,7 +1920,7 @@
     </designables>
     <inferredMetricsTieBreakers>
         <segue reference="YTW-5r-0AN"/>
-        <segue reference="aw6-BK-YBx"/>
+        <segue reference="7X6-lR-vAV"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Button_Bookmark" width="28" height="28"/>
