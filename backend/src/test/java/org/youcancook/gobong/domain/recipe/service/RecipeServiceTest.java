@@ -10,6 +10,7 @@ import org.youcancook.gobong.domain.rating.entity.Rating;
 import org.youcancook.gobong.domain.rating.repository.RatingRepository;
 import org.youcancook.gobong.domain.recipe.dto.request.CreateRecipeRequest;
 import org.youcancook.gobong.domain.recipe.dto.request.UpdateRecipeRequest;
+import org.youcancook.gobong.domain.recipe.dto.response.BookmarkedRecipesResponse;
 import org.youcancook.gobong.domain.recipe.entity.Difficulty;
 import org.youcancook.gobong.domain.recipe.entity.Recipe;
 import org.youcancook.gobong.domain.recipe.exception.RecipeAccessDeniedException;
@@ -226,8 +227,41 @@ class RecipeServiceTest {
         assertThrows(RecipeAccessDeniedException.class, () -> recipeService.validateUserRecipe(user2, recipe));
     }
 
+    @Test
+    @DisplayName("유저가 북마크한 레시피를 조회한다.")
+    public void getBookmarkedRecipes(){
+        User user1 = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
+        userRepository.save(user1);
+        User user2 = User.builder().nickname("쩝쩝학사").oAuthProvider(OAuthProvider.KAKAO).oAuthId("125").build();
+        userRepository.save(user2);
+
+        Recipe recipe1 = Recipe.builder().user(user1).difficulty(Difficulty.EASY).title("주먹밥1").build();
+        Long recipe1Id = recipeRepository.save(recipe1).getId();
+
+        Recipe recipe2 = Recipe.builder().user(user1).difficulty(Difficulty.EASY).title("주먹밥2").build();
+        Long recipe2Id = recipeRepository.save(recipe2).getId();
+
+        Recipe recipe3 = Recipe.builder().user(user1).difficulty(Difficulty.EASY).title("주먹밥3").build();
+        Long recipe3Id = recipeRepository.save(recipe3).getId();
+
+        bookmarkRecipeRepository.save(new BookmarkRecipe(user2, recipe3));
+        bookmarkRecipeRepository.save(new BookmarkRecipe(user2, recipe2));
+        bookmarkRecipeRepository.save(new BookmarkRecipe(user2, recipe1));
+
+        BookmarkedRecipesResponse actual = recipeService.getAllBookmarkedRecipes(user2.getId(), 0, 5);
+
+        assertThat(actual.isLast()).isTrue();
+        assertThat(actual.getRecipes()).hasSize(3);
+        assertThat(actual.getRecipes().get(0).getRecipeId()).isEqualTo(recipe1Id);
+        assertThat(actual.getRecipes().get(1).getRecipeId()).isEqualTo(recipe2Id);
+        assertThat(actual.getRecipes().get(2).getRecipeId()).isEqualTo(recipe3Id);
+
+
+    }
+
     @AfterEach
     void teardown(){
+        bookmarkRecipeRepository.deleteAll();
         recipeDetailRepository.deleteAll();
         recipeRepository.deleteAll();
         userRepository.deleteAll();
