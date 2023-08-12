@@ -31,7 +31,7 @@ public enum ErrorCode {
     // User
     DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "U001", "이미 등록된 닉네임입니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "U004", "유저를 찾을 수 없습니다."),
-    ALREADY_EXIST_USER(HttpStatus.BAD_REQUEST, "U001", "이미 등록된 유저입니다."),
+    USER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "U001", "이미 등록된 유저입니다."),
 
     // Recipe
     RECIPE_NOT_FOUND(HttpStatus.NOT_FOUND, "R004", "레시피를 찾을 수 없습니다."),

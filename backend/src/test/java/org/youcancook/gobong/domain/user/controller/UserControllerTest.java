@@ -257,8 +257,8 @@ class UserControllerTest {
         mockMvc.perform(post("/api/users/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
-                .andExpect(jsonPath("$.code").value(ErrorCode.ALREADY_EXIST_USER.getCode()))
-                .andExpect(jsonPath("$.message").value(ErrorCode.ALREADY_EXIST_USER.getMessage()))
+                .andExpect(jsonPath("$.code").value(ErrorCode.USER_ALREADY_EXISTS.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.USER_ALREADY_EXISTS.getMessage()))
                 .andDo(print());
 
         List<TemporaryToken> temporaryTokens = temporaryTokenRepository.findAll();

@@ -8,7 +8,7 @@ import org.youcancook.gobong.domain.user.dto.SignupDto;
 import org.youcancook.gobong.domain.user.dto.response.SignupResponse;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
-import org.youcancook.gobong.domain.user.exception.AlreadyExistUserException;
+import org.youcancook.gobong.domain.user.exception.UserAlreadyExistsException;
 import org.youcancook.gobong.domain.user.exception.DuplicationNicknameException;
 import org.youcancook.gobong.domain.user.repository.UserRepository;
 import org.youcancook.gobong.global.util.token.TokenDto;
@@ -47,7 +47,7 @@ public class UserSignupService {
 
     private void validateExistUser(OAuthProvider oAuthProvider, String oAuthId) {
         if (userRepository.existsByOAuthProviderAndOAuthId(oAuthProvider, oAuthId)) {
-            throw new AlreadyExistUserException();
+            throw new UserAlreadyExistsException();
         }
     }
 
