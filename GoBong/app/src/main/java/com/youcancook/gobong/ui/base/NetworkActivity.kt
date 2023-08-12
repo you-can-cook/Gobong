@@ -16,15 +16,15 @@ import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-abstract class NetworkFragment<T : ViewDataBinding, VM : NetworkViewModel>(
+abstract class NetworkActivity<T : ViewDataBinding, VM : NetworkViewModel>(
     @LayoutRes private val layoutRes: Int,
-) : GoBongFragment<T>(layoutRes) {
+) : GoBongActivity<T>(layoutRes) {
 
     abstract val viewModel: VM
 
     private val loadingDialog: AlertDialog by lazy {
-        val dialogView = DialogLoadingBinding.inflate(requireActivity().layoutInflater)
-        AlertDialog.Builder(requireContext())
+        val dialogView = DialogLoadingBinding.inflate(this.layoutInflater)
+        AlertDialog.Builder(this)
             .setView(dialogView.root)
             .setCancelable(false)
             .create().apply {
@@ -32,11 +32,10 @@ abstract class NetworkFragment<T : ViewDataBinding, VM : NetworkViewModel>(
             }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.snackBarMessage.collectLatest {
                     if (it.isNotEmpty()) {
                         Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
@@ -46,7 +45,7 @@ abstract class NetworkFragment<T : ViewDataBinding, VM : NetworkViewModel>(
         }
 
         lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.networkState.collectLatest {
                     when (it) {
                         NetworkState.DONE -> {
@@ -69,5 +68,4 @@ abstract class NetworkFragment<T : ViewDataBinding, VM : NetworkViewModel>(
             }
         }
     }
-
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.kakao.sdk.auth.model.OAuthToken
@@ -12,19 +13,21 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
+import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityLoginBinding
 import com.youcancook.gobong.ui.ACCESS_TOKEN
+import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.util.NATIVE_APP_KEY
 import kotlinx.coroutines.launch
 
-class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
+class LoginActivity :
+    NetworkActivity<ActivityLoginBinding, LoginViewModel>(R.layout.activity_login) {
+    override val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
+        binding.vm = viewModel
         KakaoSdk.init(this, NATIVE_APP_KEY)
         var keyHash = Utility.getKeyHash(this)
 
