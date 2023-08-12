@@ -15,6 +15,7 @@ class ProfileFeedCell: UITableViewCell {
     
     var dummyData: [dummyFeedData] = []
     var selectedIndexPath = 0
+    
     var delegate: profileFeedDelegete?
     
     let collectionView: UICollectionView = {
@@ -37,6 +38,47 @@ class ProfileFeedCell: UITableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func addEmptyState(){
+        let emptyUI = UIView()
+        emptyUI.translatesAutoresizingMaskIntoConstraints = false
+        
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.spacing = 15
+        stack.distribution = .fill
+        
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "profileEmpty")
+        imageView.contentMode = .scaleAspectFit
+        
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.text = "작성된 레시피가 없습니다."
+        label.textColor = UIColor(named: "gray")
+        label.font = UIFont.systemFont(ofSize: 14)
+        
+        stack.addArrangedSubview(imageView)
+        stack.addArrangedSubview(label)
+        
+        emptyUI.addSubview(stack)
+        
+        contentView.addSubview(emptyUI)
+        NSLayoutConstraint.activate([
+            stack.centerYAnchor.constraint(equalTo: emptyUI.centerYAnchor),
+            stack.centerXAnchor.constraint(equalTo: emptyUI.centerXAnchor),
+            
+            emptyUI.topAnchor.constraint(equalTo: contentView.topAnchor),
+            emptyUI.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            emptyUI.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            emptyUI.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+        ])
+        
+        
     }
     
     private func addCollectionView(){
@@ -75,6 +117,11 @@ class ProfileFeedCell: UITableViewCell {
             removeAllSubviews()
             addTableView()
         }
+    }
+    
+    func configEmpty(){
+        removeAllSubviews()
+        addEmptyState()
     }
 }
 

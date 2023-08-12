@@ -18,11 +18,11 @@ class ProfileViewController: UIViewController, profileFeedDelegete {
     @IBOutlet weak var mainTableView: UITableView!
     var selectedIndexPath = 0 
 
-    var dummyData = [
-        dummyFeedData(username: "1", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        dummyFeedData(username: "2", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+    var dummyData: [dummyFeedData] = [
+//        dummyFeedData(username: "1", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+//        dummyFeedData(username: "2", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
 
     ]
 
@@ -157,22 +157,33 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
             
             return cell
         } else {
-            if ShowingBlockView {
+            //if Empty
+            if dummyData.isEmpty {
                 let cell = mainTableView.dequeueReusableCell(withIdentifier: "ProfileFeedCell") as! ProfileFeedCell
-                cell.dummyData = dummyData
-                cell.configuration(isShowingBlock: ShowingBlockView)
-                cell.collectionView.reloadData()
+                cell.configEmpty()
                 cell.delegate = self
+                cell.selectionStyle = .none
                 
                 return cell
+                
             } else {
-                let cell = mainTableView.dequeueReusableCell(withIdentifier: "ProfileFeedCell") as! ProfileFeedCell
-                cell.dummyData = dummyData
-                cell.configuration(isShowingBlock: ShowingBlockView)
-                cell.tableView.reloadData()
-                cell.delegate = self
-                
-                return cell
+                if ShowingBlockView {
+                    let cell = mainTableView.dequeueReusableCell(withIdentifier: "ProfileFeedCell") as! ProfileFeedCell
+                    cell.dummyData = dummyData
+                    cell.configuration(isShowingBlock: ShowingBlockView)
+                    cell.collectionView.reloadData()
+                    cell.delegate = self
+                    
+                    return cell
+                } else {
+                    let cell = mainTableView.dequeueReusableCell(withIdentifier: "ProfileFeedCell") as! ProfileFeedCell
+                    cell.dummyData = dummyData
+                    cell.configuration(isShowingBlock: ShowingBlockView)
+                    cell.tableView.reloadData()
+                    cell.delegate = self
+                    
+                    return cell
+                }
             }
         }
     }
@@ -181,12 +192,17 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
         if indexPath.item == 0 {
             return 180
         } else {
-            if ShowingBlockView {
-                return CGFloat(dummyData.count) * tableView.bounds.width / 3 - 2
+            //if empty
+            if dummyData.isEmpty {
+                return view.bounds.height - 500
             } else {
-                // Calculate the height based on the dummy data count and cell height
-                let cellHeight: CGFloat = 314 // Adjust the expected cell height
-                return CGFloat(dummyData.count) * cellHeight
+                if ShowingBlockView {
+                    return CGFloat(dummyData.count) * tableView.bounds.width / 3 - 2
+                } else {
+                    // Calculate the height based on the dummy data count and cell height
+                    let cellHeight: CGFloat = 314 // Adjust the expected cell height
+                    return CGFloat(dummyData.count) * cellHeight
+                }
             }
         }
     }
