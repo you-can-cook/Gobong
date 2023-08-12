@@ -8,7 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.youcancook.gobong.GoBongApplication
+import com.youcancook.gobong.ui.GoBongApplication
 
 abstract class GoBongFragment<
         T : ViewDataBinding,

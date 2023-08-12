@@ -40,4 +40,8 @@ class UserDataSource(
             throw Exception("네트워크 요청에 실패했습니다")
         }
     }
+
+    suspend fun checkTokenExpired(): Boolean {
+        return false
+    }
 }

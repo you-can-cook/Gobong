@@ -1,9 +1,10 @@
-package com.youcancook.gobong
+package com.youcancook.gobong.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
