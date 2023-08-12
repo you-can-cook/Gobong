@@ -8,4 +8,4 @@
 .externalNativeBuild
 .cxx
 local.properties
-/app/src/main/java/com/greenmate/greenmate/util/Consts.kt
+/app/src/main/java/com/youcancook/gobong/util/Consts.kt
