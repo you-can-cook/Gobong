@@ -22,6 +22,8 @@ struct dummyFeedData {
 
 class ViewController: UIViewController, UITabBarControllerDelegate {
 
+    var userDefault = UserDefaults.standard
+    
     @IBOutlet weak var emptyStateView: UIView!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var addFeedButton: UIButton!
@@ -35,6 +37,7 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
     ]
     
     override func viewWillAppear(_ animated: Bool) {
+        
         setupNavigationBar()
         tabBarController?.tabBar.isHidden = false
     }
@@ -61,6 +64,10 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
 
 extension ViewController {
     private func setupData(){
+        if userDefault.string(forKey: "accessKey") == nil {
+            performSegue(withIdentifier: "showLoginView", sender: self)
+        }
+        
         if dummyData.isEmpty {
             emptyStateView.isHidden = false
         } else {

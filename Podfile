@@ -13,6 +13,8 @@ target 'Gobong' do
 	pod 'YPImagePicker'
 	pod 'IQKeyboardManagerSwift'
 	pod 'StepSlider'
+	pod 'KakaoSDK'
+	pod 'NVActivityIndicatorView'
 end
 
 post_install do |installer|
