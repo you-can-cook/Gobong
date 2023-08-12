@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.youcancook.gobong.domain.BaseTime.BaseTime;
 import org.youcancook.gobong.domain.recipe.entity.Recipe;
 import org.youcancook.gobong.domain.user.entity.User;
 
@@ -15,7 +16,7 @@ import org.youcancook.gobong.domain.user.entity.User;
         uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "recipe_id"})
 })
-public class BookmarkRecipe {
+public class BookmarkRecipe extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +35,7 @@ public class BookmarkRecipe {
     public BookmarkRecipe(User user, Recipe recipe) {
         this.user = user;
         this.recipe = recipe;
+        recipe.addBookmark(this);
     }
 }
 

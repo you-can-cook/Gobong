@@ -1,12 +1,17 @@
 package org.youcancook.gobong.domain.recipe.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.youcancook.gobong.domain.bookmarkrecipe.repository.BookmarkRecipeRepository;
 import org.youcancook.gobong.domain.rating.repository.RatingRepository;
 import org.youcancook.gobong.domain.recipe.dto.request.CreateRecipeRequest;
 import org.youcancook.gobong.domain.recipe.dto.request.UpdateRecipeRequest;
+import org.youcancook.gobong.domain.recipe.dto.response.BookmarkedRecipeResponse;
+import org.youcancook.gobong.domain.recipe.dto.response.BookmarkedRecipesResponse;
 import org.youcancook.gobong.domain.recipe.dto.response.CreateRecipeResponse;
 import org.youcancook.gobong.domain.recipe.entity.Difficulty;
 import org.youcancook.gobong.domain.recipe.entity.Recipe;
@@ -18,7 +23,9 @@ import org.youcancook.gobong.domain.user.entity.User;
 import org.youcancook.gobong.domain.user.exception.UserNotFoundException;
 import org.youcancook.gobong.domain.user.repository.UserRepository;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -69,5 +76,26 @@ public class RecipeService {
     public void validateUserRecipe(User user, Recipe recipe){
         if (!Objects.equals(user.getId(), recipe.getUser().getId()))
             throw new RecipeAccessDeniedException();
+    }
+
+    public BookmarkedRecipesResponse getAllBookmarkedRecipes(Long userId, Integer page, int count){
+        Slice<Recipe> bookmarkedRecipes = recipeRepository.findByBookmarkedRecipes(
+                userId,
+                PageRequest.of(page, count, Sort.by("createdAt").descending())
+        );
+
+        List<BookmarkedRecipeResponse> responses = bookmarkedRecipes.getContent().stream()
+                .map(recipe -> new BookmarkedRecipeResponse(
+                        recipe.getId(),
+                        recipe.getUser().getId(),
+                        recipe.getTotalCookTimeInSeconds(),
+                        recipe.getThumbnailURL(),
+                        recipe.getDifficulty().getDescription(),
+                        recipe.getAverageRating(),
+                        recipe.getCookwares(),
+                        recipe.getBookmarks().size()
+                ))
+                .collect(Collectors.toList());
+        return new BookmarkedRecipesResponse(bookmarkedRecipes.isLast(), responses);
     }
 }
