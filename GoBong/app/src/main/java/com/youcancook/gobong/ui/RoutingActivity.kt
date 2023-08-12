@@ -7,8 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.youcancook.gobong.MainActivity
 import com.youcancook.gobong.R
 import com.youcancook.gobong.ui.login.LoginActivity
-
-val ACCESS_TOKEN = "access_token"
+import com.youcancook.gobong.util.ACCESS_TOKEN
 
 class RoutingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +26,7 @@ class RoutingActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+        finish()
     }
 
     private fun isTokenExpired(): Boolean {

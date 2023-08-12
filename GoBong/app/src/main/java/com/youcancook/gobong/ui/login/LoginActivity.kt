@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
@@ -15,14 +13,16 @@ import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityLoginBinding
-import com.youcancook.gobong.ui.ACCESS_TOKEN
 import com.youcancook.gobong.ui.base.NetworkActivity
+import com.youcancook.gobong.util.ACCESS_TOKEN
 import com.youcancook.gobong.util.NATIVE_APP_KEY
 import kotlinx.coroutines.launch
 
 class LoginActivity :
     NetworkActivity<ActivityLoginBinding, LoginViewModel>(R.layout.activity_login) {
-    override val viewModel: LoginViewModel by viewModels()
+    override val viewModel: LoginViewModel by lazy {
+        LoginViewModel(appContainer.userRepository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +31,12 @@ class LoginActivity :
         KakaoSdk.init(this, NATIVE_APP_KEY)
         var keyHash = Utility.getKeyHash(this)
 
+        initListeners()
+
+        viewModel.getTemporaryToken()
+    }
+
+    private fun initListeners() {
         binding.run {
 
             googleLoginButton.setOnClickListener {
@@ -83,8 +89,6 @@ class LoginActivity :
                         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                         finish()
                     }
-
-
                 }
             }
         } else {
