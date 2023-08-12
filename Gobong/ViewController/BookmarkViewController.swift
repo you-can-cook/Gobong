@@ -12,6 +12,7 @@ import RxSwift
 class BookmarkViewController: UIViewController {
     
     //property
+    @IBOutlet weak var emptyStateView: UIView!
     private let searchBar = UISearchBar()
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -53,10 +54,6 @@ class BookmarkViewController: UIViewController {
 
 //MARK: BUTTON FUNC
 extension BookmarkViewController {
-    @objc private func filterButtonTapped(){
-        
-    }
-    
     @objc private func toogleButtonTapped(){
         isShowingBlockView.onNext(!ShowingBlockView)
     
@@ -96,6 +93,14 @@ extension BookmarkViewController {
 
 //MARK: UI
 extension BookmarkViewController: UISearchBarDelegate {
+    private func setupData(){
+        if dummyData.isEmpty {
+            emptyStateView.isHidden = false
+        } else {
+            emptyStateView.isHidden = true
+        }
+    }
+    
     private func setupUI(){
         setupNavigationBar()
         tableViewSetup()

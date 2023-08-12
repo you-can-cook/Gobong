@@ -22,15 +22,16 @@ struct dummyFeedData {
 
 class ViewController: UIViewController, UITabBarControllerDelegate {
 
+    @IBOutlet weak var emptyStateView: UIView!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var addFeedButton: UIButton!
     var selectedIndexPath = 0
     
-    var dummyData = [
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5)
+    var dummyData: [dummyFeedData] = [
+//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5)
     ]
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,6 +43,7 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setupUI()
+        setupData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -51,12 +53,21 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
         }
     }
     
+    //when heme icon in toolbar is clicked
 //    func refresh() {
 //        setupUI()
 //    }
 }
 
 extension ViewController {
+    private func setupData(){
+        if dummyData.isEmpty {
+            emptyStateView.isHidden = false
+        } else {
+            emptyStateView.isHidden = true
+        }
+    }
+    
     private func setupUI(){
         setupTableView()
         addFeedButton.setTitle("", for: .normal)

@@ -73,14 +73,14 @@ class FollowViewController: UIViewController, FollowDelegate {
             followingButton.titleLabel?.textColor = UIColor(named: "softGray")
             let bottomBorder = CALayer()
             bottomBorder.backgroundColor = UIColor(named: "softGray")?.cgColor// Set the border color
-            bottomBorder.frame = CGRect(x: 0, y: followingButton.frame.height - 1, width: followingButton.frame.width, height: 1)
+            bottomBorder.frame = CGRect(x: 0, y: followingButton.frame.height - 1, width: 500, height: 1)
             followingButton.layer.addSublayer(bottomBorder)
             
             followerButton.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
             followerButton.titleLabel?.textColor = .black
             let bottomBorder2 = CALayer()
             bottomBorder2.backgroundColor = UIColor(named: "pink")?.cgColor// Set the border color
-            bottomBorder2.frame = CGRect(x: 0, y: followerButton.frame.height - 1, width: followingButton.frame.width, height: 1)
+            bottomBorder2.frame = CGRect(x: 0, y: followerButton.frame.height - 1, width: 500, height: 1)
             followerButton.layer.addSublayer(bottomBorder2)
         } else {
             //get data
@@ -90,14 +90,14 @@ class FollowViewController: UIViewController, FollowDelegate {
             followingButton.titleLabel?.textColor = .black
             let bottomBorder = CALayer()
             bottomBorder.backgroundColor = UIColor(named: "pink")?.cgColor// Set the border color
-            bottomBorder.frame = CGRect(x: 0, y: followerButton.frame.height - 1, width: followingButton.frame.width, height: 1)
+            bottomBorder.frame = CGRect(x: 0, y: followerButton.frame.height - 1, width: 500, height: 1)
             followingButton.layer.addSublayer(bottomBorder)
             
             followerButton.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
             followerButton.titleLabel?.textColor = UIColor(named: "softGray")
             let bottomBorder2 = CALayer()
             bottomBorder2.backgroundColor = UIColor(named: "softGray")?.cgColor// Set the border color
-            bottomBorder2.frame = CGRect(x: 0, y: followerButton.frame.height - 1, width: followerButton.frame.width, height: 1)
+            bottomBorder2.frame = CGRect(x: 0, y: followerButton.frame.height - 1, width: 500, height: 1)
             followerButton.layer.addSublayer(bottomBorder2)
         }
     }
