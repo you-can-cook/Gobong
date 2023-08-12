@@ -35,6 +35,7 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         setupNavigationBar()
+        tabBarController?.tabBar.isHidden = false
     }
     
     override func viewDidLoad() {

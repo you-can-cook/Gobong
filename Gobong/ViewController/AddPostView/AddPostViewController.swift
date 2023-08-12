@@ -32,40 +32,40 @@ class AddPostViewController: UIViewController {
                 easyButton.backgroundColor = UIColor(named: "pink")
                 easyButton.titleLabel?.tintColor = .white
                 
-                normalButton.layer.borderColor = UIColor(named: "pink")?.cgColor
+                normalButton.layer.borderColor = UIColor(named: "gray")?.cgColor
                 normalButton.layer.borderWidth = 1
                 normalButton.backgroundColor = .white
-                normalButton.titleLabel?.textColor = UIColor(named: "pink")
+                normalButton.titleLabel?.textColor = UIColor(named: "gray")
                 
-                hardButton.layer.borderColor = UIColor(named: "pink")?.cgColor
+                hardButton.layer.borderColor = UIColor(named: "gray")?.cgColor
                 hardButton.layer.borderWidth = 1
                 hardButton.backgroundColor = .white
-                hardButton.titleLabel?.textColor = UIColor(named: "pink")
+                hardButton.titleLabel?.textColor = UIColor(named: "gray")
             } else if levelSelected == "normal" {
-                easyButton.layer.borderColor = UIColor(named: "pink")?.cgColor
+                easyButton.layer.borderColor = UIColor(named: "gray")?.cgColor
                 easyButton.layer.borderWidth = 1
                 easyButton.backgroundColor = .white
-                easyButton.titleLabel?.textColor = UIColor(named: "pink")
+                easyButton.titleLabel?.textColor = UIColor(named: "gray")
                 
                 normalButton.layer.borderColor = UIColor(named: "pink")?.cgColor
                 normalButton.layer.borderWidth = 1
                 normalButton.backgroundColor = UIColor(named: "pink")
                 normalButton.titleLabel?.tintColor = .white
                 
-                hardButton.layer.borderColor = UIColor(named: "pink")?.cgColor
+                hardButton.layer.borderColor = UIColor(named: "gray")?.cgColor
                 hardButton.layer.borderWidth = 1
                 hardButton.backgroundColor = .white
-                hardButton.titleLabel?.textColor = UIColor(named: "pink")
+                hardButton.titleLabel?.textColor = UIColor(named: "gray")
             } else if levelSelected == "hard" {
-                easyButton.layer.borderColor = UIColor(named: "pink")?.cgColor
+                easyButton.layer.borderColor = UIColor(named: "gray")?.cgColor
                 easyButton.layer.borderWidth = 1
                 easyButton.backgroundColor = .white
-                easyButton.titleLabel?.textColor = UIColor(named: "pink")
+                easyButton.titleLabel?.textColor = UIColor(named: "gray")
                 
-                normalButton.layer.borderColor = UIColor(named: "pink")?.cgColor
+                normalButton.layer.borderColor = UIColor(named: "gray")?.cgColor
                 normalButton.layer.borderWidth = 1
                 normalButton.backgroundColor = .white
-                normalButton.titleLabel?.textColor = UIColor(named: "pink")
+                normalButton.titleLabel?.textColor = UIColor(named: "gray")
                 
                 hardButton.layer.borderColor = UIColor(named: "pink")?.cgColor
                 hardButton.layer.borderWidth = 1
@@ -81,6 +81,10 @@ class AddPostViewController: UIViewController {
                     dummyHowTo(time: ["3분"], tool: ["전자레인지"], img: UIImage(named: "dummyImg") ,description: "자이언트 떡볶이를 순서대로 3분 조리")]
     var isFolded = [Bool]()
     var tableViewCellHeight: [CGFloat] = [CGFloat(0), CGFloat(0), CGFloat(127)]
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

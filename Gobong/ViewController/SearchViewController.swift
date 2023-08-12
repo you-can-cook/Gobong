@@ -9,6 +9,21 @@ import UIKit
 import RxCocoa
 import RxSwift
 
+struct FilterModel {
+    var sort: String
+    var level: String
+    var time: Int
+    var star: Int
+    var tools: [String]
+    
+    func checkFilter() -> Bool {
+        if sort != "" || level != "init" || time != 0 || star != 0 || tools.count != 0 {
+            return true
+        }
+        return false
+    }
+}
+
 class SearchViewController: UIViewController {
     
     //property
@@ -32,6 +47,7 @@ class SearchViewController: UIViewController {
         dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5)
     ]
     var isSearching = false
+    var filter: FilterModel?
     
     private var ShowingBlockView = true
     private var isShowingBlockView = PublishSubject<Bool>()
@@ -60,8 +76,26 @@ class SearchViewController: UIViewController {
                 let detailVC = segue.destination as? DetailViewController {
             detailVC.information = dummyData[selectedIndexPath]
         }
+        if segue.identifier == "showFilterView",
+           let VC = segue.destination as? FilterViewController {
+            VC.searchBarText = searchBar.text ?? ""
+            if filter != nil {
+                VC.lastFilter = filter
+            }
+            VC.delegate = self
+        }
     }
     
+}
+
+//MARK: DELEGATE
+extension SearchViewController: FilterDelegate {
+    func passFilter(controller: FilterViewController) {
+        isSearching = false
+        searchBar.resignFirstResponder()
+        filter = FilterModel(sort: controller.selectedSort ?? "", level: controller.levelSelected ?? "", time: Int(controller.stepSlider.index) * 5, star: controller.starSelected ?? 0, tools: controller.tools )
+        isShowingBlockView.onNext(true)
+    }
 }
 
 //MARK: BUTTON FUNC
@@ -89,9 +123,14 @@ extension SearchViewController {
                 
                 //NAVIGATION BAR
                 let filterButton = UIBarButtonItem(image: UIImage(named: "Filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
-                filterButton.tintColor = .black
                 
-        //        filterButton.imageInsets = UIEdgeInsets(top: 0.0, left: 50, bottom: 0, right: 30);
+                if filter != nil {
+                    if filter!.checkFilter() {
+                        filterButton.tintColor = UIColor(named: "pink")
+                    }
+                } else {
+                    filterButton.tintColor = .black
+                }
 
                 let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "액자형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
                 tableViewToogleButton.tintColor = .black
@@ -105,9 +144,14 @@ extension SearchViewController {
                 
                 //NAVIGATION BAR
                 let filterButton = UIBarButtonItem(image: UIImage(named: "Filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
-                filterButton.tintColor = .black
                 
-        //        filterButton.imageInsets = UIEdgeInsets(top: 0.0, left: 50, bottom: 0, right: 30);
+                if filter != nil {
+                    if filter!.checkFilter() {
+                        filterButton.tintColor = UIColor(named: "pink")
+                    } 
+                } else {
+                    filterButton.tintColor = .black
+                }
 
                 let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "카드형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
                 tableViewToogleButton.tintColor = .black
@@ -136,8 +180,6 @@ extension SearchViewController {
         
         let filterButton = UIBarButtonItem(image: UIImage(named: "Filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
         filterButton.tintColor = .black
-        
-//        filterButton.imageInsets = UIEdgeInsets(top: 0.0, left: 50, bottom: 0, right: 30);
 
         let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "카드형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
         tableViewToogleButton.tintColor = .black
@@ -163,7 +205,14 @@ extension SearchViewController: UISearchBarDelegate {
         cancelButton.tintColor = .black
         
         let filterButton = UIBarButtonItem(image: UIImage(named: "Filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
-        filterButton.tintColor = .black
+        
+        if filter != nil {
+            if filter!.checkFilter() {
+                filterButton.tintColor = UIColor(named: "pink")
+            }
+        } else {
+            filterButton.tintColor = .black
+        }
         
         navigationItem.rightBarButtonItems = [cancelButton, filterButton]
     }
@@ -173,12 +222,16 @@ extension SearchViewController: UISearchBarDelegate {
         
         //show it with block view first..
         isShowingBlockView.onNext(true)
+        searchBar.resignFirstResponder()
     }
     
     
     
     @objc private func doneSearching(){
         isSearching = false
+        searchBar.resignFirstResponder()
+        filter = nil
+        isShowingBlockView.onNext(true)
     }
 }
 

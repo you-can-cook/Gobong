@@ -34,6 +34,10 @@ class DetailViewController: UIViewController {
     var isFolded = [Bool]()
     
     var collectionViewHeight = 0
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
