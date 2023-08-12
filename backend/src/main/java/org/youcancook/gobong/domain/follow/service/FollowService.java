@@ -63,9 +63,9 @@ public class FollowService {
 
         return followRepository.findByFollowee(user).stream()
                 .map(follow -> FindFollowerResponse.of(
-                        follow.getFollower().getProfileImageURL(),
+                        follow.getFollower().getId(),
                         follow.getFollower().getNickname(),
-                        follow.getFollower().getId()
+                        follow.getFollower().getProfileImageURL()
                 ))
                 .toList();
     }
@@ -76,9 +76,9 @@ public class FollowService {
 
         return followRepository.findByFollower(user).stream()
                 .map(follow -> FindFolloweeResponse.of(
-                        follow.getFollowee().getProfileImageURL(),
+                        follow.getFollowee().getId(),
                         follow.getFollowee().getNickname(),
-                        follow.getFollowee().getId()
+                        follow.getFollowee().getProfileImageURL()
                 ))
                 .toList();
     }

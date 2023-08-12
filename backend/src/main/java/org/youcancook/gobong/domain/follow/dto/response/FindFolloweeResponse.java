@@ -8,15 +8,15 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class FindFolloweeResponse {
-    private String profileImageURL;
-    private String nickname;
     private long userId;
+    private String nickname;
+    private String profileImageURL;
 
-    public static FindFolloweeResponse of(String profileImageURL, String nickname, long userId) {
+    public static FindFolloweeResponse of(long userId, String nickname, String profileImageURL) {
         return FindFolloweeResponse.builder()
-                .profileImageURL(profileImageURL)
-                .nickname(nickname)
                 .userId(userId)
+                .nickname(nickname)
+                .profileImageURL(profileImageURL)
                 .build();
     }
 }
