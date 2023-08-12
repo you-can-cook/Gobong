@@ -40,6 +40,7 @@
 		80D2B60F2A792B0E00B777D1 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D2B60D2A792B0E00B777D1 /* FeedCell.swift */; };
 		80D2B6102A792B0E00B777D1 /* FeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80D2B60E2A792B0E00B777D1 /* FeedCell.xib */; };
 		80D3F1E72A8688F1009313CB /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1E62A8688F1009313CB /* FilterViewController.swift */; };
+		80D3F1EB2A87950C009313CB /* FollowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1EA2A87950C009313CB /* FollowViewController.swift */; };
 		80E3C01E2A83CEBB00845A9B /* Recipe_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */; };
 		80E3C0212A83CF6F00845A9B /* 재료_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0202A83CF6F00845A9B /* 재료_AddPost.swift */; };
 		80E3C0242A83D0E900845A9B /* DashedLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0232A83D0E900845A9B /* DashedLineView.swift */; };
@@ -86,6 +87,7 @@
 		80D2B60D2A792B0E00B777D1 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		80D2B60E2A792B0E00B777D1 /* FeedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedCell.xib; sourceTree = "<group>"; };
 		80D3F1E62A8688F1009313CB /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		80D3F1EA2A87950C009313CB /* FollowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowViewController.swift; sourceTree = "<group>"; };
 		80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe_AddPost.swift; sourceTree = "<group>"; };
 		80E3C0202A83CF6F00845A9B /* 재료_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "재료_AddPost.swift"; sourceTree = "<group>"; };
 		80E3C0232A83D0E900845A9B /* DashedLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedLineView.swift; sourceTree = "<group>"; };
@@ -185,11 +187,10 @@
 			children = (
 				80CE8AE72A7A8113003DE318 /* CustomTabBar.swift */,
 				80D2B5FC2A791AD600B777D1 /* ViewController.swift */,
-				80CE8AE92A7A8196003DE318 /* SearchViewController.swift */,
-				80CE8AEF2A7AA75A003DE318 /* BookmarkViewController.swift */,
-				80CE8AF62A7CA1F8003DE318 /* ProfileViewController.swift */,
 				80CE8AFC2A7CD246003DE318 /* DetailViewController.swift */,
-				80D3F1E62A8688F1009313CB /* FilterViewController.swift */,
+				80CE8AEF2A7AA75A003DE318 /* BookmarkViewController.swift */,
+				80D3F1E92A8794F0009313CB /* ProfileView */,
+				80D3F1E82A8794CE009313CB /* SearchView */,
 				80E3C01C2A83CEA100845A9B /* AddPostView */,
 				80D2B6112A792B1600B777D1 /* Cell */,
 				8029E5502A851D3D00C927F0 /* TestViewController.swift */,
@@ -209,6 +210,24 @@
 				80E3C0232A83D0E900845A9B /* DashedLineView.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		80D3F1E82A8794CE009313CB /* SearchView */ = {
+			isa = PBXGroup;
+			children = (
+				80CE8AE92A7A8196003DE318 /* SearchViewController.swift */,
+				80D3F1E62A8688F1009313CB /* FilterViewController.swift */,
+			);
+			path = SearchView;
+			sourceTree = "<group>";
+		};
+		80D3F1E92A8794F0009313CB /* ProfileView */ = {
+			isa = PBXGroup;
+			children = (
+				80CE8AF62A7CA1F8003DE318 /* ProfileViewController.swift */,
+				80D3F1EA2A87950C009313CB /* FollowViewController.swift */,
+			);
+			path = ProfileView;
 			sourceTree = "<group>";
 		};
 		80E3C01C2A83CEA100845A9B /* AddPostView */ = {
@@ -377,6 +396,7 @@
 				80E3C0262A83D15C00845A9B /* AddRecipeCell.swift in Sources */,
 				80CE8B2A2A8244DB003DE318 /* AddButtonIngridientCell.swift in Sources */,
 				80E3C0242A83D0E900845A9B /* DashedLineView.swift in Sources */,
+				80D3F1EB2A87950C009313CB /* FollowViewController.swift in Sources */,
 				80CE8B202A7F80F5003DE318 /* ProfileFeedCell.swift in Sources */,
 				80CE8AFA2A7CC5D0003DE318 /* UserInformationCell.swift in Sources */,
 				80CE8B1B2A7F7B18003DE318 /* DetailTitleCell.swift in Sources */,
