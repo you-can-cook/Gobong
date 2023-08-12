@@ -9,5 +9,7 @@ open class NetworkViewModel : GoBongViewModel() {
     private val _networkState = MutableStateFlow<NetworkState>(NetworkState.DONE)
     val networkState: StateFlow<NetworkState> get() = _networkState
 
-
+    fun setNetworkState(state: NetworkState) {
+        _networkState.value = state
+    }
 }
