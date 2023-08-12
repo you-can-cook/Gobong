@@ -48,6 +48,8 @@ class DetailViewController: UIViewController {
         
         isFolded = Array(repeating: true, count: recipeInformation.count)
     }
+    
+    
 }
 
 extension DetailViewController {

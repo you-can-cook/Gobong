@@ -26,6 +26,7 @@ class ProfileViewController: UIViewController, profileFeedDelegete {
 
     ]
 
+    var followStateTapped = ""
     private var ShowingBlockView = true
     private var isShowingBlockView = PublishSubject<Bool>()
     private var isShowingBlockViewObservable : Observable<Bool> {
@@ -34,6 +35,10 @@ class ProfileViewController: UIViewController, profileFeedDelegete {
 
     private let disposeBag = DisposeBag()
 
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -47,6 +52,12 @@ class ProfileViewController: UIViewController, profileFeedDelegete {
         if segue.identifier == "showDetailView",
            let detailVC = segue.destination as? DetailViewController {
             detailVC.information = dummyData[selectedIndexPath]
+        }
+        
+        if segue.identifier == "showFollowView" {
+            if let vc = segue.destination as? FollowViewController {
+                vc.followStateTapped = followStateTapped
+            }
         }
     }
 
@@ -91,8 +102,21 @@ extension ProfileViewController {
     }
 }
 
+//MARK: DELEGATE
+extension ProfileViewController: UserInformationDelegate{
+    func followingTapped(controller: UserInformationCell) {
+        followStateTapped = "following"
+        performSegue(withIdentifier: "showFollowView", sender: self)
+    }
+    
+    func followersTapped(controller: UserInformationCell) {
+        followStateTapped = "followers"
+        performSegue(withIdentifier: "showFollowView", sender: self)
+    }
+}
+
 //MARK: UI
-extension ProfileViewController: UISearchBarDelegate {
+extension ProfileViewController: UISearchBarDelegate{
     private func setupUI(){
         setupNavigationBar()
     }
@@ -129,6 +153,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
             let cell = mainTableView.dequeueReusableCell(withIdentifier: "UserInformationCell") as! UserInformationCell
             cell.configuration(img: nil, recipeCount: 0, followerCount: 0, followingCount: 0)
             cell.selectionStyle = .none
+            cell.delegate = self
             
             return cell
         } else {
