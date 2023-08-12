@@ -43,6 +43,7 @@
 		80D3F1EB2A87950C009313CB /* FollowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1EA2A87950C009313CB /* FollowViewController.swift */; };
 		80D3F1F02A879562009313CB /* FollowStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1EE2A879562009313CB /* FollowStateCell.swift */; };
 		80D3F1F12A879563009313CB /* FollowStateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80D3F1EF2A879562009313CB /* FollowStateCell.xib */; };
+		80D3F1F32A87C99D009313CB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1F22A87C99D009313CB /* LoginViewController.swift */; };
 		80E3C01E2A83CEBB00845A9B /* Recipe_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */; };
 		80E3C0212A83CF6F00845A9B /* 재료_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0202A83CF6F00845A9B /* 재료_AddPost.swift */; };
 		80E3C0242A83D0E900845A9B /* DashedLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0232A83D0E900845A9B /* DashedLineView.swift */; };
@@ -92,6 +93,7 @@
 		80D3F1EA2A87950C009313CB /* FollowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowViewController.swift; sourceTree = "<group>"; };
 		80D3F1EE2A879562009313CB /* FollowStateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowStateCell.swift; sourceTree = "<group>"; };
 		80D3F1EF2A879562009313CB /* FollowStateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FollowStateCell.xib; sourceTree = "<group>"; };
+		80D3F1F22A87C99D009313CB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe_AddPost.swift; sourceTree = "<group>"; };
 		80E3C0202A83CF6F00845A9B /* 재료_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "재료_AddPost.swift"; sourceTree = "<group>"; };
 		80E3C0232A83D0E900845A9B /* DashedLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedLineView.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				80D2B5FC2A791AD600B777D1 /* ViewController.swift */,
 				80CE8AFC2A7CD246003DE318 /* DetailViewController.swift */,
 				80CE8AEF2A7AA75A003DE318 /* BookmarkViewController.swift */,
+				80D3F1F22A87C99D009313CB /* LoginViewController.swift */,
 				80D3F1E92A8794F0009313CB /* ProfileView */,
 				80D3F1E82A8794CE009313CB /* SearchView */,
 				80E3C01C2A83CEA100845A9B /* AddPostView */,
@@ -426,6 +429,7 @@
 				80D2B5F92A791AD600B777D1 /* AppDelegate.swift in Sources */,
 				80D3F1F02A879562009313CB /* FollowStateCell.swift in Sources */,
 				80CE8B222A80E33F003DE318 /* PaddingLabel.swift in Sources */,
+				80D3F1F32A87C99D009313CB /* LoginViewController.swift in Sources */,
 				80CE8B0C2A7CDE38003DE318 /* HashtagCollectionCell.swift in Sources */,
 				80CE8B142A7F712C003DE318 /* AddIngredientCell.swift in Sources */,
 				80D2B5FB2A791AD600B777D1 /* SceneDelegate.swift in Sources */,

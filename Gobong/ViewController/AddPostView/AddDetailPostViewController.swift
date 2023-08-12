@@ -196,6 +196,14 @@ extension AddDetailPostViewController: UITextFieldDelegate, UITextViewDelegate {
     }
     
     //Button
+    @IBAction func initTapped(_ sender: Any) {
+        minuteField.text = ""
+        secondField.text = ""
+        
+        minuteField.layer.borderColor = UIColor(named: "gray")?.cgColor
+        secondField.layer.borderColor = UIColor(named: "gray")?.cgColor
+    }
+    
     @IBAction func tenMinTapped(_ sender: Any) {
         if let currMinutes = minuteField.text {
             let newMinutes = (Int(currMinutes) ?? 0) + 10
