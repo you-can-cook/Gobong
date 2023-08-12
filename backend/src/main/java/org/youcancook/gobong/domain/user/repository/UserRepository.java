@@ -12,4 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByOAuthProviderAndOAuthId(OAuthProvider oAuthProvider, String oAuthId);
 
     boolean existsByNickname(String nickname);
+
+    @Query("SELECT exists(SELECT 1 FROM User u WHERE u.oAuthProvider =:oAuthProvider AND u.oAuthId =:oAuthId)")
+    boolean existsByOAuthProviderAndOAuthId(OAuthProvider oAuthProvider, String oAuthId);
 }
