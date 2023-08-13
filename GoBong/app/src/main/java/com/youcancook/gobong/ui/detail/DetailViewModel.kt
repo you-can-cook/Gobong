@@ -10,7 +10,7 @@ class DetailViewModel : ViewModel() {
     private val _isMine = MutableStateFlow(false)
     val isMine: StateFlow<Boolean> get() = _isMine
 
-    private val _cardInfo = MutableStateFlow(Card())
+    private val _cardInfo = MutableStateFlow(Card.createEmpty())
     val cardInfo: StateFlow<Card> get() = _cardInfo
 
     private val _recipes = MutableStateFlow(

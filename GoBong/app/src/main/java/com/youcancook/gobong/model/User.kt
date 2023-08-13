@@ -12,6 +12,13 @@ data class User(
     val following: String = "0",
 )
 
+data class UserProfile(
+    val profileUrl: String = "",
+    val nickname: String = "쩝쩝박사",
+    val notMine: Boolean = true,
+    val followed: Boolean = true,
+)
+
 data class RegisterUser(
     val nickname: String,
     val provider: String,

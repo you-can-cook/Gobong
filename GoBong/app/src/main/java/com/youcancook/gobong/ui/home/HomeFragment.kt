@@ -17,6 +17,12 @@ class HomeFragment : NetworkFragment<FragmentHomeBinding, HomeViewModel>(R.layou
     private val cardAdapter = CardRecyclerViewListAdapter(onItemClick = {
         val intent = Intent(requireContext(), DetailActivity::class.java)
         startActivity(intent)
+    }, onFollowClick = {
+        if (it.followed) {
+            viewModel.unFollow(it.nickname)
+        } else {
+            viewModel.follow(it.nickname)
+        }
     })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -42,15 +42,15 @@
                     app:title="@{vm.cardInfo.title}"
                     app:titleCentered="true"
                     app:titleTextAppearance="@style/TextAppearance.GoBong.SemiBold16"
-                    tools:text="편의점 꿀조합 마크 정식" >
+                    tools:text="편의점 꿀조합 마크 정식">
 
                     <ImageView
                         android:id="@+id/bookmarkImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="end"
                         android:layout_marginEnd="16dp"
-                        android:src="@drawable/selector_bookmark"
-                        android:layout_gravity="end"/>
+                        android:src="@drawable/selector_bookmark" />
                 </com.google.android.material.appbar.MaterialToolbar>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -97,6 +97,9 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/followingButton"
+                    style="@style/Widget.GoBong.Button.Follow"
+                    isFollowSelected="@{vm.cardInfo.user.followed}"
+                    isFollowVisible="@{vm.cardInfo.user.notMine}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
