@@ -1,6 +1,7 @@
 package com.youcancook.gobong.ui.login
 
 import androidx.lifecycle.viewModelScope
+import com.youcancook.gobong.model.UserToken
 import com.youcancook.gobong.model.repository.UserRepository
 import com.youcancook.gobong.ui.base.NetworkViewModel
 import com.youcancook.gobong.util.NetworkState
@@ -17,6 +18,12 @@ class LoginViewModel(
 
     private val _provider = MutableStateFlow("")
     val provider: StateFlow<String> get() = _provider
+
+    private val _token = MutableStateFlow(UserToken("", ""))
+
+    fun getTemporaryToken() = _temporaryToken.value
+
+    fun getToken() = _token.value
 
     fun makeTemporaryToken() {
         viewModelScope.launch {
@@ -36,6 +43,23 @@ class LoginViewModel(
         _temporaryToken.value = repository.makeTemporaryToken()
     }
 
-    fun getTemporaryToken() = _temporaryToken.value
+    fun login() {
+        viewModelScope.launch {
+            setNetworkState(NetworkState.LOADING)
+            try {
+                requestLogin()
+                setNetworkState(NetworkState.SUCCESS)
+            } catch (e: Exception) {
+                setNetworkState(NetworkState.FAIL)
+                setSnackBarMessage(e.message ?: "")
+            }
+            setNetworkState(NetworkState.DONE)
+        }
+    }
+
+    private suspend fun requestLogin() {
+
+    }
+
 
 }

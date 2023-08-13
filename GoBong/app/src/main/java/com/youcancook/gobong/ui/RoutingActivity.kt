@@ -20,31 +20,36 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class RoutingActivity :
-    NetworkActivity<ActivityRoutingBinding, UserViewModel>(R.layout.activity_routing) {
+    NetworkActivity<ActivityRoutingBinding, RoutingViewModel>(R.layout.activity_routing) {
 
-    override val viewModel: UserViewModel by lazy {
-        UserViewModel(appContainer.userRepository)
+    override val viewModel: RoutingViewModel by lazy {
+        RoutingViewModel(appContainer.userRepository)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (isTokenExist().not()) {
-            val intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this@RoutingActivity, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        onFail = {
+            //REFRESH TOKEN 만료
+            val intent = Intent(this@RoutingActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.isTokenExpired.collectLatest {
-                    if (it) {
-                        //TODO 재로그인
-                        val intent = Intent(this@RoutingActivity, LoginActivity::class.java)
-                        startActivity(intent)
-                    } else {
+                viewModel.accessToken.collectLatest {
+                    if (it.isNotEmpty()) {
+                        //토큰 발급 성공
                         val intent = Intent(this@RoutingActivity, MainActivity::class.java)
                         startActivity(intent)
+                        finish()
                     }
                 }
             }
@@ -55,11 +60,8 @@ class RoutingActivity :
         val token = getSharedPreferences(
             ACCESS_TOKEN, Context.MODE_PRIVATE
         ) ?: return false
-        viewModel.isTokenExpired(
-            UserToken(
-                token.getString(ACCESS_TOKEN, "") ?: "",
-                token.getString(REFRESH_TOKEN, "") ?: ""
-            )
+        viewModel.getAccessToken(
+            token.getString(REFRESH_TOKEN, "") ?: ""
         )
         return true
     }

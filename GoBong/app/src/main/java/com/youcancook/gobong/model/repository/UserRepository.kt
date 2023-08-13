@@ -12,6 +12,10 @@ class UserRepository(
         return userDataSource.requestTemporaryToken()
     }
 
+    suspend fun makeAccessToken(refreshToken: String): String {
+        return userDataSource.requestAccessToken(refreshToken)
+    }
+
     suspend fun login() {
 
     }
@@ -21,7 +25,5 @@ class UserRepository(
 
     }
 
-    suspend fun isTokenExpired(userToken: UserToken):Boolean{
-        return userDataSource.checkTokenExpired()
-    }
+
 }
