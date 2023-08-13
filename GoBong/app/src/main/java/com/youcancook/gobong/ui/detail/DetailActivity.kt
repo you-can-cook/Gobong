@@ -57,6 +57,10 @@ class DetailActivity : GoBongActivity<ActivityDetailBinding>(R.layout.activity_d
                 it.isSelected = it.isSelected.not()
             }
 
+            followingButton.setOnClickListener {
+                it.isSelected = it.isSelected.not()
+            }
+
             reviewButton.setOnClickListener {
                 reviewDialog.setOldStar(detailViewModel.getStar())
                 reviewDialog.show(supportFragmentManager, null)

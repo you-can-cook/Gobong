@@ -1,20 +1,37 @@
 package com.youcancook.gobong.model
 
 data class Card(
-    val user: User = User(),
-    val thumbnailUrl: String = "",
-    val title: String = "내 레시피 대박임",
-    val bookmark: String = "0",
-    val time: String = "5분",
-    val tools: List<String> = listOf("전자레인지"),
-    val level: String = "쉬워요",
-    val star: String = "3.2공기",
-    val description: String = "",
-    val ingredients: List<String> = listOf(
-        "자이언트 떡볶이",
-        "콕콕콕 스파게티",
-        "스트링 치즈",
-        "의성마늘 소시지 1인",
-        "모짜렐라(슈레드) 치즈"
-    ),
-)
+    val user: UserProfile,
+    val thumbnailUrl: String,
+    val title: String,
+    val bookmark: String,
+    val time: String,
+    val tools: List<String>,
+    val level: String,
+    val star: String,
+    val description: String,
+    val ingredients: List<String>,
+) {
+    companion object {
+        fun createEmpty(): Card {
+            return Card(
+                user = UserProfile(),
+                thumbnailUrl = "",
+                title = "내 레시피 대박임",
+                bookmark = "0",
+                time = "5분",
+                tools = listOf("전자레인지"),
+                level = "쉬워요",
+                star = "3.2공기",
+                description = "",
+                ingredients = listOf(
+                    "자이언트 떡볶이",
+                    "콕콕콕 스파게티",
+                    "스트링 치즈",
+                    "의성마늘 소시지 1인",
+                    "모짜렐라(슈레드) 치즈"
+                ),
+            )
+        }
+    }
+}

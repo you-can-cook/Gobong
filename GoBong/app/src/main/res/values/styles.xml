@@ -126,7 +126,9 @@
         <item name="android:textAppearance">@style/TextAppearance.GoBong.SemiBold16</item>
     </style>
 
-    <style name="Widget.GoBong.Button.Small">
+    <style name="Widget.GoBong.Button.Follow">
+        <item name="backgroundTint">@color/selector_enable</item>
+        <item name="android:checked">true</item>
         <item name="android:textAppearance">@style/TextAppearance.GoBong.SemiBold12</item>
     </style>
 
@@ -138,6 +140,10 @@
     <style name="ThemeOverlay.GoBong.Button" parent="">
         <item name="colorPrimary">@color/selector_enable</item>
         <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="ThemeOverlay.GoBong.Button.Follow" parent="">
+        <item name="colorPrimary">@color/selector_follow</item>
     </style>
 
     <!-- Dialog -->

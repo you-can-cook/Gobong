@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 
 
 @BindingAdapter("setImageVisible")
@@ -37,6 +38,16 @@ fun <T> setRecyclerViewVisible(view: RecyclerView, data: List<T>) {
 @BindingAdapter("isSelected")
 fun <T> isSelected(view: View, selected: Boolean) {
     view.isSelected = selected
+}
+
+@BindingAdapter("isFollowSelected")
+fun isFollowSelected(view: Button, selected: Boolean) {
+    view.isSelected = selected
+}
+
+@BindingAdapter("isFollowVisible")
+fun <T> isFollowVisible(view: Button, visible: Boolean) {
+    view.isVisible = visible
 }
 
 @BindingAdapter(value = ["minute", "second"], requireAll = true)

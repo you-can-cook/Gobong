@@ -32,14 +32,13 @@
                 android:id="@+id/profileImageView"
                 style="@style/TextAppearance.GoBong.SemiBold16"
                 setProfileImageUrl="@{item.user.profileUrl}"
-                android:layout_width="0dp"
+                android:layout_width="32dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="9dp"
-                app:layout_constraintBottom_toBottomOf="@id/followingButton"
+                android:layout_marginTop="8dp"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/followingButton"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/default_profile_img" />
 
             <TextView
@@ -48,6 +47,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@{item.user.nickname}"
                 app:layout_constraintBottom_toBottomOf="@id/profileImageView"
                 app:layout_constraintEnd_toStartOf="@id/followingButton"
@@ -55,29 +56,33 @@
                 app:layout_constraintStart_toEndOf="@id/profileImageView"
                 app:layout_constraintTop_toTopOf="@id/profileImageView"
                 app:layout_constraintVertical_bias="0.476"
-                tools:text="쩝쩝박사" />
+                tools:text="쩝쩝박tktktktktktktktktktktktktktktktktktktk사" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/followingButton"
+                style="@style/Widget.GoBong.Button.Follow"
+                isFollowSelected="@{item.user.followed}"
+                isFollowVisible="@{item.user.notMine}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 android:text="팔로잉"
+                app:layout_constraintBottom_toBottomOf="@id/profileImageView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@id/profileImageView" />
 
             <ImageView
                 android:id="@+id/thumbnailImageView"
                 setImageUrl="@{item.thumbnailUrl}"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
                 android:scaleType="centerCrop"
-                app:layout_constraintDimensionRatio="2.3:1"
+                app:layout_constraintDimensionRatio="16:9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/followingButton"
+                app:layout_constraintTop_toBottomOf="@id/profileImageView"
                 tools:src="@drawable/example_img" />
 
             <TextView
@@ -111,9 +116,10 @@
                 style="@style/TextAppearance.GoBong.Regular10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:text="@{item.bookmark}"
                 app:layout_constraintBottom_toBottomOf="@id/titleTextView"
-                app:layout_constraintEnd_toEndOf="@id/followingButton"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/titleTextView"
                 tools:text="324" />
 

@@ -6,8 +6,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.youcancook.gobong.databinding.ItemMainCardBinding
 import com.youcancook.gobong.model.Card
+import com.youcancook.gobong.model.UserProfile
 
-class CardRecyclerViewListAdapter(val onItemClick: (Card) -> Unit) :
+class CardRecyclerViewListAdapter(
+    val onItemClick: (Card) -> Unit,
+    val onFollowClick: (UserProfile) -> Unit,
+) :
     ListAdapter<Card, CardViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
@@ -16,8 +20,10 @@ class CardRecyclerViewListAdapter(val onItemClick: (Card) -> Unit) :
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), this@CardRecyclerViewListAdapter,
-            onItemClick
+            ),
+            this@CardRecyclerViewListAdapter,
+            onItemClick,
+            onFollowClick
         )
     }
 
