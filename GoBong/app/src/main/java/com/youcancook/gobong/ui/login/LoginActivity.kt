@@ -11,6 +11,7 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityLoginBinding
+import com.youcancook.gobong.ui.MainActivity
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.util.ACCESS_TOKEN
 import com.youcancook.gobong.util.NetworkState
@@ -22,6 +23,9 @@ class LoginActivity :
         LoginViewModel(appContainer.userRepository)
     }
 
+    private var provider: String? = null
+    private var userId: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -31,6 +35,19 @@ class LoginActivity :
         initListeners()
 
         viewModel.makeTemporaryToken()
+
+        onSuccess = {
+            //로그인 성공
+            saveToken()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        onFail = {
+            //TODO 로그인 실패처럼 fail의 종류도 나눠야 함
+            //회원가입 진행
+            moveToRegister()
+        }
     }
 
     private fun initListeners() {
@@ -58,8 +75,7 @@ class LoginActivity :
                 viewModel.setNetworkState(NetworkState.FAIL)
             } else if (token != null) {
                 Log.i("LOGIN", "카카오계정으로 로그인 성공 ${token.accessToken}")
-                viewModel.setNetworkState(NetworkState.SUCCESS)
-                moveToRegister(KAKAO, token)
+                successKakaoLogin()
             }
         }
 
@@ -82,9 +98,8 @@ class LoginActivity :
                     )
                 } else if (token != null) {
                     Log.i("LOGIN", "카카오톡으로 로그인 성공 ${token.accessToken}")
-                    //TODO TOKEN 저장
-                    viewModel.setNetworkState(NetworkState.SUCCESS)
-                    moveToRegister(KAKAO, token)
+                    successKakaoLogin()
+
                 }
                 viewModel.setNetworkState(NetworkState.DONE)
             }
@@ -96,11 +111,36 @@ class LoginActivity :
         }
     }
 
-    private fun moveToRegister(provider: String, oAuth: OAuthToken) {
-        println("auth $oAuth")
+    private fun successKakaoLogin() {
+        provider = KAKAO
+        getKakaoUserId()
+        viewModel.login()
+    }
+
+    private fun getKakaoUserId() {
+        UserApiClient.instance.me { user, error ->
+            if (error != null || user == null) {
+                return@me
+            } else {
+                userId = user.id.toString()
+            }
+        }
+    }
+
+    private fun saveToken() {
+        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+        val token = viewModel.getToken()
+        sharedPref.edit {
+            putString(ACCESS_TOKEN, token.accessToken)
+            putString(REFRESH_TOKEN, token.refreshToken)
+            apply()
+        }
+    }
+
+    private fun moveToRegister() {
         val auth = LoginAuth(
-            provider,
-            oAuth.idToken ?: "",
+            provider ?: "",
+            userId.toString(),
             viewModel.getTemporaryToken()
         )
         val intent =

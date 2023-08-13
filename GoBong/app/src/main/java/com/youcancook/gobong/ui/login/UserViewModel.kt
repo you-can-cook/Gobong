@@ -40,12 +40,6 @@ class UserViewModel(
 
     fun getToken() = _token.value
 
-    fun isTokenExpired(token: UserToken) {
-        viewModelScope.launch {
-            _isTokenExpired.value = repository.isTokenExpired(token)
-        }
-    }
-
     fun registerNickname() {
         if (nicknameInput.value.isEmpty()) {
             _errorMessage.value = "닉네임을 입력하세요"

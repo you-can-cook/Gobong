@@ -21,6 +21,10 @@ class UserDataSource(
         }
     }
 
+    suspend fun requestAccessToken(refreshToken: String): String {
+        return ""
+    }
+
     suspend fun requestLogin() {
 
     }
@@ -41,7 +45,5 @@ class UserDataSource(
         }
     }
 
-    suspend fun checkTokenExpired(): Boolean {
-        return false
-    }
+
 }
