@@ -1,5 +1,5 @@
 //
-//  PushNotificationViewController.swift
+//  DeleteAccountViewController.swift
 //  Gobong
 //
 //  Created by Ebbyy on 2023/08/13.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-class PushNotificationViewController: UIViewController {
+class DeleteAccountViewController: UIViewController {
 
-    @IBOutlet weak var notificationSwitch: UISwitch!
+    @IBOutlet weak var deleteAccountButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +23,7 @@ class PushNotificationViewController: UIViewController {
     }
         
     private func setupNavigationBar(){
-        navigationItem.title = "알림"
+        navigationItem.title = "회원탈퇴"
         
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTapped))
     }
@@ -33,4 +33,6 @@ class PushNotificationViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
 
+    @IBAction func deleteButtonTapped(_ sender: Any) {
+    }
 }

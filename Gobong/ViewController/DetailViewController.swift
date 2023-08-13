@@ -79,7 +79,11 @@ extension DetailViewController {
     }
 }
 
-extension DetailViewController: UITableViewDelegate, UITableViewDataSource, RecipeCellDelegate {
+extension DetailViewController: UITableViewDelegate, UITableViewDataSource, RecipeCellDelegate, ReviewDelegate {
+    func reviewTapped(cell: ReviewTableViewCell) {
+         
+    }
+    
     func collectionViewTapped(sender: RecipeCell) {
         guard let indexPath = tableView.indexPath(for: sender) else { return }
         tableView(tableView, didSelectRowAt: indexPath)
@@ -93,14 +97,26 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
         tableView.register(UINib(nibName: "DetailTitleCell", bundle: nil), forCellReuseIdentifier: "DetailTitleCell")
         tableView.register(HashtagCell.self, forCellReuseIdentifier: "HashtagCell")
         tableView.register(RecipeCell.self, forCellReuseIdentifier: "RecipeCell")
+        tableView.register(ReviewTableViewCell.self, forCellReuseIdentifier: "ReviewTableViewCell")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return recipeInformation.count + 2
+        return recipeInformation.count + 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.item == 0 {
+        if indexPath.item == recipeInformation.count + 2 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ReviewTableViewCell") as! ReviewTableViewCell
+            cell.selectionStyle = .none
+            cell.delegate = self
+            cell.subtitleLabel.text = "abc"
+            //if reviewed
+//            cell.isReviewed(3)
+            //else if not reviewed
+//            cell.isNotReviewed()
+            
+            return cell
+        } else if indexPath.item == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DetailTitleCell", for: indexPath) as! DetailTitleCell
             cell.configuration(userImg: information.userImg, username: information.username, following: information.following, thumbnailImg: information.thumbnailImg, title: information.title, bookmarkCount: information.bookmarkCount, cookingTime: information.cookingTime, tools: information.tools, level: information.level, stars: information.stars)
             cell.selectionStyle = .none
@@ -150,7 +166,12 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.item == 0 {
+        
+        if indexPath.item == recipeInformation.count + 2 {
+            return 158
+        }
+        
+        else if indexPath.item == 0 {
             return 344
         }
         
@@ -206,7 +227,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.item > 1 {
+        if indexPath.item > 1  && indexPath.item != recipeInformation.count + 2 {
             let allTrueValues = Array(repeating: true, count: isFolded.count)
             let lastFolded = isFolded.firstIndex(where: {$0 == false})
             

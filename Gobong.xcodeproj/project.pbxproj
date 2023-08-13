@@ -51,6 +51,8 @@
 		80D3F1FD2A88E55D009313CB /* EditAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1FC2A88E55D009313CB /* EditAccountViewController.swift */; };
 		80D3F2002A88E605009313CB /* PushNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1FF2A88E605009313CB /* PushNotificationViewController.swift */; };
 		80D3F2022A88E625009313CB /* DeleteAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F2012A88E625009313CB /* DeleteAccountViewController.swift */; };
+		80D3F2072A88E87E009313CB /* ReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F2052A88E87D009313CB /* ReviewTableViewCell.swift */; };
+		80D3F2082A88E87E009313CB /* ReviewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80D3F2062A88E87D009313CB /* ReviewTableViewCell.xib */; };
 		80E3C01E2A83CEBB00845A9B /* Recipe_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */; };
 		80E3C0212A83CF6F00845A9B /* 재료_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0202A83CF6F00845A9B /* 재료_AddPost.swift */; };
 		80E3C0242A83D0E900845A9B /* DashedLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0232A83D0E900845A9B /* DashedLineView.swift */; };
@@ -108,6 +110,8 @@
 		80D3F1FC2A88E55D009313CB /* EditAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountViewController.swift; sourceTree = "<group>"; };
 		80D3F1FF2A88E605009313CB /* PushNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationViewController.swift; sourceTree = "<group>"; };
 		80D3F2012A88E625009313CB /* DeleteAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewController.swift; sourceTree = "<group>"; };
+		80D3F2052A88E87D009313CB /* ReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTableViewCell.swift; sourceTree = "<group>"; };
+		80D3F2062A88E87D009313CB /* ReviewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewTableViewCell.xib; sourceTree = "<group>"; };
 		80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe_AddPost.swift; sourceTree = "<group>"; };
 		80E3C0202A83CF6F00845A9B /* 재료_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "재료_AddPost.swift"; sourceTree = "<group>"; };
 		80E3C0232A83D0E900845A9B /* DashedLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedLineView.swift; sourceTree = "<group>"; };
@@ -145,6 +149,8 @@
 				80CE8B1A2A7F7B18003DE318 /* DetailTitleCell.xib */,
 				80CE8B082A7CDD56003DE318 /* HashtagCell.swift */,
 				80CE8B0B2A7CDE38003DE318 /* HashtagCollectionCell.swift */,
+				80D3F2052A88E87D009313CB /* ReviewTableViewCell.swift */,
+				80D3F2062A88E87D009313CB /* ReviewTableViewCell.xib */,
 			);
 			path = DetailView;
 			sourceTree = "<group>";
@@ -364,6 +370,7 @@
 				80D3F1F12A879563009313CB /* FollowStateCell.xib in Resources */,
 				80D3F1FB2A88BEDA009313CB /* client_755021174658-q4mgcsknjl8g802n0rijl2vsertb9u4o.apps.googleusercontent.com.plist in Resources */,
 				80D2B6052A791AD900B777D1 /* LaunchScreen.storyboard in Resources */,
+				80D3F2082A88E87E009313CB /* ReviewTableViewCell.xib in Resources */,
 				80CE8B1C2A7F7B18003DE318 /* DetailTitleCell.xib in Resources */,
 				80CE8AFB2A7CC5D0003DE318 /* UserInformationCell.xib in Resources */,
 				80D2B6102A792B0E00B777D1 /* FeedCell.xib in Resources */,
@@ -468,6 +475,7 @@
 				80D2B60F2A792B0E00B777D1 /* FeedCell.swift in Sources */,
 				80D3F1E72A8688F1009313CB /* FilterViewController.swift in Sources */,
 				80D3F2002A88E605009313CB /* PushNotificationViewController.swift in Sources */,
+				80D3F2072A88E87E009313CB /* ReviewTableViewCell.swift in Sources */,
 				80E3C0212A83CF6F00845A9B /* 재료_AddPost.swift in Sources */,
 				80CE8AF72A7CA1F8003DE318 /* ProfileViewController.swift in Sources */,
 				80D3F1F72A87F5CF009313CB /* APIModel.swift in Sources */,
