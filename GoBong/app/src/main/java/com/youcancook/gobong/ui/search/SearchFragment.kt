@@ -3,19 +3,27 @@ package com.youcancook.gobong.ui.search
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.GridItemDecorator
 import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentSearchBinding
+import com.youcancook.gobong.model.Filter
+import com.youcancook.gobong.ui.ImageActivity
 import com.youcancook.gobong.ui.base.NetworkFragment
 import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.ui.detail.DetailActivity
 import com.youcancook.gobong.ui.search.filter.FilterActivity
+import com.youcancook.gobong.ui.search.filter.FilterActivity.Companion.OLD_DATA
 
 class SearchFragment :
     NetworkFragment<FragmentSearchBinding, SearchViewModel>(R.layout.fragment_search) {
+    private var filterActivityLauncher: ActivityResultLauncher<Intent>? = null
 
     override val viewModel: SearchViewModel by lazy {
         SearchViewModel(appContainer.goBongRepository)
@@ -59,9 +67,25 @@ class SearchFragment :
                 it.isSelected = it.isSelected.not()
             }
 
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    newText ?: return true
+                    println("query change")
+                    viewModel.filter(newText)
+                    return true
+                }
+
+            })
+
             filterButton.setOnClickListener {
-                val intent = Intent(requireContext(), FilterActivity::class.java)
-                startActivity(intent)
+                Intent(requireContext(), FilterActivity::class.java).run {
+                    putExtra(OLD_DATA, viewModel.getCurrentFilter())
+                    filterActivityLauncher?.launch(this)
+                }
             }
 
             swipeRefresh.setOnRefreshListener {
@@ -69,6 +93,16 @@ class SearchFragment :
             }
             setGridRecyclerView()
         }
+
+        filterActivityLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                    val filterData =
+                        result.data?.getSerializableExtra(FilterActivity.FILTER_DATA) as Filter
+                    viewModel.setFilter(filterData)
+                    binding.searchView.setQuery(filterData.searchWord, false)
+                }
+            }
     }
 
     override fun onStart() {

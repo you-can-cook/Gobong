@@ -40,19 +40,21 @@
 
         <ImageView
             android:id="@+id/filterButton"
+            isSelected="@{vm.filtered}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:src="@drawable/icon_filter"
             app:layout_constraintBottom_toBottomOf="@id/searchView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/searchView" />
+            app:layout_constraintTop_toTopOf="@id/searchView"
+            app:tint="@color/selector_filter" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
-            android:id="@+id/swipeRefresh"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +69,6 @@
                 tools:listitem="@layout/item_grid_card" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
 
         <ImageView
             android:id="@+id/emptyImageView"

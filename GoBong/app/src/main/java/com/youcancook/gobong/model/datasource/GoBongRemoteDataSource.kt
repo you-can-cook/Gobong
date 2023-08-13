@@ -16,6 +16,10 @@ class GoBongRemoteDataSource(
         return emptyList()
     }
 
+    suspend fun getFilteredRecipes(): List<Card> {
+        return emptyList()
+    }
+
     suspend fun getBookmarkedRecipes(): List<Card> {
         return emptyList()
     }

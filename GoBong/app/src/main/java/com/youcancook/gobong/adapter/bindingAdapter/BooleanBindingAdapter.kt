@@ -36,7 +36,8 @@ fun <T> setRecyclerViewVisible(view: RecyclerView, data: List<T>) {
 }
 
 @BindingAdapter("isSelected")
-fun <T> isSelected(view: View, selected: Boolean) {
+fun  isSelected(view: View, selected: Boolean) {
+    println("isSelected")
     view.isSelected = selected
 }
 
