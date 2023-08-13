@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/image")
+@RequestMapping("api/images")
 public class AwsS3Controller {
 
     private final AwsS3ImageUploader awsS3ImageUploader;
