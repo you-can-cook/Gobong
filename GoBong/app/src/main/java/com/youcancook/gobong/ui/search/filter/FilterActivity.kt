@@ -1,16 +1,40 @@
 package com.youcancook.gobong.ui.search.filter
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import com.google.android.material.slider.Slider
+import com.google.android.material.slider.Slider.OnSliderTouchListener
+import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityFilterBinding
+import com.youcancook.gobong.model.Filter
+import com.youcancook.gobong.ui.ImageActivity
+import com.youcancook.gobong.ui.base.GoBongActivity
+import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion
+import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.EASY
+import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.EMPTY
+import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.FIVE
+import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.FOUR
+import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.HARD
+import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.NORMAL
+import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.ONE
+import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.POPULAR
+import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.RECENT
+import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.THREE
+import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.TWO
 
-class FilterActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityFilterBinding
-
+class FilterActivity : GoBongActivity<ActivityFilterBinding>(R.layout.activity_filter) {
+    private val viewModel: FilterViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityFilterBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
+        binding.run {
+            vm = viewModel
+        }
+
+        setOldFilter(intent.getSerializableExtra(OLD_DATA) as Filter)
 
         binding.run {
             toolbar.setNavigationOnClickListener {
@@ -18,11 +42,18 @@ class FilterActivity : AppCompatActivity() {
             }
 
             resetButton.setOnClickListener {
-                //TODO viewmodel에 reset하도록
+                viewModel.reset()
+                resetAllView()
             }
 
             searchButton.setOnClickListener {
-                //TODO setResult(300, data)
+                setResult(
+                    RESULT_OK,
+                    Intent().putExtra(
+                        FILTER_DATA,
+                        viewModel.getFilter()
+                    )
+                )
                 finish()
             }
         }
@@ -30,7 +61,135 @@ class FilterActivity : AppCompatActivity() {
         initListeners()
     }
 
-    private fun initListeners() {
+    private fun setOldFilter(filter: Filter) {
+        println("oldFilter $filter")
+        if (filter.isEmpty()) return
 
+        viewModel.setFilter(filter)
+
+        setViewByFilter(filter)
+    }
+
+    private fun setViewByFilter(filter: Filter) {
+        binding.run {
+            searchView.setQuery(filter.searchWord, false)
+            if (filter.sortType.isNotEmpty()) {
+                when (filter.sortType) {
+                    RECENT -> sortToggleGroup.check(R.id.sortRecentTextView)
+                    POPULAR -> sortToggleGroup.check(R.id.sortPopularTextView)
+                }
+            }
+
+            if (filter.level.isNotEmpty()) {
+                when (filter.level) {
+                    EASY -> levelGroup.check(R.id.easyChip)
+                    NORMAL -> levelGroup.check(R.id.normalChip)
+                    HARD -> levelGroup.check(R.id.hardChip)
+                }
+            }
+
+            if (filter.time.isNotEmpty()) {
+                timeSlider.value = filter.time.toFloat()
+            }
+
+            if (filter.star.isNotEmpty()) {
+                when (filter.star) {
+                    FIVE -> starGroup.check(R.id.fiveStarChip)
+                    FOUR -> starGroup.check(R.id.fourStarChip)
+                    THREE -> starGroup.check(R.id.threeStarChip)
+                    TWO -> starGroup.check(R.id.twoStarChip)
+                    ONE -> starGroup.check(R.id.oneStarChip)
+                }
+            }
+        }
+    }
+
+    private fun resetAllView() {
+        binding.run {
+            searchView.setQuery("", false)
+
+            sortToggleGroup.clearChecked()
+
+            levelGroup.clearCheck()
+
+            timeSlider.value = 0f
+
+            starGroup.clearCheck()
+        }
+    }
+
+    private fun initListeners() {
+        binding.run {
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    newText ?: return true
+                    viewModel.setSearchWord(newText)
+                    return true
+                }
+
+            })
+
+            sortToggleGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
+
+                when (checkedId) {
+                    R.id.sortRecentTextView -> {
+                        if (isChecked) viewModel.setSort(RECENT)
+                        else viewModel.setSort(EMPTY)
+                    }
+
+                    R.id.sortPopularTextView -> {
+                        if (isChecked) viewModel.setSort(POPULAR)
+                        else viewModel.setSort(EMPTY)
+                    }
+                }
+            }
+
+            levelGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+                if (checkedIds.isEmpty()) {
+                    viewModel.setLevel(EMPTY)
+                    return@setOnCheckedStateChangeListener
+                }
+
+                when (checkedIds[0]) {
+                    R.id.easyChip -> viewModel.setLevel(EASY)
+                    R.id.normalChip -> viewModel.setLevel(NORMAL)
+                    R.id.hardChip -> viewModel.setLevel(HARD)
+                }
+            }
+
+            timeSlider.addOnSliderTouchListener(object : OnSliderTouchListener {
+
+                override fun onStartTrackingTouch(slider: Slider) {}
+
+                override fun onStopTrackingTouch(slider: Slider) {
+                    viewModel.setTime(timeSlider.value.toInt())
+                }
+
+            })
+
+            starGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+                if (checkedIds.isEmpty()) {
+                    viewModel.setStar(EMPTY)
+                    return@setOnCheckedStateChangeListener
+                }
+
+                when (checkedIds[0]) {
+                    R.id.fiveStarChip -> viewModel.setStar(FIVE)
+                    R.id.fourStarChip -> viewModel.setStar(FOUR)
+                    R.id.threeStarChip -> viewModel.setStar(THREE)
+                    R.id.twoStarChip -> viewModel.setStar(TWO)
+                    R.id.oneStarChip -> viewModel.setStar(ONE)
+                }
+            }
+        }
+    }
+
+    companion object {
+        val OLD_DATA = "oldData"
+        val FILTER_DATA = "filter"
     }
 }

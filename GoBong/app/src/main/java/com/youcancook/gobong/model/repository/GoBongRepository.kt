@@ -1,6 +1,7 @@
 package com.youcancook.gobong.model.repository
 
 import com.youcancook.gobong.model.Card
+import com.youcancook.gobong.model.Filter
 import com.youcancook.gobong.model.datasource.GoBongRemoteDataSource
 
 class GoBongRepository(
@@ -13,6 +14,10 @@ class GoBongRepository(
 
     suspend fun getAllRecipes(): List<Card> {
         return goBongDataSource.getAllRecipes()
+    }
+
+    suspend fun getFilteredRecipes(filter: Filter): List<Card> {
+        return goBongDataSource.getFilteredRecipes()
     }
 
     suspend fun getBookmarkedRecipes(): List<Card> {
