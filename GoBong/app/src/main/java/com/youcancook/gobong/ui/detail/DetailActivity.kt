@@ -89,15 +89,6 @@ class DetailActivity : GoBongActivity<ActivityDetailBinding>(R.layout.activity_d
         }
     }
 
-    private fun setBookmark(menuItem: MenuItem) {
-        menuItem.isChecked = menuItem.isChecked.not()
-        if (menuItem.isChecked) {
-            menuItem.setIcon(R.drawable.icon_bookmark_filled)
-        } else {
-            menuItem.setIcon(R.drawable.icon_bookmark_outline)
-        }
-    }
-
     private fun setDisposable() {
         binding.bookmarkImageView.run {
             setImageDrawable(
