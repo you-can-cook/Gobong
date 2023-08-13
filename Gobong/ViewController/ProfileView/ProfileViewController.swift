@@ -66,6 +66,7 @@ class ProfileViewController: UIViewController, profileFeedDelegete {
 //MARK: BUTTON FUNC
 extension ProfileViewController {
     @objc private func settingsButtonTapped(){
+        performSegue(withIdentifier: "showSettingsView", sender: self)
     }
 
     @objc private func toogleButtonTapped(){
