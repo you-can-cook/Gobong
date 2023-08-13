@@ -104,7 +104,7 @@
                                         </constraints>
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="gray" title="리뷰 작성하기">
+                                        <buttonConfiguration key="configuration" style="plain" title="리뷰 작성하기">
                                             <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="12"/>
                                         </buttonConfiguration>
                                         <connections>
@@ -137,11 +137,11 @@
                 <outlet property="fiveStarImg" destination="wB7-qH-Mm9" id="ZVc-tU-0r3"/>
                 <outlet property="fourStarImg" destination="Hib-CJ-mFK" id="8tR-0f-iCN"/>
                 <outlet property="oneStarImg" destination="Osu-Iv-Bwk" id="LDd-OV-1g9"/>
-                <outlet property="reviewButton" destination="ETQ-Nz-yn4" id="uR8-Z0-brj"/>
-                <outlet property="starView" destination="WZQ-lY-a2K" id="nvS-VU-62G"/>
-                <outlet property="subtitleLabel" destination="P25-92-7aY" id="qh4-fo-cDD"/>
+                <outlet property="reviewButton" destination="ETQ-Nz-yn4" id="86q-OZ-sO9"/>
+                <outlet property="starView" destination="WZQ-lY-a2K" id="sM3-LC-rxf"/>
+                <outlet property="subtitleLabel" destination="P25-92-7aY" id="FHr-bp-qD0"/>
                 <outlet property="threeStarImg" destination="lIa-l2-k7V" id="6cw-f5-7ns"/>
-                <outlet property="titleLabel" destination="fLa-og-OwO" id="A34-zR-SVj"/>
+                <outlet property="titleLabel" destination="fLa-og-OwO" id="PBq-VT-zvQ"/>
                 <outlet property="twoStarImg" destination="RIc-g9-5vI" id="XmQ-Z3-1cb"/>
             </connections>
             <point key="canvasLocation" x="-9.1603053435114496" y="7.042253521126761"/>

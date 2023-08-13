@@ -29,8 +29,7 @@ class ReviewTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        reviewButton.layer.cornerRadius = 20
-        isNotReviewed()
+        reviewButton.layer.cornerRadius = 15
     }
     
     @IBAction func reviewButtonTapped(_ sender: Any) {
@@ -38,7 +37,7 @@ class ReviewTableViewCell: UITableViewCell {
     }
     
     func isReviewed(_ star: Int){
-        titleLabel.text = "내가 남긴 고봉밥"
+        self.titleLabel.text = "내가 남긴 고봉밥"
         subtitleLabel.isHidden = true
         starView.isHidden = false
         showStar(star)
@@ -46,7 +45,7 @@ class ReviewTableViewCell: UITableViewCell {
     }
     
     func isNotReviewed(){
-        titleLabel.text = "레시피는 어떠셨나요?"
+        self.titleLabel.text = "레시피는 어떠셨나요?"
         subtitleLabel.isHidden = false
         starView.isHidden = true
         reviewButton.setTitle("리뷰 작성하기", for: .normal)
