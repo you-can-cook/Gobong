@@ -61,5 +61,9 @@ class LoginViewModel(
 
     }
 
+    fun loading() = setNetworkState(NetworkState.LOADING)
+    fun success() = setNetworkState(NetworkState.SUCCESS)
+    fun fail() = setNetworkState(NetworkState.FAIL)
+    fun done() = finishNetwork()
 
 }

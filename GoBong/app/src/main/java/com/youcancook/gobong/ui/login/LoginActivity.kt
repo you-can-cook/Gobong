@@ -13,9 +13,9 @@ import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityLoginBinding
 import com.youcancook.gobong.ui.MainActivity
 import com.youcancook.gobong.ui.base.NetworkActivity
-import com.youcancook.gobong.util.ACCESS_TOKEN
+import com.youcancook.gobong.util.ACCESS_TOKEN_KEY
 import com.youcancook.gobong.util.NetworkState
-import com.youcancook.gobong.util.REFRESH_TOKEN
+import com.youcancook.gobong.util.REFRESH_TOKEN_KEY
 
 class LoginActivity :
     NetworkActivity<ActivityLoginBinding, LoginViewModel>(R.layout.activity_login) {
@@ -68,11 +68,11 @@ class LoginActivity :
     }
 
     private fun loginWithKakao() {
-        viewModel.setNetworkState(NetworkState.LOADING)
+        viewModel.loading()
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 Log.e("LOGIN", "카카오계정으로 로그인 실패", error)
-                viewModel.setNetworkState(NetworkState.FAIL)
+                viewModel.fail()
             } else if (token != null) {
                 Log.i("LOGIN", "카카오계정으로 로그인 성공 ${token.accessToken}")
                 successKakaoLogin()
@@ -84,7 +84,7 @@ class LoginActivity :
             UserApiClient.instance.loginWithKakaoTalk(this@LoginActivity) { token, error ->
                 if (error != null) {
                     Log.e("LOGIN", "카카오톡으로 로그인 실패", error)
-                    viewModel.setNetworkState(NetworkState.FAIL)
+                    viewModel.fail()
                     // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
                     // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
                     if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
@@ -101,7 +101,7 @@ class LoginActivity :
                     successKakaoLogin()
 
                 }
-                viewModel.setNetworkState(NetworkState.DONE)
+                viewModel.done()
             }
         } else {
             UserApiClient.instance.loginWithKakaoAccount(
@@ -131,8 +131,8 @@ class LoginActivity :
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
         val token = viewModel.getToken()
         sharedPref.edit {
-            putString(ACCESS_TOKEN, token.accessToken)
-            putString(REFRESH_TOKEN, token.refreshToken)
+            putString(ACCESS_TOKEN_KEY, token.accessToken)
+            putString(REFRESH_TOKEN_KEY, token.refreshToken)
             apply()
         }
     }

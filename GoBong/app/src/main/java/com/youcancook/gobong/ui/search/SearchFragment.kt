@@ -10,19 +10,36 @@ import com.youcancook.gobong.adapter.GridItemDecorator
 import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentSearchBinding
 import com.youcancook.gobong.ui.base.NetworkFragment
+import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.ui.detail.DetailActivity
 import com.youcancook.gobong.ui.search.filter.FilterActivity
 
 class SearchFragment :
     NetworkFragment<FragmentSearchBinding, SearchViewModel>(R.layout.fragment_search) {
 
-    override val viewModel: SearchViewModel by viewModels()
+    override val viewModel: SearchViewModel by lazy {
+        SearchViewModel(appContainer.goBongRepository)
+    }
 
     private val gridAdapter = GridRecyclerViewListAdapter(3, onItemClick = {
         val intent = Intent(requireContext(), DetailActivity::class.java)
         startActivity(intent)
     })
     private val gridItemDecorator = GridItemDecorator()
+    override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
+        override fun onSuccess() {
+            binding.swipeRefresh.isRefreshing = false
+        }
+
+        override fun onFail() {
+            binding.swipeRefresh.isRefreshing = false
+        }
+
+        override fun onDone() {
+            binding.swipeRefresh.isRefreshing = false
+        }
+
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.run {
@@ -47,8 +64,16 @@ class SearchFragment :
                 startActivity(intent)
             }
 
+            swipeRefresh.setOnRefreshListener {
+                viewModel.getAllRecipes()
+            }
             setGridRecyclerView()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.getAllRecipes()
     }
 
     private fun setGridRecyclerView() {

@@ -4,5 +4,6 @@ enum class NetworkState {
     LOADING,
     SUCCESS,
     FAIL,
+    TOKEN_EXPIRED,
     DONE
 }
