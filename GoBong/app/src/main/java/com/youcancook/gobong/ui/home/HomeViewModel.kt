@@ -3,6 +3,7 @@ package com.youcancook.gobong.ui.home
 import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.repository.GoBongRepository
+import com.youcancook.gobong.model.repository.UserRepository
 import com.youcancook.gobong.ui.base.NetworkViewModel
 import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.delay
@@ -13,19 +14,8 @@ import java.lang.Exception
 
 class HomeViewModel(
     private val goBongRepository: GoBongRepository,
+    private val userRepository: UserRepository,
 ) : NetworkViewModel() {
-
-//    private val _recipes = MutableStateFlow<List<Card>>(
-//        listOf(
-//            Card.createEmpty(),
-//            Card.createEmpty(),
-//            Card.createEmpty(),
-//            Card.createEmpty(),
-//            Card.createEmpty(),
-//            Card.createEmpty(),
-//            Card.createEmpty()
-//        )
-//    )
 
     private val _recipes = MutableStateFlow<List<Card>>(emptyList())
     val recipes: StateFlow<List<Card>> = _recipes
@@ -49,9 +39,36 @@ class HomeViewModel(
         _recipes.value = goBongRepository.getFollowingRecipes()
     }
 
-    fun follow(userNickname: String) {
+    fun follow(userId: String) {
+        viewModelScope.launch {
+            setNetworkState(NetworkState.LOADING)
+            try {
+                requestFollow(userId)
+                setNetworkState(NetworkState.SUCCESS)
+            } catch (e: Exception) {
+                setNetworkState(NetworkState.FAIL)
+                setSnackBarMessage(e.message ?: "")
+            }
+        }
+    }
+
+    fun unfollow(userId: String) {
+        viewModelScope.launch {
+            setNetworkState(NetworkState.LOADING)
+            try {
+                requestUnfollow(userId)
+                setNetworkState(NetworkState.SUCCESS)
+            } catch (e: Exception) {
+                setNetworkState(NetworkState.FAIL)
+                setSnackBarMessage(e.message ?: "")
+            }
+        }
+    }
+
+    private suspend fun requestFollow(userId: String) {
+        userRepository.follow(userId)
         _recipes.value = _recipes.value.map {
-            if (it.user.nickname == userNickname) {
+            if (it.user.nickname == userId) {
                 it.copy(user = it.user.copy(followed = true))
             } else {
                 it
@@ -59,9 +76,10 @@ class HomeViewModel(
         }
     }
 
-    fun unFollow(userNickname: String) {
+    private suspend fun requestUnfollow(userId: String) {
+        userRepository.unfollow(userId)
         _recipes.value = _recipes.value.map {
-            if (it.user.nickname == userNickname) {
+            if (it.user.nickname == userId) {
                 it.copy(user = it.user.copy(followed = false))
             } else {
                 it

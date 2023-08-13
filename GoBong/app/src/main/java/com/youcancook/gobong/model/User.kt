@@ -7,6 +7,7 @@ import com.youcancook.gobong.model.network.dto.RegisterWithoutProfileImageDTO
 data class User(
     val profileUrl: String = "",
     val nickname: String = "쩝쩝박사",
+    val userId: String = "",
     val recipe: String = "0",
     val follower: String = "0",
     val following: String = "0",
@@ -15,6 +16,7 @@ data class User(
 data class UserProfile(
     val profileUrl: String = "",
     val nickname: String = "쩝쩝박사",
+    val userId: String = "",
     val notMine: Boolean = false,
     val followed: Boolean = true,
     val bookmarked: Boolean = true,
