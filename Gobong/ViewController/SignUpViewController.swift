@@ -117,7 +117,7 @@ extension SignUpViewController: UITextFieldDelegate {
 //        } else {
 //            // Fallback on earlier versions
             NSLayoutConstraint.activate([
-                okButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -40),
+                okButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100),
                 okButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
                 okButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
                 okButton.heightAnchor.constraint(equalToConstant: 50)

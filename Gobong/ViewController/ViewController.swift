@@ -64,6 +64,8 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
 extension ViewController {
     private func setupData(){
         //!!!!!임시!!!!
+        userDefault.set("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInN1YiI6IkFDQ0VTUyIsImlzcyI6ImdvYm9uZy55b3VjYW5jb29rLm9yZyIsImlhdCI6MTY5MTQ3Nzk5OSwiZXhwIjoyNDExNDc3OTk5fQ.m_uF4Tpu9dp2UZWVeGLNj39TYArHtmFidSv4SWfw-Sc", forKey: "accessKey")
+        
         if userDefault.string(forKey: "accessKey") == nil {
             performSegue(withIdentifier: "showLoginView", sender: self)
         }
