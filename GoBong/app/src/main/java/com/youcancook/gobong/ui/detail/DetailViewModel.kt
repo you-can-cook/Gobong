@@ -1,14 +1,23 @@
 package com.youcancook.gobong.ui.detail
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.RecipeStep
+import com.youcancook.gobong.model.repository.GoBongRepository
+import com.youcancook.gobong.ui.base.NetworkViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-class DetailViewModel : ViewModel() {
+class DetailViewModel(
+    private val goBongRepository: GoBongRepository,
+) : NetworkViewModel() {
     private val _isMine = MutableStateFlow(false)
     val isMine: StateFlow<Boolean> get() = _isMine
+
+    private val _isReviewed = MutableStateFlow(false)
+    val isReviewed: StateFlow<Boolean> get() = _isReviewed
 
     private val _cardInfo = MutableStateFlow(Card.createEmpty())
     val cardInfo: StateFlow<Card> get() = _cardInfo
@@ -60,5 +69,42 @@ class DetailViewModel : ViewModel() {
 
     fun activeRecipeStep(position: Int) {
         _activeRecipeStep.value = position
+    }
+
+    fun bookmarkRecipe(isBookmarked: Boolean) {
+        viewModelScope.launch {
+            try {
+                requestBookmark(isBookmarked)
+            } catch (e: Exception) {
+                setSnackBarMessage(e.message ?: "")
+            }
+        }
+    }
+
+    private fun requestBookmark(isBookmarked: Boolean) {
+        goBongRepository.bookmarkRecipe(isBookmarked)
+    }
+
+    fun reviewRecipe() {
+        viewModelScope.launch {
+            try {
+                if (_isReviewed.value) {
+                    requestReview()
+                    _isReviewed.value = true
+                } else {
+                    requestUpdatedReview()
+                }
+            } catch (e: Exception) {
+                setSnackBarMessage(e.message ?: "")
+            }
+        }
+    }
+
+    private fun requestReview() {
+        goBongRepository.reviewRecipe(_starCount.value)
+    }
+
+    private fun requestUpdatedReview() {
+        goBongRepository.reviewRecipe(_starCount.value)
     }
 }

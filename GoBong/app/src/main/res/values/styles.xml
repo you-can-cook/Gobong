@@ -190,4 +190,13 @@
         <item name="android:textAppearance">@style/TextAppearance.GoBong.Regular10</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <!-- SearchView -->
+    <style name="Widget.GoBong.SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="android:textAppearance">@style/TextAppearance.GoBong.Regular14</item>
+        <item name="queryBackground">@android:color/transparent</item>
+        <item name="closeIcon">@drawable/icon_search_close</item>
+        <item name="android:background">@color/gray1</item>
+        <item name="searchIcon">@drawable/icon_search</item>
+    </style>
 </resources>

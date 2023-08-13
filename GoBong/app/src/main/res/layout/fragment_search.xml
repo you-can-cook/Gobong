@@ -27,17 +27,15 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
+            style="@style/Widget.GoBong.SearchView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="10dp"
-            android:background="@color/gray1"
-            app:closeIcon="@drawable/icon_search_close"
             app:layout_constraintEnd_toStartOf="@id/filterButton"
             app:layout_constraintStart_toEndOf="@id/toggleButton"
             app:layout_constraintTop_toTopOf="parent"
-            app:queryBackground="@android:color/transparent"
             app:queryHint="제목, @닉네임" />
 
         <ImageView
@@ -61,10 +59,10 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 setRecyclerViewVisible="@{vm.recipes}"
                 submitData="@{vm.recipes}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 tools:listitem="@layout/item_grid_card" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

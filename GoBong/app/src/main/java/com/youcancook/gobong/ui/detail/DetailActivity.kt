@@ -12,19 +12,26 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.RecipeListAdapter
 import com.youcancook.gobong.databinding.ActivityDetailBinding
+import com.youcancook.gobong.model.repository.GoBongRepository
 import com.youcancook.gobong.ui.base.GoBongActivity
+import com.youcancook.gobong.ui.base.NetworkActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class DetailActivity : GoBongActivity<ActivityDetailBinding>(R.layout.activity_detail) {
-    private val detailViewModel: DetailViewModel by viewModels()
+class DetailActivity :
+    NetworkActivity<ActivityDetailBinding, DetailViewModel>(R.layout.activity_detail) {
+    override val viewModel: DetailViewModel by lazy {
+        DetailViewModel(appContainer.goBongRepository)
+    }
+
     private val recipeAdapter = RecipeListAdapter(onItemClick = {
-        detailViewModel.activeRecipeStep(it)
+        viewModel.activeRecipeStep(it)
     })
     private val reviewDialog = ReviewDialogFragment(onDismissListener = {
-        detailViewModel.setStar(it)
+        viewModel.setStar(it)
     })
+
     private val deleteDialog: AlertDialog by lazy {
         MaterialAlertDialogBuilder(this)
             .setTitle("레시피 삭제")
@@ -42,8 +49,7 @@ class DetailActivity : GoBongActivity<ActivityDetailBinding>(R.layout.activity_d
         super.onCreate(savedInstanceState)
 
         binding.run {
-            vm = detailViewModel
-            lifecycleOwner = this@DetailActivity
+            vm = viewModel
             recyclerView.adapter = recipeAdapter
         }
 
@@ -55,6 +61,7 @@ class DetailActivity : GoBongActivity<ActivityDetailBinding>(R.layout.activity_d
             bookmarkImageView.setOnClickListener {
                 //TODO viewmodel에서 북마크 api 보내기
                 it.isSelected = it.isSelected.not()
+                viewModel.bookmarkRecipe(it.isSelected)
             }
 
             followingButton.setOnClickListener {
@@ -62,7 +69,7 @@ class DetailActivity : GoBongActivity<ActivityDetailBinding>(R.layout.activity_d
             }
 
             reviewButton.setOnClickListener {
-                reviewDialog.setOldStar(detailViewModel.getStar())
+                reviewDialog.setOldStar(viewModel.getStar())
                 reviewDialog.show(supportFragmentManager, null)
             }
 
@@ -71,7 +78,7 @@ class DetailActivity : GoBongActivity<ActivityDetailBinding>(R.layout.activity_d
         binding.run {
             lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    detailViewModel.starCount.collectLatest {
+                    viewModel.starCount.collectLatest {
                         if (it != 0) {
                             reviewButton.text = "리뷰 수정하기"
                         }
@@ -81,7 +88,7 @@ class DetailActivity : GoBongActivity<ActivityDetailBinding>(R.layout.activity_d
 
             lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    detailViewModel.isMine.collectLatest {
+                    viewModel.isMine.collectLatest {
                         if (it) setDisposable()
                     }
                 }
