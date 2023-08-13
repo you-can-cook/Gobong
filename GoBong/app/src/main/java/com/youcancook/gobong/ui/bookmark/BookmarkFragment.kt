@@ -9,16 +9,35 @@ import com.youcancook.gobong.adapter.GridItemDecorator
 import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentBookmarkBinding
 import com.youcancook.gobong.ui.base.NetworkFragment
+import com.youcancook.gobong.ui.base.NetworkStateListener
 
-class BookmarkFragment : NetworkFragment<FragmentBookmarkBinding,BookmarkViewModel>(R.layout.fragment_bookmark) {
+class BookmarkFragment :
+    NetworkFragment<FragmentBookmarkBinding, BookmarkViewModel>(R.layout.fragment_bookmark) {
 
-    override val viewModel: BookmarkViewModel by viewModels()
+    override val viewModel: BookmarkViewModel by lazy {
+        BookmarkViewModel(appContainer.goBongRepository)
+    }
 
     private val gridAdapter = GridRecyclerViewListAdapter(3, onItemClick = {
 
     })
     private val gridItemDecorator =
         GridItemDecorator()
+
+    override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
+        override fun onSuccess() {
+            binding.swipeRefresh.isRefreshing = false
+        }
+
+        override fun onFail() {
+            binding.swipeRefresh.isRefreshing = false
+        }
+
+        override fun onDone() {
+            binding.swipeRefresh.isRefreshing = false
+        }
+
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.run {
@@ -47,8 +66,16 @@ class BookmarkFragment : NetworkFragment<FragmentBookmarkBinding,BookmarkViewMod
                 it.isSelected = it.isSelected.not()
             }
 
+            swipeRefresh.setOnRefreshListener {
+                viewModel.getBookmarkedRecipes()
+            }
             setGridRecyclerView()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.getBookmarkedRecipes()
     }
 
     private fun setGridRecyclerView() {

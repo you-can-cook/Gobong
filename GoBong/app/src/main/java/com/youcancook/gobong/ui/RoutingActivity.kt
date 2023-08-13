@@ -14,7 +14,9 @@ import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.login.LoginActivity
 import com.youcancook.gobong.ui.login.UserViewModel
 import com.youcancook.gobong.util.ACCESS_TOKEN
+import com.youcancook.gobong.util.ACCESS_TOKEN_KEY
 import com.youcancook.gobong.util.REFRESH_TOKEN
+import com.youcancook.gobong.util.REFRESH_TOKEN_KEY
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -58,11 +60,14 @@ class RoutingActivity :
 
     private fun isTokenExist(): Boolean {
         val token = getSharedPreferences(
-            ACCESS_TOKEN, Context.MODE_PRIVATE
+            ACCESS_TOKEN_KEY, Context.MODE_PRIVATE
         ) ?: return false
         viewModel.getAccessToken(
-            token.getString(REFRESH_TOKEN, "") ?: ""
+            token.getString(REFRESH_TOKEN_KEY, "") ?: ""
         )
+
+        ACCESS_TOKEN = token.getString(ACCESS_TOKEN_KEY, "") ?: ""
+        REFRESH_TOKEN = token.getString(REFRESH_TOKEN_KEY, "") ?: ""
         return true
     }
 }

@@ -10,13 +10,16 @@ import com.youcancook.gobong.adapter.GridItemDecorator
 import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentMyBinding
 import com.youcancook.gobong.ui.base.NetworkFragment
+import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.ui.detail.DetailActivity
 import com.youcancook.gobong.ui.my.follow.FollowActivity
 import com.youcancook.gobong.ui.my.setting.SettingActivity
 
 class MyFragment : NetworkFragment<FragmentMyBinding, MyViewModel>(R.layout.fragment_my) {
 
-    override val viewModel: MyViewModel by viewModels()
+    override val viewModel: MyViewModel by lazy {
+        MyViewModel(appContainer.goBongRepository)
+    }
 
     private val gridAdapter = GridRecyclerViewListAdapter(3, onItemClick = {
         val intent = Intent(requireContext(), DetailActivity::class.java)
@@ -25,6 +28,18 @@ class MyFragment : NetworkFragment<FragmentMyBinding, MyViewModel>(R.layout.frag
 
     private val gridItemDecorator =
         GridItemDecorator()
+
+    override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
+        override fun onSuccess() {
+        }
+
+        override fun onFail() {
+        }
+
+        override fun onDone() {
+        }
+
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.run {
@@ -77,6 +92,11 @@ class MyFragment : NetworkFragment<FragmentMyBinding, MyViewModel>(R.layout.frag
             }
         }
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.getMyInfo()
     }
 
     private fun setGridRecyclerView() {

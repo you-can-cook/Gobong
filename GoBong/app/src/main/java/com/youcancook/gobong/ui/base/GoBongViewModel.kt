@@ -9,7 +9,6 @@ abstract class GoBongViewModel : ViewModel() {
     private val _snackBarMessage = MutableStateFlow("")
     val snackBarMessage: StateFlow<String> get() = _snackBarMessage
 
-
     fun setSnackBarMessage(message: String) {
         _snackBarMessage.value = message
     }

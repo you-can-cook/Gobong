@@ -6,10 +6,17 @@ import kotlinx.coroutines.flow.StateFlow
 
 open class NetworkViewModel : GoBongViewModel() {
 
-    private val _networkState = MutableStateFlow<NetworkState>(NetworkState.DONE)
+    private val _networkState = MutableStateFlow(NetworkState.DONE)
     val networkState: StateFlow<NetworkState> get() = _networkState
 
-    fun setNetworkState(state: NetworkState) {
+    protected fun setNetworkState(state: NetworkState) {
         _networkState.value = state
     }
+
+    protected fun finishNetwork() {
+        if (_networkState.value == NetworkState.LOADING) {
+            _networkState.value = NetworkState.DONE
+        }
+    }
+
 }

@@ -12,8 +12,8 @@ import com.youcancook.gobong.databinding.ActivityLoginBinding
 import com.youcancook.gobong.databinding.ActivityRegisterBinding
 import com.youcancook.gobong.ui.RoutingActivity
 import com.youcancook.gobong.ui.base.NetworkActivity
-import com.youcancook.gobong.util.ACCESS_TOKEN
-import com.youcancook.gobong.util.REFRESH_TOKEN
+import com.youcancook.gobong.util.ACCESS_TOKEN_KEY
+import com.youcancook.gobong.util.REFRESH_TOKEN_KEY
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -61,8 +61,8 @@ class RegisterActivity :
     private fun saveToken(accessToken: String, refreshToken: String) {
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
         sharedPref.edit {
-            putString(ACCESS_TOKEN, accessToken)
-            putString(REFRESH_TOKEN, refreshToken)
+            putString(ACCESS_TOKEN_KEY, accessToken)
+            putString(REFRESH_TOKEN_KEY, refreshToken)
             apply()
         }
     }
