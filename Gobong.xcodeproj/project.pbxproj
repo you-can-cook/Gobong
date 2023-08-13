@@ -53,6 +53,7 @@
 		80D3F2022A88E625009313CB /* DeleteAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F2012A88E625009313CB /* DeleteAccountViewController.swift */; };
 		80D3F2072A88E87E009313CB /* ReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F2052A88E87D009313CB /* ReviewTableViewCell.swift */; };
 		80D3F2082A88E87E009313CB /* ReviewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80D3F2062A88E87D009313CB /* ReviewTableViewCell.xib */; };
+		80D3F20A2A890591009313CB /* ReviewPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F2092A890591009313CB /* ReviewPopUpViewController.swift */; };
 		80E3C01E2A83CEBB00845A9B /* Recipe_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */; };
 		80E3C0212A83CF6F00845A9B /* 재료_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0202A83CF6F00845A9B /* 재료_AddPost.swift */; };
 		80E3C0242A83D0E900845A9B /* DashedLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0232A83D0E900845A9B /* DashedLineView.swift */; };
@@ -112,6 +113,7 @@
 		80D3F2012A88E625009313CB /* DeleteAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewController.swift; sourceTree = "<group>"; };
 		80D3F2052A88E87D009313CB /* ReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTableViewCell.swift; sourceTree = "<group>"; };
 		80D3F2062A88E87D009313CB /* ReviewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewTableViewCell.xib; sourceTree = "<group>"; };
+		80D3F2092A890591009313CB /* ReviewPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewPopUpViewController.swift; sourceTree = "<group>"; };
 		80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe_AddPost.swift; sourceTree = "<group>"; };
 		80E3C0202A83CF6F00845A9B /* 재료_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "재료_AddPost.swift"; sourceTree = "<group>"; };
 		80E3C0232A83D0E900845A9B /* DashedLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedLineView.swift; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				80CE8AE72A7A8113003DE318 /* CustomTabBar.swift */,
 				80D2B5FC2A791AD600B777D1 /* ViewController.swift */,
 				80CE8AFC2A7CD246003DE318 /* DetailViewController.swift */,
+				80D3F2092A890591009313CB /* ReviewPopUpViewController.swift */,
 				80CE8AEF2A7AA75A003DE318 /* BookmarkViewController.swift */,
 				80D3F1F22A87C99D009313CB /* LoginViewController.swift */,
 				80D3F1F82A87FDAF009313CB /* SignUpViewController.swift */,
@@ -479,6 +482,7 @@
 				80E3C0212A83CF6F00845A9B /* 재료_AddPost.swift in Sources */,
 				80CE8AF72A7CA1F8003DE318 /* ProfileViewController.swift in Sources */,
 				80D3F1F72A87F5CF009313CB /* APIModel.swift in Sources */,
+				80D3F20A2A890591009313CB /* ReviewPopUpViewController.swift in Sources */,
 				80D2B5F92A791AD600B777D1 /* AppDelegate.swift in Sources */,
 				80D3F1F02A879562009313CB /* FollowStateCell.swift in Sources */,
 				80CE8B222A80E33F003DE318 /* PaddingLabel.swift in Sources */,
