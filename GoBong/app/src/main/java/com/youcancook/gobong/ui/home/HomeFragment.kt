@@ -14,7 +14,7 @@ import com.youcancook.gobong.ui.detail.DetailActivity
 
 class HomeFragment : NetworkFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fragment_home) {
     override val viewModel: HomeViewModel by lazy {
-        HomeViewModel(appContainer.goBongRepository)
+        HomeViewModel(appContainer.goBongRepository, appContainer.userRepository)
     }
 
     private val cardAdapter = CardRecyclerViewListAdapter(onItemClick = {
@@ -22,7 +22,7 @@ class HomeFragment : NetworkFragment<FragmentHomeBinding, HomeViewModel>(R.layou
         startActivity(intent)
     }, onFollowClick = {
         if (it.followed) {
-            viewModel.unFollow(it.nickname)
+            viewModel.unfollow(it.nickname)
         } else {
             viewModel.follow(it.nickname)
         }

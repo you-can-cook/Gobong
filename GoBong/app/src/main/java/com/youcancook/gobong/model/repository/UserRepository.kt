@@ -25,5 +25,13 @@ class UserRepository(
 
     }
 
+    suspend fun follow(userId:String){
+        userDataSource.requestFollow(userId)
+    }
+
+    suspend fun unfollow(userId:String){
+        userDataSource.requestUnfollow(userId)
+    }
+
 
 }

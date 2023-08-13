@@ -46,4 +46,11 @@ class UserDataSource(
     }
 
 
+    suspend fun requestFollow(userId: String) {
+
+    }
+
+    suspend fun requestUnfollow(userId: String) {
+
+    }
 }
