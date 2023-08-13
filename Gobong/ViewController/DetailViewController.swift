@@ -97,7 +97,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
         tableView.register(UINib(nibName: "DetailTitleCell", bundle: nil), forCellReuseIdentifier: "DetailTitleCell")
         tableView.register(HashtagCell.self, forCellReuseIdentifier: "HashtagCell")
         tableView.register(RecipeCell.self, forCellReuseIdentifier: "RecipeCell")
-        tableView.register(ReviewTableViewCell.self, forCellReuseIdentifier: "ReviewTableViewCell")
+        tableView.register(UINib(nibName: "ReviewTableViewCell", bundle: nil), forCellReuseIdentifier: "ReviewTableViewCell")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -106,15 +106,15 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.item == recipeInformation.count + 2 {
+            print("asdfasdf")
             let cell = tableView.dequeueReusableCell(withIdentifier: "ReviewTableViewCell") as! ReviewTableViewCell
             cell.selectionStyle = .none
             cell.delegate = self
-            cell.subtitleLabel.text = "abc"
-            //if reviewed
-//            cell.isReviewed(3)
-            //else if not reviewed
-//            cell.isNotReviewed()
-            
+//            //if reviewed
+////            cell.isReviewed(3)
+//            //else if not reviewed
+            cell.isNotReviewed()
+//
             return cell
         } else if indexPath.item == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DetailTitleCell", for: indexPath) as! DetailTitleCell
