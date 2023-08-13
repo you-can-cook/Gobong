@@ -49,6 +49,13 @@ class DetailViewController: UIViewController {
         isFolded = Array(repeating: true, count: recipeInformation.count)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showPopUpReview",
+           let vc = segue.destination as! ReviewPopUpViewController {
+            vc.delegate = self
+        }
+    }
+    
     
 }
 
@@ -79,9 +86,15 @@ extension DetailViewController {
     }
 }
 
-extension DetailViewController: UITableViewDelegate, UITableViewDataSource, RecipeCellDelegate, ReviewDelegate {
+extension DetailViewController: UITableViewDelegate, UITableViewDataSource, RecipeCellDelegate, ReviewDelegate, ReviewPopUpDelegate {
+    func reviewTapped(controller: ReviewPopUpViewController) {
+        tableView.reloadRows(at: [IndexPath(row: recipeInformation.count+2, section: 0)], with: .none)
+        
+        //리뷰 처리 !! 
+    }
+    
     func reviewTapped(cell: ReviewTableViewCell) {
-         
+         performSegue(withIdentifier: "showPopUpReview", sender: self)
     }
     
     func collectionViewTapped(sender: RecipeCell) {
@@ -111,7 +124,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
             cell.selectionStyle = .none
             cell.delegate = self
 //            //if reviewed
-////            cell.isReviewed(3)
+//            cell.isReviewed(3)
 //            //else if not reviewed
             cell.isNotReviewed()
 //
