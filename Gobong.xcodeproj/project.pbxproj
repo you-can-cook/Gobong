@@ -48,6 +48,9 @@
 		80D3F1F72A87F5CF009313CB /* APIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1F62A87F5CF009313CB /* APIModel.swift */; };
 		80D3F1F92A87FDAF009313CB /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1F82A87FDAF009313CB /* SignUpViewController.swift */; };
 		80D3F1FB2A88BEDA009313CB /* client_755021174658-q4mgcsknjl8g802n0rijl2vsertb9u4o.apps.googleusercontent.com.plist in Resources */ = {isa = PBXBuildFile; fileRef = 80D3F1FA2A88BEDA009313CB /* client_755021174658-q4mgcsknjl8g802n0rijl2vsertb9u4o.apps.googleusercontent.com.plist */; };
+		80D3F1FD2A88E55D009313CB /* EditAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1FC2A88E55D009313CB /* EditAccountViewController.swift */; };
+		80D3F2002A88E605009313CB /* PushNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F1FF2A88E605009313CB /* PushNotificationViewController.swift */; };
+		80D3F2022A88E625009313CB /* DeleteAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F2012A88E625009313CB /* DeleteAccountViewController.swift */; };
 		80E3C01E2A83CEBB00845A9B /* Recipe_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */; };
 		80E3C0212A83CF6F00845A9B /* 재료_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0202A83CF6F00845A9B /* 재료_AddPost.swift */; };
 		80E3C0242A83D0E900845A9B /* DashedLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0232A83D0E900845A9B /* DashedLineView.swift */; };
@@ -102,6 +105,9 @@
 		80D3F1F62A87F5CF009313CB /* APIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModel.swift; sourceTree = "<group>"; };
 		80D3F1F82A87FDAF009313CB /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		80D3F1FA2A88BEDA009313CB /* client_755021174658-q4mgcsknjl8g802n0rijl2vsertb9u4o.apps.googleusercontent.com.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "client_755021174658-q4mgcsknjl8g802n0rijl2vsertb9u4o.apps.googleusercontent.com.plist"; sourceTree = "<group>"; };
+		80D3F1FC2A88E55D009313CB /* EditAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountViewController.swift; sourceTree = "<group>"; };
+		80D3F1FF2A88E605009313CB /* PushNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationViewController.swift; sourceTree = "<group>"; };
+		80D3F2012A88E625009313CB /* DeleteAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewController.swift; sourceTree = "<group>"; };
 		80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe_AddPost.swift; sourceTree = "<group>"; };
 		80E3C0202A83CF6F00845A9B /* 재료_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "재료_AddPost.swift"; sourceTree = "<group>"; };
 		80E3C0232A83D0E900845A9B /* DashedLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedLineView.swift; sourceTree = "<group>"; };
@@ -247,6 +253,9 @@
 			children = (
 				80CE8AF62A7CA1F8003DE318 /* ProfileViewController.swift */,
 				80D3F1EA2A87950C009313CB /* FollowViewController.swift */,
+				80D3F1FC2A88E55D009313CB /* EditAccountViewController.swift */,
+				80D3F1FF2A88E605009313CB /* PushNotificationViewController.swift */,
+				80D3F2012A88E625009313CB /* DeleteAccountViewController.swift */,
 			);
 			path = ProfileView;
 			sourceTree = "<group>";
@@ -430,6 +439,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80D3F1FD2A88E55D009313CB /* EditAccountViewController.swift in Sources */,
 				80D3F1F52A87F0F4009313CB /* Server.swift in Sources */,
 				8029E5532A86066400C927F0 /* SearchToolsViewController.swift in Sources */,
 				80CE8AFD2A7CD246003DE318 /* DetailViewController.swift in Sources */,
@@ -454,8 +464,10 @@
 				80CE8AE82A7A8113003DE318 /* CustomTabBar.swift in Sources */,
 				80E3C01E2A83CEBB00845A9B /* Recipe_AddPost.swift in Sources */,
 				80CE8AF02A7AA75A003DE318 /* BookmarkViewController.swift in Sources */,
+				80D3F2022A88E625009313CB /* DeleteAccountViewController.swift in Sources */,
 				80D2B60F2A792B0E00B777D1 /* FeedCell.swift in Sources */,
 				80D3F1E72A8688F1009313CB /* FilterViewController.swift in Sources */,
+				80D3F2002A88E605009313CB /* PushNotificationViewController.swift in Sources */,
 				80E3C0212A83CF6F00845A9B /* 재료_AddPost.swift in Sources */,
 				80CE8AF72A7CA1F8003DE318 /* ProfileViewController.swift in Sources */,
 				80D3F1F72A87F5CF009313CB /* APIModel.swift in Sources */,
