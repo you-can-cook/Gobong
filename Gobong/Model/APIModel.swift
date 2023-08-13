@@ -17,8 +17,16 @@ struct LoginRequest: Encodable {
     let temporaryToken: String
 }
 
-struct LoginResponse: Decodable {
+struct LoginResponse: Codable {
     let grantType: String
     let accessToken: String
     let refreshToken: String
+}
+
+struct SignUpRequest: Encodable {
+    let nickname: String
+    let provider: String
+    let oauthId: String
+    let temporaryToken: String
+    let profileImageUrl: String?
 }

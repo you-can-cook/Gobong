@@ -37,7 +37,6 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
     ]
     
     override func viewWillAppear(_ animated: Bool) {
-        
         setupNavigationBar()
         tabBarController?.tabBar.isHidden = false
     }
@@ -64,6 +63,7 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
 
 extension ViewController {
     private func setupData(){
+        //!!!!!임시!!!!
         if userDefault.string(forKey: "accessKey") == nil {
             performSegue(withIdentifier: "showLoginView", sender: self)
         }
