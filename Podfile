@@ -14,6 +14,7 @@ target 'Gobong' do
 	pod 'IQKeyboardManagerSwift'
 	pod 'StepSlider'
 	pod 'KakaoSDK'
+	pod 'GoogleSignIn'
 	pod 'NVActivityIndicatorView'
 end
 

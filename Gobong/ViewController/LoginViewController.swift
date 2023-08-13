@@ -10,6 +10,7 @@ import KakaoSDKAuth
 import KakaoSDKCommon
 import KakaoSDKUser
 import NVActivityIndicatorView
+import GoogleSignIn
 
 class LoginViewController: UIViewController {
     
@@ -31,6 +32,7 @@ class LoginViewController: UIViewController {
         tabBarController?.tabBar.isHidden = true
         setupUI()
         kakaoLoginView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(kakaoLogin)))
+        googleLoginView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(googleLogin)))
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -62,6 +64,18 @@ class LoginViewController: UIViewController {
         
     }
     
+    @objc private func googleLogin(){
+        GIDSignIn.sharedInstance.signIn(withPresenting: self) { signInResult, error in
+            guard error == nil else { return }
+            
+            // If sign in succeeded, display the app's main content View.
+            self.oauthId = signInResult?.user.accessToken.tokenString
+            self.provider = "GOOGLE"
+            self.LoginSuccess()
+            
+        }
+    }
+    
     @objc private func kakaoLogin() {
         print("loginKakao() called.")
         
@@ -79,7 +93,7 @@ class LoginViewController: UIViewController {
                     // _ = oauthToken
                     self.oauthId = oauthToken?.accessToken ?? ""
                     self.provider = "KAKAO"
-                    self.kakaoLoginSuccess()
+                    self.LoginSuccess()
                     
                 }
             }
@@ -99,24 +113,27 @@ class LoginViewController: UIViewController {
                     
                     self.oauthId = oauthToken?.accessToken ?? ""
                     self.provider = "KAKAO"
-                    self.kakaoLoginSuccess()
-                
+                    self.LoginSuccess()
+                    
                 }
             }
         }
         activityIndicatorView.stopAnimating()
     }
     
-    private func kakaoLoginSuccess(){
+    private func LoginSuccess(){
         //임시토큰 발급
         Server.shared.fetchTemporaryToken { result in
             switch result {
             case .success(let token):
                 print("Temporary Token:", token)
                 self.tempToken = token
-
+                
                 //로그인 요청
-                Server.shared.login(provider: "KAKAO", oauthId: self.oauthId ?? "", temporaryToken: self.tempToken ?? "") { result in
+                Server.shared.login(provider: self.provider ?? "",
+                                    oauthId: self.oauthId ?? "",
+                                    temporaryToken: self.tempToken ?? ""
+                ) { result in
                     switch result {
                     case .success(let loginInfo):
                         print("Temporary Token:", token)
@@ -132,15 +149,15 @@ class LoginViewController: UIViewController {
                         
                     }
                 }
-
+                
             case .failure(let error):
                 print("Error:", error.localizedDescription)
                 // 발급 실패..? 뭐해야 돼??
-
-
+                
+                
             }
         }
     }
     
-   
+    
 }

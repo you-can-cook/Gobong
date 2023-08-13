@@ -12,7 +12,27 @@
 				<string>kakaocea3443f6d3146a05128d120e286be92</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>755021174658-q4mgcsknjl8g802n0rijl2vsertb9u4o.apps.googleusercontent.com</string>
+			</array>
+		</dict>
 	</array>
+    <key>GIDClientID</key>
+    <string>755021174658-q4mgcsknjl8g802n0rijl2vsertb9u4o.apps.googleusercontent.com</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>com.googleusercontent.apps.755021174658-q4mgcsknjl8g802n0rijl2vsertb9u4o</string>
+        </array>
+      </dict>
+    </array>
+
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>kakaolink</string>
