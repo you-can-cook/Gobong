@@ -6,6 +6,7 @@ import com.youcancook.gobong.model.RecipeAdd
 import com.youcancook.gobong.model.repository.GoBongRepository
 import com.youcancook.gobong.ui.base.NetworkViewModel
 import com.youcancook.gobong.util.NetworkState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -14,7 +15,7 @@ class AddRecipeViewModel(
     private val goBongRepository: GoBongRepository,
 ) : NetworkViewModel() {
 
-    private val _thumbnailByteArray = MutableStateFlow(byteArrayOf(0))
+    private val _thumbnailByteArray = MutableStateFlow(byteArrayOf())
     val thumbnailByteArray: StateFlow<ByteArray> get() = _thumbnailByteArray
 
     val titleInput = MutableStateFlow("")
@@ -70,13 +71,13 @@ class AddRecipeViewModel(
                 setSnackBarMessage(e.message ?: "")
                 setNetworkState(NetworkState.FAIL)
             }
-            setNetworkState(NetworkState.DONE)
         }
 
     }
 
-    private fun upload() {
+    private suspend fun upload() {
         //TODO 네트워크 요청
+        delay(2000)
     }
 
     private fun isValidateUpload(ingredients: List<String>) {
