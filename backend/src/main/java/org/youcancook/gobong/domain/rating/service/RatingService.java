@@ -3,7 +3,6 @@ package org.youcancook.gobong.domain.rating.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.youcancook.gobong.domain.rating.dto.response.AddRatingResponse;
 import org.youcancook.gobong.domain.rating.entity.Rating;
 import org.youcancook.gobong.domain.rating.exception.RatingMyRecipeException;
 import org.youcancook.gobong.domain.rating.exception.RatingNotFoundException;
@@ -24,14 +23,13 @@ public class RatingService {
     private final RecipeRepository recipeRepository;
 
     @Transactional
-    public AddRatingResponse createRating(Long userId, Long recipeId, Integer score){
+    public void createRating(Long userId, Long recipeId, Integer score){
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
         validateSameUserRates(user, recipe);
 
         Rating rating = new Rating(user, recipe, score);
-        Long ratingId = ratingRepository.save(rating).getId();
-        return new AddRatingResponse(ratingId);
+        ratingRepository.save(rating);
     }
 
     @Transactional
