@@ -154,61 +154,19 @@ class FilterViewController: UIViewController {
     var levelSelected: String? {
         didSet{
             if levelSelected == "easy" {
-                easyButton.layer.borderColor = UIColor(named: "pink")?.cgColor
-                easyButton.layer.borderWidth = 1
-                easyButton.backgroundColor = UIColor(named: "pink")
-                easyButton.titleLabel?.tintColor = .white
-                easyButton.layer.cornerRadius = 16
-                
-                normalButton.layer.borderColor = UIColor(named: "gray")?.cgColor
-                normalButton.layer.borderWidth = 1
-                normalButton.backgroundColor = .white
-                normalButton.titleLabel?.textColor = UIColor(named: "gray")
-                normalButton.layer.cornerRadius = 16
-                
-                hardButton.layer.borderColor = UIColor(named: "gray")?.cgColor
-                hardButton.layer.borderWidth = 1
-                hardButton.backgroundColor = .white
-                hardButton.titleLabel?.textColor = UIColor(named: "gray")
-                hardButton.layer.cornerRadius = 16
+                selected(easyButton)
+                notSelected(normalButton)
+                notSelected(hardButton)
                 
             } else if levelSelected == "normal" {
-                easyButton.layer.borderColor = UIColor(named: "gray")?.cgColor
-                easyButton.layer.borderWidth = 1
-                easyButton.backgroundColor = .white
-                easyButton.titleLabel?.textColor = UIColor(named: "gray")
-                easyButton.layer.cornerRadius = 16
-                
-                normalButton.layer.borderColor = UIColor(named: "pink")?.cgColor
-                normalButton.layer.borderWidth = 1
-                normalButton.backgroundColor = UIColor(named: "pink")
-                normalButton.titleLabel?.tintColor = .white
-                normalButton.layer.cornerRadius = 16
-                
-                hardButton.layer.borderColor = UIColor(named: "gray")?.cgColor
-                hardButton.layer.borderWidth = 1
-                hardButton.backgroundColor = .white
-                hardButton.titleLabel?.textColor = UIColor(named: "gray")
-                hardButton.layer.cornerRadius = 16
+                notSelected(easyButton)
+                selected(normalButton)
+                notSelected(hardButton)
                 
             } else if levelSelected == "hard" {
-                easyButton.layer.borderColor = UIColor(named: "gray")?.cgColor
-                easyButton.layer.borderWidth = 1
-                easyButton.backgroundColor = .white
-                easyButton.titleLabel?.textColor = UIColor(named: "gray")
-                easyButton.layer.cornerRadius = 16
-                
-                normalButton.layer.borderColor = UIColor(named: "gray")?.cgColor
-                normalButton.layer.borderWidth = 1
-                normalButton.backgroundColor = .white
-                normalButton.titleLabel?.textColor = UIColor(named: "gray")
-                normalButton.layer.cornerRadius = 16
-                
-                hardButton.layer.borderColor = UIColor(named: "pink")?.cgColor
-                hardButton.layer.borderWidth = 1
-                hardButton.backgroundColor = UIColor(named: "pink")
-                hardButton.titleLabel?.tintColor = .white
-                hardButton.layer.cornerRadius = 16
+                notSelected(easyButton)
+                notSelected(normalButton)
+                selected(hardButton)
                 
             } else {
                 notSelected(easyButton)
@@ -299,6 +257,7 @@ extension FilterViewController {
         button.layer.borderWidth = 1
         button.backgroundColor = UIColor(named: "pink")
         button.titleLabel?.tintColor = .white
+        button.titleLabel?.textColor = .white
         button.layer.cornerRadius = 16
     }
     
@@ -306,6 +265,7 @@ extension FilterViewController {
         button.layer.borderColor = UIColor(named: "gray")?.cgColor
         button.layer.borderWidth = 1
         button.backgroundColor = .white
+        button.titleLabel?.tintColor = UIColor(named: "gray")
         button.titleLabel?.textColor = UIColor(named: "gray")
         button.layer.cornerRadius = 16
     }
@@ -420,6 +380,8 @@ extension FilterViewController: UICollectionViewDelegate, UICollectionViewDataSo
             cell.setText("•••")
             cell.label.font = UIFont.systemFont(ofSize: 14)
             cell.label.textColor = UIColor(named: "gray")
+            cell.label.layer.borderColor = UIColor(named: "gray")?.cgColor
+            cell.view.backgroundColor = .white
             cell.isUserInteractionEnabled = true
         }
         return cell
@@ -428,7 +390,9 @@ extension FilterViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item != tools.count {
             //DELETE TOOLS?
-            
+            tools.remove(at: indexPath.item)
+            collectionView.reloadData()
+            updateHeight()
         }
         
         else {

@@ -27,6 +27,7 @@ class DeleteAccountViewController: UIViewController {
         
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTapped))
         navigationItem.leftBarButtonItem = backButton
+        backButton.tintColor = .black
     }
     
     @objc

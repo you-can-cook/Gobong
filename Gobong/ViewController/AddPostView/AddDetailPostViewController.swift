@@ -34,18 +34,20 @@ class AddDetailPostViewController: UIViewController {
     @IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
     var tools = [String]()
     
+    //IS EDITING? THEN THERE IS DATA IF NOT ITS NIL
     var selectedForEdit: dummyHowTo?
+    //IF EDITING, EDITING INDEX PATH ELSE NEW CELL INDEX PATH
     var editIndex: IndexPath?
     
+    //MARK: LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        setData()
         setupUI()
+        setData()
         setTapGesture()
         collectionViewSetup()
-        print(editIndex)
         
     }
     
@@ -59,6 +61,7 @@ class AddDetailPostViewController: UIViewController {
         }
     }
     
+    //SAVE BUTTON
     @IBAction func saveButton(_ sender: Any) {
         if saveButton.backgroundColor == UIColor(named: "pink") {
             delegate?.passData(controller: self)
@@ -67,6 +70,7 @@ class AddDetailPostViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
+    //DELETE BUTTON ONLY SHOWING WHEN EDITING
     @IBAction func trashButton(_ sender: Any) {
         let alert = UIAlertController(title: "단계 삭제", message: "단계를 삭제하면 다시 복구할 수 없습니다. 정말 삭제하시겠습니까?", preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "취소", style: .default)
@@ -85,13 +89,23 @@ class AddDetailPostViewController: UIViewController {
 
 //MARK: DATA
 extension AddDetailPostViewController {
+    //IF EDITING STATE (NOT NEW STEP) SET THE DATA TO THE UI
     private func setData(){
         if selectedForEdit != nil {
             postImage.image = selectedForEdit?.img
             tools = selectedForEdit?.tool ?? []
             minuteField.text = selectedForEdit?.minute
             secondField.text = selectedForEdit?.second
+            
+            if minuteField.text != "" || secondField.text != "" {
+                minuteField.layer.borderColor = UIColor(named: "pink")?.cgColor
+                secondField.layer.borderColor = UIColor(named: "pink")?.cgColor
+            }
+            
             descriptionTextField.text = selectedForEdit?.description
+            if descriptionTextField.text != "" || descriptionTextField.text != "자세한 조리 과정을 입력하세요" {
+                descriptionTextField.layer.borderColor = UIColor(named: "pink")?.cgColor
+            }
             
             collectionView.reloadData()
             checkOkNext()
@@ -175,6 +189,7 @@ extension AddDetailPostViewController: UITextFieldDelegate, UITextViewDelegate {
         checkOkNext()
     }
     
+    //IMAGE
     private func setupYPImagePicker() -> YPImagePickerConfiguration{
         var config = YPImagePickerConfiguration()
         config.screens = [.library]
@@ -238,7 +253,7 @@ extension AddDetailPostViewController: UITextFieldDelegate, UITextViewDelegate {
         }
     }
     
-    //Button
+    //BUTTON
     @IBAction func initTapped(_ sender: Any) {
         minuteField.text = ""
         secondField.text = ""
@@ -355,6 +370,7 @@ extension AddDetailPostViewController: UITextFieldDelegate, UITextViewDelegate {
     }
 }
 
+//MARK: COLLECTION VIEW (TOOLS)
 extension AddDetailPostViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SearchToolsDelegate {
     func passToolData(controller: SearchToolsViewController) {
         tools = controller.selectedTools
@@ -395,6 +411,8 @@ extension AddDetailPostViewController: UICollectionViewDelegate, UICollectionVie
             cell.setText("•••")
             cell.label.font = UIFont.systemFont(ofSize: 14)
             cell.label.textColor = UIColor(named: "gray")
+            cell.label.layer.borderColor = UIColor(named: "gray")?.cgColor
+            cell.view.backgroundColor = .white
             cell.isUserInteractionEnabled = true
         }
         return cell
@@ -402,6 +420,10 @@ extension AddDetailPostViewController: UICollectionViewDelegate, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item != tools.count {
+            //DELETE TOOLS?
+            tools.remove(at: indexPath.item)
+            collectionView.reloadData()
+            updateHeight()
         } else {
             performSegue(withIdentifier: "showSearchToolBar", sender: self)
         }
@@ -417,6 +439,7 @@ extension AddDetailPostViewController: UICollectionViewDelegate, UICollectionVie
         }
     }
     
+    //CALCULATE COLLECTION VIEW HEIGHT
     func calculateLabelSize(text: String) -> CGSize {
         let label = UILabel()
         label.numberOfLines = 0

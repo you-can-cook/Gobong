@@ -289,13 +289,13 @@ extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationCo
     }
 }
 
-// GET PASSED DATA FROM DETAIL VIEW
+// GET PASSED DATA FROM DETAIL VIEW (RECIPE)
 extension AddPostViewController: AddDetailPostDelegate {
     func passData(controller: AddDetailPostViewController) {
         
         let description = controller.descriptionTextField.text == "자세한 조리 과정을 입력하세요" ? "" : controller.descriptionTextField.text
-        var minute = controller.minuteField.text ?? ""
-        var second = controller.secondField.text ?? ""
+        let minute = controller.minuteField.text ?? ""
+        let second = controller.secondField.text ?? ""
     
         var newRecipe: dummyHowTo
         

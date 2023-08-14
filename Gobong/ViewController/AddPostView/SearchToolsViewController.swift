@@ -27,6 +27,7 @@ class SearchToolsViewController: UIViewController {
     var forFilter = [String]()
     var selectedTools = [String]()
         
+    //MARK: LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -39,6 +40,7 @@ class SearchToolsViewController: UIViewController {
         delegate?.passToolData(controller: self)
     }
     
+    //BUTTON
     @IBAction func backButton(_ sender: Any) {
         delegate?.passToolData(controller: self)
         self.dismiss(animated: true)

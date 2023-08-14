@@ -10,12 +10,14 @@ import UIKit
 
 extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, AddedRecipeCellDelegate, AddRecipeCellDelegate{
     
+    //SHOW ADD DETAIL VIEW
     func addTapped(cell: AddRecipeCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         
         tableView(tableView, didSelectRowAt: indexPath)
     }
     
+    //수정하기 버튼 TAPPED
     func editTapped(sender: AddedRecipeCell) {
         guard let indexPath = tableView.indexPath(for: sender) else { return }
         selectedForEdit = recipes[indexPath.item]
@@ -23,6 +25,7 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
         performSegue(withIdentifier: "showAddDetailPost", sender: self)
     }
     
+    //FOLD / UNFOLD CELL
     func collectionViewTapped(sender: AddedRecipeCell) {
         guard let indexPath = tableView.indexPath(for: sender) else { return }
         tableView(tableView, didSelectRowAt: indexPath)
@@ -33,6 +36,7 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //ADD RECIPE
         if indexPath.item == recipes.count {
             let cell = tableView.dequeueReusableCell(withIdentifier: "AddRecipeCell") as! AddRecipeCell
             cell.selectionStyle = .none
@@ -40,6 +44,8 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
             cell.delegate = self
             
             return cell
+        
+        //ADDED RECIPE CELL
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "AddedRecipeCell") as! AddedRecipeCell
             
@@ -145,6 +151,7 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
         }
     }
     
+    //TOGGLE RECIPE CELL
     func recipeCellToggle(didSelectRowAt indexPath: IndexPath) {
         let allTrueValues = Array(repeating: true, count: isFolded.count)
         let lastFolded = isFolded.firstIndex(where: {$0 == false})
@@ -163,6 +170,7 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
         }
     }
     
+    //TABLE VIEW HEIGHT
     func reloadHeight(){
         tableViewHeight.constant = tableViewCellHeight.reduce(0, +) + 127
     }
