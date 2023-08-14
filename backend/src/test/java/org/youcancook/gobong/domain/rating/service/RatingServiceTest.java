@@ -16,6 +16,7 @@ import org.youcancook.gobong.domain.user.entity.User;
 import org.youcancook.gobong.domain.user.repository.UserRepository;
 import org.youcancook.gobong.global.util.service.ServiceTest;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -42,16 +43,16 @@ class RatingServiceTest {
         Recipe recipe = Recipe.builder().user(user)
                 .title("주먹밥").difficulty(Difficulty.EASY).build();
 
-        Long userId = userRepository.save(user).getId();
+        userRepository.save(user);
         Long user2Id = userRepository.save(user2).getId();
 
         Long recipeId = recipeRepository.save(recipe).getId();
 
-        Long ratingId = ratingService.createRating(user2Id, recipeId, 3).getId();
-        Optional<Rating> actual = ratingRepository.findById(ratingId);
+        ratingService.createRating(user2Id, recipeId, 3);
+        List<Rating> actual = ratingRepository.findAll();
 
         Assertions.assertThat(actual).isNotEmpty();
-        Assertions.assertThat(actual.get().getScore()).isEqualTo(3);
+        Assertions.assertThat(actual.get(0).getScore()).isEqualTo(3);
     }
 
     @Test
@@ -64,7 +65,7 @@ class RatingServiceTest {
         Recipe recipe = Recipe.builder().user(user)
                 .title("주먹밥").difficulty(Difficulty.EASY).build();
 
-        Long userId = userRepository.save(user).getId();
+        userRepository.save(user);
         Long user2Id = userRepository.save(user2).getId();
 
         Long recipeId = recipeRepository.save(recipe).getId();
@@ -90,7 +91,6 @@ class RatingServiceTest {
         Long userId = userRepository.save(user).getId();
         Long recipeId = recipeRepository.save(recipe).getId();
 
-        Rating rating = new Rating(user, recipe, 3);
         assertThrows(RatingMyRecipeException.class, () -> ratingService.createRating(userId, recipeId, 5));
     }
 
