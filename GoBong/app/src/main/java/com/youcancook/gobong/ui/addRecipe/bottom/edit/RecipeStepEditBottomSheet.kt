@@ -11,14 +11,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.youcancook.gobong.R
-import com.youcancook.gobong.databinding.BottomSheetRecipeStepFrameBinding
+import com.youcancook.gobong.databinding.BottomSheetFrameBinding
 import com.youcancook.gobong.model.Recipe
 import com.youcancook.gobong.model.RecipeStepAdded
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class RecipeStepEditBottomSheet : BottomSheetDialogFragment() {
-    private lateinit var binding: BottomSheetRecipeStepFrameBinding
+    private lateinit var binding: BottomSheetFrameBinding
     private val recipeAddBottomViewModel: RecipeStepEditBottomViewModel by activityViewModels()
     private var onSuccessListener: (Recipe) -> Unit? = { }
     private var onDeleteListener: (Long) -> Unit? = { }
@@ -29,7 +29,7 @@ class RecipeStepEditBottomSheet : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = BottomSheetRecipeStepFrameBinding.inflate(inflater, container, false)
+        binding = BottomSheetFrameBinding.inflate(inflater, container, false)
         childFragmentManager.beginTransaction().replace(
             R.id.bottomSheetFragment,
             RecipeStepEditBottomFragment()

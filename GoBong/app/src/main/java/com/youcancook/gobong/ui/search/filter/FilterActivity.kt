@@ -4,11 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.activityViewModels
+import com.google.android.material.chip.Chip
 import com.google.android.material.slider.Slider
 import com.google.android.material.slider.Slider.OnSliderTouchListener
 import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityFilterBinding
 import com.youcancook.gobong.model.Filter
+import com.youcancook.gobong.model.RecipeStepAdded
+import com.youcancook.gobong.ui.addRecipe.bottom.add.RecipeStepAddBottomSheet
+import com.youcancook.gobong.ui.addRecipe.bottom.edit.RecipeStepEditBottomSheet
 import com.youcancook.gobong.ui.base.GoBongActivity
 import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.EASY
 import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.EMPTY
@@ -24,6 +29,9 @@ import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.TWO
 
 class FilterActivity : GoBongActivity<ActivityFilterBinding>(R.layout.activity_filter) {
     private val viewModel: FilterViewModel by viewModels()
+
+    private val filterBottomSheet = FilterToolBottomSheet()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -181,6 +189,17 @@ class FilterActivity : GoBongActivity<ActivityFilterBinding>(R.layout.activity_f
                     R.id.twoStarChip -> viewModel.setStar(TWO)
                     R.id.oneStarChip -> viewModel.setStar(ONE)
                 }
+            }
+
+            showMoreToolsButton.setOnClickListener {
+                filterBottomSheet.show(supportFragmentManager, FilterToolBottomSheet.TAG)
+            }
+
+            toolsGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+                val views = checkedIds.map {
+                    group.findViewById<Chip>(it).text.toString()
+                }
+                viewModel.checkTools(views)
             }
         }
     }

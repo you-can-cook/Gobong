@@ -70,13 +70,12 @@ fun setNecessaryTextView(view: TextView, text: String) {
 @BindingAdapter("recipeStepTime")
 fun recipeStepTime(view: Chip, text: String) {
     val times = text.split(" ")
-    view.text = if (times[1] == "0초") {
+    view.text = if (times.size > 1 && times[1] == "0초") {
         times[0]
     } else {
         text
     }
 }
-
 
 @BindingAdapter("submitData")
 fun <T> submitData(view: RecyclerView, data: List<T>?) {
