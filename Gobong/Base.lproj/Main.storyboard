@@ -594,6 +594,7 @@
                     <navigationItem key="navigationItem" id="Tg2-xA-SGI"/>
                     <connections>
                         <outlet property="backgroundView" destination="UPa-Zf-KuH" id="vt1-7V-NCM"/>
+                        <outlet property="blackBackgroundView" destination="Nva-0i-nem" id="Ggg-5g-A6n"/>
                         <outlet property="fiveStarImg" destination="uAq-jp-Kck" id="Cvw-ZG-7IX"/>
                         <outlet property="fourStarImg" destination="VWM-7X-dsj" id="J5l-HL-m4C"/>
                         <outlet property="oneStarImg" destination="0xA-V7-rSt" id="uvQ-oI-06H"/>
@@ -754,10 +755,10 @@
             </objects>
             <point key="canvasLocation" x="416" y="-1842"/>
         </scene>
-        <!--View Controller-->
+        <!--Settings View Controller-->
         <scene sceneID="CJY-cu-4QA">
             <objects>
-                <viewController id="jyl-KT-EDg" sceneMemberID="viewController">
+                <viewController id="jyl-KT-EDg" customClass="SettingsViewController" customModule="Gobong" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bPF-lW-Agj">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -853,6 +854,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="j6b-pY-7aT"/>
                     <connections>
+                        <outlet property="deleteAccountView" destination="XhS-de-A1E" id="F0Y-Kp-Sfs"/>
+                        <outlet property="myPageView" destination="q23-DV-QfF" id="PTf-hu-u1Y"/>
+                        <outlet property="notifView" destination="pxG-jd-5vo" id="OBl-P4-Gq2"/>
                         <segue destination="HqW-Ns-Ut3" kind="show" identifier="showEditAccountView" id="1gP-kL-OP6"/>
                         <segue destination="nt3-Tp-4me" kind="show" identifier="showPushNotification" id="DEl-1m-yTp"/>
                         <segue destination="HRP-VJ-cZi" kind="show" identifier="showDeleteAccountView" id="3Y8-v4-s71"/>

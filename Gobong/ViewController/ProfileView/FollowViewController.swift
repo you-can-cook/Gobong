@@ -13,6 +13,8 @@ struct dummyProfileData {
 }
 
 class FollowViewController: UIViewController, FollowDelegate {
+    
+    //IS USER TAP FOLLOWERS OR FOLLOWING?
     func followingTapped(cell: FollowStateCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         
@@ -42,6 +44,7 @@ class FollowViewController: UIViewController, FollowDelegate {
     var followStateTapped = ""
     var username = "유저 이름"
     
+    //MARK: LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,6 +54,7 @@ class FollowViewController: UIViewController, FollowDelegate {
         setupNavigationBar()
     }
     
+    //MARK: UI
     private func setupNavigationBar(){
         navigationItem.title = username
         
@@ -58,10 +62,6 @@ class FollowViewController: UIViewController, FollowDelegate {
         backButton.tintColor = .black
         
         navigationItem.leftBarButtonItem = backButton
-    }
-    
-    @objc private func backButton(){
-        navigationController?.popViewController(animated: true)
     }
     
     private func followStateUI(){
@@ -102,6 +102,11 @@ class FollowViewController: UIViewController, FollowDelegate {
         }
     }
     
+    //BUTTON
+    @objc private func backButton(){
+        navigationController?.popViewController(animated: true)
+    }
+    
     @IBAction func followerTapped(_ sender: Any) {
         followStateTapped = "followers"
         followStateUI()
@@ -137,6 +142,7 @@ class FollowViewController: UIViewController, FollowDelegate {
     }
 }
 
+//MARK: TABLE VIEW 
 extension FollowViewController: UITableViewDelegate, UITableViewDataSource {
     private func tableViewSetup(){
         tableView.delegate = self

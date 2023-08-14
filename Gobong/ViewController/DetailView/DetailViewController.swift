@@ -17,6 +17,7 @@ struct dummyHowTo {
     var description: String
 }
 
+//POST'S DETAILED INFORMATION
 class DetailViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
@@ -28,10 +29,15 @@ class DetailViewController: UIViewController {
 
     ]
     
+    //table view height 관련 property
     var isFolded = [Bool]()
-    
     var collectionViewHeight = 0
     
+    //IF THERE IS REVIEW STAR PROPERTY
+    var star = 0
+    
+    
+    //MARK: LIFE CYCLE
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
     }
@@ -41,6 +47,7 @@ class DetailViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         setupUI()
+        setupData()
         tableViewSetup()
         
         isFolded = Array(repeating: true, count: recipeInformation.count)
@@ -50,12 +57,20 @@ class DetailViewController: UIViewController {
         if segue.identifier == "showPopUpReview",
            let vc = segue.destination as? ReviewPopUpViewController {
             vc.delegate = self
+            if star > 0 {
+                vc.star = star
+            }
         }
     }
     
+    //데이터 처리 
+    private func setupData(){
+        
+    }
     
 }
 
+//MARK: UI
 extension DetailViewController {
     private func setupUI(){
         navigationBarSetup()
@@ -67,7 +82,8 @@ extension DetailViewController {
         
         let backItemButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTapped))
         backItemButton.tintColor = .black
-        
+       
+        //SAVE OR DELETE BASED ON MY OR OTHER'S POST
         let saveItemButton = UIBarButtonItem(image: UIImage(named: "BMark"), style: .plain, target: self, action: #selector(backButtonTapped))
         saveItemButton.tintColor = .black
         
@@ -75,6 +91,7 @@ extension DetailViewController {
         navigationItem.rightBarButtonItem = saveItemButton
     }
     
+    //NAVIGATION BUTTON
     @objc private func backButtonTapped(){
         navigationController?.popViewController(animated: true)
     }
@@ -83,22 +100,28 @@ extension DetailViewController {
     }
 }
 
+//MARK: TABLE VIEW
 extension DetailViewController: UITableViewDelegate, UITableViewDataSource, RecipeCellDelegate, ReviewDelegate, ReviewPopUpDelegate {
+    
+    //GET DATA FROM POPUP REVIEW VIEW
     func reviewTapped(controller: ReviewPopUpViewController) {
+        star = controller.star
         tableView.reloadRows(at: [IndexPath(row: recipeInformation.count+2, section: 0)], with: .none)
-        
         //리뷰 처리 !! 
     }
     
+    //REVIEW BUTTON TAPPED
     func reviewTapped(cell: ReviewTableViewCell) {
          performSegue(withIdentifier: "showPopUpReview", sender: self)
     }
     
+    //WHEN COLLECTION VIEW TAPPED FOLD AND UNFOLD THE CELL
     func collectionViewTapped(sender: RecipeCell) {
         guard let indexPath = tableView.indexPath(for: sender) else { return }
         tableView(tableView, didSelectRowAt: indexPath)
     }
     
+    //MARK: TABLE VIEW INIT
     func tableViewSetup(){
         tableView.dataSource = self
         tableView.delegate = self
@@ -115,17 +138,25 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //REVIEW CELL (LAST)
         if indexPath.item == recipeInformation.count + 2 {
             print("asdfasdf")
             let cell = tableView.dequeueReusableCell(withIdentifier: "ReviewTableViewCell") as! ReviewTableViewCell
             cell.selectionStyle = .none
             cell.delegate = self
+            
 //            //if reviewed
-//            cell.isReviewed(3)
+            if star > 0 {
+                cell.isReviewed(star)
+            }
 //            //else if not reviewed
-            cell.isNotReviewed()
+            else {
+                cell.isNotReviewed()
+            }
 //
             return cell
+            
+            //PICTURE AND 요약 정보 OF THE POST CELL (1'ST)
         } else if indexPath.item == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DetailTitleCell", for: indexPath) as! DetailTitleCell
             cell.configuration(userImg: information.userImg, username: information.username, following: information.following, thumbnailImg: information.thumbnailImg, title: information.title, bookmarkCount: information.bookmarkCount, cookingTime: information.cookingTime, tools: information.tools, level: information.level, stars: information.stars)
@@ -135,6 +166,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
             return cell
         }
         
+        // EXPLANATION AND INGREDIENTS CELL (2'ND)
         else if indexPath.item == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "HashtagCell", for: indexPath) as! HashtagCell
             cell.titleLabel.text = "여기는.. 간단한 소개 "
@@ -144,7 +176,8 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
             return cell
         }
         
-        else{
+        // 단계'S CELL
+        else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as! RecipeCell
             let data = recipeInformation[indexPath.item-2]
             
@@ -169,6 +202,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
                 cell.stepLabel.textColor = UIColor(named: "gray")
             }
             
+            //IF ITS THE LAST STEP HIDE THE DOTTED LINE
             if indexPath.item - 1 == recipeInformation.count  {
                 cell.dottedLine.isHidden = true
             } else {
@@ -181,15 +215,17 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
+        // REVIEW CELL (LAST)
         if indexPath.item == recipeInformation.count + 2 {
             return 158
         }
         
+        // POST INFORMATION (1'ST)
         else if indexPath.item == 0 {
             return 344
         }
         
+        // INGREDIENT AND EXPLANATION (2'ND)
         else if indexPath.item == 1{
             var addLine = 0
             var currentWidth: CGFloat = 0.0
@@ -203,6 +239,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
             }
             return CGFloat(100 + addLine)
             
+        //STEP CELL
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell") as! RecipeCell
             cell.layoutIfNeeded()
@@ -261,40 +298,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
         }
     }
     
-}
-
-extension DetailViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return hashTag.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HashtagCollectionCell", for: indexPath) as! HashtagCollectionCell
-        cell.setText("\(hashTag[indexPath.item])")
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let labelSize = calculateLabelSize(text: hashTag[indexPath.item])
-        return CGSize(width: labelSize.width + 24, height: labelSize.height + 16)
-    }
-    
-    func calculateLabelSize(text: String) -> CGSize {
-        if let cachedSize = labelSizeCache[text] {
-            return cachedSize
-        }
-        
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.text = text
-        label.font = UIFont.systemFont(ofSize: 10)
-        label.sizeToFit()
-        let calculatedSize = label.frame.size
-        labelSizeCache[text] = calculatedSize // Cache the calculated size
-        return calculatedSize
-    }
-
+    //CALCULATE FOR STEP'S HEIGHT
     func calculateLabelSizeRecipe(text: String) -> CGSize {
         if let cachedSize = labelSizeCache[text] {
             return cachedSize
@@ -320,6 +324,40 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
         labelSizeCache[text] = calculatedSize
         return calculatedSize
     }
-
     
+}
+
+//MARK: UI COLLECTION VIEW (INGREDIENTS // HASHTAG)
+extension DetailViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return hashTag.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HashtagCollectionCell", for: indexPath) as! HashtagCollectionCell
+        cell.setText("\(hashTag[indexPath.item])")
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let labelSize = calculateLabelSize(text: hashTag[indexPath.item])
+        return CGSize(width: labelSize.width + 24, height: labelSize.height + 16)
+    }
+    
+    //CALCULATING FOR INGREDIENT'S HEIGHT
+    func calculateLabelSize(text: String) -> CGSize {
+        if let cachedSize = labelSizeCache[text] {
+            return cachedSize
+        }
+        
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.text = text
+        label.font = UIFont.systemFont(ofSize: 10)
+        label.sizeToFit()
+        let calculatedSize = label.frame.size
+        labelSizeCache[text] = calculatedSize // Cache the calculated size
+        return calculatedSize
+    }
 }

@@ -25,6 +25,7 @@ class LoginViewController: UIViewController {
     
     var userDefault = UserDefaults.standard
     
+    //MARK: LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,26 +45,14 @@ class LoginViewController: UIViewController {
         }
     }
     
+    //MARK: UI
     private func setupUI(){
         googleLoginView.layer.cornerRadius = 24
         kakaoLoginView.layer.cornerRadius = 24
-        setupActivityIndicator()
+        activityIndicatorView = ActivityIndicator.shared.setupActivityIndicator(in: view)
     }
-    
-    private func setupActivityIndicator(){
-        let frame = CGRect(x: (view.frame.width - 100) / 2, y: (view.frame.height - 100) / 2, width: 100, height: 100)
-        let type = NVActivityIndicatorType.ballScaleRippleMultiple
-        let color = UIColor(named: "pink")
-        let padding: CGFloat = 0
-        
-        // Create an instance of NVActivityIndicatorView
-        activityIndicatorView = NVActivityIndicatorView(frame: frame, type: type, color: color, padding: padding)
-        
-        // Add it as a subview to your main view
-        view.addSubview(activityIndicatorView)
-        
-    }
-    
+
+    //MARK: GOOGLE LOGIN
     @objc private func googleLogin(){
         GIDSignIn.sharedInstance.signIn(withPresenting: self) { signInResult, error in
             guard error == nil else { return }
@@ -76,9 +65,8 @@ class LoginViewController: UIViewController {
         }
     }
     
+    //MARK: KAKAO LOGIN
     @objc private func kakaoLogin() {
-        print("loginKakao() called.")
-        
         // 카카오톡 설치 여부 확인
         activityIndicatorView.startAnimating()
         if (UserApi.isKakaoTalkLoginAvailable()) {
@@ -87,10 +75,7 @@ class LoginViewController: UIViewController {
                     print(error)
                 }
                 else {
-                    print("loginWithKakaoTalk() success.")
-                    
-                    // ✅ 회원가입 성공 시 oauthToken 저장가능하다
-                    // _ = oauthToken
+                    // 회원가입 성공 시 oauthToken 저장가능하다
                     self.oauthId = oauthToken?.accessToken ?? ""
                     self.provider = "KAKAO"
                     self.LoginSuccess()
@@ -98,19 +83,14 @@ class LoginViewController: UIViewController {
                 }
             }
         }
-        // ✅ 카카오톡 미설치
+        // 카카오톡 미설치
         else {
-            // ✅ 기본 웹 브라우저를 사용하여 로그인 진행.
+            // 기본 웹 브라우저를 사용하여 로그인 진행.
             UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
                 if let error = error {
                     print(error)
                 }
                 else {
-                    print("loginWithKakaoAccount() success.")
-                    
-                    // ✅ 회원가입 성공 시 oauthToken 저장
-                    // _ = oauthToken
-                    
                     self.oauthId = oauthToken?.accessToken ?? ""
                     self.provider = "KAKAO"
                     self.LoginSuccess()
@@ -121,6 +101,7 @@ class LoginViewController: UIViewController {
         activityIndicatorView.stopAnimating()
     }
     
+    //MARK: AUTH SUCCES WITH KAKAO / GOOGLE
     private func LoginSuccess(){
         //임시토큰 발급
         Server.shared.fetchTemporaryToken { result in
@@ -142,6 +123,8 @@ class LoginViewController: UIViewController {
                         self.userDefault.set(loginInfo.accessToken, forKey: "accessToken")
                         self.userDefault.set(loginInfo.refreshToken, forKey: "refreshToken")
                         
+                        
+                    //회원가입이 필요하면 ... 
                     case .failure(let error):
                         print("Error:", error.localizedDescription)
                         //회원 가입 필요하다~~~

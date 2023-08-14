@@ -26,6 +26,7 @@ class DeleteAccountViewController: UIViewController {
         navigationItem.title = "회원탈퇴"
         
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTapped))
+        navigationItem.leftBarButtonItem = backButton
     }
     
     @objc

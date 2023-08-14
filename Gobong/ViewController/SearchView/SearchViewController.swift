@@ -17,7 +17,7 @@ struct FilterModel {
     var tools: [String]
     
     func checkFilter() -> Bool {
-        if sort != "" || level != "init" || time != 0 || star != 0 || tools.count != 0 {
+        if level != "init" || time != 0 || star != 0 || tools.count != 0 {
             return true
         }
         return false
@@ -59,6 +59,7 @@ class SearchViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     
+    //MARK: LIFE CYCLE
     override func viewWillAppear(_ animated: Bool) {
         isShowingBlockView.onNext(true)
         tabBarController?.tabBar.isHidden = false
@@ -140,6 +141,8 @@ extension SearchViewController {
                 
                 navigationItem.rightBarButtonItems = [filterButton]
                 navigationItem.leftBarButtonItem = tableViewToogleButton
+            
+            //SHOW CARD VIEW
             } else {
                 ShowingBlockView = false
                 self.collectionView.isHidden = true
@@ -214,6 +217,7 @@ extension SearchViewController: UISearchBarDelegate {
         collectionView.isHidden = true
         tableView.isHidden = true
         
+        //CHANGE NAVIGATION ITEM WHEN SEARCH BAR IS FOCUSED
         navigationItem.leftBarButtonItem = nil
         let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(doneSearching))
         cancelButton.tintColor = .black
@@ -239,8 +243,7 @@ extension SearchViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
     }
     
-    
-    
+    //DONE SEARCHING, INIT THE FILTER.
     @objc private func doneSearching(){
         isSearching = false
         searchBar.resignFirstResponder()
