@@ -30,6 +30,7 @@ class SearchViewController: UIViewController {
     private let searchBar = UISearchBar()
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var EmptyStateView: UIView!
     
     var selectedIndexPath = 0
     
@@ -46,6 +47,7 @@ class SearchViewController: UIViewController {
         dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
         dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5)
     ]
+    
     var isSearching = false
     var filter: FilterModel?
     
@@ -66,6 +68,7 @@ class SearchViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         super.viewDidLoad()
+        setupData()
         setupUI()
         setObservable()
         setupSearchBar()
@@ -161,6 +164,17 @@ extension SearchViewController {
             }
             
         }).disposed(by: disposeBag)
+    }
+}
+
+//MARK: DATA
+extension SearchViewController {
+    private func setupData(){
+        if dummyData.isEmpty {
+            EmptyStateView.isHidden = false
+        } else {
+            EmptyStateView.isHidden = true
+        }
     }
 }
 

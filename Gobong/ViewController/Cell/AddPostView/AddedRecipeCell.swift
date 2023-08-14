@@ -11,6 +11,7 @@ import AlignedCollectionViewFlowLayout
 
 protocol AddedRecipeCellDelegate  : Any {
     func collectionViewTapped(sender: AddedRecipeCell)
+    func editTapped(sender: AddedRecipeCell)
 }
 
 class AddedRecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -117,7 +118,7 @@ class AddedRecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionVi
     }
     
     @objc func editButtonTapped(){
-        print("Tapped")
+        delegate?.editTapped(sender: self)
     }
     
     private func setupUI(){
@@ -236,10 +237,10 @@ class AddedRecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionVi
         editButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(editButtonTapped)))
     }
  
-    func configuration(step: Int, time: [String], tool: [String], image: UIImage?, description: String, isFolded: Bool) {
+    func configuration(step: Int, time: String, tool: [String], image: UIImage?, description: String, isFolded: Bool) {
         stepLabel.text = "\(step)단계"
         
-        tools.append(contentsOf: time)
+        tools.append(time)
         tools.append(contentsOf: tool)
         
         collectionView.reloadData()

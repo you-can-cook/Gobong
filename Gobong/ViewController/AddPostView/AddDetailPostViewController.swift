@@ -18,6 +18,7 @@ class AddDetailPostViewController: UIViewController {
     
     var delegate: AddDetailPostDelegate?
 
+    @IBOutlet weak var trashButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var descriptionTextField: UITextView!
     @IBOutlet weak var add10MinButton: UIButton!
@@ -33,13 +34,18 @@ class AddDetailPostViewController: UIViewController {
     @IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
     var tools = [String]()
     
+    var selectedForEdit: dummyHowTo?
+    var editIndex: IndexPath?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        setData()
         setupUI()
         setTapGesture()
         collectionViewSetup()
+        print(editIndex)
         
     }
     
@@ -53,7 +59,6 @@ class AddDetailPostViewController: UIViewController {
         }
     }
     
-
     @IBAction func saveButton(_ sender: Any) {
         if saveButton.backgroundColor == UIColor(named: "pink") {
             delegate?.passData(controller: self)
@@ -61,10 +66,48 @@ class AddDetailPostViewController: UIViewController {
         
         self.dismiss(animated: true)
     }
+    
+    @IBAction func trashButton(_ sender: Any) {
+        let alert = UIAlertController(title: "단계 삭제", message: "단계를 삭제하면 다시 복구할 수 없습니다. 정말 삭제하시겠습니까?", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "취소", style: .default)
+        
+        let yesAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+            //delete with delegateee
+        }
+        
+        alert.addAction(cancelAction)
+        alert.addAction(yesAction)
+        
+        self.present(alert, animated: true)
+    }
 }
 
+
+//MARK: DATA
+extension AddDetailPostViewController {
+    private func setData(){
+        if selectedForEdit != nil {
+            postImage.image = selectedForEdit?.img
+            tools = selectedForEdit?.tool ?? []
+            minuteField.text = selectedForEdit?.minute
+            secondField.text = selectedForEdit?.second
+            descriptionTextField.text = selectedForEdit?.description
+            
+            collectionView.reloadData()
+            checkOkNext()
+        }
+    }
+}
+
+//MARK: UI
 extension AddDetailPostViewController: UITextFieldDelegate, UITextViewDelegate {
     private func setupUI(){
+        if selectedForEdit != nil {
+            trashButton.isHidden = false
+        } else {
+            trashButton.isHidden = true
+        }
+        
         add10Sec.layer.cornerRadius = 16
         add30secButton.layer.cornerRadius = 16
         add1MinButotn.layer.cornerRadius = 16
