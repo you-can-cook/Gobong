@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/gray1">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/backBtn"
@@ -12,9 +11,10 @@
         android:layout_height="wrap_content"
         android:importantForAccessibility="no"
         android:padding="@dimen/keyline_x4"
+        app:layout_constraintBottom_toBottomOf="@id/goBongLogo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_left_arrow" />
+        app:layout_constraintTop_toTopOf="@+id/goBongLogo"
+        android:src="@drawable/icon_left_arrow" />
 
     <TextView
         android:id="@+id/saveBtn"
@@ -24,14 +24,15 @@
         android:padding="@dimen/keyline_x4"
         android:text="@string/save"
         android:textColor="@color/primary_color"
-        app:layout_constraintBottom_toBottomOf="@id/backBtn"
+        app:layout_constraintBottom_toBottomOf="@id/goBongLogo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/backBtn" />
+        app:layout_constraintTop_toTopOf="@id/goBongLogo" />
 
     <ImageView
-        android:id="@+id/canhubLogo"
+        android:id="@+id/goBongLogo"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:layout_marginTop="16dp"
         android:importantForAccessibility="no"
         android:src="@drawable/icon_star"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +50,7 @@
         android:textIsSelectable="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/canhubLogo"
+        app:layout_constraintTop_toBottomOf="@id/goBongLogo"
         tools:text="@string/rotation_value" />
 
     <TextView
