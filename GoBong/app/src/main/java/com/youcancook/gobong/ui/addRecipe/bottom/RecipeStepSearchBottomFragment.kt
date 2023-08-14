@@ -9,12 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.chip.Chip
 import com.youcancook.gobong.databinding.BottomSheetRecipeSearchBinding
+import com.youcancook.gobong.ui.addRecipe.bottom.add.RecipeStepAddBottomViewModel
 
 class RecipeStepSearchBottomFragment : Fragment() {
 
     private var _binding: BottomSheetRecipeSearchBinding? = null
     private val binding: BottomSheetRecipeSearchBinding get() = _binding!!
-    private val recipeAddBottomViewModel: RecipeStepBottomViewModel by activityViewModels()
+    private val recipeAddBottomViewModel: RecipeStepAddBottomViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

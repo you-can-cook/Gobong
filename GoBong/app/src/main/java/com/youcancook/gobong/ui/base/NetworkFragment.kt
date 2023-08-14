@@ -57,6 +57,16 @@ abstract class NetworkFragment<T : ViewDataBinding, VM : NetworkViewModel>(
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.toastMessage.collectLatest {
+                    if (it.isNotEmpty()) {
+                        Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.networkState.collectLatest {
                     println("ittttt")
                     when (it) {

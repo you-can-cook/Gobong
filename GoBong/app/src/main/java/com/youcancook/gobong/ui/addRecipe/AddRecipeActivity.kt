@@ -16,14 +16,13 @@ import com.youcancook.gobong.adapter.bindingAdapter.addIngredient
 import com.youcancook.gobong.databinding.ActivityAddRecipeBinding
 import com.youcancook.gobong.model.RecipeStepAdded
 import com.youcancook.gobong.ui.ImageActivity
-import com.youcancook.gobong.ui.addRecipe.bottom.RecipeStepBottomFragment
+import com.youcancook.gobong.ui.addRecipe.bottom.add.RecipeStepAddBottomSheet
+import com.youcancook.gobong.ui.addRecipe.bottom.edit.RecipeStepEditBottomSheet
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
 
 class AddRecipeActivity :
     NetworkActivity<ActivityAddRecipeBinding, AddRecipeViewModel>(R.layout.activity_add_recipe) {
-    private var isEdit = false
-    private var editId = 0L
     override val viewModel: AddRecipeViewModel by lazy {
         AddRecipeViewModel(appContainer.goBongRepository)
     }
@@ -41,32 +40,35 @@ class AddRecipeActivity :
     }
 
     private var imagePickActivityLauncher: ActivityResultLauncher<Intent>? = null
-    private val addStepBottomSheet = RecipeStepBottomFragment()
+    private val addStepBottomSheet = RecipeStepAddBottomSheet()
         .apply {
-            setOnDismissListener {
+            setOnSuccessListener {
                 //TODO 빈 값이면 리턴
-                if (isEdit) {
-                    val view = it as RecipeStepAdded
-                    viewModel.replaceNewRecipeStep(view.copy(id = editId))
-                } else {
-                    viewModel.addNewRecipeStep(it)
-                }
-                isEdit = false
+                val data = it as RecipeStepAdded
+                if (data.isEmpty()) return@setOnSuccessListener
+                viewModel.addNewRecipeStep(data)
             }
         }
-    private val recipeAdapter = RecipeListAdapter(onItemClick = {
 
-    }, onEditItemClick = {
-        addStepBottomSheet.show(supportFragmentManager, RecipeStepBottomFragment.TAG)
-        addStepBottomSheet.apply {
-            //TODO 레시피 수정
-            isEdit = true
-            editId = it.id
+    private val editStepBottomSheet = RecipeStepEditBottomSheet()
+        .apply {
+            setOnSuccessListener {
+                val data = it as RecipeStepAdded
+                if (data.isEmpty()) return@setOnSuccessListener
+                viewModel.replaceNewRecipeStep(data)
+            }
+            setOnDeleteListener {
+                viewModel.deleteStep(it)
+            }
+        }
+
+    private val recipeAdapter = RecipeListAdapter(onEditItemClick = {
+        editStepBottomSheet.show(supportFragmentManager, RecipeStepEditBottomSheet.TAG)
+        editStepBottomSheet.apply{
             setOldRecipe(it as RecipeStepAdded)
         }
     }, onAddItemClick = {
-        isEdit = false
-        addStepBottomSheet.show(supportFragmentManager, RecipeStepBottomFragment.TAG)
+        addStepBottomSheet.show(supportFragmentManager, RecipeStepAddBottomSheet.TAG)
     })
 
     private val closeAlertDialog: AlertDialog by lazy {

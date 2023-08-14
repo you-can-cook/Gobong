@@ -15,7 +15,7 @@ import com.youcancook.gobong.model.RecipeStep
 import com.youcancook.gobong.model.RecipeStepAdded
 
 class RecipeListAdapter(
-    val onItemClick: (Int) -> Unit, val onEditItemClick: (Recipe) -> Unit = {},
+    val onItemClick: (Int) -> Unit = {}, val onEditItemClick: (Recipe) -> Unit = {},
     val onAddItemClick: () -> Unit = {},
 ) :
     ListAdapter<Recipe, RecyclerView.ViewHolder>(diffUtil) {
@@ -83,7 +83,6 @@ class RecipeListAdapter(
         init {
             binding.run {
                 root.setOnClickListener {
-                    //TODO bottomFragment로 이동
                     onAddItemClick()
                 }
             }
@@ -157,7 +156,7 @@ class RecipeListAdapter(
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<Recipe>() {
             override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem !is RecipeAdd && oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {

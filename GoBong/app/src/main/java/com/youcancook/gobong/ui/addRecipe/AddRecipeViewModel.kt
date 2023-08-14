@@ -55,6 +55,10 @@ class AddRecipeViewModel(
         }
     }
 
+    fun deleteStep(stepId: Long) {
+        _recipes.value = _recipes.value.filter { it.id != stepId }
+    }
+
     fun uploadNewRecipePost(ingredients: List<String>) {
         viewModelScope.launch {
             setNetworkState(NetworkState.LOADING)

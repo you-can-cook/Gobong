@@ -69,8 +69,9 @@ fun setNecessaryTextView(view: TextView, text: String) {
 
 @BindingAdapter("recipeStepTime")
 fun recipeStepTime(view: Chip, text: String) {
-    view.text = if (text.contains("0초")) {
-        text.split(" ")[0]
+    val times = text.split(" ")
+    view.text = if (times[1] == "0초") {
+        times[0]
     } else {
         text
     }
