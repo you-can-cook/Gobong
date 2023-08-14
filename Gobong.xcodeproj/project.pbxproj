@@ -266,10 +266,10 @@
 			children = (
 				80CE8AF62A7CA1F8003DE318 /* ProfileViewController.swift */,
 				80D3F1EA2A87950C009313CB /* FollowViewController.swift */,
+				80D3F20C2A8A0777009313CB /* SettingsViewController.swift */,
 				80D3F1FC2A88E55D009313CB /* EditAccountViewController.swift */,
 				80D3F1FF2A88E605009313CB /* PushNotificationViewController.swift */,
 				80D3F2012A88E625009313CB /* DeleteAccountViewController.swift */,
-				80D3F20C2A8A0777009313CB /* SettingsViewController.swift */,
 			);
 			path = ProfileView;
 			sourceTree = "<group>";
