@@ -1,58 +1,129 @@
 package com.youcancook.gobong.ui
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import android.view.Menu
+import android.view.View
+import androidx.core.app.ActivityCompat
+import com.canhub.cropper.CropImage.ActivityResult
+import com.canhub.cropper.CropImageActivity
+import com.canhub.cropper.CropImageView
 import com.youcancook.gobong.R
-import com.youcancook.gobong.databinding.ActivityImageBinding
+import com.youcancook.gobong.databinding.ExtendedActivityBinding
 
-class ImageActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityImageBinding
-    private var imagePickActivityLauncher: ActivityResultLauncher<Intent>? = null
+internal class ImageActivity : CropImageActivity() {
+
+    companion object {
+        fun start(activity: Activity) {
+            ActivityCompat.startActivity(
+                activity,
+                Intent(activity, ImageActivity::class.java),
+                null,
+            )
+        }
+
+        val IMAGE_DATA_TAG = "imageData"
+    }
+
+    private lateinit var binding: ExtendedActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ExtendedActivityBinding.inflate(layoutInflater)
+
         super.onCreate(savedInstanceState)
-        binding = ActivityImageBinding.inflate(layoutInflater)
 
-        setContentView(R.layout.activity_image)
+        binding.saveBtn.setOnClickListener { cropImage() }
+        binding.backBtn.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        binding.rotateText.setOnClickListener { onRotateClick() }
 
-        imagePickActivityLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == RESULT_OK) {
-                    val imageUri = result.data?.data
-                    if (imageUri == null) {
-                        finish()
-                        return@registerForActivityResult
-                    }
+        binding.cropImageView.setOnCropWindowChangedListener {
+            updateExpectedImageSize()
+        }
 
-                    val inputStream = contentResolver.openInputStream(imageUri)
-                    val inputData = inputStream?.readBytes()
+        setCropImageView(binding.cropImageView)
+    }
 
-                    if (inputData == null) {
-                        finish()
-                        return@registerForActivityResult
-                    }
-                    inputStream.close()
-                    sendImageByte(inputData)
-                }
-            }
+    override fun onSetImageUriComplete(
+        view: CropImageView,
+        uri: Uri,
+        error: Exception?,
+    ) {
+        super.onSetImageUriComplete(view, uri, error)
 
-        Intent().apply {
-            type = "image/*"
-            action = Intent.ACTION_PICK
-        }.run {
-            imagePickActivityLauncher?.launch(this)
+        updateRotationCounter()
+        updateExpectedImageSize()
+    }
+
+    private fun updateExpectedImageSize() {
+        binding.expectedImageSize.text = binding.cropImageView.expectedImageSize().toString()
+    }
+
+    override fun setContentView(view: View) {
+        super.setContentView(binding.root)
+    }
+
+    private fun updateRotationCounter() {
+        binding.rotateText.text =
+            getString(R.string.rotation_value, binding.cropImageView.rotatedDegrees.toString())
+    }
+
+    override fun onPickImageResult(resultUri: Uri?) {
+        super.onPickImageResult(resultUri)
+
+        if (resultUri != null) {
+            binding.cropImageView.setImageUriAsync(resultUri)
         }
     }
 
-    private fun sendImageByte(inputData: ByteArray) {
-        setResult(RESULT_OK, Intent().putExtra(IMAGE_DATA_TAG, inputData))
+    override fun getResultIntent(uri: Uri?, error: java.lang.Exception?, sampleSize: Int): Intent {
+        val result = super.getResultIntent(uri, error, sampleSize)
+        // Adding some more information.
+        return result.putExtra("EXTRA_KEY", "Extra data")
+    }
+
+    override fun setResult(uri: Uri?, error: Exception?, sampleSize: Int) {
+        val result = ActivityResult(
+            originalUri = binding.cropImageView.imageUri,
+            uriContent = uri,
+            error = error,
+            cropPoints = binding.cropImageView.cropPoints,
+            cropRect = binding.cropImageView.cropRect,
+            rotation = binding.cropImageView.rotatedDegrees,
+            wholeImageRect = binding.cropImageView.wholeImageRect,
+            sampleSize = sampleSize,
+        )
+
+        binding.cropImageView.setImageUriAsync(result.uriContent)
+
+        if (uri == null) {
+            finish()
+            return
+        }
+
+        val inputStream = contentResolver.openInputStream(uri)
+        val cropImageByteArray = inputStream?.readBytes()
+
+        if (cropImageByteArray == null) {
+            finish()
+            return
+        }
+        inputStream.close()
+        setResult(RESULT_OK, Intent().putExtra(IMAGE_DATA_TAG, cropImageByteArray))
         finish()
     }
 
-    companion object {
-        val IMAGE_DATA_TAG = "imageData"
+    override fun setResultCancel() {
+        super.setResultCancel()
+    }
+
+    override fun updateMenuItemIconColor(menu: Menu, itemId: Int, color: Int) {
+        super.updateMenuItemIconColor(menu, itemId, color)
+    }
+
+    private fun onRotateClick() {
+        binding.cropImageView.rotateImage(90)
+        updateRotationCounter()
     }
 }

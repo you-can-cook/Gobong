@@ -3,7 +3,6 @@ package com.youcancook.gobong.model.datasource
 import com.youcancook.gobong.model.RegisterUser
 import com.youcancook.gobong.model.UserToken
 import com.youcancook.gobong.model.network.UserService
-import com.youcancook.gobong.model.network.dto.LoginDTO
 import com.youcancook.gobong.model.network.dto.toUserToken
 import com.youcancook.gobong.model.toRegisterDTO
 

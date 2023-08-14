@@ -3,15 +3,12 @@ package com.youcancook.gobong.ui.home
 import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.repository.GoBongRepository
-import com.youcancook.gobong.model.repository.GoBongRepositoryImpl
 import com.youcancook.gobong.model.repository.UserRepository
-import com.youcancook.gobong.model.repository.UserRepositoryImpl
 import com.youcancook.gobong.ui.base.NetworkViewModel
 import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class HomeViewModel(
     private val goBongRepository: GoBongRepository,

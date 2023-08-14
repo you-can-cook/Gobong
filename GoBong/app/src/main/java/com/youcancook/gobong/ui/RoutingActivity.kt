@@ -8,19 +8,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityRoutingBinding
-import com.youcancook.gobong.model.UserToken
-import com.youcancook.gobong.ui.base.GoBongActivity
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.ui.login.LoginActivity
-import com.youcancook.gobong.ui.login.UserViewModel
 import com.youcancook.gobong.util.ACCESS_TOKEN
 import com.youcancook.gobong.util.ACCESS_TOKEN_KEY
 import com.youcancook.gobong.util.REFRESH_TOKEN
 import com.youcancook.gobong.util.REFRESH_TOKEN_KEY
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class RoutingActivity :
     NetworkActivity<ActivityRoutingBinding, RoutingViewModel>(R.layout.activity_routing) {

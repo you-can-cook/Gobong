@@ -3,7 +3,6 @@ package com.youcancook.gobong.fake
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Filter
 import com.youcancook.gobong.model.repository.GoBongRepository
-import java.lang.reflect.Executable
 
 class FakeGoBongRepository : GoBongRepository {
     override suspend fun getFollowingRecipes(): List<Card> {

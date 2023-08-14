@@ -113,9 +113,10 @@ class RecipeStepAddBottomFragment : Fragment() {
     }
 
     private fun getImageFromGallery() {
-        Intent(requireActivity(), ImageActivity::class.java).run {
-            imagePickActivityLauncher?.launch(this)
-        }
+//        Intent(requireActivity(), ImageActivity::class.java).run {
+//            imagePickActivityLauncher?.launch(this)
+//        }
+        ImageActivity.start(requireActivity())
     }
 
     override fun onDestroyView() {

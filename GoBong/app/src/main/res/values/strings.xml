@@ -10,4 +10,6 @@
     <string name="recipe_add_recipe_text">레시피*</string>
     <string name="recipe_add_time_text">소요시간*</string>
 
+    <string name="rotation_value">회전하려면 클릭하세요: %1$s</string>
+    <string name="save">저장</string>
 </resources>

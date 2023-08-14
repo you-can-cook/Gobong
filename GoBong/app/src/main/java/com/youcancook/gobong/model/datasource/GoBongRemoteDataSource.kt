@@ -2,7 +2,6 @@ package com.youcancook.gobong.model.datasource
 
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.network.GoBongService
-import java.lang.Exception
 
 class GoBongRemoteDataSource(
     private val goBongService: GoBongService,

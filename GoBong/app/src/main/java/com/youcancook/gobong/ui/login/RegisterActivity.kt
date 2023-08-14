@@ -8,7 +8,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.youcancook.gobong.R
-import com.youcancook.gobong.databinding.ActivityLoginBinding
 import com.youcancook.gobong.databinding.ActivityRegisterBinding
 import com.youcancook.gobong.ui.RoutingActivity
 import com.youcancook.gobong.ui.base.NetworkActivity

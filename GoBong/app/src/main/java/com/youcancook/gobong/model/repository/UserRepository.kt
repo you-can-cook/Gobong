@@ -2,7 +2,6 @@ package com.youcancook.gobong.model.repository
 
 import com.youcancook.gobong.model.RegisterUser
 import com.youcancook.gobong.model.UserToken
-import com.youcancook.gobong.model.datasource.UserDataSource
 
 interface UserRepository {
 
