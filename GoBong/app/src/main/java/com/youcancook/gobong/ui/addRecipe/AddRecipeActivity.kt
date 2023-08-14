@@ -5,16 +5,11 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.children
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.RecipeListAdapter
 import com.youcancook.gobong.adapter.bindingAdapter.addIngredient
@@ -22,11 +17,8 @@ import com.youcancook.gobong.databinding.ActivityAddRecipeBinding
 import com.youcancook.gobong.model.RecipeStepAdded
 import com.youcancook.gobong.ui.ImageActivity
 import com.youcancook.gobong.ui.addRecipe.bottom.RecipeStepBottomFragment
-import com.youcancook.gobong.ui.base.GoBongActivity
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class AddRecipeActivity :
     NetworkActivity<ActivityAddRecipeBinding, AddRecipeViewModel>(R.layout.activity_add_recipe) {
@@ -165,5 +157,6 @@ class AddRecipeActivity :
         Intent(this, ImageActivity::class.java).run {
             imagePickActivityLauncher?.launch(this)
         }
+
     }
 }

@@ -6,4 +6,9 @@
     <dimen name="grid_margin">4dp</dimen>
     <dimen name="mtrl_slider_track_side_padding">8dp</dimen>
     <dimen name="mtrl_slider_widget_height">12dp</dimen>
+
+    <dimen name="keyline">4dp</dimen>
+    <dimen name="keyline_x2">8dp</dimen>
+    <dimen name="keyline_x4">16dp</dimen>
+    <dimen name="elevation_card_resting">1dp</dimen>
 </resources>

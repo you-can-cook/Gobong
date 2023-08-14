@@ -2,7 +2,6 @@ package com.youcancook.gobong.model.repository
 
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Filter
-import com.youcancook.gobong.model.datasource.GoBongRemoteDataSource
 
 interface GoBongRepository {
 

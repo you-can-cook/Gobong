@@ -5,9 +5,9 @@ import com.youcancook.gobong.fake.FakeGoBongContainer
 import com.youcancook.gobong.ui.home.HomeViewModel
 import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.setMain
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
 

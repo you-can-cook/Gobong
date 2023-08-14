@@ -1,7 +1,6 @@
 package com.youcancook.gobong.fake
 
 import com.youcancook.gobong.model.RegisterUser
-import com.youcancook.gobong.model.User
 import com.youcancook.gobong.model.UserToken
 import com.youcancook.gobong.model.repository.UserRepository
 

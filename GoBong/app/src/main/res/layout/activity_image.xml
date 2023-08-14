@@ -5,4 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.ImageActivity">
 
+    <com.canhub.cropper.CropImageView
+        android:id="@+id/cropImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

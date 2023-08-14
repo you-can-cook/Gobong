@@ -2,7 +2,6 @@ package com.youcancook.gobong.ui.bookmark
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.GridItemDecorator

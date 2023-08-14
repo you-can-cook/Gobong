@@ -3,16 +3,13 @@ package com.youcancook.gobong.ui.search.filter
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.google.android.material.slider.Slider
 import com.google.android.material.slider.Slider.OnSliderTouchListener
 import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityFilterBinding
 import com.youcancook.gobong.model.Filter
-import com.youcancook.gobong.ui.ImageActivity
 import com.youcancook.gobong.ui.base.GoBongActivity
-import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion
 import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.EASY
 import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.EMPTY
 import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.FIVE

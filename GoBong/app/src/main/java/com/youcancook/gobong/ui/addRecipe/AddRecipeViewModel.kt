@@ -1,6 +1,5 @@
 package com.youcancook.gobong.ui.addRecipe
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.model.Recipe
 import com.youcancook.gobong.model.RecipeAdd
