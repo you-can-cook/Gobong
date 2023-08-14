@@ -9,8 +9,10 @@ import Foundation
 import UIKit
 import AlignedCollectionViewFlowLayout
 
-//UI COLLECTION VIEW (재료)
+//MARK: UI COLLECTION VIEW (재료 // INGREDIENTS)
 extension AddPostViewController: UICollectionViewDelegate, UICollectionViewDataSource, IngredientCellDelegate, AddButtonIngredientCellDelegate {
+   
+    //INGREDIENTS DELETE BUTTON
     func deleteButtonTapped(in cell: AddIngredientCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else {
             return
@@ -34,6 +36,7 @@ extension AddPostViewController: UICollectionViewDelegate, UICollectionViewDataS
         checkOK()
     }
     
+    //TEXT FIELD DELEGATE
     func textFieldDidPressReturn(in cell: AddIngredientCell) {
         cell.deleteButton.isUserInteractionEnabled = true
         if let text = cell.textField.text {
@@ -64,6 +67,7 @@ extension AddPostViewController: UICollectionViewDelegate, UICollectionViewDataS
         self.view.layoutIfNeeded()
     }
     
+    // ADD NEW RECIPE / 단계
     func addButtonTapped(in cell: AddButtonIngredientCell) {
         if ingredients.last != " " {
             ingredients.append(" ")
