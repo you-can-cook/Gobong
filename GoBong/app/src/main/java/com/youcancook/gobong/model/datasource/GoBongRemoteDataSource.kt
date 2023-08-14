@@ -2,6 +2,7 @@ package com.youcancook.gobong.model.datasource
 
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.network.GoBongService
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class GoBongRemoteDataSource(
     private val goBongService: GoBongService,
@@ -12,11 +13,25 @@ class GoBongRemoteDataSource(
     }
 
     suspend fun getAllRecipes(): List<Card> {
-        return emptyList()
+//        return emptyList()
+        return listOf(
+            Card.createEmpty(),
+            Card.createEmpty(),
+            Card.createEmpty(),
+            Card.createEmpty(),
+            Card.createEmpty()
+        )
     }
 
     suspend fun getFilteredRecipes(): List<Card> {
-        return emptyList()
+//        return emptyList()
+        return listOf(
+            Card.createEmpty(),
+            Card.createEmpty(),
+            Card.createEmpty(),
+            Card.createEmpty(),
+            Card.createEmpty()
+        )
     }
 
     suspend fun getBookmarkedRecipes(): List<Card> {

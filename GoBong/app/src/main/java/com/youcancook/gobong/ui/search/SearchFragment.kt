@@ -99,6 +99,7 @@ class SearchFragment :
                         result.data?.getSerializableExtra(FilterActivity.FILTER_DATA) as Filter
                     viewModel.setFilter(filterData)
                     binding.searchView.setQuery(filterData.searchWord, false)
+                    viewModel.getAllRecipes()
                 }
             }
     }

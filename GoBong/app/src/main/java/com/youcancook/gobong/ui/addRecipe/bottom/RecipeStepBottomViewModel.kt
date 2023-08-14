@@ -39,7 +39,6 @@ open class RecipeStepBottomViewModel : GoBongViewModel() {
     }
 
     fun setThumbnailByteArray(byteArray: ByteArray) {
-        println("thumbnail!")
         _thumbnailByteArray.value = byteArray
     }
 
@@ -78,7 +77,6 @@ open class RecipeStepBottomViewModel : GoBongViewModel() {
     }
 
     fun addMinute(min: Int) {
-        println("min?? $min")
         _minute.value = (_minute.value.toInt() + min).toString()
     }
 

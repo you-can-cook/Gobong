@@ -2,6 +2,7 @@ package com.youcancook.gobong.ui.search.filter
 
 import androidx.lifecycle.ViewModel
 import com.youcancook.gobong.model.Filter
+import com.youcancook.gobong.model.Tool
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -21,8 +22,18 @@ class FilterViewModel : ViewModel() {
     private val _star = MutableStateFlow("")
     val star: StateFlow<String> get() = _star
 
-    private val _tools = MutableStateFlow<List<String>>(emptyList())
-    val tools: StateFlow<List<String>> get() = _tools
+    private val _tools = MutableStateFlow(
+        listOf(
+            Tool("전자레인지", false, true),
+            Tool("에어프라이기", false, true),
+            Tool("오븐", false, true),
+            Tool("가스레인지", false, true),
+            Tool("믹서", false, true),
+            Tool("전기주전자", false, true),
+            Tool("거품기", false, true)
+        )
+    )
+    val tools: StateFlow<List<Tool>> get() = _tools
 
     fun setFilter(filter: Filter) {
         if (filter.isEmpty()) return
@@ -32,6 +43,7 @@ class FilterViewModel : ViewModel() {
         setLevel(filter.level)
         setTime(filter.time.toInt())
         setStar(filter.star)
+        checkTools(filter.tools)
     }
 
     fun setSearchWord(word: String) {
@@ -54,8 +66,29 @@ class FilterViewModel : ViewModel() {
         _star.value = star
     }
 
-    fun setTool(tools: List<String>) {
-        _tools.value = tools
+    fun filterTools(searchInput: String) {
+        _tools.value = if (searchInput.isEmpty()) {
+            _tools.value.map {
+                it.copy(isVisible = true)
+            }
+        } else {
+            _tools.value.map {
+                if (it.toolName.contains(searchInput)) it.copy(isVisible = true)
+                else it.copy(isVisible = false)
+            }
+
+        }
+    }
+
+    fun checkTools(toolNames: List<String>) {
+        _tools.value = _tools.value.map { tool ->
+            if (tool.toolName in toolNames) tool.copy(isChecked = true)
+            else if (tool.isVisible) {
+                tool.copy(isChecked = false)
+            } else {
+                tool
+            }
+        }
     }
 
     fun reset() {
@@ -73,7 +106,7 @@ class FilterViewModel : ViewModel() {
         _level.value,
         _time.value.toString(),
         _star.value,
-        _tools.value
+        _tools.value.filter { it.isChecked }.map { it.toolName }
     )
 
     companion object {

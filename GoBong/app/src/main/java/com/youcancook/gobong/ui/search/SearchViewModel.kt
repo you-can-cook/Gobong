@@ -20,7 +20,7 @@ class SearchViewModel(
     private val _filtered = MutableStateFlow(false)
     val filtered: StateFlow<Boolean> get() = _filtered
 
-    private val _recipes = MutableStateFlow<List<Card>>(emptyList())
+        private val _recipes = MutableStateFlow<List<Card>>(emptyList())
     val recipes: StateFlow<List<Card>> get() = _recipes
 
     private fun setSearchWord(word: String) {
