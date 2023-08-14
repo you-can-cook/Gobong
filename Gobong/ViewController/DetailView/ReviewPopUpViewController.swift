@@ -13,6 +13,7 @@ protocol ReviewPopUpDelegate: Any {
 
 class ReviewPopUpViewController: UIViewController {
 
+    @IBOutlet weak var blackBackgroundView: UIView!
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var reviewButton: UIButton!
     
@@ -25,6 +26,7 @@ class ReviewPopUpViewController: UIViewController {
     var star = 0
     var delegate: ReviewPopUpDelegate?
     
+    //MARK: LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,9 +41,13 @@ class ReviewPopUpViewController: UIViewController {
         threeStarImg.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(threeStarTapped)))
         fourStarImg.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(fourStarTapped)))
         fiveStarImg.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(fiveStarTapped)))
+        blackBackgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(xButtonTapped)))
     }
     
-    @IBAction func xButtonTapped(_ sender: Any) {
+    //MARK: BUTTON
+    @objc
+    @IBAction
+    func xButtonTapped(_ sender: Any) {
         self.dismiss(animated: false)
     }
     
@@ -50,6 +56,7 @@ class ReviewPopUpViewController: UIViewController {
         self.dismiss(animated: false)
     }
     
+    //STAR TAPPED FUNCTION
     @objc
     private func oneStarTapped(){
         star = 1

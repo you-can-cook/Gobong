@@ -30,6 +30,7 @@ class SignUpViewController: UIViewController {
     var oauthId: String?
     var userDefault = UserDefaults.standard
     
+    //MARK: LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -41,6 +42,7 @@ class SignUpViewController: UIViewController {
 }
 
 extension SignUpViewController: UITextFieldDelegate {
+    //MARK: UI
     private func setupUI(){
         addButton()
         setupTextField()
@@ -49,6 +51,7 @@ extension SignUpViewController: UITextFieldDelegate {
         profileImg.image = UIImage(named: "프로필 이미지")
     }
     
+    //MARK: PROFILE IMAGE
     private func imageSetup(){
         profileImg.isUserInteractionEnabled = true
         profileImg.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickImage)))
@@ -106,6 +109,7 @@ extension SignUpViewController: UITextFieldDelegate {
         }
     }
     
+    //MARK: BUTTON
     private func addButton(){
         self.view.addSubview(okButton)
 //        if #available(iOS 15.0, *) {
@@ -153,6 +157,7 @@ extension SignUpViewController: UITextFieldDelegate {
         }
     }
     
+    //MARK: NICK NAME TEXT FIELD
     private func setupTextField(){
         nickNameLabel.delegate = self
     }

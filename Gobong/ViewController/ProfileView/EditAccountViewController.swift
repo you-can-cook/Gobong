@@ -47,6 +47,7 @@ class EditAccountViewController: UIViewController, UITextFieldDelegate {
         navigationItem.title = "내 계정"
         
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTapped))
+        navigationItem.leftBarButtonItem = backButton
     }
     
     @objc
@@ -54,6 +55,7 @@ class EditAccountViewController: UIViewController, UITextFieldDelegate {
         navigationController?.popViewController(animated: true)
     }
     
+    //MARK: PROFILE IMAGE
     private func imageSetup(){
         profileImg.isUserInteractionEnabled = true
         profileImg.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickImage)))
@@ -111,6 +113,38 @@ class EditAccountViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    //MARK: NICK NAME TEXT FIELD
+    private
+    func setupTextField(){
+        nickNameLabel.delegate = self
+    }
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+      
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if isValidInput(textField.text ?? "") {
+            okButton.isUserInteractionEnabled = true
+            okButton.backgroundColor = UIColor(named: "pink")
+            warningLabel.text = ""
+        } else {
+            okButton.isUserInteractionEnabled = false
+            okButton.backgroundColor = UIColor(named: "gray")
+            warningLabel.text = "사용이 불가한 닉네임입니다."
+        }
+    }
+    
+    private
+    func isValidInput(_ input: String) -> Bool {
+        let pattern = "^[0-9a-zA-Z가-힣]{1,10}$"
+        let regex = try! NSRegularExpression(pattern: pattern, options: [])
+        let range = NSRange(location: 0, length: input.utf16.count)
+        
+        return regex.firstMatch(in: input, options: [], range: range) != nil
+    }
+    
+    //MARK: SAVE BUTTON
     private func addButton(){
         self.view.addSubview(okButton)
 //        if #available(iOS 15.0, *) {
@@ -136,34 +170,6 @@ class EditAccountViewController: UIViewController, UITextFieldDelegate {
     @objc
     private func okButtonTapped(){
         
-    }
-    
-    private func setupTextField(){
-        nickNameLabel.delegate = self
-    }
-    
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-      
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if isValidInput(textField.text ?? "") {
-            okButton.isUserInteractionEnabled = true
-            okButton.backgroundColor = UIColor(named: "pink")
-            warningLabel.text = ""
-        } else {
-            okButton.isUserInteractionEnabled = false
-            okButton.backgroundColor = UIColor(named: "gray")
-            warningLabel.text = "사용이 불가한 닉네임입니다."
-        }
-    }
-    
-    func isValidInput(_ input: String) -> Bool {
-        let pattern = "^[0-9a-zA-Z가-힣]{1,10}$"
-        let regex = try! NSRegularExpression(pattern: pattern, options: [])
-        let range = NSRange(location: 0, length: input.utf16.count)
-        
-        return regex.firstMatch(in: input, options: [], range: range) != nil
     }
 
 }

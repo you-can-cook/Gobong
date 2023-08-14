@@ -9,11 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ProfileViewController: UIViewController, profileFeedDelegete {
-    func cellTapped(cell: ProfileFeedCell) {
-        selectedIndexPath = cell.selectedIndexPath
-        self.performSegue(withIdentifier: "showDetailView", sender: self)
-    }
+class ProfileViewController: UIViewController {
     
     @IBOutlet weak var mainTableView: UITableView!
     var selectedIndexPath = 0 
@@ -35,6 +31,7 @@ class ProfileViewController: UIViewController, profileFeedDelegete {
 
     private let disposeBag = DisposeBag()
 
+    //MARK: LIFE CYCLE
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
     }
@@ -104,12 +101,20 @@ extension ProfileViewController {
 }
 
 //MARK: DELEGATE
-extension ProfileViewController: UserInformationDelegate{
+extension ProfileViewController: UserInformationDelegate, profileFeedDelegete {
+    //SHOW DETAILED POST
+    func cellTapped(cell: ProfileFeedCell) {
+        selectedIndexPath = cell.selectedIndexPath
+        self.performSegue(withIdentifier: "showDetailView", sender: self)
+    }
+    
+    //SHOW FOLLOWING VIEW
     func followingTapped(controller: UserInformationCell) {
         followStateTapped = "followings"
         performSegue(withIdentifier: "showFollowView", sender: self)
     }
     
+    //SHOW FOLLOWERS VIEW
     func followersTapped(controller: UserInformationCell) {
         followStateTapped = "followers"
         performSegue(withIdentifier: "showFollowView", sender: self)
@@ -135,6 +140,7 @@ extension ProfileViewController: UISearchBarDelegate{
     }
 }
 
+//MARK: TABLE VIEW
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
     private func setupMainTableView(){
         mainTableView.delegate = self
@@ -150,6 +156,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //USER INFORMATION
         if indexPath.item == 0 {
             let cell = mainTableView.dequeueReusableCell(withIdentifier: "UserInformationCell") as! UserInformationCell
             cell.configuration(img: nil, recipeCount: 0, followerCount: 0, followingCount: 0)
@@ -158,7 +165,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
             
             return cell
         } else {
-            //if Empty
+            //IF THE FEED IS EMPTY
             if dummyData.isEmpty {
                 let cell = mainTableView.dequeueReusableCell(withIdentifier: "ProfileFeedCell") as! ProfileFeedCell
                 cell.configEmpty()
@@ -167,7 +174,9 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
                 
                 return cell
                 
+            //ELSE IF THE FEED IS NOT EMPTY
             } else {
+                //IF SHOWING BLOCK VIEW
                 if ShowingBlockView {
                     let cell = mainTableView.dequeueReusableCell(withIdentifier: "ProfileFeedCell") as! ProfileFeedCell
                     cell.dummyData = dummyData
@@ -176,6 +185,8 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
                     cell.delegate = self
                     
                     return cell
+                
+                //IF SHOWING CARD VIEW 
                 } else {
                     let cell = mainTableView.dequeueReusableCell(withIdentifier: "ProfileFeedCell") as! ProfileFeedCell
                     cell.dummyData = dummyData

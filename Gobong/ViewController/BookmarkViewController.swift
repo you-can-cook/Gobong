@@ -8,17 +8,22 @@
 import UIKit
 import RxCocoa
 import RxSwift
+import NVActivityIndicatorView
 
 class BookmarkViewController: UIViewController {
     
-    //property
     @IBOutlet weak var emptyStateView: UIView!
     private let searchBar = UISearchBar()
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var selectedIndexPath = 0
     
+    //MARK: PROPERTY
+    var activityIndicator: NVActivityIndicatorView?
+    
+    //index path to show in detail view
+    var selectedIndexPath = 0
+
     var dummyData = [
         dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
         dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
@@ -34,12 +39,16 @@ class BookmarkViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     
+    //MARK: LIFE CYCLE
     override func viewWillAppear(_ animated: Bool) {
+        
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupUI()
+        setupData()
         setObservable()
         // Do any additional setup after loading the view.
     }
@@ -65,6 +74,7 @@ extension BookmarkViewController {
     private func setObservable(){
         isShowingBlockView.subscribe(onNext: { [weak self] bool in
             guard let self = self else { return }
+            //BLOCK VIEW
             if bool {
                 ShowingBlockView = true
                 self.collectionView.isHidden = false
@@ -75,7 +85,9 @@ extension BookmarkViewController {
                 tableViewToogleButton.tintColor = .black
                 
                 navigationItem.rightBarButtonItem = tableViewToogleButton
-            } else {
+            }
+            //CARD VIEW
+            else {
                 ShowingBlockView = false
                 self.collectionView.isHidden = true
                 self.tableView.isHidden = false
@@ -105,6 +117,8 @@ extension BookmarkViewController: UISearchBarDelegate {
         setupNavigationBar()
         tableViewSetup()
         collectionViewSetup()
+        
+        activityIndicator = ActivityIndicator.shared.setupActivityIndicator(in: view)
     }
     
     private func setupNavigationBar(){

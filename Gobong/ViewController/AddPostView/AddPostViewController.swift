@@ -23,7 +23,9 @@ class AddPostViewController: UIViewController {
     @IBOutlet weak var postImage: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
     
+    //INGREDIENTS HEIGHT
     var collectionViewHeightConstraint: NSLayoutConstraint!
+    
     var levelSelected: String = "" {
         didSet{
             if levelSelected == "easy" {
@@ -79,13 +81,17 @@ class AddPostViewController: UIViewController {
     var ingredients: [String] = []
     var recipes: [dummyHowTo] = [
     ]
+    
+    //RECIPE'S CELL IS FOLDED OR NOT.
     var isFolded = [Bool]()
+    //RECIPE'S TABLE VIEW HEIGHT
     var tableViewCellHeight: [CGFloat] = [CGFloat(0), CGFloat(0), CGFloat(127)]
     
     //Property for edit
     var selectedForEdit: dummyHowTo?
     var editIndex: IndexPath?
     
+    //MARK: LIFE CYCLE
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
     }
@@ -111,6 +117,7 @@ class AddPostViewController: UIViewController {
         }
     }
     
+    //VIEW TAPPED FOR INTRODUCTION FIELD AND TITLE TEXT FIELD
     @objc private func viewTapped(){
         introductionField.resignFirstResponder()
         titleTextField.resignFirstResponder()
@@ -119,6 +126,7 @@ class AddPostViewController: UIViewController {
 }
 
 extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+    //MARK: UI
     private func setupUI(){
         setupNavigationBar()
         setTapGesture()
@@ -135,6 +143,7 @@ extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationCo
         navigationItem.leftBarButtonItem = backItemButton
     }
     
+    //NAVIGATION ITEM FUNC
     @objc private func backButtonTapped(){
         navigationController?.popViewController(animated: true)
     }
@@ -280,7 +289,7 @@ extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationCo
     }
 }
 
-//get passed data
+// GET PASSED DATA FROM DETAIL VIEW
 extension AddPostViewController: AddDetailPostDelegate {
     func passData(controller: AddDetailPostViewController) {
         
@@ -316,6 +325,7 @@ extension AddPostViewController: AddDetailPostDelegate {
         checkOK()
     }
     
+    //CHECK IF THE POST IS GOOD TO POST
     func checkOK(){
         if postImage.image != UIImage(named: "uploadPhoto") && titleTextField.text != "" && ingredients.count != 0 && (easyButton.backgroundColor == UIColor(named: "pink") || normalButton.backgroundColor == UIColor(named: "pink") || hardButton.backgroundColor == UIColor(named: "pink")) && recipes.count != 0 {
             
@@ -328,6 +338,7 @@ extension AddPostViewController: AddDetailPostDelegate {
         }
     }
 
+    //POST BUTTON TAPPED
     @objc private func postButtonTapped(){
         navigationController?.popViewController(animated: true)
     }

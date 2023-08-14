@@ -43,6 +43,7 @@ class FilterViewController: UIViewController {
     var delegate: FilterDelegate?
     var lastFilter: FilterModel?
     
+    //MARK: LIFE CYCLE
     override func viewWillAppear(_ animated: Bool) {
     }
     
@@ -59,12 +60,15 @@ class FilterViewController: UIViewController {
         if segue.identifier == "showSearchToolBar" {
             if let VC = segue.destination as? SearchToolsViewController {
                 VC.delegate = self
+                
+                //SEND ALREADY SELECTED TOOLS TO SEARCH TOOL VIEW
                 VC.selectedTools = tools
                 VC.forFilter = tools
             }
         }
     }
     
+    //BUTTON
     @IBAction func searchButtonTapped(_ sender: Any) {
         delegate?.passFilter(controller: self)
         navigationController?.popViewController(animated: true)
@@ -77,6 +81,7 @@ class FilterViewController: UIViewController {
         searchBar.text = ""
     }
     
+    //별점 //STAR
     var starSelected: Int? {
         didSet {
             if starSelected == 1 {
@@ -145,6 +150,7 @@ class FilterViewController: UIViewController {
         starSelected = 1
     }
     
+    //LEVEL // 난이도
     var levelSelected: String? {
         didSet{
             if levelSelected == "easy" {
@@ -224,7 +230,7 @@ class FilterViewController: UIViewController {
         levelSelected = "hard"
     }
     
-    //정렬
+    //정렬 // SORT
     var selectedSort: String? {
         didSet {
             if selectedSort == "newest" {
@@ -282,10 +288,12 @@ extension FilterViewController {
         navigationItem.leftBarButtonItem = backButton
     }
     
+    //NAVIGATION FUNC
     @objc private func backButton(){
         navigationController?.popViewController(animated: true)
     }
     
+    //SELECTED NOT SELECTED UI
     private func selected(_ button: UIButton) {
         button.layer.borderColor = UIColor(named: "pink")?.cgColor
         button.layer.borderWidth = 1
@@ -302,7 +310,7 @@ extension FilterViewController {
         button.layer.cornerRadius = 16
     }
     
-    //setupSlider
+    //SETUP SLIDER
     private func setupSlider(){
         stepSlider.labels = ["0분", "5분", "10분", "15분", "20분", "25분", ">30분"]
         stepSlider.trackColor = UIColor(named: "softGray")
@@ -319,6 +327,7 @@ extension FilterViewController {
         stepSlider.sliderCircleImage = borderedImage
     }
     
+    //STEP SLIDER CIRCLE
     func createTintedWithCircularBorderImage(systemName: String, tintColor: UIColor, borderColor: UIColor, borderWidth: CGFloat, imageSize: CGSize) -> UIImage? {
         let originalImage = UIImage(systemName: systemName)
         
@@ -364,7 +373,9 @@ extension FilterViewController: UISearchBarDelegate {
     }
 }
 
+//COLLECTION VIEW (TOOLS)
 extension FilterViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SearchToolsDelegate {
+    //GET DATA FROM FINDING TOOLS VIEW
     func passToolData(controller: SearchToolsViewController) {
         tools = controller.selectedTools
         collectionView.reloadData()
@@ -394,13 +405,18 @@ extension FilterViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HashtagCollectionCell", for: indexPath) as! HashtagCollectionCell
+        
+        // SELECTED TOOLS SET
         if indexPath.item != tools.count {
             cell.setText3(tools[indexPath.item])
             cell.label.font = UIFont.systemFont(ofSize: 14)
             cell.label.textColor = UIColor.white
             cell.view.backgroundColor = UIColor(named: "pink")
             cell.label.layer.borderColor = UIColor(named: "pink")?.cgColor
-        } else {
+        }
+        
+        //SEARCH TOOLS VIEW
+        else {
             cell.setText("•••")
             cell.label.font = UIFont.systemFont(ofSize: 14)
             cell.label.textColor = UIColor(named: "gray")
@@ -411,7 +427,11 @@ extension FilterViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item != tools.count {
-        } else {
+            //DELETE TOOLS?
+            
+        }
+        
+        else {
             performSegue(withIdentifier: "showSearchToolBar", sender: self)
         }
     }
@@ -420,12 +440,14 @@ extension FilterViewController: UICollectionViewDelegate, UICollectionViewDataSo
         if indexPath.item != tools.count {
             let labelSize = calculateLabelSize(text: tools[indexPath.item])
             return CGSize(width: labelSize.width + 24, height: labelSize.height + 16)
-        } else {
+        }
+        else {
             let labelSize = calculateLabelSize(text: "•••")
             return CGSize(width: labelSize.width + 24, height: labelSize.height + 16)
         }
     }
     
+    //CALCULATE SIZE
     func calculateLabelSize(text: String) -> CGSize {
         let label = UILabel()
         label.numberOfLines = 0

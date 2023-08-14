@@ -26,6 +26,7 @@ class PushNotificationViewController: UIViewController {
         navigationItem.title = "알림"
         
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTapped))
+        navigationItem.leftBarButtonItem = backButton
     }
     
     @objc

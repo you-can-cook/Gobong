@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
 
 struct dummyFeedData {
     var userImg: String?
@@ -28,6 +29,7 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var addFeedButton: UIButton!
     var selectedIndexPath = 0
+    var activityIndicator: NVActivityIndicatorView?
     
     var dummyData: [dummyFeedData] = [
 //        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
@@ -62,13 +64,18 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
 }
 
 extension ViewController {
-    private func setupData(){
+    // MARK: DATA
+    private func setupUser() {
         //!!!!!임시!!!!
         userDefault.set("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInN1YiI6IkFDQ0VTUyIsImlzcyI6ImdvYm9uZy55b3VjYW5jb29rLm9yZyIsImlhdCI6MTY5MTQ3Nzk5OSwiZXhwIjoyNDExNDc3OTk5fQ.m_uF4Tpu9dp2UZWVeGLNj39TYArHtmFidSv4SWfw-Sc", forKey: "accessKey")
         
         if userDefault.string(forKey: "accessKey") == nil {
             performSegue(withIdentifier: "showLoginView", sender: self)
         }
+    }
+    
+    private func setupData(){
+//        activityIndicator?.startAnimating()
         
         if dummyData.isEmpty {
             emptyStateView.isHidden = false
@@ -77,10 +84,13 @@ extension ViewController {
         }
     }
     
+    //MARK: UI
     private func setupUI(){
         setupTableView()
         addFeedButton.setTitle("", for: .normal)
         setupNavigationBar()
+        
+        activityIndicator = ActivityIndicator.shared.setupActivityIndicator(in: view)
     }
     
     private func setupNavigationBar(){
@@ -88,6 +98,7 @@ extension ViewController {
     }
 }
 
+//MARK: FEED (CARD 형식)
 extension ViewController : UITableViewDelegate, UITableViewDataSource {
     private func setupTableView(){
         tableView.dataSource = self
