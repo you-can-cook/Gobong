@@ -49,6 +49,16 @@ abstract class NetworkActivity<T : ViewDataBinding, VM : NetworkViewModel>(
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.toastMessage.collectLatest {
+                    if (it.isNotEmpty()) {
+                        Toast.makeText(this@NetworkActivity, it, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.networkState.collectLatest {
                     when (it) {
                         NetworkState.DONE -> {

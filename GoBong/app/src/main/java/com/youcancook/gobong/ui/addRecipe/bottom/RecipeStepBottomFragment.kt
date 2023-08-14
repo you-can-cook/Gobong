@@ -1,69 +1,104 @@
 package com.youcancook.gobong.ui.addRecipe.bottom
 
-import android.content.DialogInterface
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.chip.Chip
 import com.youcancook.gobong.R
-import com.youcancook.gobong.databinding.BottomSheetRecipeStepBinding
-import com.youcancook.gobong.model.Recipe
-import com.youcancook.gobong.model.RecipeStepAdded
+import com.youcancook.gobong.databinding.BottomSheetRecipeStepDataBinding
+import com.youcancook.gobong.ui.ImageActivity
+import com.youcancook.gobong.ui.base.GoBongFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class RecipeStepBottomFragment : BottomSheetDialogFragment() {
-    private lateinit var binding: BottomSheetRecipeStepBinding
-    private val recipeAddBottomViewModel: RecipeStepBottomViewModel by activityViewModels()
-    private var onDismissListener: (Recipe) -> Unit? = { }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        binding = BottomSheetRecipeStepBinding.inflate(inflater, container, false)
-        childFragmentManager.beginTransaction().replace(
-            R.id.bottomSheetFragment,
-            RecipeStepAddBottomFragment()
-        ).commit()
-        return binding.root
-    }
+abstract class RecipeStepBottomFragment :
+    GoBongFragment<BottomSheetRecipeStepDataBinding>(R.layout.bottom_sheet_recipe_step_data) {
+    private var imagePickActivityLauncher: ActivityResultLauncher<Intent>? = null
+    abstract val viewModel: RecipeStepBottomViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                recipeAddBottomViewModel.isSavedSuccess.collectLatest {
-                    if (it) {
-                        dismiss()
-                        recipeAddBottomViewModel.resetSave()
+        initListeners()
+
+        imagePickActivityLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val imageData = result.data?.getByteArrayExtra("imageData")
+                    imageData ?: return@registerForActivityResult
+                    viewModel.setThumbnailByteArray(imageData)
+                }
+            }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.toastMessage.collectLatest {
+                    if (it.isNotEmpty()) {
+                        Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
     }
 
-    fun setOldRecipe(recipe: RecipeStepAdded) {
-        recipeAddBottomViewModel.setOldRecipe(recipe)
+    private fun initListeners() {
+        binding.run {
+
+            photoImageView.setOnClickListener {
+                getImageFromGallery()
+            }
+
+            toolsLayout.setOnCheckedStateChangeListener { group, checkedIds ->
+                val views = checkedIds.map {
+                    group.findViewById<Chip>(it).text.toString()
+                }
+                viewModel.checkTools(views)
+            }
+
+            showMoreToolsButton.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .add(R.id.bottomSheetFragment, RecipeStepSearchBottomFragment())
+                    .addToBackStack(null)
+                    .commit()
+            }
+
+            tenSecondChip.setOnClickListener {
+                viewModel.addSecond(10)
+            }
+
+            thirtySecondChip.setOnClickListener {
+                viewModel.addSecond(30)
+            }
+
+            oneMinuteChip.setOnClickListener {
+                viewModel.addMinute(1)
+            }
+
+            fiveMinuteChip.setOnClickListener {
+                viewModel.addMinute(5)
+            }
+
+            tenMinuteChip.setOnClickListener {
+                viewModel.addMinute(10)
+            }
+
+            resetTimeImageView.setOnClickListener {
+                viewModel.clearTime()
+            }
+        }
     }
 
-    fun setOnDismissListener(listener: (Recipe) -> Unit) {
-        onDismissListener = listener
+    private fun getImageFromGallery() {
+        Intent(requireActivity(), ImageActivity::class.java).run {
+            imagePickActivityLauncher?.launch(this)
+        }
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        onDismissListener(recipeAddBottomViewModel.getNewRecipeStep())
-        super.onDismiss(dialog)
-    }
-
-    companion object {
-        const val TAG = "RecipeStepBottomFragment"
-    }
 }
