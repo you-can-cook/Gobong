@@ -209,11 +209,11 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configuration(step: Int, time: [String], tool: [String], image: UIImage?, description: String, isFolded: Bool) {
+    func configuration(step: Int, time: String, tool: [String], image: UIImage?, description: String, isFolded: Bool) {
         
         stepLabel.text = "\(step)단계"
         
-        tools.append(contentsOf: time)
+        tools.append(time)
         tools.append(contentsOf: tool)
         
         collectionView.reloadData()

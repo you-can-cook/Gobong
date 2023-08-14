@@ -77,10 +77,14 @@ class AddPostViewController: UIViewController {
     }
     
     var ingredients: [String] = []
-    var recipes =  [dummyHowTo(time: ["3분"], tool: ["전자레인지"], img: UIImage(named: "dummyImg") ,description: "자이언트 떡볶이를 순서대로 3분 조리"),
-                    dummyHowTo(time: ["3분"], tool: ["전자레인지"], img: UIImage(named: "dummyImg") ,description: "자이언트 떡볶이를 순서대로 3분 조리")]
+    var recipes: [dummyHowTo] = [
+    ]
     var isFolded = [Bool]()
     var tableViewCellHeight: [CGFloat] = [CGFloat(0), CGFloat(0), CGFloat(127)]
+    
+    //Property for edit
+    var selectedForEdit: dummyHowTo?
+    var editIndex: IndexPath?
     
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
@@ -99,6 +103,10 @@ class AddPostViewController: UIViewController {
         if segue.identifier == "showAddDetailPost" {
             if let VC = segue.destination as? AddDetailPostViewController {
                 VC.delegate = self
+                VC.editIndex = editIndex
+                if selectedForEdit != nil {
+                    VC.selectedForEdit = selectedForEdit
+                } 
             }
         }
     }
@@ -275,31 +283,35 @@ extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationCo
 //get passed data
 extension AddPostViewController: AddDetailPostDelegate {
     func passData(controller: AddDetailPostViewController) {
+        
         let description = controller.descriptionTextField.text == "자세한 조리 과정을 입력하세요" ? "" : controller.descriptionTextField.text
         var minute = controller.minuteField.text ?? ""
         var second = controller.secondField.text ?? ""
-        
-        if minute != "" {
-            minute += "분"
-        }
-        
-        if second != "" {
-            second += "분"
-        }
-        
+    
         var newRecipe: dummyHowTo
         
         if controller.postImage.image != UIImage(named: "uploadPhoto") {
-            newRecipe = dummyHowTo(time: ["\(minute)\(second)"], tool: controller.tools, img: controller.postImage.image, description: description ?? "")
+            newRecipe = dummyHowTo(minute: minute, second: second, tool: controller.tools, img: controller.postImage.image, description: description ?? "")
         } else {
-            newRecipe = dummyHowTo(time: ["\(minute)\(second)"], tool: controller.tools, description: description ?? "")
+            newRecipe = dummyHowTo(minute: minute, second: second, tool: controller.tools, description: description ?? "")
         }
         
-        recipes.append(newRecipe)
-        isFolded.append(true)
-        tableViewCellHeight.insert(0, at: tableViewCellHeight.count - 1)
+        print(newRecipe)
         
-        tableView.reloadData()
+        if controller.selectedForEdit != nil {
+            recipes[controller.editIndex!.item] = newRecipe
+            
+            tableViewCellHeight[controller.editIndex!.item] = 0
+        } else {
+            recipes.append(newRecipe)
+            isFolded.append(true)
+            
+            tableViewCellHeight.append(0)
+            self.tableView.reloadData()
+            
+        }
+        
+        tableView.reloadRows(at: [controller.editIndex!], with: .automatic)
         reloadHeight()
         checkOK()
     }

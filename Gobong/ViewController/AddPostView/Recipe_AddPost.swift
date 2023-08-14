@@ -12,8 +12,17 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
     
     func addTapped(cell: AddRecipeCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
+        
         tableView(tableView, didSelectRowAt: indexPath)
     }
+    
+    func editTapped(sender: AddedRecipeCell) {
+        guard let indexPath = tableView.indexPath(for: sender) else { return }
+        selectedForEdit = recipes[indexPath.item]
+        editIndex = indexPath
+        performSegue(withIdentifier: "showAddDetailPost", sender: self)
+    }
+    
     func collectionViewTapped(sender: AddedRecipeCell) {
         guard let indexPath = tableView.indexPath(for: sender) else { return }
         tableView(tableView, didSelectRowAt: indexPath)
@@ -35,7 +44,12 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
             let cell = tableView.dequeueReusableCell(withIdentifier: "AddedRecipeCell") as! AddedRecipeCell
             
             let data = recipes[indexPath.item]
-            cell.configuration(step: indexPath.item + 1, time: data.time, tool: data.tool, image: data.img, description: data.description, isFolded: isFolded[indexPath.item])
+            
+            let minute = data.minute == "" ? "" : "\(data.minute)분"
+            let second = data.second == "" ? "" : "\(data.second)초"
+            let time = "\(minute)\(second)"
+            
+            cell.configuration(step: indexPath.item + 1, time: time, tool: data.tool, image: data.img, description: data.description, isFolded: isFolded[indexPath.item])
             
             if !isFolded[indexPath.item] {
                 cell.toggleImageViewVisibility(isFolded: isFolded[indexPath.item], image: data.img)
@@ -60,7 +74,6 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.item == recipes.count {
-            tableViewCellHeight[indexPath.item] = 127
             return 127
         } else {
             if tableViewCellHeight[indexPath.item] == 0 {
@@ -68,9 +81,13 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
                 cell.layoutIfNeeded()
                 let data = recipes[indexPath.item]
                 
-                var firstline = data.time.map({calculateLabelSize(text: $0).width}).reduce(0, +)
+                let minute = data.minute == "" ? "" : "\(data.minute)분"
+                let second = data.second == "" ? "" : "\(data.second)초"
+                let time = "\(minute)\(second)"
+                
+                var firstline : CGFloat = calculateLabelSize(text: time).width
                 firstline += data.tool.map({calculateLabelSize(text: $0).width}).reduce(0, +)
-                firstline += CGFloat(data.time.count * 12) + 32
+                firstline += CGFloat(1 * 12) + 32
                 firstline += CGFloat(data.tool.count * 12) + 32
                 
                 if firstline/(view.bounds.width/1.6) > 1 {
@@ -120,27 +137,34 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.item == recipes.count {
+            selectedForEdit = nil
+            editIndex = indexPath
             performSegue(withIdentifier: "showAddDetailPost", sender: self)
         } else {
-            let allTrueValues = Array(repeating: true, count: isFolded.count)
-            let lastFolded = isFolded.firstIndex(where: {$0 == false})
-            
-            isFolded = allTrueValues
-            isFolded[indexPath.item].toggle()
-            
-            if let lastFolded = lastFolded {
-                tableViewCellHeight[indexPath.item] = 0
-                tableViewCellHeight[lastFolded] = 0
-                tableView.reloadRows(at: [indexPath, IndexPath(row: lastFolded, section: 0)], with: .automatic)
-            } else {
-                tableViewCellHeight[indexPath.item] = 0
-                tableView.reloadRows(at: [indexPath], with: .automatic)
-            }
+            recipeCellToggle(didSelectRowAt: indexPath)
+        }
+    }
+    
+    func recipeCellToggle(didSelectRowAt indexPath: IndexPath) {
+        let allTrueValues = Array(repeating: true, count: isFolded.count)
+        let lastFolded = isFolded.firstIndex(where: {$0 == false})
+        
+        isFolded = allTrueValues
+        isFolded[indexPath.item].toggle()
+        print(lastFolded)
+        
+        if let lastFolded = lastFolded {
+            tableViewCellHeight[indexPath.item] = 0
+            tableViewCellHeight[lastFolded] = 0
+            tableView.reloadRows(at: [indexPath, IndexPath(row: lastFolded, section: 0)], with: .automatic)
+        } else {
+            tableViewCellHeight[indexPath.item] = 0
+            tableView.reloadRows(at: [indexPath], with: .automatic)
         }
     }
     
     func reloadHeight(){
-        tableViewHeight.constant = tableViewCellHeight.reduce(0, +)
+        tableViewHeight.constant = tableViewCellHeight.reduce(0, +) + 127
     }
     
     

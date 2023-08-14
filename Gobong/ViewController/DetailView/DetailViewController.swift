@@ -10,7 +10,8 @@ import RxSwift
 import RxCocoa
 
 struct dummyHowTo {
-    var time: [String]
+    var minute: String
+    var second: String
     var tool: [String]
     var img: UIImage?
     var description: String
@@ -23,12 +24,8 @@ class DetailViewController: UIViewController {
     
     var information: dummyFeedData!
     var hashTag = ["면", "면 면", "면 면", "면", "모차렐라(슈레드) 치즈", "자이언트 떡볶이", "자이언트 떡볶이", "자이언트 떡볶이", "면 면"]
-    var recipeInformation = [
-        dummyHowTo(time: ["3분"], tool: ["전자레인지", "전자레인지", "전자레인지", "전자레인지", "전자레인지", "전자레인지", "면", "면"], img: nil, description: "자이언트 떡볶이를 순서대로 3분 조리"),
-        dummyHowTo(time: ["3분"], tool: ["전자레인지", "전자레인지", "전자레인지", "면"], img: UIImage(named: "dummyImg"), description: "자이언트 떡볶이를 순서대로 3분 조리"),
-        dummyHowTo(time: ["3분"], tool: ["전자레인지"], img: UIImage(named: "dummyImg") ,description: "자이언트 떡볶이를 순서대로 3분 조리"),
-        dummyHowTo(time: ["3분"], tool: ["전자레인지"], img: UIImage(named: "dummyImg") ,description: "자이언트 떡볶이를 순서대로 3분 조리"),
-        dummyHowTo(time: ["3분"], tool: ["전자레인지"], img: UIImage(named: "dummyImg") ,description: "자이 언트 떡 볶이를 순 서대로  3분 조리자이 언트 떡볶 이를 순서대로 3분 조리자이언트 떡볶이를 순서대로 3분 조리자이언트 떡볶이를 순서대로 3분 조리")
+    var recipeInformation: [dummyHowTo] = [
+
     ]
     
     var isFolded = [Bool]()
@@ -51,7 +48,7 @@ class DetailViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showPopUpReview",
-           let vc = segue.destination as! ReviewPopUpViewController {
+           let vc = segue.destination as? ReviewPopUpViewController {
             vc.delegate = self
         }
     }
@@ -150,7 +147,12 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
         else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as! RecipeCell
             let data = recipeInformation[indexPath.item-2]
-            cell.configuration(step: indexPath.item-1, time: data.time, tool: data.tool, image: data.img, description: data.description, isFolded: isFolded[indexPath.item-2])
+            
+            let minute = data.minute == "" ? "" : "\(data.minute)분"
+            let second = data.second == "" ? "" : "\(data.second)초"
+            let time = "\(minute)\(second)"
+            
+            cell.configuration(step: indexPath.item-1, time: time, tool: data.tool, image: data.img, description: data.description, isFolded: isFolded[indexPath.item-2])
             cell.delegate = self
             
             if !isFolded[indexPath.item-2] {
@@ -206,9 +208,13 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
             cell.layoutIfNeeded()
             let data = recipeInformation[indexPath.item-2]
             
-            var firstline = data.time.map({calculateLabelSize(text: $0).width}).reduce(0, +)
+            let minute = data.minute == "" ? "" : "\(data.minute)분"
+            let second = data.second == "" ? "" : "\(data.second)초"
+            let time = "\(minute)\(second)"
+            
+            var firstline: CGFloat = calculateLabelSize(text: time).width
             firstline += data.tool.map({calculateLabelSize(text: $0).width}).reduce(0, +)
-            firstline += CGFloat(data.time.count * 12) + 32
+            firstline += CGFloat(1 * 12) + 32
             firstline += CGFloat(data.tool.count * 12) + 32
             
             if firstline/(view.bounds.width/1.5) > 1 {

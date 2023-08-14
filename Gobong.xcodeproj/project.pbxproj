@@ -220,11 +220,10 @@
 			children = (
 				80CE8AE72A7A8113003DE318 /* CustomTabBar.swift */,
 				80D2B5FC2A791AD600B777D1 /* ViewController.swift */,
-				80CE8AFC2A7CD246003DE318 /* DetailViewController.swift */,
-				80D3F2092A890591009313CB /* ReviewPopUpViewController.swift */,
 				80CE8AEF2A7AA75A003DE318 /* BookmarkViewController.swift */,
 				80D3F1F22A87C99D009313CB /* LoginViewController.swift */,
 				80D3F1F82A87FDAF009313CB /* SignUpViewController.swift */,
+				80D3F20B2A891434009313CB /* DetailView */,
 				80D3F1E92A8794F0009313CB /* ProfileView */,
 				80D3F1E82A8794CE009313CB /* SearchView */,
 				80E3C01C2A83CEA100845A9B /* AddPostView */,
@@ -267,6 +266,15 @@
 				80D3F2012A88E625009313CB /* DeleteAccountViewController.swift */,
 			);
 			path = ProfileView;
+			sourceTree = "<group>";
+		};
+		80D3F20B2A891434009313CB /* DetailView */ = {
+			isa = PBXGroup;
+			children = (
+				80CE8AFC2A7CD246003DE318 /* DetailViewController.swift */,
+				80D3F2092A890591009313CB /* ReviewPopUpViewController.swift */,
+			);
+			path = DetailView;
 			sourceTree = "<group>";
 		};
 		80E3C01C2A83CEA100845A9B /* AddPostView */ = {
