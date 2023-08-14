@@ -12,6 +12,7 @@ import com.youcancook.gobong.databinding.ActivityLoginBinding
 import com.youcancook.gobong.databinding.ActivityRegisterBinding
 import com.youcancook.gobong.ui.RoutingActivity
 import com.youcancook.gobong.ui.base.NetworkActivity
+import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.util.ACCESS_TOKEN_KEY
 import com.youcancook.gobong.util.REFRESH_TOKEN_KEY
 import kotlinx.coroutines.flow.collectLatest
@@ -24,6 +25,21 @@ class RegisterActivity :
         UserViewModel(appContainer.userRepository)
     }
 
+    override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
+        override fun onSuccess() {
+            val token = viewModel.getToken()
+            saveToken(token.accessToken, token.refreshToken)
+            moveToRoutingActivity()
+        }
+
+        override fun onFail() {
+        }
+
+        override fun onDone() {
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,15 +47,6 @@ class RegisterActivity :
 
         val auth = intent?.getSerializableExtra(LoginActivity.LOGIN_AUTH) as LoginAuth
         viewModel.setLoginAuth(auth)
-
-        onSuccess = {
-            val token = viewModel.getToken()
-            saveToken(token.accessToken, token.refreshToken)
-            moveToRoutingActivity()
-        }
-
-        onFail = {
-        }
 
         binding.run {
             registerButton.setOnClickListener {

@@ -6,8 +6,8 @@ import com.youcancook.gobong.model.datasource.GoBongRemoteDataSource
 import com.youcancook.gobong.model.datasource.UserDataSource
 import com.youcancook.gobong.model.network.GoBongService
 import com.youcancook.gobong.model.network.UserService
-import com.youcancook.gobong.model.repository.GoBongRepository
-import com.youcancook.gobong.model.repository.UserRepository
+import com.youcancook.gobong.model.repository.GoBongRepositoryImpl
+import com.youcancook.gobong.model.repository.UserRepositoryImpl
 import com.youcancook.gobong.util.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -33,6 +33,6 @@ class GoBongContainer {
     private val remoteGoBongDataSource = GoBongRemoteDataSource(goBongRetrofit)
     private val remoteUserDataSource = UserDataSource(userRetrofit)
 
-    val goBongRepository = GoBongRepository(remoteGoBongDataSource)
-    val userRepository = UserRepository(remoteUserDataSource)
+    val goBongRepository = GoBongRepositoryImpl(remoteGoBongDataSource)
+    val userRepository = UserRepositoryImpl(remoteUserDataSource)
 }

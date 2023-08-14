@@ -1,8 +1,6 @@
 package com.youcancook.gobong.ui.detail
 
 import android.os.Bundle
-import android.view.MenuItem
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.Lifecycle
@@ -12,9 +10,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.RecipeListAdapter
 import com.youcancook.gobong.databinding.ActivityDetailBinding
-import com.youcancook.gobong.model.repository.GoBongRepository
-import com.youcancook.gobong.ui.base.GoBongActivity
 import com.youcancook.gobong.ui.base.NetworkActivity
+import com.youcancook.gobong.ui.base.NetworkStateListener
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -23,6 +20,18 @@ class DetailActivity :
     NetworkActivity<ActivityDetailBinding, DetailViewModel>(R.layout.activity_detail) {
     override val viewModel: DetailViewModel by lazy {
         DetailViewModel(appContainer.goBongRepository)
+    }
+    override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
+        override fun onSuccess() {
+
+        }
+
+        override fun onFail() {
+        }
+
+        override fun onDone() {
+        }
+
     }
 
     private val recipeAdapter = RecipeListAdapter(onItemClick = {
@@ -53,27 +62,7 @@ class DetailActivity :
             recyclerView.adapter = recipeAdapter
         }
 
-        binding.run {
-            toolbar.setNavigationOnClickListener {
-                finish()
-            }
-
-            bookmarkImageView.setOnClickListener {
-                //TODO viewmodel에서 북마크 api 보내기
-                it.isSelected = it.isSelected.not()
-                viewModel.bookmarkRecipe(it.isSelected)
-            }
-
-            followingButton.setOnClickListener {
-                it.isSelected = it.isSelected.not()
-            }
-
-            reviewButton.setOnClickListener {
-                reviewDialog.setOldStar(viewModel.getStar())
-                reviewDialog.show(supportFragmentManager, null)
-            }
-
-        }
+        initListeners()
 
         binding.run {
             lifecycleScope.launch {
@@ -94,6 +83,30 @@ class DetailActivity :
                 }
             }
         }
+    }
+
+    private fun initListeners() {
+        binding.run {
+            toolbar.setNavigationOnClickListener {
+                finish()
+            }
+
+            bookmarkImageView.setOnClickListener {
+                it.isSelected = it.isSelected.not()
+                viewModel.bookmarkRecipe(it.isSelected)
+            }
+
+            followingButton.setOnClickListener {
+                it.isSelected = it.isSelected.not()
+            }
+
+            reviewButton.setOnClickListener {
+                reviewDialog.setOldStar(viewModel.getStar())
+                reviewDialog.show(supportFragmentManager, null)
+            }
+
+        }
+
     }
 
     private fun setDisposable() {

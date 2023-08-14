@@ -4,31 +4,16 @@ import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Filter
 import com.youcancook.gobong.model.datasource.GoBongRemoteDataSource
 
-class GoBongRepository(
-    private val goBongDataSource: GoBongRemoteDataSource,
-) {
+interface GoBongRepository {
 
-    suspend fun getFollowingRecipes(): List<Card> {
-        return goBongDataSource.getFollowingRecipes()
-    }
+    suspend fun getFollowingRecipes(): List<Card>
 
-    suspend fun getAllRecipes(): List<Card> {
-        return goBongDataSource.getAllRecipes()
-    }
+    suspend fun getAllRecipes(): List<Card>
 
-    suspend fun getFilteredRecipes(filter: Filter): List<Card> {
-        return goBongDataSource.getFilteredRecipes()
-    }
+    suspend fun getFilteredRecipes(filter: Filter): List<Card>
 
-    suspend fun getBookmarkedRecipes(): List<Card> {
-        return goBongDataSource.getBookmarkedRecipes()
-    }
+    suspend fun getBookmarkedRecipes(): List<Card>
+    fun bookmarkRecipe(marked: Boolean)
 
-    fun bookmarkRecipe(marked: Boolean) {
-        goBongDataSource.bookmarkRecipe(marked)
-    }
-
-    fun reviewRecipe(star: Int) {
-        goBongDataSource.reviewRecipe(star)
-    }
+    fun reviewRecipe(star: Int)
 }

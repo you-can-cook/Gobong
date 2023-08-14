@@ -1,49 +1,94 @@
 package com.youcancook.gobong
 
+import com.youcancook.gobong.di.GoBongContainer
+import com.youcancook.gobong.fake.FakeGoBongContainer
 import com.youcancook.gobong.ui.home.HomeViewModel
+import com.youcancook.gobong.util.NetworkState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.setMain
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
 class HomeNetworkTest {
     private lateinit var viewModel: HomeViewModel
+    private lateinit var fakeViewModel: HomeViewModel
+    private val appContainer = GoBongContainer()
+    private val fakeContainer = FakeGoBongContainer()
 
     @Before
     fun setUp() {
-        viewModel = HomeViewModel()
+        viewModel = HomeViewModel(appContainer.goBongRepository, appContainer.userRepository)
+        fakeViewModel = HomeViewModel(fakeContainer.goBongRepository, fakeContainer.userRepository)
+        Dispatchers.setMain(Dispatchers.Unconfined)
     }
 
     @Test
     fun isEmptyList() {
-        //When
-
         //Then
         assertEquals(0, viewModel.recipes.value.size)
     }
 
     @Test
-    fun networkErrorTest() {
+    fun accessTokenExpiredTest() {
 
-
-        //Then
-        assertEquals("네트워크 요청에 실패했습니다", viewModel.snackBarMessage.value)
     }
 
     @Test
-    fun followStateCorrectTest() {
+    fun getRecipeErrorTest() {
+        //When
+        fakeViewModel.getFollowingRecipes()
 
+        //Then
+        assertEquals(NetworkState.FAIL, fakeViewModel.networkState.value)
+        assertEquals("네트워크 오류", fakeViewModel.snackBarMessage.value)
+    }
 
+    @Test
+    fun followCorrectTest() {
+        //When
+        viewModel.follow("")
+
+        //Then
+        assertEquals(NetworkState.SUCCESS, viewModel.networkState.value)
+    }
+
+    @Test
+    fun followErrorTest() {
+        //When
+        fakeViewModel.follow("")
+
+        //Then
+        assertEquals(NetworkState.FAIL, fakeViewModel.networkState.value)
+        assertEquals("이미 팔로우한 사용자입니다.", fakeViewModel.snackBarMessage.value)
+    }
+
+    @Test
+    fun unfollowCorrectTest() {
+        //When
+        viewModel.unfollow("")
+
+        //Then
+        assertEquals(NetworkState.SUCCESS, viewModel.networkState.value)
+    }
+
+    @Test
+    fun unfollowErrorTest() {
+        //When
+        fakeViewModel.unfollow("")
+
+        //Then
+        assertEquals(NetworkState.FAIL, fakeViewModel.networkState.value)
+        assertEquals("팔로우하지 않은 사용자입니다.", fakeViewModel.snackBarMessage.value)
     }
 
     @Test
     fun refreshTest() {
-        //Given
-        val old = viewModel.recipes.value
-
         //When
-        //네트워크 요청
+        viewModel.getFollowingRecipes()
 
         //Then
-        //기존 데이터와 개수가 동일한지 확인?
+        assertNotEquals(NetworkState.LOADING, viewModel.networkState.value)
     }
 }

@@ -4,34 +4,18 @@ import com.youcancook.gobong.model.RegisterUser
 import com.youcancook.gobong.model.UserToken
 import com.youcancook.gobong.model.datasource.UserDataSource
 
-class UserRepository(
-    private val userDataSource: UserDataSource,
-) {
+interface UserRepository {
 
-    suspend fun makeTemporaryToken(): String {
-        return userDataSource.requestTemporaryToken()
-    }
+    suspend fun makeTemporaryToken(): String
 
-    suspend fun makeAccessToken(refreshToken: String): String {
-        return userDataSource.requestAccessToken(refreshToken)
-    }
+    suspend fun makeAccessToken(refreshToken: String): String
 
-    suspend fun login() {
+    suspend fun login()
 
-    }
+    suspend fun register(registerUser: RegisterUser): UserToken
 
-    suspend fun register(registerUser: RegisterUser): UserToken {
-        return userDataSource.requestRegister(registerUser)
+    suspend fun follow(userId: String)
 
-    }
-
-    suspend fun follow(userId:String){
-        userDataSource.requestFollow(userId)
-    }
-
-    suspend fun unfollow(userId:String){
-        userDataSource.requestUnfollow(userId)
-    }
-
+    suspend fun unfollow(userId: String)
 
 }

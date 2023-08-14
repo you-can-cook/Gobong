@@ -11,6 +11,7 @@ import com.youcancook.gobong.databinding.ActivityRoutingBinding
 import com.youcancook.gobong.model.UserToken
 import com.youcancook.gobong.ui.base.GoBongActivity
 import com.youcancook.gobong.ui.base.NetworkActivity
+import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.ui.login.LoginActivity
 import com.youcancook.gobong.ui.login.UserViewModel
 import com.youcancook.gobong.util.ACCESS_TOKEN
@@ -28,17 +29,27 @@ class RoutingActivity :
         RoutingViewModel(appContainer.userRepository)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
+        override fun onSuccess() {
 
-        if (isTokenExist().not()) {
+        }
+
+        override fun onFail() {
+            //REFRESH TOKEN 만료
             val intent = Intent(this@RoutingActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        onFail = {
-            //REFRESH TOKEN 만료
+        override fun onDone() {
+        }
+
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (isTokenExist().not()) {
             val intent = Intent(this@RoutingActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()

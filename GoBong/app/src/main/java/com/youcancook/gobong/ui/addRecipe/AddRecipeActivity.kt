@@ -23,13 +23,30 @@ import com.youcancook.gobong.model.RecipeStepAdded
 import com.youcancook.gobong.ui.ImageActivity
 import com.youcancook.gobong.ui.addRecipe.bottom.RecipeStepBottomFragment
 import com.youcancook.gobong.ui.base.GoBongActivity
+import com.youcancook.gobong.ui.base.NetworkActivity
+import com.youcancook.gobong.ui.base.NetworkStateListener
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class AddRecipeActivity : GoBongActivity<ActivityAddRecipeBinding>(R.layout.activity_add_recipe) {
+class AddRecipeActivity :
+    NetworkActivity<ActivityAddRecipeBinding, AddRecipeViewModel>(R.layout.activity_add_recipe) {
     private var isEdit = false
     private var editId = 0L
-    private val addRecipeViewModel: AddRecipeViewModel by viewModels()
+    override val viewModel: AddRecipeViewModel by lazy {
+        AddRecipeViewModel(appContainer.goBongRepository)
+    }
+    override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
+        override fun onSuccess() {
+            finish()
+        }
+
+        override fun onFail() {
+        }
+
+        override fun onDone() {
+        }
+
+    }
 
     private var imagePickActivityLauncher: ActivityResultLauncher<Intent>? = null
     private val addStepBottomSheet = RecipeStepBottomFragment()
@@ -38,9 +55,9 @@ class AddRecipeActivity : GoBongActivity<ActivityAddRecipeBinding>(R.layout.acti
                 //TODO 빈 값이면 리턴
                 if (isEdit) {
                     val view = it as RecipeStepAdded
-                    addRecipeViewModel.replaceNewRecipeStep(view.copy(id = editId))
+                    viewModel.replaceNewRecipeStep(view.copy(id = editId))
                 } else {
-                    addRecipeViewModel.addNewRecipeStep(it)
+                    viewModel.addNewRecipeStep(it)
                 }
                 isEdit = false
             }
@@ -77,8 +94,7 @@ class AddRecipeActivity : GoBongActivity<ActivityAddRecipeBinding>(R.layout.acti
         super.onCreate(savedInstanceState)
 
         binding.run {
-            vm = addRecipeViewModel
-            lifecycleOwner = this@AddRecipeActivity
+            vm = viewModel
         }
 
         imagePickActivityLauncher =
@@ -86,10 +102,15 @@ class AddRecipeActivity : GoBongActivity<ActivityAddRecipeBinding>(R.layout.acti
                 if (result.resultCode == RESULT_OK) {
                     val imageData = result.data?.getByteArrayExtra(ImageActivity.IMAGE_DATA_TAG)
                         ?: return@registerForActivityResult
-                    addRecipeViewModel.setThumbnailByteArray(imageData)
+                    viewModel.setThumbnailByteArray(imageData)
                 }
             }
 
+        initListeners()
+
+    }
+
+    private fun initListeners() {
         binding.run {
             rootLayout.setOnClickListener {
                 addIngredientEditText.clearFocus()
@@ -107,7 +128,7 @@ class AddRecipeActivity : GoBongActivity<ActivityAddRecipeBinding>(R.layout.acti
                     val view = it as Chip
                     view.text.toString()
                 }.toList()
-                addRecipeViewModel.uploadNewRecipePost(ingredients)
+                viewModel.uploadNewRecipePost(ingredients)
             }
 
             thumbnailImageView.setOnClickListener {
@@ -121,7 +142,7 @@ class AddRecipeActivity : GoBongActivity<ActivityAddRecipeBinding>(R.layout.acti
 
             addIngredientEditText.setOnFocusChangeListener { v, hasFocus ->
                 if (hasFocus.not()) {
-                    val oldText = addRecipeViewModel.getIngredientInputText()
+                    val oldText = viewModel.getIngredientInputText()
                     if (oldText.isNotEmpty()) {
                         ingredientGroup.addIngredient(oldText)
                         addIngredientEditText.text.clear()
@@ -132,31 +153,11 @@ class AddRecipeActivity : GoBongActivity<ActivityAddRecipeBinding>(R.layout.acti
 
             levelGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
                 val view = findViewById<Button>(checkedId)
-                addRecipeViewModel.setLevel(view.text.toString())
+                viewModel.setLevel(view.text.toString())
             }
 
             recyclerView.adapter = recipeAdapter
 
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                addRecipeViewModel.snackBarMessage.collectLatest {
-                    if (it.isNotEmpty()) {
-                        Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                addRecipeViewModel.isSavedSuccess.collectLatest {
-                    if (it) {
-                        finish()
-                    }
-                }
-            }
         }
     }
 
