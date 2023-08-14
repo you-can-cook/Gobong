@@ -1,8 +1,6 @@
 package com.youcancook.gobong.model
 
 import com.youcancook.gobong.model.network.dto.RegisterDTO
-import com.youcancook.gobong.model.network.dto.RegisterWithProfileDTO
-import com.youcancook.gobong.model.network.dto.RegisterWithoutProfileImageDTO
 
 data class User(
     val profileUrl: String = "",
@@ -35,21 +33,12 @@ data class UserToken(
     val refreshToken: String,
 )
 
-fun RegisterUser.toRegisterWithProfileDTO(): RegisterDTO {
-    return RegisterWithProfileDTO(
+fun RegisterUser.toRegisterDTO(): RegisterDTO {
+    return RegisterDTO(
         nickname,
         provider,
         oAuthId,
         temporaryToken,
-        profileImageURL ?: ""
-    )
-}
-
-fun RegisterUser.toRegisterWithoutProfileImageDTO(): RegisterWithoutProfileImageDTO {
-    return RegisterWithoutProfileImageDTO(
-        nickname,
-        provider,
-        oAuthId,
-        temporaryToken
+        profileImageURL
     )
 }

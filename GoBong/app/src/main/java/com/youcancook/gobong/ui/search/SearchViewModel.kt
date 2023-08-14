@@ -3,7 +3,7 @@ package com.youcancook.gobong.ui.search
 import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Filter
-import com.youcancook.gobong.model.repository.GoBongRepository
+import com.youcancook.gobong.model.repository.GoBongRepositoryImpl
 import com.youcancook.gobong.ui.base.NetworkViewModel
 import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class SearchViewModel(
-    private val goBongRepository: GoBongRepository,
+    private val goBongRepository: GoBongRepositoryImpl,
 ) : NetworkViewModel() {
 
     private val _filter = MutableStateFlow(Filter.createEmpty())

@@ -23,8 +23,7 @@ abstract class NetworkActivity<T : ViewDataBinding, VM : NetworkViewModel>(
 
     abstract val viewModel: VM
 
-    var onSuccess: () -> Unit = {}
-    var onFail: () -> Unit = {}
+    abstract val onNetworkStateChange: NetworkStateListener
 
     private val loadingDialog: AlertDialog by lazy {
         val dialogView = DialogLoadingBinding.inflate(this.layoutInflater)
@@ -54,6 +53,7 @@ abstract class NetworkActivity<T : ViewDataBinding, VM : NetworkViewModel>(
                     when (it) {
                         NetworkState.DONE -> {
                             loadingDialog.dismiss()
+                            onNetworkStateChange.onDone()
                         }
 
                         NetworkState.LOADING -> {
@@ -62,14 +62,20 @@ abstract class NetworkActivity<T : ViewDataBinding, VM : NetworkViewModel>(
 
                         NetworkState.SUCCESS -> {
                             loadingDialog.dismiss()
-                            onSuccess()
+                            onNetworkStateChange.onSuccess()
                         }
+
                         NetworkState.FAIL -> {
                             loadingDialog.dismiss()
-                            onFail()
+                            onNetworkStateChange.onFail()
                         }
-                        NetworkState.TOKEN_EXPIRED->{
-                            Toast.makeText(this@NetworkActivity,"시간이 지나 앱을 재실행합니다",Toast.LENGTH_SHORT).show()
+
+                        NetworkState.TOKEN_EXPIRED -> {
+                            Toast.makeText(
+                                this@NetworkActivity,
+                                "시간이 지나 앱을 재실행합니다",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             val intent = packageManager.getLaunchIntentForPackage(packageName)
                             val componentName = intent!!.component
                             val mainIntent = Intent.makeRestartActivityTask(componentName)

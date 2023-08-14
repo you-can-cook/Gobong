@@ -1,17 +1,16 @@
 package com.youcancook.gobong.ui.detail
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.RecipeStep
-import com.youcancook.gobong.model.repository.GoBongRepository
+import com.youcancook.gobong.model.repository.GoBongRepositoryImpl
 import com.youcancook.gobong.ui.base.NetworkViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
-    private val goBongRepository: GoBongRepository,
+    private val goBongRepository: GoBongRepositoryImpl,
 ) : NetworkViewModel() {
     private val _isMine = MutableStateFlow(false)
     val isMine: StateFlow<Boolean> get() = _isMine

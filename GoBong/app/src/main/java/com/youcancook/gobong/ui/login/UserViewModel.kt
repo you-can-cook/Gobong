@@ -1,10 +1,9 @@
 package com.youcancook.gobong.ui.login
 
-import android.media.session.MediaSession.Token
 import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.model.RegisterUser
 import com.youcancook.gobong.model.UserToken
-import com.youcancook.gobong.model.repository.UserRepository
+import com.youcancook.gobong.model.repository.UserRepositoryImpl
 import com.youcancook.gobong.ui.base.NetworkViewModel
 import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class UserViewModel(
-    private val repository: UserRepository,
+    private val repository: UserRepositoryImpl,
 ) : NetworkViewModel() {
 
     private val _loginAuth = MutableStateFlow(LoginAuth("", "", ""))

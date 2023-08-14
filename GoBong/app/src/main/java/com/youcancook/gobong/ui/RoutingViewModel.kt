@@ -1,9 +1,8 @@
 package com.youcancook.gobong.ui
 
 import androidx.lifecycle.viewModelScope
-import com.youcancook.gobong.model.repository.UserRepository
+import com.youcancook.gobong.model.repository.UserRepositoryImpl
 import com.youcancook.gobong.ui.base.NetworkViewModel
-import com.youcancook.gobong.ui.login.UserViewModel
 import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,7 +10,7 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class RoutingViewModel(
-    private val userRepository: UserRepository,
+    private val userRepository: UserRepositoryImpl,
 ) : NetworkViewModel() {
 
     private val _accessToken = MutableStateFlow("")
