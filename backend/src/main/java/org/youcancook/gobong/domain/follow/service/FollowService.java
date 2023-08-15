@@ -13,6 +13,7 @@ import org.youcancook.gobong.domain.user.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class FollowService {
 
     private final UserRepository userRepository;
@@ -51,4 +52,14 @@ public class FollowService {
                 .orElseThrow(NotFollowingException::new);
         followRepository.delete(follow);
     }
+
+    public boolean isFollowing(Long followerId, Long followeeId){
+        User follower = userRepository.findById(followerId)
+                .orElseThrow(UserNotFoundException::new);
+        User followee = userRepository.findById(followeeId)
+                .orElseThrow(UserNotFoundException::new);
+
+        return followRepository.existsByFollowerAndFollowee(follower, followee);
+    }
+
 }
