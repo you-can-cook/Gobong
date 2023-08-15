@@ -43,6 +43,10 @@ public enum ErrorCode {
     RATING_RANGE_OUT_OF_BOUNDS(HttpStatus.BAD_REQUEST, "R201", "평점 범위는 1부터 5 사이입니다."),
     RATING_NOT_FOUND(HttpStatus.NOT_FOUND, "R204", "평점을 찾을 수 없습니다."),
 
+    // Refresh Token
+    REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "R304", "refresh 토큰을 찾을 수 없습니다."),
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "R301", "유효하지 않은 refresh 토큰입니다."),
+
     // Bookmarks
     BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "B004", "북마크에 담긴 레시피가 아닙니다."),
     ALREADY_BOOKMARKED_RECIPE(HttpStatus.BAD_REQUEST, "B001", "이미 북마크로 등록한 레시피입니다."),
