@@ -16,9 +16,11 @@ class RoutingViewModel(
     val accessToken: StateFlow<String> get() = _accessToken
 
     fun getAccessToken(refreshToken: String) {
+        setNetworkState(NetworkState.LOADING)
         viewModelScope.launch {
             try {
                 getNewAccessToken(refreshToken)
+                setNetworkState(NetworkState.SUCCESS)
             } catch (e: Exception) {
                 setNetworkState(NetworkState.FAIL)
             }

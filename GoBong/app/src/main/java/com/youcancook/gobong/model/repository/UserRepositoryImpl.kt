@@ -1,5 +1,6 @@
 package com.youcancook.gobong.model.repository
 
+import com.youcancook.gobong.model.LoginUser
 import com.youcancook.gobong.model.RegisterUser
 import com.youcancook.gobong.model.UserToken
 import com.youcancook.gobong.model.datasource.UserDataSource
@@ -16,8 +17,8 @@ class UserRepositoryImpl(
         return userDataSource.requestAccessToken(refreshToken)
     }
 
-    override suspend fun login() {
-
+    override suspend fun login(user: LoginUser): UserToken {
+        return userDataSource.requestLogin(user)
     }
 
     override suspend fun register(registerUser: RegisterUser): UserToken {

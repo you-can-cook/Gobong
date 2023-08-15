@@ -4,18 +4,18 @@ import com.google.gson.annotations.SerializedName
 import com.youcancook.gobong.model.UserToken
 
 
-data class TemporaryTokenDTO(
+data class TemporaryTokenResponseDTO(
     @SerializedName("temporaryToken") val temporaryToken: String,
 )
 
-data class LoginDTO(
+data class LoginResponseDTO(
     @SerializedName("grantType") val grantType: String,
     @SerializedName("accessToken") val accessToken: String,
     @SerializedName("refreshToken") val refreshToken: String,
 )
 
 
-fun LoginDTO.toUserToken(): UserToken {
+fun LoginResponseDTO.toUserToken(): UserToken {
     return UserToken(
         accessToken,
         refreshToken
