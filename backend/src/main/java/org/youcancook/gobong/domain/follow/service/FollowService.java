@@ -3,8 +3,6 @@ package org.youcancook.gobong.domain.follow.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.youcancook.gobong.domain.follow.dto.response.FindFolloweeResponse;
-import org.youcancook.gobong.domain.follow.dto.response.FindFollowerResponse;
 import org.youcancook.gobong.domain.follow.entity.Follow;
 import org.youcancook.gobong.domain.follow.exception.AlreadyFollowingException;
 import org.youcancook.gobong.domain.follow.exception.NotFollowingException;
@@ -13,11 +11,8 @@ import org.youcancook.gobong.domain.user.entity.User;
 import org.youcancook.gobong.domain.user.exception.UserNotFoundException;
 import org.youcancook.gobong.domain.user.repository.UserRepository;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class FollowService {
 
     private final UserRepository userRepository;
