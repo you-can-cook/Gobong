@@ -46,7 +46,7 @@
                     <Button
                         android:id="@+id/followingButton"
                         style="@style/ThemeOverlay.GoBong.Button.Follow"
-                        isFollowSelected="@{vm.cardInfo.user.followed}"
+                        isFollowSelected="@{vm.user.followed}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"

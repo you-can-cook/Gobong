@@ -13,7 +13,6 @@ class OthersProfileViewModel(
     private val goBongRepository: GoBongRepositoryImpl,
     private val userRepository: UserRepositoryImpl,
 ) : ProfileViewModel(goBongRepository) {
-
     fun isUserFollowed(): Boolean {
         return getUserInfo().followed
     }
