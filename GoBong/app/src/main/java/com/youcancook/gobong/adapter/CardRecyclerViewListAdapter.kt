@@ -9,7 +9,6 @@ import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.UserProfile
 
 class CardRecyclerViewListAdapter(
-    val onItemClick: (Card) -> Unit,
     val onFollowClick: (UserProfile) -> Unit,
 ) :
     ListAdapter<Card, CardViewHolder>(diffUtil) {
@@ -22,7 +21,6 @@ class CardRecyclerViewListAdapter(
                 false
             ),
             this@CardRecyclerViewListAdapter,
-            onItemClick,
             onFollowClick
         )
     }

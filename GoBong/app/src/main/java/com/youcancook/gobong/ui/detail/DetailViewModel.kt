@@ -3,7 +3,9 @@ package com.youcancook.gobong.ui.detail
 import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.RecipeStep
+import com.youcancook.gobong.model.repository.GoBongRepository
 import com.youcancook.gobong.model.repository.GoBongRepositoryImpl
+import com.youcancook.gobong.model.repository.UserRepository
 import com.youcancook.gobong.model.repository.UserRepositoryImpl
 import com.youcancook.gobong.ui.base.NetworkViewModel
 import com.youcancook.gobong.util.NetworkState
@@ -12,8 +14,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
-    private val goBongRepository: GoBongRepositoryImpl,
-    private val userRepository: UserRepositoryImpl,
+    private val goBongRepository: GoBongRepository,
+    private val userRepository: UserRepository,
 ) : NetworkViewModel() {
     private val _isMine = MutableStateFlow(false)
     val isMine: StateFlow<Boolean> get() = _isMine
@@ -74,6 +76,23 @@ class DetailViewModel(
 
     fun getIsBookmarked() = _cardInfo.value.bookmarked
 
+    fun getCurrentRecipe(recipePostId: String) {
+        viewModelScope.launch {
+            setNetworkState(NetworkState.LOADING)
+            try {
+                requestCurrentRecipe(recipePostId)
+                setNetworkState(NetworkState.SUCCESS)
+            } catch (e: Exception) {
+                setNetworkState(NetworkState.FAIL)
+                setSnackBarMessage(e.message ?: "")
+            }
+        }
+    }
+
+    private suspend fun requestCurrentRecipe(recipePostId: String) {
+        _cardInfo.value = goBongRepository.getCurrentRecipe(recipePostId)
+    }
+
     fun activeRecipeStep(position: Int) {
         _activeRecipeStep.value = position
     }
@@ -85,13 +104,15 @@ class DetailViewModel(
                 requestBookmark(isBookmarked)
                 setNetworkState(NetworkState.SUCCESS)
             } catch (e: Exception) {
+                setNetworkState(NetworkState.FAIL)
                 setSnackBarMessage(e.message ?: "")
             }
         }
     }
 
-    private fun requestBookmark(isBookmarked: Boolean) {
+    private suspend fun requestBookmark(isBookmarked: Boolean) {
         goBongRepository.bookmarkRecipe(isBookmarked)
+        _cardInfo.value = _cardInfo.value.copy(bookmarked = isBookmarked)
     }
 
     fun deleteRecipePost() {
@@ -130,11 +151,11 @@ class DetailViewModel(
         }
     }
 
-    private fun requestReview() {
+    private suspend fun requestReview() {
         goBongRepository.reviewRecipe(_starCount.value)
     }
 
-    private fun requestUpdatedReview() {
+    private suspend fun requestUpdatedReview() {
         goBongRepository.reviewRecipe(_starCount.value)
     }
 

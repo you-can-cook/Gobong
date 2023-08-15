@@ -25,13 +25,10 @@ class SearchFragment :
     private var filterActivityLauncher: ActivityResultLauncher<Intent>? = null
 
     override val viewModel: SearchViewModel by lazy {
-        SearchViewModel(appContainer.goBongRepository,appContainer.userRepository)
+        SearchViewModel(appContainer.goBongRepository, appContainer.userRepository)
     }
 
-    private val gridAdapter = GridRecyclerViewListAdapter(3, onItemClick = {
-        val intent = Intent(requireContext(), DetailActivity::class.java)
-        startActivity(intent)
-    }, onFollowClick = {
+    private val gridAdapter = GridRecyclerViewListAdapter(3, onFollowClick = {
         if (it.followed) {
             viewModel.unfollow(it.nickname)
         } else {

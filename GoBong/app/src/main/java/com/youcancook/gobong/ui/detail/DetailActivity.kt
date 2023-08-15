@@ -103,6 +103,13 @@ class DetailActivity :
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        intent?.getStringExtra(RECIPE_ID)?.let {
+            viewModel.getCurrentRecipe(it)
+        }
+    }
+
     private fun initListeners() {
         binding.run {
             toolbar.setNavigationOnClickListener {
@@ -167,5 +174,9 @@ class DetailActivity :
                 deleteDialog.show()
             }
         }
+    }
+
+    companion object {
+        val RECIPE_ID = "recipeId"
     }
 }

@@ -3,6 +3,7 @@ package com.youcancook.gobong.ui.search
 import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Filter
+import com.youcancook.gobong.model.repository.GoBongRepository
 import com.youcancook.gobong.model.repository.GoBongRepositoryImpl
 import com.youcancook.gobong.model.repository.UserRepository
 import com.youcancook.gobong.model.repository.UserRepositoryImpl
@@ -13,8 +14,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
-    private val goBongRepository: GoBongRepositoryImpl,
-    private val userRepository: UserRepositoryImpl,
+    private val goBongRepository: GoBongRepository,
+    private val userRepository: UserRepository,
 ) : NetworkViewModel() {
 
     private val _filter = MutableStateFlow(Filter.createEmpty())
@@ -42,7 +43,6 @@ class SearchViewModel(
                 setNetworkState(NetworkState.FAIL)
                 setSnackBarMessage(e.message ?: "")
             }
-            finishNetwork()
         }
     }
 
@@ -51,7 +51,6 @@ class SearchViewModel(
     }
 
     fun setFilter(filter: Filter) {
-        println("Filter $filter")
         _filter.value = filter
         _filtered.value = _filter.value.isEmpty().not()
     }
@@ -76,7 +75,6 @@ class SearchViewModel(
                 setNetworkState(NetworkState.FAIL)
                 setSnackBarMessage(e.message ?: "")
             }
-            finishNetwork()
         }
     }
 

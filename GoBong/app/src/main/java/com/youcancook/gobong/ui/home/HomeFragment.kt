@@ -17,10 +17,7 @@ class HomeFragment : NetworkFragment<FragmentHomeBinding, HomeViewModel>(R.layou
         HomeViewModel(appContainer.goBongRepository, appContainer.userRepository)
     }
 
-    private val cardAdapter = CardRecyclerViewListAdapter(onItemClick = {
-        val intent = Intent(requireContext(), DetailActivity::class.java)
-        startActivity(intent)
-    }, onFollowClick = {
+    private val cardAdapter = CardRecyclerViewListAdapter(onFollowClick = {
         if (it.followed) {
             viewModel.unfollow(it.nickname)
         } else {

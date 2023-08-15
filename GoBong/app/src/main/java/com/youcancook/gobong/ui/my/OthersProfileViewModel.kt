@@ -10,8 +10,8 @@ import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.launch
 
 class OthersProfileViewModel(
-    private val goBongRepository: GoBongRepositoryImpl,
-    private val userRepository: UserRepositoryImpl,
+    private val goBongRepository: GoBongRepository,
+    private val userRepository: UserRepository,
 ) : ProfileViewModel(goBongRepository) {
     fun isUserFollowed(): Boolean {
         return getUserInfo().followed
@@ -21,13 +21,12 @@ class OthersProfileViewModel(
         viewModelScope.launch {
             setNetworkState(NetworkState.LOADING)
             try {
-                requestOthersInfo()
+                requestOthersInfo(userId)
                 setNetworkState(NetworkState.SUCCESS)
             } catch (e: Exception) {
                 setNetworkState(NetworkState.FAIL)
                 setSnackBarMessage(e.message ?: "")
             }
-            finishNetwork()
         }
     }
 
@@ -35,8 +34,10 @@ class OthersProfileViewModel(
         setUserInfo(user)
     }
 
-    private suspend fun requestOthersInfo() {
-        setUserInfo(User())
+    private suspend fun requestOthersInfo(userId: String) {
+        val response = goBongRepository.getUserRecipes(userId)
+        setUserInfo(response)
+        setUserRecipe(response.recipes)
     }
 
     fun follow() {
