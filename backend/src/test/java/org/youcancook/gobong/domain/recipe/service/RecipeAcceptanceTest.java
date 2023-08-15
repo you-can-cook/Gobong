@@ -95,4 +95,22 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
                 .statusCode(HttpStatus.OK.value())
                 .extract();
     }
+
+    @Test
+    @DisplayName("레시피 단건 조회를 성공한다.")
+    public void getRecipe(){
+        String accessToken = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
+        CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "쉽게 만드는 주먹밥", List.of("밥", "김"), "쉬워요", null, List.of(
+                new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, 1L),
+                new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, 2L)
+        ));
+        Long recipeId = AcceptanceUtils.createDummyRecipe(accessToken, request).as(CreateRecipeResponse.class).getId();
+
+        RestAssured.given().log().all()
+                .auth().oauth2(accessToken)
+                .when().get("/api/recipes/" + recipeId)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
+    }
 }
