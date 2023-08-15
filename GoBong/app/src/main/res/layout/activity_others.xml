@@ -7,13 +7,13 @@
 
         <variable
             name="vm"
-            type="com.youcancook.gobong.ui.my.MyProfileViewModel" />
+            type="com.youcancook.gobong.ui.my.OthersProfileViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.detail.DetailActivity">
+        tools:context=".ui.my.other.OthersActivity">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -37,12 +37,22 @@
                     android:layout_height="match_parent"
                     app:layout_collapseMode="pin"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-                    app:menu="@menu/toolbar_my_menu"
                     app:navigationIcon="@drawable/selector_toggle"
                     app:title="쩝쩝박사"
                     app:titleCentered="true"
                     app:titleTextAppearance="@style/TextAppearance.GoBong.Bold20"
-                    tools:text="쩝쩝박사" />
+                    tools:text="쩝쩝박사">
+
+                    <Button
+                        android:id="@+id/followingButton"
+                        style="@style/ThemeOverlay.GoBong.Button.Follow"
+                        isFollowSelected="@{vm.cardInfo.user.followed}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="16dp"
+                        android:text="팔로우" />
+                </com.google.android.material.appbar.MaterialToolbar>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 

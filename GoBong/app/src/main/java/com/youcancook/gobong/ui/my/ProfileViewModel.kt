@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class MyViewModel(
+open class ProfileViewModel(
     private val goBongRepository: GoBongRepositoryImpl,
 ) : NetworkViewModel() {
 
@@ -20,21 +20,14 @@ class MyViewModel(
     private val _recipes = MutableStateFlow<List<Card>>(emptyList())
     val recipes: StateFlow<List<Card>> get() = _recipes
 
-    fun getMyInfo() {
-        viewModelScope.launch {
-            setNetworkState(NetworkState.LOADING)
-            try {
-                requestMyInfo()
-                setNetworkState(NetworkState.SUCCESS)
-            } catch (e: Exception) {
-                setNetworkState(NetworkState.FAIL)
-                setSnackBarMessage(e.message ?: "")
-            }
-            finishNetwork()
-        }
-    }
-
-    private fun requestMyInfo() {
+    fun setUserInfo(user: User) {
 
     }
+
+    fun getUserInfo() = _user.value
+
+    fun setUserRecipe(recipes: List<Card>) {
+        _recipes.value = recipes
+    }
+
 }

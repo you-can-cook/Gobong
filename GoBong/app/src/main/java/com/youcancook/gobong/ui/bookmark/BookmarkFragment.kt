@@ -2,6 +2,7 @@ package com.youcancook.gobong.ui.bookmark
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import androidx.recyclerview.widget.GridLayoutManager
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.GridItemDecorator
@@ -22,8 +23,10 @@ class BookmarkFragment :
     }, onFollowClick = {
         if (it.followed) {
             viewModel.unfollow(it.nickname)
+            ( it as Button).text = "팔로우"
         } else {
             viewModel.follow(it.nickname)
+            ( it as Button).text = "팔로잉"
         }
     })
     private val gridItemDecorator =
