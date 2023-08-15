@@ -18,10 +18,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class RegisterActivity :
-    NetworkActivity<ActivityRegisterBinding, UserViewModel>(R.layout.activity_register) {
+    NetworkActivity<ActivityRegisterBinding, RegisterUserViewModel>(R.layout.activity_register) {
 
-    override val viewModel: UserViewModel by lazy {
-        UserViewModel(appContainer.userRepository)
+    override val viewModel: RegisterUserViewModel by lazy {
+        RegisterUserViewModel(appContainer.userRepository)
     }
 
     override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {

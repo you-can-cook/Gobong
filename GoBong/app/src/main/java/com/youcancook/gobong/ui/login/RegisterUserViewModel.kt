@@ -1,17 +1,19 @@
 package com.youcancook.gobong.ui.login
 
 import androidx.lifecycle.viewModelScope
+import com.youcancook.gobong.model.RegisterUser
 import com.youcancook.gobong.model.UserToken
 import com.youcancook.gobong.model.repository.UserRepositoryImpl
-import com.youcancook.gobong.ui.base.NetworkViewModel
 import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel(
-    private val repository: UserRepositoryImpl,
-) : NetworkViewModel() {
+class RegisterUserViewModel(
+    private val userRepository: UserRepositoryImpl,
+) : UserViewModel(userRepository) {
+
+    private val _loginAuth = MutableStateFlow(LoginAuth("", "", ""))
 
     private val _temporaryToken = MutableStateFlow("")
     val temporaryToken: StateFlow<String> get() = _temporaryToken
@@ -21,9 +23,11 @@ class LoginViewModel(
 
     private val _token = MutableStateFlow(UserToken("", ""))
 
-    fun getTemporaryToken() = _temporaryToken.value
+    fun setLoginAuth(auth: LoginAuth) {
+        _loginAuth.value = auth
+    }
 
-    fun getToken() = _token.value
+    fun getTemporaryToken() = _temporaryToken.value
 
     fun makeTemporaryToken() {
         viewModelScope.launch {
@@ -40,7 +44,7 @@ class LoginViewModel(
     }
 
     private suspend fun requestTemporaryToken() {
-        _temporaryToken.value = repository.makeTemporaryToken()
+        _temporaryToken.value = userRepository.makeTemporaryToken()
     }
 
     fun login() {
@@ -59,6 +63,38 @@ class LoginViewModel(
 
     private suspend fun requestLogin() {
 
+    }
+
+    fun registerNickname() {
+        if (nicknameInput.value.isEmpty()) {
+            setSnackBarMessage("닉네임을 입력하세요")
+            return
+        }
+
+        viewModelScope.launch {
+            setNetworkState(NetworkState.LOADING)
+            try {
+                registerUser()
+                setNetworkState(NetworkState.SUCCESS)
+            } catch (e: Exception) {
+                setSnackBarMessage(e.message ?: "")
+                setNetworkState(NetworkState.FAIL)
+            }
+            setNetworkState(NetworkState.DONE)
+        }
+    }
+
+    private suspend fun registerUser() {
+        val user = getUser()
+        val registerUser = RegisterUser(
+            user.nickname,
+            _loginAuth.value.provider,
+            _loginAuth.value.oauthId,
+            _loginAuth.value.temporaryToken,
+            user.profileUrl
+        )
+        val response = userRepository.register(registerUser)
+        println("response $response")
     }
 
     fun loading() = setNetworkState(NetworkState.LOADING)

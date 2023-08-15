@@ -11,10 +11,10 @@
         android:layout_height="wrap_content"
         android:importantForAccessibility="no"
         android:padding="@dimen/keyline_x4"
+        android:src="@drawable/icon_left_arrow"
         app:layout_constraintBottom_toBottomOf="@id/goBongLogo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/goBongLogo"
-        android:src="@drawable/icon_left_arrow" />
+        app:layout_constraintTop_toTopOf="@+id/goBongLogo" />
 
     <TextView
         android:id="@+id/saveBtn"
@@ -34,11 +34,10 @@
         android:layout_height="80dp"
         android:layout_marginTop="16dp"
         android:importantForAccessibility="no"
-        android:src="@drawable/icon_star"
+        android:src="@mipmap/ic_launcher"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/primary_color" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/rotateText"

@@ -18,9 +18,9 @@ import com.youcancook.gobong.util.ACCESS_TOKEN_KEY
 import com.youcancook.gobong.util.REFRESH_TOKEN_KEY
 
 class LoginActivity :
-    NetworkActivity<ActivityLoginBinding, LoginViewModel>(R.layout.activity_login) {
-    override val viewModel: LoginViewModel by lazy {
-        LoginViewModel(appContainer.userRepository)
+    NetworkActivity<ActivityLoginBinding, RegisterUserViewModel>(R.layout.activity_login) {
+    override val viewModel: RegisterUserViewModel by lazy {
+        RegisterUserViewModel(appContainer.userRepository)
     }
     override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
         override fun onSuccess() {
