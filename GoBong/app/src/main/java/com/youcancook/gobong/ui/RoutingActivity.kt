@@ -3,6 +3,7 @@ package com.youcancook.gobong.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.content.edit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -29,6 +30,7 @@ class RoutingActivity :
     override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
         override fun onSuccess() {
             //토큰 발급 성공
+            saveToken()
             val intent = Intent(this@RoutingActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
@@ -50,7 +52,6 @@ class RoutingActivity :
         super.onCreate(savedInstanceState)
 
         if (isTokenExist().not()) {
-            println("isTokenExist")
             val intent = Intent(this@RoutingActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
@@ -60,21 +61,31 @@ class RoutingActivity :
 
     private fun isTokenExist(): Boolean {
         val token = getSharedPreferences(
-            TOKEN_KEY, Context.MODE_PRIVATE
+            TOKEN_KEY,
+            Context.MODE_PRIVATE
         )
 
         val accessToken = token.getString(ACCESS_TOKEN_KEY, "")
 
-
         if (accessToken.isNullOrEmpty()) return false
-        
-        println("accessToken $ACCESS_TOKEN ")
+
         viewModel.getAccessToken(
             token.getString(REFRESH_TOKEN_KEY, "") ?: ""
         )
 
-        ACCESS_TOKEN = token.getString(ACCESS_TOKEN_KEY, "") ?: ""
-        REFRESH_TOKEN = token.getString(REFRESH_TOKEN_KEY, "") ?: ""
         return true
+    }
+
+    private fun saveToken() {
+        val token = viewModel.getToken()
+        getSharedPreferences(
+            TOKEN_KEY,
+            Context.MODE_PRIVATE
+        ).edit {
+            putString(ACCESS_TOKEN_KEY, token.accessToken)
+            putString(REFRESH_TOKEN_KEY, token.refreshToken)
+            ACCESS_TOKEN = token.accessToken
+            REFRESH_TOKEN = token.refreshToken
+        }
     }
 }

@@ -88,6 +88,7 @@ class RegisterActivity :
     }
 
     private fun saveToken(accessToken: String, refreshToken: String) {
+        println("saveToken $accessToken $refreshToken")
         getPreferences(Context.MODE_PRIVATE).edit {
             putString(ACCESS_TOKEN_KEY, accessToken)
             putString(REFRESH_TOKEN_KEY, refreshToken)
