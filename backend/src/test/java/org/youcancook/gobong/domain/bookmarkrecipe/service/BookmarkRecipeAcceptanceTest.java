@@ -21,7 +21,7 @@ public class BookmarkRecipeAcceptanceTest extends AcceptanceTest {
         String token2 = AcceptanceUtils.signUpAndGetToken("배고파요", "KAKAO", "1234");
 
         CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "주먹밥을 만들어요", List.of("밥", "김"), "쉬워요", null,
-                List.of(new UploadRecipeDetailRequest("주먹모양으로 쥐세요", null, 15, 0L)));
+                List.of(new UploadRecipeDetailRequest("주먹모양으로 쥐세요", null, 15, List.of())));
         Long recipeId = AcceptanceUtils.createDummyRecipe(token1, request).as(CreateRecipeResponse.class).getId();
 
         RestAssured.given().log().all()
@@ -39,7 +39,7 @@ public class BookmarkRecipeAcceptanceTest extends AcceptanceTest {
         String token2 = AcceptanceUtils.signUpAndGetToken("배고파요", "KAKAO", "1234");
 
         CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "주먹밥을 만들어요", List.of("밥", "김"), "쉬워요", null,
-                List.of(new UploadRecipeDetailRequest("주먹모양으로 쥐세요", null, 15, 0L)));
+                List.of(new UploadRecipeDetailRequest("주먹모양으로 쥐세요", null, 15, List.of())));
         Long recipeId = AcceptanceUtils.createDummyRecipe(token1, request).as(CreateRecipeResponse.class).getId();
 
         RestAssured.given().log().all()
