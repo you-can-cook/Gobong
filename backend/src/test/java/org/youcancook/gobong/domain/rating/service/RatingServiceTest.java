@@ -1,6 +1,5 @@
 package org.youcancook.gobong.domain.rating.service;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,8 +16,8 @@ import org.youcancook.gobong.domain.user.repository.UserRepository;
 import org.youcancook.gobong.global.util.service.ServiceTest;
 
 import java.util.List;
-import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -40,19 +39,29 @@ class RatingServiceTest {
                 .oAuthProvider(OAuthProvider.GOOGLE).build();
         User user2 = User.builder().nickname("쩝쩝박사123").oAuthId("1234")
                 .oAuthProvider(OAuthProvider.GOOGLE).build();
+        User user3 = User.builder().nickname("쩝쩝학사").oAuthId("12345")
+                .oAuthProvider(OAuthProvider.GOOGLE).build();
         Recipe recipe = Recipe.builder().user(user)
                 .title("주먹밥").difficulty(Difficulty.EASY).build();
 
         userRepository.save(user);
         Long user2Id = userRepository.save(user2).getId();
+        Long user3Id = userRepository.save(user3).getId();
 
         Long recipeId = recipeRepository.save(recipe).getId();
 
         ratingService.createRating(user2Id, recipeId, 3);
+        ratingService.createRating(user3Id, recipeId, 5);
+
         List<Rating> actual = ratingRepository.findAll();
 
-        Assertions.assertThat(actual).isNotEmpty();
-        Assertions.assertThat(actual.get(0).getScore()).isEqualTo(3);
+        assertThat(actual).isNotEmpty();
+        assertThat(actual.stream().mapToDouble(Rating::getScore).average().orElse(0.0)).isEqualTo(4.0);
+
+        List<Recipe> recipeActual = recipeRepository.findAll();
+        assertThat(recipeActual).isNotEmpty();
+        assertThat(recipeActual.get(0).getAverageRating()).isEqualTo(4.0);
+
     }
 
     @Test
@@ -62,22 +71,30 @@ class RatingServiceTest {
                 .oAuthProvider(OAuthProvider.GOOGLE).build();
         User user2 = User.builder().nickname("쩝쩝박사123").oAuthId("1234")
                 .oAuthProvider(OAuthProvider.GOOGLE).build();
+        User user3 = User.builder().nickname("쩝쩝학사").oAuthId("12345")
+                .oAuthProvider(OAuthProvider.GOOGLE).build();
         Recipe recipe = Recipe.builder().user(user)
                 .title("주먹밥").difficulty(Difficulty.EASY).build();
 
         userRepository.save(user);
         Long user2Id = userRepository.save(user2).getId();
+        Long user3Id = userRepository.save(user3).getId();
 
         Long recipeId = recipeRepository.save(recipe).getId();
 
-        Rating rating = new Rating(user2, recipe, 3);
-        Long ratingId = ratingRepository.save(rating).getId();
+        ratingService.createRating(user2Id, recipeId, 3);
+        ratingService.createRating(user3Id, recipeId, 5);
 
         ratingService.updateRating(user2Id, recipeId, 5);
-        Optional<Rating> actual = ratingRepository.findById(ratingId);
 
-        Assertions.assertThat(actual).isNotEmpty();
-        Assertions.assertThat(actual.get().getScore()).isEqualTo(5);
+        List<Rating> actual = ratingRepository.findAll();
+
+        assertThat(actual).isNotEmpty();
+        assertThat(actual.stream().mapToDouble(Rating::getScore).average().orElse(0.0)).isEqualTo(5.0);
+
+        List<Recipe> recipeActual = recipeRepository.findAll();
+        assertThat(recipeActual).isNotEmpty();
+        assertThat(recipeActual.get(0).getAverageRating()).isEqualTo(5.0);
     }
 
     @Test
