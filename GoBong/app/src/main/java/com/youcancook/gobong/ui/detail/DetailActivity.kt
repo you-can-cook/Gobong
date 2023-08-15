@@ -1,6 +1,8 @@
 package com.youcancook.gobong.ui.detail
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
@@ -13,6 +15,7 @@ import com.youcancook.gobong.adapter.RecipeListAdapter
 import com.youcancook.gobong.databinding.ActivityDetailBinding
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
+import com.youcancook.gobong.ui.my.other.OthersActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -111,12 +114,19 @@ class DetailActivity :
                 viewModel.bookmarkRecipe(it.isSelected)
             }
 
+            profileImageView.setOnClickListener {
+                val intent = Intent(this@DetailActivity, OthersActivity::class.java)
+                binding.root.context.startActivity(intent)
+            }
+
             followingButton.setOnClickListener {
                 it.isSelected = it.isSelected.not()
                 if (it.isSelected) {
                     viewModel.follow()
+                    (it as Button).text = "팔로잉"
                 } else {
                     viewModel.unfollow()
+                    (it as Button).text = "팔로우"
                 }
             }
 

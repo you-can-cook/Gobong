@@ -12,12 +12,13 @@ import com.youcancook.gobong.ui.base.NetworkFragment
 import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.ui.detail.DetailActivity
 import com.youcancook.gobong.ui.my.follow.FollowActivity
+import com.youcancook.gobong.ui.my.other.OthersActivity
 import com.youcancook.gobong.ui.my.setting.SettingActivity
 
-class MyFragment : NetworkFragment<FragmentMyBinding, MyViewModel>(R.layout.fragment_my) {
+class MyFragment : NetworkFragment<FragmentMyBinding, MyProfileViewModel>(R.layout.fragment_my) {
 
-    override val viewModel: MyViewModel by lazy {
-        MyViewModel(appContainer.goBongRepository)
+    override val viewModel: MyProfileViewModel by lazy {
+        MyProfileViewModel(appContainer.goBongRepository)
     }
 
     private val gridAdapter = GridRecyclerViewListAdapter(3, onItemClick = {

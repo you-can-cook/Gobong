@@ -9,6 +9,7 @@ data class User(
     val recipe: String = "0",
     val follower: String = "0",
     val following: String = "0",
+    val followed: Boolean = false,
 )
 
 data class UserProfile(
