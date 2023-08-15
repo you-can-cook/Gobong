@@ -1,5 +1,6 @@
 package com.youcancook.gobong.fake
 
+import com.youcancook.gobong.model.LoginUser
 import com.youcancook.gobong.model.RegisterUser
 import com.youcancook.gobong.model.UserToken
 import com.youcancook.gobong.model.repository.UserRepository
@@ -13,7 +14,7 @@ class FakeUserRepository : UserRepository {
         throw Exception("네트워크 오류")
     }
 
-    override suspend fun login() {
+    override suspend fun login(user: LoginUser): UserToken {
         throw Exception("네트워크 오류")
     }
 

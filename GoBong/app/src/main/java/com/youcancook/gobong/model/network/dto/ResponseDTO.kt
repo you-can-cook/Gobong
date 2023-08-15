@@ -14,6 +14,10 @@ data class LoginResponseDTO(
     @SerializedName("refreshToken") val refreshToken: String,
 )
 
+data class ImageUrlResponseDTO(
+    @SerializedName("imageUrl") val imageUrl: String,
+)
+
 
 fun LoginResponseDTO.toUserToken(): UserToken {
     return UserToken(
