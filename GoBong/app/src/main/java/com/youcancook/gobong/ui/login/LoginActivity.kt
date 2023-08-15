@@ -5,17 +5,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.core.content.edit
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityLoginBinding
+import com.youcancook.gobong.model.LoginUser
 import com.youcancook.gobong.ui.MainActivity
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.util.ACCESS_TOKEN_KEY
 import com.youcancook.gobong.util.REFRESH_TOKEN_KEY
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class LoginActivity :
     NetworkActivity<ActivityLoginBinding, RegisterUserViewModel>(R.layout.activity_login) {
@@ -51,9 +57,15 @@ class LoginActivity :
 
         binding.vm = viewModel
 
-        initListeners()
-
         viewModel.makeTemporaryToken()
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.temporaryToken.collectLatest {
+                    initListeners()
+                }
+            }
+        }
     }
 
     private fun initListeners() {
@@ -119,19 +131,27 @@ class LoginActivity :
 
     private fun successKakaoLogin() {
         provider = KAKAO
-        getKakaoUserId()
-        viewModel.login()
+        getKakaoLoginUser()
     }
 
-    private fun getKakaoUserId() {
+    private fun getKakaoLoginUser() {
         UserApiClient.instance.me { user, error ->
             if (error != null || user == null) {
                 return@me
             } else {
+                println("userid $user")
                 userId = user.id.toString()
+                viewModel.setLoginUser(makeLoginUser())
+                viewModel.login()
             }
         }
     }
+
+    private fun makeLoginUser() = LoginUser(
+        provider ?: "",
+        userId.toString(),
+        viewModel.getTemporaryToken()
+    )
 
     private fun saveToken() {
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
@@ -144,11 +164,7 @@ class LoginActivity :
     }
 
     private fun moveToRegister() {
-        val auth = LoginAuth(
-            provider ?: "",
-            userId.toString(),
-            viewModel.getTemporaryToken()
-        )
+        val auth = makeLoginUser()
         val intent =
             Intent(this@LoginActivity, RegisterActivity::class.java)
                 .apply {

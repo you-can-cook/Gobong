@@ -1,6 +1,7 @@
 package com.youcancook.gobong.ui.login
 
 import androidx.lifecycle.viewModelScope
+import com.youcancook.gobong.model.LoginUser
 import com.youcancook.gobong.model.RegisterUser
 import com.youcancook.gobong.model.UserToken
 import com.youcancook.gobong.model.repository.UserRepositoryImpl
@@ -13,7 +14,7 @@ class RegisterUserViewModel(
     private val userRepository: UserRepositoryImpl,
 ) : UserViewModel(userRepository) {
 
-    private val _loginAuth = MutableStateFlow(LoginAuth("", "", ""))
+    private val _loginUser = MutableStateFlow(LoginUser("", "", ""))
 
     private val _temporaryToken = MutableStateFlow("")
     val temporaryToken: StateFlow<String> get() = _temporaryToken
@@ -23,8 +24,8 @@ class RegisterUserViewModel(
 
     private val _token = MutableStateFlow(UserToken("", ""))
 
-    fun setLoginAuth(auth: LoginAuth) {
-        _loginAuth.value = auth
+    fun setLoginUser(user: LoginUser) {
+        _loginUser.value = user
     }
 
     fun getTemporaryToken() = _temporaryToken.value
@@ -34,12 +35,11 @@ class RegisterUserViewModel(
             setNetworkState(NetworkState.LOADING)
             try {
                 requestTemporaryToken()
-                setNetworkState(NetworkState.SUCCESS)
+                setNetworkState(NetworkState.DONE)
             } catch (e: Exception) {
                 setNetworkState(NetworkState.FAIL)
                 setSnackBarMessage(e.message ?: "")
             }
-            setNetworkState(NetworkState.DONE)
         }
     }
 
@@ -54,15 +54,16 @@ class RegisterUserViewModel(
                 requestLogin()
                 setNetworkState(NetworkState.SUCCESS)
             } catch (e: Exception) {
-                setNetworkState(NetworkState.FAIL)
                 setSnackBarMessage(e.message ?: "")
+                setNetworkState(NetworkState.FAIL)
             }
-            setNetworkState(NetworkState.DONE)
         }
     }
 
     private suspend fun requestLogin() {
-
+        _token.value = userRepository.login(
+            _loginUser.value
+        )
     }
 
     fun registerNickname() {
@@ -77,10 +78,9 @@ class RegisterUserViewModel(
                 registerUser()
                 setNetworkState(NetworkState.SUCCESS)
             } catch (e: Exception) {
-                setSnackBarMessage(e.message ?: "")
-                setNetworkState(NetworkState.FAIL)
+                setErrorMessage(e.message ?: "")
+                setNetworkState(NetworkState.DONE)
             }
-            setNetworkState(NetworkState.DONE)
         }
     }
 
@@ -88,9 +88,9 @@ class RegisterUserViewModel(
         val user = getUser()
         val registerUser = RegisterUser(
             user.nickname,
-            _loginAuth.value.provider,
-            _loginAuth.value.oauthId,
-            _loginAuth.value.temporaryToken,
+            _loginUser.value.provider,
+            _loginUser.value.oAuthId,
+            _loginUser.value.temporaryToken,
             user.profileUrl
         )
         val response = userRepository.register(registerUser)
@@ -98,7 +98,7 @@ class RegisterUserViewModel(
     }
 
     fun loading() = setNetworkState(NetworkState.LOADING)
-    fun success() = setNetworkState(NetworkState.SUCCESS)
+
     fun fail() = setNetworkState(NetworkState.FAIL)
     fun done() = finishNetwork()
 

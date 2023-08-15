@@ -15,6 +15,7 @@ import com.youcancook.gobong.util.ACCESS_TOKEN
 import com.youcancook.gobong.util.ACCESS_TOKEN_KEY
 import com.youcancook.gobong.util.REFRESH_TOKEN
 import com.youcancook.gobong.util.REFRESH_TOKEN_KEY
+import com.youcancook.gobong.util.TOKEN_KEY
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -27,7 +28,10 @@ class RoutingActivity :
 
     override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
         override fun onSuccess() {
-
+            //토큰 발급 성공
+            val intent = Intent(this@RoutingActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         override fun onFail() {
@@ -46,29 +50,25 @@ class RoutingActivity :
         super.onCreate(savedInstanceState)
 
         if (isTokenExist().not()) {
+            println("isTokenExist")
             val intent = Intent(this@RoutingActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.accessToken.collectLatest {
-                    if (it.isNotEmpty()) {
-                        //토큰 발급 성공
-                        val intent = Intent(this@RoutingActivity, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
-                }
-            }
-        }
     }
 
     private fun isTokenExist(): Boolean {
         val token = getSharedPreferences(
-            ACCESS_TOKEN_KEY, Context.MODE_PRIVATE
-        ) ?: return false
+            TOKEN_KEY, Context.MODE_PRIVATE
+        )
+
+        val accessToken = token.getString(ACCESS_TOKEN_KEY, "")
+
+
+        if (accessToken.isNullOrEmpty()) return false
+        
+        println("accessToken $ACCESS_TOKEN ")
         viewModel.getAccessToken(
             token.getString(REFRESH_TOKEN_KEY, "") ?: ""
         )

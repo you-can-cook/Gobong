@@ -21,17 +21,27 @@ open class UserViewModel(
     private val _profileImage = MutableStateFlow("")
     val profileImage: StateFlow<String> get() = _profileImage
 
+    private val _profileImageByteArray = MutableStateFlow(byteArrayOf())
+    val profileImageByteArray: StateFlow<ByteArray> get() = _profileImageByteArray
+
     private val _errorMessage = MutableStateFlow("")
     val errorMessage: StateFlow<String> get() = _errorMessage
 
     private val _token = MutableStateFlow(UserToken("", ""))
 
-    fun setProfileImage(image: ByteArray) {
+    fun setProfileImage(imageUrl: String) {
+        _profileImage.value = imageUrl
+    }
 
+    fun setProfileImageByteArray(image: ByteArray) {
+        _profileImageByteArray.value = image
+    }
+
+    fun setErrorMessage(message: String) {
+        _errorMessage.value = message
     }
 
     fun getToken() = _token.value
-
 
     protected fun getUser(): User {
         return User(

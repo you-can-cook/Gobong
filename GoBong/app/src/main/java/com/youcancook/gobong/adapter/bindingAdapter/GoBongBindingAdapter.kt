@@ -22,6 +22,15 @@ fun setProfileImageUrl(view: ImageView, url: String) {
         .into(view)
 }
 
+@BindingAdapter("setProfileImageByteArray")
+fun setProfileImageByteArray(view: ImageView, data: ByteArray) {
+    Glide.with(view.context)
+        .load(data)
+        .placeholder(R.drawable.default_profile_img)
+        .circleCrop()
+        .into(view)
+}
+
 @BindingAdapter("setImageUrl")
 fun setImageUrl(view: ImageView, url: String) {
     Glide.with(view.context)

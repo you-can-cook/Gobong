@@ -9,3 +9,9 @@ data class RegisterDTO(
     @SerializedName("temporaryToken") val temporaryToken: String,
     @SerializedName("profileImageURL") val profileImageURL: String? = null,
 )
+
+data class LoginDTO(
+    @SerializedName("provider") val provider: String,
+    @SerializedName("oauthId") val oAuthId: String,
+    @SerializedName("temporaryToken") val temporaryToken: String,
+)

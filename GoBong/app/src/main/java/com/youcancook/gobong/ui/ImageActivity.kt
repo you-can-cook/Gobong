@@ -9,6 +9,7 @@ import android.view.View
 import androidx.core.app.ActivityCompat
 import com.canhub.cropper.CropImage.ActivityResult
 import com.canhub.cropper.CropImageActivity
+import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ExtendedActivityBinding
@@ -25,14 +26,22 @@ internal class ImageActivity : CropImageActivity() {
         }
 
         val IMAGE_DATA_TAG = "imageData"
+        val PHOTO = "photo"
+        val PROFILE = "profile"
+        val PHOTO_SIZE = "profile"
     }
 
     private lateinit var binding: ExtendedActivityBinding
+    private var photoSize = PHOTO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ExtendedActivityBinding.inflate(layoutInflater)
 
         super.onCreate(savedInstanceState)
+
+        intent?.getStringExtra(PHOTO_SIZE)?.let {
+            binding.cropImageView.setAspectRatio(1, 1)
+        }
 
         binding.saveBtn.setOnClickListener { cropImage() }
         binding.backBtn.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
@@ -43,6 +52,10 @@ internal class ImageActivity : CropImageActivity() {
         }
 
         setCropImageView(binding.cropImageView)
+    }
+
+    fun setImageSize(size: String) {
+        photoSize = size
     }
 
     override fun onSetImageUriComplete(

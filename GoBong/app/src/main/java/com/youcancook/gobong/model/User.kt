@@ -1,6 +1,8 @@
 package com.youcancook.gobong.model
 
+import com.youcancook.gobong.model.network.dto.LoginDTO
 import com.youcancook.gobong.model.network.dto.RegisterDTO
+import java.io.Serializable
 
 data class User(
     val profileUrl: String = "",
@@ -20,6 +22,12 @@ data class UserProfile(
     val followed: Boolean = false,
 )
 
+data class LoginUser(
+    val provider: String,
+    val oAuthId: String,
+    val temporaryToken: String,
+) : Serializable
+
 data class RegisterUser(
     val nickname: String,
     val provider: String,
@@ -32,6 +40,15 @@ data class UserToken(
     val accessToken: String,
     val refreshToken: String,
 )
+
+
+fun LoginUser.toLoginDTO(): LoginDTO {
+    return LoginDTO(
+        provider,
+        oAuthId,
+        temporaryToken
+    )
+}
 
 fun RegisterUser.toRegisterDTO(): RegisterDTO {
     return RegisterDTO(
