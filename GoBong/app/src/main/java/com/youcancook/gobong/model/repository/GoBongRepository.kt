@@ -14,5 +14,6 @@ interface GoBongRepository {
     suspend fun getBookmarkedRecipes(): List<Card>
     fun bookmarkRecipe(marked: Boolean)
 
+    suspend fun deleteRecipe(postId: String)
     fun reviewRecipe(star: Int)
 }

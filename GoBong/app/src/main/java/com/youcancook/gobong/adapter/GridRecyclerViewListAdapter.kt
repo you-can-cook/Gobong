@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.youcancook.gobong.databinding.ItemGridCardBinding
 import com.youcancook.gobong.databinding.ItemMainCardBinding
 import com.youcancook.gobong.model.Card
+import com.youcancook.gobong.model.UserProfile
 
 class GridRecyclerViewListAdapter(
     var spanCount: Int,
     val onItemClick: (Card) -> Unit,
+    val onFollowClick: (UserProfile) -> Unit = {},
 ) :
     ListAdapter<Card, RecyclerView.ViewHolder>(diffUtil) {
 
@@ -37,7 +39,8 @@ class GridRecyclerViewListAdapter(
                     parent,
                     false
                 ), this,
-                onItemClick
+                onItemClick,
+                onFollowClick
             )
         } else {
             GridViewHolder(

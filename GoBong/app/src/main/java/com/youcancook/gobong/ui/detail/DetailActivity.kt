@@ -3,6 +3,7 @@ package com.youcancook.gobong.ui.detail
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
 class DetailActivity :
     NetworkActivity<ActivityDetailBinding, DetailViewModel>(R.layout.activity_detail) {
     override val viewModel: DetailViewModel by lazy {
-        DetailViewModel(appContainer.goBongRepository)
+        DetailViewModel(appContainer.goBongRepository, appContainer.userRepository)
     }
     override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
         override fun onSuccess() {
@@ -46,7 +47,7 @@ class DetailActivity :
             .setTitle("레시피 삭제")
             .setMessage("레시피를 삭제하면 다시 복구할 수 없습니다.\n정말 삭제하시겠습니까?")
             .setPositiveButton("삭제") { _, _ ->
-                //TODO viewmodel 삭제
+                viewModel.deleteRecipePost()
             }
             .setNegativeButton("취소") { _, _ ->
             }
@@ -65,11 +66,17 @@ class DetailActivity :
         initListeners()
 
         binding.run {
+            if (viewModel.getIsBookmarked()) {
+                bookmarkImageView.isSelected = true
+            }
+
             lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.starCount.collectLatest {
                         if (it != 0) {
-                            reviewButton.text = "리뷰 수정하기"
+                            editReviewConstraintLayout.isVisible = true
+                            showReviewedStar(it)
+                            addReviewConstraintLayout.isVisible = false
                         }
                     }
                 }
@@ -79,6 +86,14 @@ class DetailActivity :
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.isMine.collectLatest {
                         if (it) setDisposable()
+                    }
+                }
+            }
+
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.isDeleted.collectLatest {
+                        if (it) finish()
                     }
                 }
             }
@@ -98,6 +113,11 @@ class DetailActivity :
 
             followingButton.setOnClickListener {
                 it.isSelected = it.isSelected.not()
+                if (it.isSelected) {
+                    viewModel.follow()
+                } else {
+                    viewModel.unfollow()
+                }
             }
 
             reviewButton.setOnClickListener {
@@ -105,8 +125,24 @@ class DetailActivity :
                 reviewDialog.show(supportFragmentManager, null)
             }
 
+            editReviewButton.setOnClickListener {
+                reviewDialog.setOldStar(viewModel.getStar())
+                reviewDialog.show(supportFragmentManager, null)
+            }
+
         }
 
+    }
+
+    private fun showReviewedStar(starCount: Int) {
+        binding.run {
+            val stars = listOf(star1, star2, star3, star4, star5)
+
+            stars.map { it.isSelected = false }
+            for (star in 0 until starCount) {
+                stars[star].isSelected = true
+            }
+        }
     }
 
     private fun setDisposable() {

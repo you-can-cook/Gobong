@@ -14,11 +14,17 @@ class BookmarkFragment :
     NetworkFragment<FragmentBookmarkBinding, BookmarkViewModel>(R.layout.fragment_bookmark) {
 
     override val viewModel: BookmarkViewModel by lazy {
-        BookmarkViewModel(appContainer.goBongRepository)
+        BookmarkViewModel(appContainer.goBongRepository,appContainer.userRepository)
     }
 
     private val gridAdapter = GridRecyclerViewListAdapter(3, onItemClick = {
 
+    }, onFollowClick = {
+        if (it.followed) {
+            viewModel.unfollow(it.nickname)
+        } else {
+            viewModel.follow(it.nickname)
+        }
     })
     private val gridItemDecorator =
         GridItemDecorator()
