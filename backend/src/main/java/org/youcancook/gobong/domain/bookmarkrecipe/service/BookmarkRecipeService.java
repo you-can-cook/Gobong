@@ -39,8 +39,10 @@ public class BookmarkRecipeService {
 
     @Transactional
     public void removeBookmark(Long userId, Long recipeId){
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
         BookmarkRecipe bookmarkRecipe = bookmarkRecipeRepository.findByUserIdAndRecipeId(userId, recipeId)
                 .orElseThrow(BookmarkRecipeNotFoundException::new);
+        recipe.decreaseBookmarkCount();
         bookmarkRecipeRepository.delete(bookmarkRecipe);
     }
 }

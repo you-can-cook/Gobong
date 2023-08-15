@@ -6,11 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.youcancook.gobong.domain.BaseTime.BaseTime;
-import org.youcancook.gobong.domain.rating.entity.Rating;
 import org.youcancook.gobong.domain.user.entity.User;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -40,14 +36,11 @@ public class Recipe extends BaseTime {
 
     private String thumbnailURL;
 
-    @Column(nullable = false)
-    private Long cookwares;
-
-    @Column(nullable = false)
-    private Integer totalCookTimeInSeconds;
-
-    @OneToMany(mappedBy = "recipe")
-    private List<Rating> rating = new ArrayList<>();
+    private long cookwares;
+    private int totalBookmarkCount;
+    private int totalCookTimeInSeconds;
+    private int totalRating;
+    private int totalRatedNum;
 
     @Builder
     public Recipe(User user, String title, String introduction, String ingredients, Difficulty difficulty,
@@ -60,17 +53,12 @@ public class Recipe extends BaseTime {
         this.thumbnailURL = thumbnailURL;
         cookwares = 0L;
         totalCookTimeInSeconds = 0;
+        totalBookmarkCount = 0;
     }
 
-    public void addRating(Rating rating){
-        this.rating.add(rating);
-    }
-
-    public double getAverageRating(){
-        return rating.stream()
-                .mapToDouble(Rating::getScore)
-                .average()
-                .orElse(0.0);
+    public Double getAverageRating(){
+        if (totalRatedNum == 0) return null;
+        return (double) totalRating / (double) totalRatedNum;
     }
 
     public void updateProperties(String title, String introduction, String ingredients,
@@ -93,5 +81,25 @@ public class Recipe extends BaseTime {
     public void clearDetails() {
         this.cookwares = 0L;
         this.totalCookTimeInSeconds = 0;
+    }
+
+    public void updateRatingDelta(int delta) {
+        this.totalRating += delta;
+    }
+
+    public void increaseTotalRatedNum(){
+        this.totalRatedNum++;
+    }
+
+    public void decreaseTotalRatedNum(){
+        this.totalRatedNum--;
+    }
+
+    public void increaseBookmarkCount() {
+        this.totalBookmarkCount++;
+    }
+
+    public void decreaseBookmarkCount(){
+        this.totalBookmarkCount--;
     }
 }

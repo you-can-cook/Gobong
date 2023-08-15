@@ -1,6 +1,5 @@
 package org.youcancook.gobong.domain.bookmarkrecipe.service;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +18,7 @@ import org.youcancook.gobong.global.util.service.ServiceTest;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ServiceTest
@@ -42,8 +42,12 @@ class BookmarkRecipeServiceTest {
 
         bookmarkRecipeService.addBookmark(user.getId(), recipe.getId());
         List<BookmarkRecipe> actual = bookmarkRecipeRepository.findAll();
-        Assertions.assertThat(actual).hasSize(1);
-        Assertions.assertThat(actual.get(0).getUser().getId()).isEqualTo(user.getId());
+        assertThat(actual).hasSize(1);
+        assertThat(actual.get(0).getUser().getId()).isEqualTo(user.getId());
+
+        List<Recipe> recipeActual = recipeRepository.findAll();
+        assertThat(recipeActual).hasSize(1);
+        assertThat(recipeActual.get(0).getTotalBookmarkCount()).isEqualTo(1);
     }
 
     @Test
@@ -60,7 +64,11 @@ class BookmarkRecipeServiceTest {
         bookmarkRecipeService.removeBookmark(user.getId(), recipe.getId());
 
         List<BookmarkRecipe> actual = bookmarkRecipeRepository.findAll();
-        Assertions.assertThat(actual).isEmpty();
+        assertThat(actual).isEmpty();
+
+        List<Recipe> recipeActual = recipeRepository.findAll();
+        assertThat(recipeActual).hasSize(1);
+        assertThat(recipeActual.get(0).getTotalBookmarkCount()).isEqualTo(0);
     }
 
     @Test
