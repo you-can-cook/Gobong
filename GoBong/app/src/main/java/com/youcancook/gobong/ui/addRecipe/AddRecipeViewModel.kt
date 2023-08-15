@@ -1,8 +1,11 @@
 package com.youcancook.gobong.ui.addRecipe
 
 import androidx.lifecycle.viewModelScope
+import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Recipe
 import com.youcancook.gobong.model.RecipeAdd
+import com.youcancook.gobong.model.RecipePost
+import com.youcancook.gobong.model.RecipeStepAdded
 import com.youcancook.gobong.model.repository.GoBongRepository
 import com.youcancook.gobong.ui.base.NetworkViewModel
 import com.youcancook.gobong.util.NetworkState
@@ -65,7 +68,7 @@ class AddRecipeViewModel(
             setNetworkState(NetworkState.LOADING)
             try {
                 isValidateUpload(ingredients)
-                upload()
+                upload(ingredients)
                 setNetworkState(NetworkState.SUCCESS)
             } catch (e: Exception) {
                 setSnackBarMessage(e.message ?: "")
@@ -75,9 +78,18 @@ class AddRecipeViewModel(
 
     }
 
-    private suspend fun upload() {
-        //TODO 네트워크 요청
-        delay(2000)
+    private suspend fun upload(ingredients: List<String>) {
+        val recipe = RecipePost(
+            thumbnailByteArray = _thumbnailByteArray.value,
+            title = titleInput.value,
+            description = descriptionInput.value,
+            ingredients = ingredients,
+            level = _level.value,
+            recipes = _recipes.value.dropLast(1).map {
+                it as RecipeStepAdded
+            }
+        )
+        goBongRepository.uploadRecipe(recipe)
     }
 
     private fun isValidateUpload(ingredients: List<String>) {

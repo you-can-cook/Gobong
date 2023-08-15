@@ -4,10 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Scope
+import com.google.android.gms.common.api.Status
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -19,6 +26,7 @@ import com.youcancook.gobong.ui.MainActivity
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.util.ACCESS_TOKEN_KEY
+import com.youcancook.gobong.util.GOOGLE_CLIENT_ID
 import com.youcancook.gobong.util.REFRESH_TOKEN_KEY
 import com.youcancook.gobong.util.TOKEN_KEY
 import kotlinx.coroutines.flow.collectLatest
@@ -46,6 +54,23 @@ class LoginActivity :
 
     private var provider: String? = null
     private var userId: String? = null
+    private val googleSignInClient: GoogleSignInClient by lazy { getGoogleClient() }
+    private val googleAuthLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
+            try {
+                val account = task.getResult(ApiException::class.java)
+
+                account.id?.let {
+                    successGoogleLogin(it)
+                } ?: throw ApiException(Status.RESULT_CANCELED)
+
+
+            } catch (e: ApiException) {
+                Log.e("LOGIN", e.stackTraceToString())
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -78,7 +103,16 @@ class LoginActivity :
     }
 
     private fun loginWithGoogle() {
+        googleSignInClient.signOut()
+        val signInIntent = googleSignInClient.signInIntent
+        googleAuthLauncher.launch(signInIntent)
+    }
 
+    private fun successGoogleLogin(id: String) {
+        provider = GOOGLE
+        userId = id
+        viewModel.setLoginUser(makeLoginUser())
+        viewModel.login()
     }
 
     private fun loginWithKakao() {
@@ -150,7 +184,7 @@ class LoginActivity :
     )
 
     private fun saveToken() {
-        val sharedPref = getSharedPreferences(TOKEN_KEY,Context.MODE_PRIVATE) ?: return
+        val sharedPref = getSharedPreferences(TOKEN_KEY, Context.MODE_PRIVATE) ?: return
         val token = viewModel.getToken()
         println("login saveToken $token")
         sharedPref.edit {
@@ -179,6 +213,16 @@ class LoginActivity :
                 }
         startActivity(intent)
         finish()
+    }
+
+    private fun getGoogleClient(): GoogleSignInClient {
+        val googleSignInOption = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestScopes(Scope("https://www.googleapis.com/auth/pubsub"))
+            .requestServerAuthCode(GOOGLE_CLIENT_ID)
+            .requestEmail() // 이메일도 요청할 수 있다.
+            .build()
+
+        return GoogleSignIn.getClient(this, googleSignInOption)
     }
 
     companion object {

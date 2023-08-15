@@ -3,6 +3,7 @@ package com.youcancook.gobong.model.datasource
 import com.youcancook.gobong.model.LoginUser
 import com.youcancook.gobong.model.RegisterUser
 import com.youcancook.gobong.model.UserToken
+import com.youcancook.gobong.model.network.ImageService
 import com.youcancook.gobong.model.network.UserService
 import com.youcancook.gobong.model.network.dto.toUserToken
 import com.youcancook.gobong.model.toLoginDTO
@@ -10,6 +11,7 @@ import com.youcancook.gobong.model.toRegisterDTO
 
 class UserDataSource(
     private val userService: UserService,
+    private val imageService: ImageService,
 ) {
     suspend fun requestTemporaryToken(): String {
         val response = userService.postTemporaryToken()
@@ -51,4 +53,14 @@ class UserDataSource(
     suspend fun requestUnfollow(userId: String) {
 
     }
+
+    private suspend fun getImageUrlByByteArray(imageByte: ByteArray): String {
+        val response = imageService.postImage()
+        if (response.isSuccessful) {
+            return response.body()?.imageUrl ?: throw Exception("이미지 업로드에 실패했습니다")
+        } else {
+            throw Exception("이미지 업로드에 실패했습니다")
+        }
+    }
+
 }

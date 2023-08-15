@@ -2,6 +2,7 @@ package com.youcancook.gobong.model.repository
 
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Filter
+import com.youcancook.gobong.model.RecipePost
 
 interface GoBongRepository {
 
@@ -16,4 +17,6 @@ interface GoBongRepository {
 
     suspend fun deleteRecipe(postId: String)
     fun reviewRecipe(star: Int)
+
+    suspend fun uploadRecipe(recipePost: RecipePost)
 }

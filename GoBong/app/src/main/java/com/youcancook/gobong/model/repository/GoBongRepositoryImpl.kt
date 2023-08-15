@@ -2,6 +2,7 @@ package com.youcancook.gobong.model.repository
 
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Filter
+import com.youcancook.gobong.model.RecipePost
 import com.youcancook.gobong.model.datasource.GoBongRemoteDataSource
 
 class GoBongRepositoryImpl(
@@ -34,5 +35,9 @@ class GoBongRepositoryImpl(
 
     override fun reviewRecipe(star: Int) {
         goBongDataSource.reviewRecipe(star)
+    }
+
+    override suspend fun uploadRecipe(recipePost: RecipePost) {
+        goBongDataSource.uploadRecipe(recipePost)
     }
 }
