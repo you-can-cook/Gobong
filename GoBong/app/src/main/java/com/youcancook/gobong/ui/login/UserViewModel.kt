@@ -15,7 +15,6 @@ open class UserViewModel(
     private val userRepository: UserRepositoryImpl,
 ) : NetworkViewModel() {
 
-
     val nicknameInput = MutableStateFlow("")
 
     private val _profileImage = MutableStateFlow("")
@@ -39,6 +38,10 @@ open class UserViewModel(
 
     fun setErrorMessage(message: String) {
         _errorMessage.value = message
+    }
+
+    fun setToken(token: UserToken) {
+        _token.value = token
     }
 
     fun getToken() = _token.value

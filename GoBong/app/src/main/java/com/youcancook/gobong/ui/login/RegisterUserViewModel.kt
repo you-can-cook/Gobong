@@ -22,7 +22,6 @@ class RegisterUserViewModel(
     private val _provider = MutableStateFlow("")
     val provider: StateFlow<String> get() = _provider
 
-    private val _token = MutableStateFlow(UserToken("", ""))
 
     fun setLoginUser(user: LoginUser) {
         _loginUser.value = user
@@ -61,8 +60,10 @@ class RegisterUserViewModel(
     }
 
     private suspend fun requestLogin() {
-        _token.value = userRepository.login(
-            _loginUser.value
+        setToken(
+            userRepository.login(
+                _loginUser.value
+            )
         )
     }
 
@@ -93,8 +94,8 @@ class RegisterUserViewModel(
             _loginUser.value.temporaryToken,
             user.profileUrl
         )
-        val response = userRepository.register(registerUser)
-        println("response $response")
+        setToken(userRepository.register(registerUser))
+        println("response ${getToken()}")
     }
 
     fun loading() = setNetworkState(NetworkState.LOADING)

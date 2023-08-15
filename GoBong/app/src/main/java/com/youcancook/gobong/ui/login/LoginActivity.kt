@@ -20,6 +20,7 @@ import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.util.ACCESS_TOKEN_KEY
 import com.youcancook.gobong.util.REFRESH_TOKEN_KEY
+import com.youcancook.gobong.util.TOKEN_KEY
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -32,14 +33,9 @@ class LoginActivity :
         override fun onSuccess() {
             //로그인 성공
             saveToken()
-            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-            startActivity(intent)
-            finish()
         }
 
         override fun onFail() {
-            //TODO 로그인 실패처럼 fail의 종류도 나눠야 함
-            //회원가입 진행
             moveToRegister()
         }
 
@@ -154,13 +150,23 @@ class LoginActivity :
     )
 
     private fun saveToken() {
-        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+        val sharedPref = getSharedPreferences(TOKEN_KEY,Context.MODE_PRIVATE) ?: return
         val token = viewModel.getToken()
+        println("login saveToken $token")
         sharedPref.edit {
             putString(ACCESS_TOKEN_KEY, token.accessToken)
             putString(REFRESH_TOKEN_KEY, token.refreshToken)
-            apply()
+            commit()
+            println("commit!")
         }
+        moveToMain()
+    }
+
+    private fun moveToMain() {
+        println("moved!")
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun moveToRegister() {
