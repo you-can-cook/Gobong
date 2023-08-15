@@ -56,6 +56,7 @@ class BookmarkRecipeServiceTest {
         User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
         Recipe recipe = Recipe.builder().title("주먹밥").difficulty(Difficulty.EASY).build();
         userRepository.save(user);
+        recipe.increaseBookmarkCount();
         recipeRepository.save(recipe);
 
         BookmarkRecipe bookmarkRecipe = new BookmarkRecipe(user, recipe);
@@ -75,9 +76,12 @@ class BookmarkRecipeServiceTest {
     @DisplayName("존재하지 않는 북마크를 삭제하려고 하면 예외를 발생한다.")
     public void notFoundTest(){
         User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
+        Recipe recipe = Recipe.builder().title("주먹밥").difficulty(Difficulty.EASY).build();
         userRepository.save(user);
+        Long recipeId = recipeRepository.save(recipe).getId();
+
         assertThrows(BookmarkRecipeNotFoundException.class, ()->
-                bookmarkRecipeService.removeBookmark(user.getId(), 99L));
+                bookmarkRecipeService.removeBookmark(user.getId(), recipeId));
     }
 
     @Test
