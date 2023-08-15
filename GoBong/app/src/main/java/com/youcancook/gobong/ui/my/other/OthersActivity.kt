@@ -20,10 +20,7 @@ class OthersActivity :
     override val viewModel: OthersProfileViewModel by lazy {
         OthersProfileViewModel(appContainer.goBongRepository, appContainer.userRepository)
     }
-    private val gridAdapter = GridRecyclerViewListAdapter(3, onItemClick = {
-        val intent = Intent(this, DetailActivity::class.java)
-        startActivity(intent)
-    })
+    private val gridAdapter = GridRecyclerViewListAdapter(3)
 
     private val gridItemDecorator =
         GridItemDecorator()

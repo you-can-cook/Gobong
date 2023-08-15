@@ -2,6 +2,7 @@ package com.youcancook.gobong.model.datasource
 
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.RecipePost
+import com.youcancook.gobong.model.User
 import com.youcancook.gobong.model.network.GoBongService
 import com.youcancook.gobong.model.network.ImageService
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,6 +11,10 @@ class GoBongRemoteDataSource(
     private val goBongService: GoBongService,
     private val imageService: ImageService,
 ) {
+
+    suspend fun getCurrentRecipe(recipePostId: String): Card {
+        return Card.createEmpty()
+    }
 
     suspend fun getFollowingRecipes(): List<Card> {
         return emptyList()
@@ -41,7 +46,7 @@ class GoBongRemoteDataSource(
         return emptyList()
     }
 
-    fun bookmarkRecipe(marked: Boolean) {
+    suspend fun bookmarkRecipe(marked: Boolean) {
         goBongService
     }
 
@@ -49,11 +54,19 @@ class GoBongRemoteDataSource(
 
     }
 
-    fun reviewRecipe(star: Int) {
+    suspend fun reviewRecipe(star: Int) {
         goBongService
     }
 
     suspend fun uploadRecipe(recipePost: RecipePost) {
 
+    }
+
+    suspend fun getMyRecipes(): User {
+        return User.createEmpty()
+    }
+
+    suspend fun getUserRecipes(userId: String): User {
+        return User.createEmpty()
     }
 }

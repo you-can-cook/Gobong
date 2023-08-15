@@ -12,7 +12,23 @@ data class User(
     val follower: String = "0",
     val following: String = "0",
     val followed: Boolean = false,
-)
+    val recipes: List<Card> = emptyList(),
+) {
+    companion object {
+        fun createEmpty(): User {
+            return User(
+                "",
+                "쩝쩝박사",
+                "",
+                "0",
+                "0",
+                "0",
+                false,
+                emptyList()
+            )
+        }
+    }
+}
 
 data class UserProfile(
     val profileUrl: String = "",
@@ -40,7 +56,6 @@ data class UserToken(
     val accessToken: String,
     val refreshToken: String,
 )
-
 
 fun LoginUser.toLoginDTO(): LoginDTO {
     return LoginDTO(

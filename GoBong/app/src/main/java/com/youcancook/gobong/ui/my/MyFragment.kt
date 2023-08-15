@@ -21,10 +21,7 @@ class MyFragment : NetworkFragment<FragmentMyBinding, MyProfileViewModel>(R.layo
         MyProfileViewModel(appContainer.goBongRepository)
     }
 
-    private val gridAdapter = GridRecyclerViewListAdapter(3, onItemClick = {
-        val intent = Intent(requireContext(), DetailActivity::class.java)
-        startActivity(intent)
-    })
+    private val gridAdapter = GridRecyclerViewListAdapter(3)
 
     private val gridItemDecorator =
         GridItemDecorator()

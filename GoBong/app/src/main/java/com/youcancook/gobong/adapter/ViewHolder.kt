@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.youcancook.gobong.databinding.ItemMainCardBinding
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.UserProfile
+import com.youcancook.gobong.ui.detail.DetailActivity
 import com.youcancook.gobong.ui.my.other.OthersActivity
 
 class CardViewHolder(
     val binding: ItemMainCardBinding,
     val adapter: ListAdapter<*, *>,
-    val onItemClick: (Card) -> Unit,
     val onFollowClick: (UserProfile) -> Unit = {},
 ) :
     RecyclerView.ViewHolder(binding.root) {
@@ -22,7 +22,10 @@ class CardViewHolder(
                 onFollowClick((adapter.currentList[adapterPosition] as Card).user)
             }
             thumbnailImageView.setOnClickListener {
-                onItemClick(adapter.currentList[adapterPosition] as Card)
+                val intent = Intent(binding.root.context, DetailActivity::class.java).putExtra(
+                    DetailActivity.RECIPE_ID, (adapter.currentList[adapterPosition] as Card).id
+                )
+                binding.root.context.startActivity(intent)
             }
             profileImageView.setOnClickListener {
                 val intent = Intent(binding.root.context, OthersActivity::class.java)
@@ -33,10 +36,9 @@ class CardViewHolder(
 
     fun bind(item: Card) {
         binding.item = item
-        binding.followingButton.text = if(item.user.followed){
+        binding.followingButton.text = if (item.user.followed) {
             "팔로잉"
-        }
-        else{
+        } else {
             "팔로우"
         }
     }

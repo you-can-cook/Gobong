@@ -1,7 +1,9 @@
 package com.youcancook.gobong.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,10 +11,11 @@ import com.youcancook.gobong.databinding.ItemGridCardBinding
 import com.youcancook.gobong.databinding.ItemMainCardBinding
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.UserProfile
+import com.youcancook.gobong.ui.detail.DetailActivity
+import com.youcancook.gobong.ui.detail.DetailActivity.Companion.RECIPE_ID
 
 class GridRecyclerViewListAdapter(
     var spanCount: Int,
-    val onItemClick: (Card) -> Unit,
     val onFollowClick: (UserProfile) -> Unit = {},
 ) :
     ListAdapter<Card, RecyclerView.ViewHolder>(diffUtil) {
@@ -22,7 +25,11 @@ class GridRecyclerViewListAdapter(
 
         init {
             binding.root.setOnClickListener {
-                onItemClick(currentList[adapterPosition])
+
+                val intent = Intent(binding.root.context, DetailActivity::class.java).putExtra(
+                    RECIPE_ID, currentList[adapterPosition].id
+                )
+                binding.root.context.startActivity(intent)
             }
         }
 
@@ -39,7 +46,6 @@ class GridRecyclerViewListAdapter(
                     parent,
                     false
                 ), this,
-                onItemClick,
                 onFollowClick
             )
         } else {
