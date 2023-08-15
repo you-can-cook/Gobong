@@ -1,10 +1,12 @@
 package com.youcancook.gobong.model
 
 data class Card(
+    val id: String,
     val user: UserProfile,
     val thumbnailUrl: String,
     val title: String,
     val bookmark: String,
+    val bookmarked: Boolean = true,
     val time: String,
     val tools: List<String>,
     val level: String,
@@ -15,6 +17,7 @@ data class Card(
     companion object {
         fun createEmpty(): Card {
             return Card(
+                id = "",
                 user = UserProfile(),
                 thumbnailUrl = "",
                 title = "내 레시피 대박임",

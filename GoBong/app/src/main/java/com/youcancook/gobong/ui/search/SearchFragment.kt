@@ -24,13 +24,20 @@ class SearchFragment :
     private var filterActivityLauncher: ActivityResultLauncher<Intent>? = null
 
     override val viewModel: SearchViewModel by lazy {
-        SearchViewModel(appContainer.goBongRepository)
+        SearchViewModel(appContainer.goBongRepository,appContainer.userRepository)
     }
 
     private val gridAdapter = GridRecyclerViewListAdapter(3, onItemClick = {
         val intent = Intent(requireContext(), DetailActivity::class.java)
         startActivity(intent)
+    }, onFollowClick = {
+        if (it.followed) {
+            viewModel.unfollow(it.nickname)
+        } else {
+            viewModel.follow(it.nickname)
+        }
     })
+
     private val gridItemDecorator = GridItemDecorator()
     override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
         override fun onSuccess() {

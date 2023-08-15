@@ -15,9 +15,8 @@ data class UserProfile(
     val profileUrl: String = "",
     val nickname: String = "쩝쩝박사",
     val userId: String = "",
-    val notMine: Boolean = false,
-    val followed: Boolean = true,
-    val bookmarked: Boolean = true,
+    val notMine: Boolean = true,
+    val followed: Boolean = false,
 )
 
 data class RegisterUser(

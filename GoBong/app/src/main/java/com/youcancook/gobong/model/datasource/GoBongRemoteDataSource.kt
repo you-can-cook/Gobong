@@ -42,6 +42,10 @@ class GoBongRemoteDataSource(
         goBongService
     }
 
+    suspend fun deleteRecipe(postId: String) {
+
+    }
+
     fun reviewRecipe(star: Int) {
         goBongService
     }

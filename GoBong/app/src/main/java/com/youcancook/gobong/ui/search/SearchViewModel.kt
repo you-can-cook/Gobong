@@ -4,6 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Filter
 import com.youcancook.gobong.model.repository.GoBongRepositoryImpl
+import com.youcancook.gobong.model.repository.UserRepository
+import com.youcancook.gobong.model.repository.UserRepositoryImpl
 import com.youcancook.gobong.ui.base.NetworkViewModel
 import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +14,7 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val goBongRepository: GoBongRepositoryImpl,
+    private val userRepository: UserRepositoryImpl,
 ) : NetworkViewModel() {
 
     private val _filter = MutableStateFlow(Filter.createEmpty())
@@ -20,7 +23,7 @@ class SearchViewModel(
     private val _filtered = MutableStateFlow(false)
     val filtered: StateFlow<Boolean> get() = _filtered
 
-        private val _recipes = MutableStateFlow<List<Card>>(emptyList())
+    private val _recipes = MutableStateFlow<List<Card>>(emptyList())
     val recipes: StateFlow<List<Card>> get() = _recipes
 
     private fun setSearchWord(word: String) {
@@ -79,6 +82,54 @@ class SearchViewModel(
 
     private suspend fun requestFilteredData() {
         _recipes.value = goBongRepository.getFilteredRecipes(filter.value)
+    }
+
+    fun follow(userId: String) {
+        viewModelScope.launch {
+            setNetworkState(NetworkState.LOADING)
+            try {
+                requestFollow(userId)
+                setNetworkState(NetworkState.SUCCESS)
+            } catch (e: Exception) {
+                setNetworkState(NetworkState.FAIL)
+                setSnackBarMessage(e.message ?: "")
+            }
+        }
+    }
+
+    fun unfollow(userId: String) {
+        viewModelScope.launch {
+            setNetworkState(NetworkState.LOADING)
+            try {
+                requestUnfollow(userId)
+                setNetworkState(NetworkState.SUCCESS)
+            } catch (e: Exception) {
+                setNetworkState(NetworkState.FAIL)
+                setSnackBarMessage(e.message ?: "")
+            }
+        }
+    }
+
+    private suspend fun requestFollow(userId: String) {
+        userRepository.follow(userId)
+        _recipes.value = _recipes.value.map {
+            if (it.user.nickname == userId) {
+                it.copy(user = it.user.copy(followed = true))
+            } else {
+                it
+            }
+        }
+    }
+
+    private suspend fun requestUnfollow(userId: String) {
+        userRepository.unfollow(userId)
+        _recipes.value = _recipes.value.map {
+            if (it.user.nickname == userId) {
+                it.copy(user = it.user.copy(followed = false))
+            } else {
+                it
+            }
+        }
     }
 
 }
