@@ -27,7 +27,7 @@ public class AwsS3ImageUploader {
         objectMetadata.setContentType(multipartFile.getContentType());
         objectMetadata.setContentLength(multipartFile.getSize());
 
-        String fileName = "images/" + UUID.randomUUID() + "_" + multipartFile.getName();
+        String fileName = "images/" + UUID.randomUUID() + "_" + multipartFile.getOriginalFilename();
         try(InputStream inputStream = multipartFile.getInputStream()) {
             amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
