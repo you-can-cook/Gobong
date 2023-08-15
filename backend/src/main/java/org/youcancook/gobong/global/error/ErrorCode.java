@@ -42,6 +42,7 @@ public enum ErrorCode {
     // Rating
     RATING_RANGE_OUT_OF_BOUNDS(HttpStatus.BAD_REQUEST, "R201", "평점 범위는 1부터 5 사이입니다."),
     RATING_NOT_FOUND(HttpStatus.NOT_FOUND, "R204", "평점을 찾을 수 없습니다."),
+    RATE_ON_MY_RECIPE(HttpStatus.BAD_REQUEST, "R202", "나의 레시피에 평점을 남길 수 없습니다."),
 
     // Bookmarks
     BOOKMARK_NOT_FOUND(HttpStatus.NOT_FOUND, "B004", "북마크에 담긴 레시피가 아닙니다."),
@@ -59,6 +60,7 @@ public enum ErrorCode {
     // Follow
     ALREADY_FOLLOWING(HttpStatus.BAD_REQUEST, "F101", "이미 팔로우한 사용자입니다."),
     NOT_FOLLOWING(HttpStatus.BAD_REQUEST, "F102", "팔로우하지 않은 사용자입니다."),
+
     ;
 
     private final HttpStatus status;
