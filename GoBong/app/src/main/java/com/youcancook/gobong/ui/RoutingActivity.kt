@@ -24,7 +24,7 @@ class RoutingActivity :
 
     override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
         override fun onSuccess() {
-            //토큰 발급 성공
+            //accessToken 토큰 새로 발급 성공
             saveToken()
             val intent = Intent(this@RoutingActivity, MainActivity::class.java)
             startActivity(intent)
@@ -75,6 +75,7 @@ class RoutingActivity :
 
     private fun saveToken() {
         val token = viewModel.getToken()
+        println("newToken $token")
         getSharedPreferences(
             TOKEN_KEY,
             Context.MODE_PRIVATE

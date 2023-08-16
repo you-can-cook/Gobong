@@ -56,7 +56,6 @@ class RegisterUserViewModel(
                 setNetworkState(NetworkState.SUCCESS)
             } catch (e: Exception) {
                 setSnackBarMessage(e.message ?: "")
-                _isLoginFailed.value = true
                 setNetworkState(NetworkState.FAIL)
             }
         }
@@ -75,7 +74,6 @@ class RegisterUserViewModel(
 
         if (isValidNickname().not()) {
             setErrorMessage("사용이 불가한 닉네임입니다")
-            _isLoginFailed.value = true
             setNetworkState(NetworkState.FAIL)
             return
         }
