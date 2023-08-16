@@ -16,7 +16,7 @@ data class UploadRecipe(
 )
 
 data class RecipePost(
-    val id: String,
+    val id: Int,
     val cardInfo: Card,
     val recipes: List<RecipeStep>,
 )

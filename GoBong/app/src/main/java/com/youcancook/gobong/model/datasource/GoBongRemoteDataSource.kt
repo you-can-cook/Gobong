@@ -10,6 +10,7 @@ import com.youcancook.gobong.model.User
 import com.youcancook.gobong.model.UserProfile
 import com.youcancook.gobong.model.network.GoBongService
 import com.youcancook.gobong.model.network.ImageService
+import com.youcancook.gobong.model.network.dto.ReviewDTO
 import com.youcancook.gobong.model.network.dto.toCard
 import com.youcancook.gobong.model.network.dto.toRecipePost
 import com.youcancook.gobong.model.toRecipeStepAddedDTO
@@ -34,8 +35,8 @@ class GoBongRemoteDataSource(
         return "Bearer $ACCESS_TOKEN"
     }
 
-    suspend fun getCurrentRecipe(recipePostId: String): RecipePost {
-        val response = goBongService.getCurrentRecipe(getToken(), recipePostId.toInt())
+    suspend fun getCurrentRecipe(recipePostId: Int): RecipePost {
+        val response = goBongService.getCurrentRecipe(getToken(), recipePostId)
         Log.e(
             "GoBongBab",
             "getCurrentRecipe $response ${response.body()} ${response.errorBody().toString()}"
@@ -97,12 +98,18 @@ class GoBongRemoteDataSource(
         goBongService
     }
 
-    suspend fun deleteRecipe(postId: String) {
+    suspend fun deleteRecipe(recipeId: Int) {
 
     }
 
-    suspend fun reviewRecipe(star: Int) {
-        goBongService
+    suspend fun reviewRecipe(recipeId: Int, star: Int) {
+        val request = ReviewDTO(
+            recipeId = recipeId,
+            score = star
+        )
+        val response = goBongService.reviewRecipe(getToken(), star, request)
+        if (response.isSuccessful.not()) throw Exception("네트워크가 불안정합니다")
+
     }
 
     suspend fun uploadRecipe(uploadRecipe: UploadRecipe): String {
@@ -119,7 +126,7 @@ class GoBongRemoteDataSource(
         val response = goBongService.uploadRecipe(getToken(), request)
         Log.e("GoBongBab", "uploadRecipe ${response} ${response.errorBody().toString()}")
         if (response.isSuccessful) {
-            return response.body()?.id.toString() ?: throw Exception("네트워크가 불안정합니다")
+            return response.body()?.id.toString()
         } else {
             throw Exception("네트워크가 불안정합니다")
         }

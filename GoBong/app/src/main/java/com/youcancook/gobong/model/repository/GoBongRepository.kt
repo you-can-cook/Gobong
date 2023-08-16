@@ -8,7 +8,7 @@ import com.youcancook.gobong.model.User
 
 interface GoBongRepository {
 
-    suspend fun getCurrentRecipe(recipePostId: String): RecipePost
+    suspend fun getCurrentRecipe(recipePostId: Int): RecipePost
 
     suspend fun getFollowingRecipes(): List<Card>
 
@@ -19,8 +19,8 @@ interface GoBongRepository {
     suspend fun getBookmarkedRecipes(): List<Card>
     suspend fun bookmarkRecipe(marked: Boolean)
 
-    suspend fun deleteRecipe(postId: String)
-    suspend fun reviewRecipe(star: Int)
+    suspend fun deleteRecipe(recipeId: Int)
+    suspend fun reviewRecipe(recipeId: Int, star: Int)
 
     suspend fun uploadRecipe(uploadRecipe: UploadRecipe)
 

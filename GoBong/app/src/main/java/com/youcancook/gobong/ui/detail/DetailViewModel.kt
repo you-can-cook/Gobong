@@ -45,7 +45,7 @@ class DetailViewModel(
 
     fun getStar() = _starCount.value
 
-    fun getCurrentRecipe(recipePostId: String) {
+    fun getCurrentRecipe(recipePostId: Int) {
         viewModelScope.launch {
             setNetworkState(NetworkState.LOADING)
             try {
@@ -60,10 +60,11 @@ class DetailViewModel(
 
     fun getTools() = _cardInfo.value.tools
 
-    private suspend fun requestCurrentRecipe(recipePostId: String) {
+    private suspend fun requestCurrentRecipe(recipePostId: Int) {
         val response = goBongRepository.getCurrentRecipe(recipePostId)
         _cardInfo.value = response.cardInfo
         _recipes.value = response.recipes
+        _isMine.value = response.cardInfo.user.notMine.not()
     }
 
     fun activeRecipeStep(position: Int) {
@@ -125,11 +126,11 @@ class DetailViewModel(
     }
 
     private suspend fun requestReview() {
-        goBongRepository.reviewRecipe(_starCount.value)
+        goBongRepository.reviewRecipe(_cardInfo.value.id, _starCount.value)
     }
 
     private suspend fun requestUpdatedReview() {
-        goBongRepository.reviewRecipe(_starCount.value)
+        goBongRepository.reviewRecipe(_cardInfo.value.id, _starCount.value)
     }
 
     fun follow() {

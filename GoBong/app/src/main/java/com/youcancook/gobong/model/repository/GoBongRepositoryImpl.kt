@@ -10,7 +10,7 @@ import com.youcancook.gobong.model.datasource.GoBongRemoteDataSource
 class GoBongRepositoryImpl(
     private val goBongDataSource: GoBongRemoteDataSource,
 ) : GoBongRepository {
-    override suspend fun getCurrentRecipe(recipePostId: String): RecipePost {
+    override suspend fun getCurrentRecipe(recipePostId: Int): RecipePost {
         return goBongDataSource.getCurrentRecipe(recipePostId)
     }
 
@@ -34,12 +34,12 @@ class GoBongRepositoryImpl(
         goBongDataSource.bookmarkRecipe(marked)
     }
 
-    override suspend fun deleteRecipe(postId: String) {
-        goBongDataSource.deleteRecipe(postId)
+    override suspend fun deleteRecipe(recipeId: Int) {
+        goBongDataSource.deleteRecipe(recipeId)
     }
 
-    override suspend fun reviewRecipe(star: Int) {
-        goBongDataSource.reviewRecipe(star)
+    override suspend fun reviewRecipe(recipeId: Int, star: Int) {
+        goBongDataSource.reviewRecipe(recipeId, star)
     }
 
     override suspend fun uploadRecipe(uploadRecipe: UploadRecipe) {

@@ -61,12 +61,13 @@ fun LoginResponseDTO.toUserToken(): UserToken {
 
 fun FeedDTO.toCard(): Card {
     return Card(
-        id = id.toString(),
+        id = id,
         user = UserProfile(
             profileUrl = author.profileImageURL ?: "",
             userId = author.id.toString(),
             notMine = author.myself.not(),
-            followed = author.following
+            followed = author.following,
+            nickname = author.nickname
         ),
         thumbnailUrl = thumbnailURL ?: "",
         title = title,

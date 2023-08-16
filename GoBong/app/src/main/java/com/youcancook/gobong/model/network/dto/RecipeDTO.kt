@@ -5,6 +5,7 @@ import com.youcancook.gobong.model.RecipePost
 import com.youcancook.gobong.model.RecipeStep
 import com.youcancook.gobong.util.toKoreanTool
 import com.youcancook.gobong.util.toTime
+import retrofit2.Response
 
 data class UploadRecipeDTO(
     @SerializedName("title") val title: String,
@@ -39,6 +40,11 @@ data class CurrentRecipeDTO(
     @SerializedName("recipeDetails") val recipeDetails: List<RecipeStepDTO>,
 )
 
+data class ReviewDTO(
+    @SerializedName("recipeId") val recipeId: Int,
+    @SerializedName("score") val score: Int,
+)
+
 fun RecipeStepDTO.toRecipeStep(): RecipeStep {
     return RecipeStep(
         time = cookTimeInSeconds.toTime(),
@@ -51,7 +57,7 @@ fun RecipeStepDTO.toRecipeStep(): RecipeStep {
 
 fun CurrentRecipeDTO.toRecipePost(): RecipePost {
     return RecipePost(
-        id = id.toString(),
+        id = id,
         cardInfo = summary.toCard(),
         recipes = recipeDetails.map { it.toRecipeStep() }
     )
