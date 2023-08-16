@@ -1,13 +1,10 @@
 package com.youcancook.gobong.model.datasource
 
 import android.util.Log
-import com.youcancook.gobong.R
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.RecipePost
-import com.youcancook.gobong.model.RecipeStep
 import com.youcancook.gobong.model.UploadRecipe
 import com.youcancook.gobong.model.User
-import com.youcancook.gobong.model.UserProfile
 import com.youcancook.gobong.model.network.GoBongService
 import com.youcancook.gobong.model.network.ImageService
 import com.youcancook.gobong.model.network.dto.ReviewDTO
@@ -19,8 +16,6 @@ import com.youcancook.gobong.util.ACCESS_TOKEN
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.json.JSONObject
-import java.lang.Exception
 
 
 class GoBongRemoteDataSource(

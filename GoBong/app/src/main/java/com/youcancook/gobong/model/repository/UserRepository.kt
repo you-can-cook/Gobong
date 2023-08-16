@@ -2,6 +2,7 @@ package com.youcancook.gobong.model.repository
 
 import com.youcancook.gobong.model.LoginUser
 import com.youcancook.gobong.model.RegisterUser
+import com.youcancook.gobong.model.UserProfile
 import com.youcancook.gobong.model.UserToken
 
 interface UserRepository {
@@ -17,5 +18,9 @@ interface UserRepository {
     suspend fun follow(userId: Int)
 
     suspend fun unfollow(userId: Int)
+
+    suspend fun getFollowerList(): List<UserProfile>
+
+    suspend fun getFollowingList(): List<UserProfile>
 
 }

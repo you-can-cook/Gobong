@@ -59,6 +59,13 @@ fun LoginResponseDTO.toUserToken(): UserToken {
     )
 }
 
+data class FollowResponseDTO(
+    @SerializedName("profileImageURL") val profileImageURL: String,
+    @SerializedName("nickname") val nickname: String,
+    @SerializedName("userId") val userId: Int,
+    @SerializedName("isFollowed") val isFollowed: Boolean?,
+)
+
 fun FeedDTO.toCard(): Card {
     return Card(
         id = id,
@@ -79,5 +86,14 @@ fun FeedDTO.toCard(): Card {
         star = averageRating.toStarRating(),
         description = "",
         ingredients = emptyList()
+    )
+}
+
+fun FollowResponseDTO.toUserProfile(): UserProfile {
+    return UserProfile(
+        profileUrl = profileImageURL,
+        nickname = nickname,
+        userId = userId,
+        followed = isFollowed ?: true
     )
 }

@@ -16,17 +16,26 @@ class FollowingFragment :
 
     override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
         override fun onSuccess() {
+            binding.swipeRefresh.isRefreshing = false
         }
 
         override fun onFail() {
+            binding.swipeRefresh.isRefreshing = false
         }
 
         override fun onDone() {
+            binding.swipeRefresh.isRefreshing = false
         }
 
     }
 
-    private val followAdapter = FollowListAdapter()
+    private val followAdapter = FollowListAdapter(onFollowClick = {
+        if (it.followed) {
+            viewModel.unfollow(it.userId)
+        } else {
+            viewModel.follow(it.userId)
+        }
+    })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.vm = viewModel
@@ -34,6 +43,13 @@ class FollowingFragment :
         binding.run {
             recyclerView.adapter = followAdapter
         }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.getFollowingList()
+        }
+
+        viewModel.getFollowingList()
+
     }
 
 }

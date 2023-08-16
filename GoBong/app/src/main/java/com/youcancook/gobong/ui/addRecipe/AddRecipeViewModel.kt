@@ -3,7 +3,6 @@ package com.youcancook.gobong.ui.addRecipe
 import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.model.Recipe
 import com.youcancook.gobong.model.RecipeAdd
-import com.youcancook.gobong.model.RecipePost
 import com.youcancook.gobong.model.RecipeStepAdded
 import com.youcancook.gobong.model.UploadRecipe
 import com.youcancook.gobong.model.repository.GoBongRepository

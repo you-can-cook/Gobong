@@ -5,7 +5,6 @@ import com.youcancook.gobong.model.RecipePost
 import com.youcancook.gobong.model.RecipeStep
 import com.youcancook.gobong.util.toKoreanTool
 import com.youcancook.gobong.util.toTime
-import retrofit2.Response
 
 data class UploadRecipeDTO(
     @SerializedName("title") val title: String,

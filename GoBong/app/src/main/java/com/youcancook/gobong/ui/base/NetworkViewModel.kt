@@ -1,9 +1,7 @@
 package com.youcancook.gobong.ui.base
 
 import android.util.Log
-import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.util.NetworkState
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

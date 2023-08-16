@@ -2,6 +2,7 @@ package com.youcancook.gobong.model.repository
 
 import com.youcancook.gobong.model.LoginUser
 import com.youcancook.gobong.model.RegisterUser
+import com.youcancook.gobong.model.UserProfile
 import com.youcancook.gobong.model.UserToken
 import com.youcancook.gobong.model.datasource.UserDataSource
 
@@ -32,6 +33,14 @@ class UserRepositoryImpl(
 
     override suspend fun unfollow(userId: Int) {
         userDataSource.requestUnfollow(userId)
+    }
+
+    override suspend fun getFollowerList(): List<UserProfile> {
+        return userDataSource.requestMyFollowerList()
+    }
+
+    override suspend fun getFollowingList(): List<UserProfile> {
+        return userDataSource.requestMyFollowingList()
     }
 
 
