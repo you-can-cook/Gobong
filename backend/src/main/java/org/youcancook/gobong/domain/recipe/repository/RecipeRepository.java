@@ -5,6 +5,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.youcancook.gobong.domain.recipe.entity.Recipe;
+import org.youcancook.gobong.domain.user.entity.User;
 
 import java.util.Optional;
 
@@ -28,4 +29,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
             "WHERE (r.user.id IN (SELECT f.followee.id FROM Follow f WHERE f.follower.id =:userId) OR r.user.id =:userId) " +
             "AND r.id <:recipeId")
     Slice<Recipe> getAllFollowingFeed(Long userId, long recipeId, PageRequest of);
+
+    Long countByUser(User user);
 }

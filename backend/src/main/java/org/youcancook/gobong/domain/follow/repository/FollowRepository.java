@@ -18,4 +18,8 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     @Query("select f from Follow f join fetch f.followee where f.follower = :follower")
     List<Follow> findByFollower(User follower);
+
+    Long countByFollower(User user);
+
+    Long countByFollowee(User user);
 }
