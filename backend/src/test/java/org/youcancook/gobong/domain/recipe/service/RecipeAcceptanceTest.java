@@ -18,7 +18,7 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
 
     @Test
     @DisplayName("레시피를 성공적으로 등록한다.")
-    public void createRecipe(){
+    public void createRecipe() {
         String accessToken = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
         CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "쉽게 만드는 주먹밥", List.of("밥", "김"), "쉬워요", null, List.of(
                 new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of()),
@@ -37,7 +37,7 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
 
     @Test
     @DisplayName("레시피를 성공적으로 삭제한다.")
-    public void deleteRecipe(){
+    public void deleteRecipe() {
         String accessToken = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
         CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "쉽게 만드는 주먹밥", List.of("밥", "김"), "쉬워요", null, List.of(
                 new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of()),
@@ -55,7 +55,7 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
 
     @Test
     @DisplayName("권한없는 레시피 삭제 요청 시 올바른 에러코드를 반환한다.")
-    public void noAuth(){
+    public void noAuth() {
         String accessToken1 = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
         String accessToken2 = AcceptanceUtils.signUpAndGetToken("쩝쩝학사", "GOOGLE", "123a");
         CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "쉽게 만드는 주먹밥", List.of("밥", "김"), "쉬워요", null, List.of(
@@ -74,7 +74,7 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
 
     @Test
     @DisplayName("레시피를 성공적으로 수정한다.")
-    public void updateRecipe(){
+    public void updateRecipe() {
         String accessToken = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
         CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "쉽게 만드는 주먹밥", List.of("밥", "김"), "쉬워요", null, List.of(
                 new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of()),
@@ -98,7 +98,7 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
 
     @Test
     @DisplayName("레시피 단건 조회를 성공한다.")
-    public void getRecipe(){
+    public void getRecipe() {
         String accessToken = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
         CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "쉽게 만드는 주먹밥", List.of("밥", "김"), "쉬워요", null, List.of(
                 new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of("MICROWAVE")),
@@ -116,9 +116,9 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
 
     @Test
     @DisplayName("전체 피드를 조회한다.")
-    public void getFeed(){
+    public void getFeed() {
         String accessToken = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
-        for(int i = 1; i <= 10; i++){
+        for (int i = 1; i <= 10; i++) {
             CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "1번 레시피", List.of("밥", "김"), "쉬워요", null, List.of(
                     new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of("MICROWAVE")),
                     new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, List.of("PAN"))
@@ -134,12 +134,13 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
                 .extract();
 
     }
+
     @Test
     @DisplayName("북마크한 피드를 조회한다.")
-    public void getBookmarkedFeed(){
+    public void getBookmarkedFeed() {
         String accessToken1 = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
         String accessToken2 = AcceptanceUtils.signUpAndGetToken("쩝쩝박사2", "KAKAO", "1234");
-        for(int i = 1; i <= 10; i++){
+        for (int i = 1; i <= 10; i++) {
             CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "1번 레시피", List.of("밥", "김"), "쉬워요", null, List.of(
                     new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of("MICROWAVE")),
                     new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, List.of("PAN"))
@@ -149,7 +150,7 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
         }
 
         RestAssured.given().log().all()
-                .auth().oauth2(accessToken1)
+                .auth().oauth2(accessToken2)
                 .when().get("/api/feed/bookmarked?count=3")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
@@ -158,7 +159,7 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
 
     @Test
     @DisplayName("팔로우 피드를 조회한다.")
-    public void getFollowingFeed(){
+    public void getFollowingFeed() {
         String accessToken1 = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
         String accessToken2 = AcceptanceUtils.signUpAndGetToken("쩝쩝박사2", "KAKAO", "1234");
         String accessToken3 = AcceptanceUtils.signUpAndGetToken("쩝쩝박사3", "KAKAO", "12345");
@@ -166,7 +167,7 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
         Long user1Id = AcceptanceUtils.getUserIdFromToken(accessToken1);
         AcceptanceUtils.followUser(accessToken2, user1Id);
 
-        for(int i = 1; i <= 10; i++){
+        for (int i = 1; i <= 10; i++) {
             CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "1번 레시피", List.of("밥", "김"), "쉬워요", null, List.of(
                     new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of("MICROWAVE")),
                     new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, List.of("PAN"))
@@ -179,6 +180,27 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
         RestAssured.given().log().all()
                 .auth().oauth2(accessToken2)
                 .when().get("/api/feed/following?count=3")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
+    }
+
+    @Test
+    @DisplayName("나의 피드를 조회한다.")
+    public void getMyFeed() {
+        String accessToken = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
+
+        for (int i = 1; i <= 10; i++) {
+            CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "1번 레시피", List.of("밥", "김"), "쉬워요", null, List.of(
+                    new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of("MICROWAVE")),
+                    new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, List.of("PAN"))
+            ));
+            AcceptanceUtils.createDummyRecipe(accessToken, request);
+        }
+
+        RestAssured.given().log().all()
+                .auth().oauth2(accessToken)
+                .when().get("/api/feed/my?count=3")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract();

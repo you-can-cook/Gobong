@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.youcancook.gobong.domain.recipe.dto.feedfilterdto.FeedFilterDto;
 import org.youcancook.gobong.domain.recipe.dto.feedfilterdto.ModifiedFeedFilterDto;
 import org.youcancook.gobong.domain.recipe.dto.feedfilterdto.QueryType;
+import org.youcancook.gobong.domain.recipe.dto.feedfilterdto.ModifiedFeedFilterDto;
+import org.youcancook.gobong.domain.recipe.dto.feedfilterdto.QueryType;
 import org.youcancook.gobong.domain.recipe.dto.response.GetFeedResponse;
 import org.youcancook.gobong.domain.recipe.service.GetRecipeService;
 import org.youcancook.gobong.global.resolver.LoginUserId;
@@ -17,6 +19,7 @@ import org.youcancook.gobong.global.resolver.LoginUserId;
 public class FeedController {
 
     private final GetRecipeService getRecipeService;
+
     @GetMapping("all")
     public ResponseEntity<GetFeedResponse> getAllFeed(@LoginUserId Long userId,
                                                       @RequestParam(name = "last", required = false) Long lastRecipeId,
@@ -41,6 +44,15 @@ public class FeedController {
                                                              @RequestParam(name = "count", required = true) int count){
         lastRecipeId = lastRecipeId == null ? Long.MAX_VALUE : lastRecipeId;
         GetFeedResponse response = getRecipeService.getFollowingFeed(userId, lastRecipeId, count);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("my")
+    public ResponseEntity<GetFeedResponse> getMyFeed(@LoginUserId Long userId,
+                                                     @RequestParam(name = "last", required = false) Long lastRecipeId,
+                                                     @RequestParam(name = "count", required = true) int count) {
+        lastRecipeId = lastRecipeId == null ? Long.MAX_VALUE : lastRecipeId;
+        GetFeedResponse response = getRecipeService.getMyFeed(userId, lastRecipeId, count);
         return ResponseEntity.ok(response);
     }
 

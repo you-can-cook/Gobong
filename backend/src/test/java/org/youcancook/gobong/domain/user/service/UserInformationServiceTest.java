@@ -7,6 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.youcancook.gobong.domain.follow.repository.FollowRepository;
+import org.youcancook.gobong.domain.recipe.repository.RecipeRepository;
 import org.youcancook.gobong.domain.user.dto.response.UserInformationResponse;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
@@ -28,6 +30,12 @@ class UserInformationServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private FollowRepository followRepository;
+
+    @Mock
+    private RecipeRepository recipeRepository;
+
     @Test
     @DisplayName("회원정보 조회")
     void checkInformation() {
@@ -36,7 +44,12 @@ class UserInformationServiceTest {
         ReflectionTestUtils.setField(user, "id", 1L);
         when(userRepository.findById(user.getId()))
                 .thenReturn(Optional.of(user));
-
+        when(followRepository.countByFollower(user))
+                .thenReturn(5L);
+        when(followRepository.countByFollowee(user))
+                .thenReturn(3L);
+        when(recipeRepository.countByUser(user))
+                .thenReturn(1L);
         // when
         UserInformationResponse result = userInformationService.getUserInformation(user.getId());
 
@@ -45,6 +58,9 @@ class UserInformationServiceTest {
         assertThat(result.getNickname()).isEqualTo(user.getNickname());
         assertThat(result.getOauthProvider()).isEqualTo(user.getOAuthProvider().name());
         assertThat(result.getProfileImageURL()).isEqualTo(user.getProfileImageURL());
+        assertThat(result.getFollowingNumber()).isEqualTo(5L);
+        assertThat(result.getFollowerNumber()).isEqualTo(3L);
+        assertThat(result.getRecipeNumber()).isEqualTo(1L);
     }
 
     @Test
@@ -72,6 +88,10 @@ class UserInformationServiceTest {
     @DisplayName("회원정보 수정 실패 - 중복된 닉네임")
     void updateInformationFailByDuplicatedNickname() {
         // given
+        User user = createTestUser();
+        Long userId = 1L;
+        when(userRepository.findById(userId))
+                .thenReturn(Optional.of(user));
         String newNickname = "newNickname";
         when(userRepository.existsByNickname(newNickname))
                 .thenReturn(true);
@@ -79,7 +99,25 @@ class UserInformationServiceTest {
         // expect
         assertThrows(DuplicationNicknameException.class,
                 () -> userInformationService.updateInformation(1L, newNickname, "newProfileImageURL"));
+    }
 
+    @Test
+    @DisplayName("회원정보 수정 성공 - 같은 닉네임이면 중복 확인을 하지 않음")
+    void updateInformationSuccessWhenEqualNickname() {
+        // given
+        User user = createTestUser();
+        Long userId = 1L;
+        when(userRepository.findById(userId))
+                .thenReturn(Optional.of(user));
+
+        // expect
+        String userNickname = user.getNickname();
+        String newProfileImageURL = "newProfileImageURL";
+        userInformationService.updateInformation(userId, userNickname, newProfileImageURL);
+
+        // then
+        assertThat(user.getNickname()).isEqualTo(userNickname);
+        assertThat(user.getProfileImageURL()).isEqualTo(newProfileImageURL);
     }
 
     private User createTestUser() {

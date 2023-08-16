@@ -3,6 +3,8 @@ package org.youcancook.gobong.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.youcancook.gobong.domain.follow.repository.FollowRepository;
+import org.youcancook.gobong.domain.recipe.repository.RecipeRepository;
 import org.youcancook.gobong.domain.user.dto.response.UserInformationResponse;
 import org.youcancook.gobong.domain.user.entity.User;
 import org.youcancook.gobong.domain.user.exception.DuplicationNicknameException;
@@ -15,19 +17,26 @@ import org.youcancook.gobong.domain.user.repository.UserRepository;
 public class UserInformationService {
 
     private final UserRepository userRepository;
+    private final FollowRepository followRepository;
+    private final RecipeRepository recipeRepository;
 
     public UserInformationResponse getUserInformation(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
-        return UserInformationResponse.from(user);
+        Long followeeNumber = followRepository.countByFollower(user);
+        Long followerNumber = followRepository.countByFollowee(user);
+        Long recipeNumber = recipeRepository.countByUser(user);
+        return UserInformationResponse.of(user, followerNumber, followeeNumber, recipeNumber);
     }
 
     @Transactional
     public void updateInformation(Long userId, String nickname, String profileImageURL) {
-        validateDuplicateNickname(nickname);
-
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
+        if (!user.getNickname().equals(nickname)) {
+            validateDuplicateNickname(nickname);
+        }
+
         user.updateNicknameAndProfileImageURL(nickname, profileImageURL);
     }
 
