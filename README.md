@@ -12,7 +12,7 @@
 
 </br>
 
-## 기능 목차
+## 고봉밥이 제공하는 기능을 소개합니다!
 ### 회원
 - 회원가입 (소셜 로그인: 구글, 카카오)
 - 회원정보 수정 (프로필 이미지, 닉네임 설정)
@@ -34,15 +34,13 @@
 
 </br>
 
-## 기능 소개
-
 ![1](https://github.com/you-can-cook/Gobong/assets/31026350/c3762a67-769a-4cf8-bde3-4a4c27b0b101)
 ![2](https://github.com/you-can-cook/Gobong/assets/31026350/c6b00e90-cb98-4f3a-ab42-57c570405fc7)
 ![3](https://github.com/you-can-cook/Gobong/assets/31026350/3c340489-550d-4c61-9b50-a071ec5e4db4)
 
 <br/>
 
-## 🛠️ 프로젝트에 사용된 기술 스택을 알려드립니다.
+## 🛠️ 프로젝트에 사용된 기술 스택을 알려드립니다!
 <p align="center">
 <img src=https://github.com/you-can-cook/Gobong/assets/51076814/c127a327-60d8-4d08-a1c1-b5a7ead9c340 height=600/>
 </p>
@@ -51,13 +49,13 @@
 <br/>
 <br/>
 
-## ⚙️ Deploy Architectures
+## ⚙️ 고봉밥 프로젝트는 이렇게 배포돼요!
 ![Architectures](https://github.com/you-can-cook/Gobong/assets/31026350/8ad6777e-ed94-46e7-8302-e361087cbf3e)
 
 
 <br/>
 
-## 📃 Licenses
+## 📃 MIT 라이선스를 사용했습니다.
 See the [LICENSE](https://github.com/you-can-cook/Gobong/blob/master/LICENSE) file for license rights and limitations (MIT).
 
 <br/>
@@ -69,34 +67,38 @@ See the [LICENSE](https://github.com/you-can-cook/Gobong/blob/master/LICENSE) fi
 
 <br/>
 
-## 🧑‍🤝‍🧑🍳 함께 참여한 팀원을 소개합니다!
+## 🧑‍🤝‍🧑🍳 프로젝트를 완주한 '야너두요리할수있어' 팀원을 소개합니다!
+<p align=center>
+<img src=https://github.com/you-can-cook/Gobong/assets/31026350/a12cc4f5-49ab-4ab7-aa6c-3f57c764450e width=50%>
+</p>
+
 <table align="center">
   <tr align="center" >
-    <th><a href=https://github.com/uuranus>황유란<sub>Yuran Hwang</sub></a></th>
-    <th><a href=https://github.com/febbyviolen>페비<sub>Febby</sub></a></th>
     <th>최가은<sub>Gaeun Choi</sub></th>
     <th><a href=https://github.com/redcarrot1>홍승택<sub>Seungtaek Hong</sub></a></th>
+    <th><a href=https://github.com/uuranus>황유란<sub>Yuran Hwang</sub></a></th>
     <th><a href=https://github.com/donghoony>이동훈<sub>Donghoon Lee</sub></a></th>
+    <th><a href=https://github.com/febbyviolen>페비<sub>Febby</sub></a></th>
   </tr>
   <tr align="center">
-    <td>Android</td>
-    <td>iOS</td>
     <td>Design</td>
     <td>Backend</td>
+    <td>Android</td>
     <td>Backend</td>
+    <td>iOS</td>
   </tr>
   <tr align="center">
-    <td>건국대학교<br>컴퓨터공학부</td>
-    <td>건국대학교<br>컴퓨터공학부</td>
     <td>성신여자대학교<br>서비스디자인공학과</td>
+    <td>건국대학교<br>컴퓨터공학부</td>
+    <td>건국대학교<br>컴퓨터공학부</td>
     <td>건국대학교<br>컴퓨터공학부</td>
     <td>건국대학교<br>컴퓨터공학부</td>
   </tr>
   <tr align="center" font-size="10px">
-    <td><sup>hyur0920@gmail.com</sup></td>
-    <td><sup>febbyviolen@gmail.com</sup></td>
     <td><sup>20211028@sungshin.ac.kr</sup></td>
     <td><sup>hsk4991149@naver.com</sup></td>
+    <td><sup>hyur0920@gmail.com</sup></td>
     <td><sup>aru0504@naver.com</sup></td>
+    <td><sup>febbyviolen@gmail.com</sup></td>
   </tr>
 </table>
