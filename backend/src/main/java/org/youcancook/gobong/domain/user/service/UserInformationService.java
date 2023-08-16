@@ -24,10 +24,12 @@ public class UserInformationService {
 
     @Transactional
     public void updateInformation(Long userId, String nickname, String profileImageURL) {
-        validateDuplicateNickname(nickname);
-
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
+        if (!user.getNickname().equals(nickname)) {
+            validateDuplicateNickname(nickname);
+        }
+
         user.updateNicknameAndProfileImageURL(nickname, profileImageURL);
     }
 

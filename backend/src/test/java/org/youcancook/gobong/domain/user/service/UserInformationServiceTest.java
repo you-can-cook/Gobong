@@ -72,6 +72,10 @@ class UserInformationServiceTest {
     @DisplayName("회원정보 수정 실패 - 중복된 닉네임")
     void updateInformationFailByDuplicatedNickname() {
         // given
+        User user = createTestUser();
+        Long userId = 1L;
+        when(userRepository.findById(userId))
+                .thenReturn(Optional.of(user));
         String newNickname = "newNickname";
         when(userRepository.existsByNickname(newNickname))
                 .thenReturn(true);
