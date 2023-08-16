@@ -10,15 +10,50 @@
 - 평점 시스템을 제공하여 레시피에 대한 리뷰를 작성할 수 있습니다.
 - 마음에 드는 레시피는 북마크로 설정하여 빠르고 간편하게 모아볼 수 있습니다.
 
+</br>
+
+## 기능 목차
+### 회원
+- 회원가입 (소셜 로그인: 구글, 카카오)
+- 회원정보 수정 (프로필 이미지, 닉네임 설정)
+- 회원 간 팔로우-팔로잉, SNS로의 확장 가능성
+  
+  
+### 레시피
+- 주어진 템플릿에 맞춰 레시피 작성
+- 난이도, 조리도구, 소요시간 등의 필터링을 통한 레시피 검색
+- 다른 유저가 남긴 레시피에 평점 남기기
+- 마음에 드는 레시피 북마크 남기기
+
+
+### 피드
+- 내가 팔로우한 사람들의 레시피 피드 확인
+- 최근에 올라온 레시피 피드 확인
+- 다른 사람의 레시피 피드 조회 기능
+- 내가 북마크한 레시피 피드 확인
+
+</br>
+
+## 기능 소개
+
+![1](https://github.com/you-can-cook/Gobong/assets/31026350/c3762a67-769a-4cf8-bde3-4a4c27b0b101)
+![2](https://github.com/you-can-cook/Gobong/assets/31026350/c6b00e90-cb98-4f3a-ab42-57c570405fc7)
+![3](https://github.com/you-can-cook/Gobong/assets/31026350/3c340489-550d-4c61-9b50-a071ec5e4db4)
+
 <br/>
 
-## 🛠️ 사용된 기술 스택을 알려드립니다.
+## 🛠️ 프로젝트에 사용된 기술 스택을 알려드립니다.
+<p align="center">
 <img src=https://github.com/you-can-cook/Gobong/assets/51076814/c127a327-60d8-4d08-a1c1-b5a7ead9c340 height=600/>
+</p>
+이외에도 OAuth2, JWT(Json Web Token), Test 시 JUnit, H2 DB 등이 활용되었습니다.
 
+<br/>
 <br/>
 
 ## ⚙️ Deploy Architectures
-![Architectures](https://github.com/you-can-cook/Gobong/assets/51076814/20672080-7d45-45ff-9b26-cf19c87bca75)
+![Architectures](https://github.com/you-can-cook/Gobong/assets/31026350/8ad6777e-ed94-46e7-8302-e361087cbf3e)
+
 
 <br/>
 
