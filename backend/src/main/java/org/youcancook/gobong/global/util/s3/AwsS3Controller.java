@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/images")
@@ -18,7 +16,7 @@ public class AwsS3Controller {
     private final AwsS3ImageUploader awsS3ImageUploader;
 
     @PostMapping("upload")
-    public ResponseEntity<AwsS3ImageUploadResponse> upload(@RequestParam("image") MultipartFile file) throws IOException {
+    public ResponseEntity<AwsS3ImageUploadResponse> upload(@RequestParam("image") MultipartFile file){
         if (file.isEmpty()) throw new FileUploadException();
         String imageUrl = awsS3ImageUploader.uploadImage(file);
         AwsS3ImageUploadResponse response = new AwsS3ImageUploadResponse(imageUrl);

@@ -22,7 +22,7 @@ public class AwsS3ImageUploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String uploadImage(MultipartFile multipartFile) throws IOException {
+    public String uploadImage(MultipartFile multipartFile){
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(multipartFile.getContentType());
         objectMetadata.setContentLength(multipartFile.getSize());
