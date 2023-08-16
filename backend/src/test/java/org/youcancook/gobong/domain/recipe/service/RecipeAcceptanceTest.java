@@ -81,7 +81,7 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
                 new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, List.of())
         ));
         Long recipeId = AcceptanceUtils.createDummyRecipe(accessToken, request).as(CreateRecipeResponse.class).getId();
-        UpdateRecipeRequest updateRequest = new UpdateRecipeRequest(recipeId, "고소한 주먹밥", "쉽게 만드는 주먹밥",
+        UpdateRecipeRequest updateRequest = new UpdateRecipeRequest("고소한 주먹밥", "쉽게 만드는 주먹밥",
                 List.of("밥", "김"), "쉬워요", null, List.of(
                 new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of()),
                 new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, List.of())));
