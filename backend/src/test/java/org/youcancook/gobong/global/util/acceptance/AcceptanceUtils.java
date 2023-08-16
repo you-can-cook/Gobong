@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.youcancook.gobong.domain.recipe.dto.request.CreateRecipeRequest;
 import org.youcancook.gobong.domain.user.dto.request.SignupRequest;
 import org.youcancook.gobong.domain.user.dto.response.TemporaryTokenIssueResponse;
+import org.youcancook.gobong.domain.user.dto.response.UserInformationResponse;
 import org.youcancook.gobong.global.util.token.TokenDto;
 
 public class AcceptanceUtils {
@@ -54,5 +55,24 @@ public class AcceptanceUtils {
             .then().log().all()
             .statusCode(HttpStatus.OK.value())
             .extract();
+    }
+
+    public static Long getUserIdFromToken(String token){
+        return RestAssured.given().log().all()
+                .auth().oauth2(token)
+                .when().get("/api/users")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(UserInformationResponse.class)
+                .getId();
+    }
+
+    public static void followUser(String token, Long userId){
+        RestAssured.given().log().all()
+                .auth().oauth2(token)
+                .when().post("/api/follow/" + userId)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
     }
 }
