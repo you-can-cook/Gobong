@@ -25,8 +25,16 @@ public class ModifiedFeedFilterDto {
     public static ModifiedFeedFilterDto from(FeedFilterDto dto){
         ModifiedFeedFilterDto modifiedDto = new ModifiedFeedFilterDto();
 
-        modifiedDto.queryType = dto.getQuery().startsWith("@") ? QueryType.AUTHOR_NAME : QueryType.TITLE;
-        modifiedDto.query = dto.getQuery();
+        modifiedDto.query = dto.getQuery() == null ? "" : dto.getQuery();
+
+        if (modifiedDto.getQuery().startsWith("@")){
+            modifiedDto.queryType = QueryType.AUTHOR_NAME;
+            modifiedDto.query = modifiedDto.query.substring(1);
+        }
+        else{
+            modifiedDto.queryType = QueryType.TITLE;
+        }
+
         modifiedDto.filterType = FilterType.from(dto.getFilterType());
         modifiedDto.difficulties = dto.getDifficulty() == null ? List.of(Difficulty.EASY, Difficulty.NORMAL, Difficulty.HARD)
                 : List.of(Difficulty.from(dto.getDifficulty()));
