@@ -51,7 +51,7 @@ class GetRecipeServiceTest {
         recipeRepository.save(recipe3);
         recipeRepository.save(recipe4);
 
-        GetFeedResponse feedResponse = getRecipeService.getAllFeed(userId, null, 3);
+        GetFeedResponse feedResponse = getRecipeService.getAllFeed(userId, Long.MAX_VALUE, 3);
 
         assertThat(feedResponse.getFeed()).hasSize(3);
         assertThat(feedResponse.isHasNext()).isTrue();
@@ -67,7 +67,7 @@ class GetRecipeServiceTest {
     @DisplayName("북마크 피드를 성공적으로 가져온다.")
     public void getBookmarkedFeed(){
         User user = new User("name", "abc", OAuthProvider.GOOGLE, null);
-        User user2 = new User("name1", "abcd", OAuthProvider.GOOGLE, null);
+        User user2 = new User("name1", "abcdd", OAuthProvider.GOOGLE, null);
         userRepository.save(user);
         Long user2Id = userRepository.save(user2).getId();
 
@@ -86,7 +86,7 @@ class GetRecipeServiceTest {
         bookmarkRecipeRepository.save(bookmarkRecipe1);
         bookmarkRecipeRepository.save(bookmarkRecipe2);
 
-        GetFeedResponse feedResponse = getRecipeService.getBookmarkedFeed(user2Id, null, 3);
+        GetFeedResponse feedResponse = getRecipeService.getBookmarkedFeed(user2Id, Long.MAX_VALUE, 3);
 
         assertThat(feedResponse.getFeed()).hasSize(2);
         assertThat(feedResponse.isHasNext()).isFalse();
