@@ -7,9 +7,11 @@ import com.youcancook.gobong.model.UploadRecipe
 import com.youcancook.gobong.model.User
 import com.youcancook.gobong.model.network.GoBongService
 import com.youcancook.gobong.model.network.ImageService
+import com.youcancook.gobong.model.network.UserService
 import com.youcancook.gobong.model.network.dto.ReviewDTO
 import com.youcancook.gobong.model.network.dto.toCard
 import com.youcancook.gobong.model.network.dto.toRecipePost
+import com.youcancook.gobong.model.network.dto.toUser
 import com.youcancook.gobong.model.toRecipeStepAddedDTO
 import com.youcancook.gobong.model.toUploadRecipeDTO
 import com.youcancook.gobong.util.ACCESS_TOKEN
@@ -20,6 +22,7 @@ import okhttp3.RequestBody
 
 class GoBongRemoteDataSource(
     private val goBongService: GoBongService,
+    private val userService: UserService,
     private val imageService: ImageService,
 ) {
     fun getUrl(res: Int): String {
@@ -99,12 +102,12 @@ class GoBongRemoteDataSource(
 
     suspend fun bookmarkRecipe(marked: Boolean, recipeId: Int) {
         val response = if (marked) {
-            goBongService.bookmarkRecipe(getToken(),recipeId)
+            goBongService.bookmarkRecipe(getToken(), recipeId)
         } else {
-            goBongService.deleteBookmarkRecipe(getToken(),recipeId)
+            goBongService.deleteBookmarkRecipe(getToken(), recipeId)
         }
 
-        if(response.isSuccessful.not()) throw Exception("네트워크가 불안정합니다")
+        if (response.isSuccessful.not()) throw Exception("네트워크가 불안정합니다")
     }
 
     suspend fun deleteRecipe(recipeId: Int) {
@@ -166,12 +169,27 @@ class GoBongRemoteDataSource(
         }
     }
 
-    suspend fun getMyRecipes(): User {
-        return User.createEmpty()
+    suspend fun getMyRecipes(): List<Card> {
+        val response = goBongService.getMyRecipes(getToken(), 10)
+        if (response.isSuccessful) {
+            return response.body()?.feeds?.map { it.toCard() } ?: throw Exception("네트워크가 불안정합니다")
+        } else {
+            throw Exception("네트워크가 불안정합니다")
+        }
+
     }
 
     suspend fun getUserRecipes(userId: String): User {
         return User.createEmpty()
+    }
+
+    suspend fun getMyInfo(): User {
+        val response = userService.getMyInfo(getToken())
+        if (response.isSuccessful) {
+            return response.body()?.toUser() ?: throw Exception("네트워크가 불안정합니다")
+        } else {
+            throw Exception("네트워크가 불안정합니다")
+        }
     }
 
     private suspend fun getImageUrlByByteArray(imageByte: ByteArray): String {

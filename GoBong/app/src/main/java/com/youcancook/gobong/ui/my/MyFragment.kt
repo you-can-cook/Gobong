@@ -54,6 +54,11 @@ class MyFragment : NetworkFragment<FragmentMyBinding, MyProfileViewModel>(R.layo
             recyclerView.adapter = gridAdapter
         }
 
+        initListeners()
+
+    }
+
+    private fun initListeners() {
         binding.run {
 
             toolbar.setNavigationOnClickListener {
@@ -86,7 +91,6 @@ class MyFragment : NetworkFragment<FragmentMyBinding, MyProfileViewModel>(R.layo
                 startActivity(intent)
             }
         }
-
     }
 
     override fun onStart() {

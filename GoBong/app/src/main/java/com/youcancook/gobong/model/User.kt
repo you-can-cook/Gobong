@@ -12,7 +12,6 @@ data class User(
     val follower: String = "0",
     val following: String = "0",
     val followed: Boolean = false,
-    val recipes: List<Card> = emptyList(),
 ) {
     companion object {
         fun createEmpty(): User {
@@ -23,8 +22,7 @@ data class User(
                 "0",
                 "0",
                 "0",
-                false,
-                emptyList()
+                false
             )
         }
     }

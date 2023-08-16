@@ -33,9 +33,9 @@ class OthersProfileViewModel(
     }
 
     private suspend fun requestOthersInfo(userId: String) {
-        val response = goBongRepository.getUserRecipes(userId)
-        setUserInfo(response)
-        setUserRecipe(response.recipes)
+//        val response = goBongRepository.getUserRecipes(userId)
+//        setUserInfo(response)
+//        setUserRecipe(response.recipes)
     }
 
     fun follow() {

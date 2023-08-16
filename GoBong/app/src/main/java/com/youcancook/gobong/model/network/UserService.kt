@@ -3,6 +3,7 @@ package com.youcancook.gobong.model.network
 import com.youcancook.gobong.model.network.dto.FollowResponseDTO
 import com.youcancook.gobong.model.network.dto.LoginDTO
 import com.youcancook.gobong.model.network.dto.LoginResponseDTO
+import com.youcancook.gobong.model.network.dto.MyInfoResponseDTO
 import com.youcancook.gobong.model.network.dto.RefreshTokenDTO
 import com.youcancook.gobong.model.network.dto.RegisterDTO
 import com.youcancook.gobong.model.network.dto.TemporaryTokenResponseDTO
@@ -56,4 +57,9 @@ interface UserService {
     suspend fun getMyFollower(
         @Header("Authorization") token: String,
     ): Response<List<FollowResponseDTO>>
+
+    @GET("/api/users")
+    suspend fun getMyInfo(
+        @Header("Authorization") token: String,
+    ):Response<MyInfoResponseDTO>
 }

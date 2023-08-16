@@ -23,8 +23,7 @@ class MyProfileViewModel(
     }
 
     private suspend fun requestMyInfo() {
-        val response = goBongRepository.getUserRecipes(userId = "")
-        setUserInfo(response)
-        setUserRecipe(response.recipes)
+        setUserInfo(goBongRepository.getMyInfo())
+        setUserRecipe(goBongRepository.getMyRecipes())
     }
 }
