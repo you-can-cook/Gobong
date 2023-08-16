@@ -2,7 +2,6 @@ package org.youcancook.gobong.domain.recipe.dto.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -14,9 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class UpdateRecipeRequest {
-
-    @NotNull(message = "레시피 ID는 필수 입력 사항입니다.")
-    private Long recipeId;
 
     @NotBlank(message = "레시피 이름은 필수 입력 사항입니다.")
     private String title;

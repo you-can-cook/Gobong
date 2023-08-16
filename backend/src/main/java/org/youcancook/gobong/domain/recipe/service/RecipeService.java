@@ -44,9 +44,9 @@ public class RecipeService {
     }
 
     @Transactional
-    public void updateRecipe(Long userId, UpdateRecipeRequest request){
+    public void updateRecipe(Long userId, Long recipeId, UpdateRecipeRequest request){
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Recipe recipe = recipeRepository.findById(request.getRecipeId()).orElseThrow(RecipeNotFoundException::new);
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
         validateUserRecipe(user, recipe);
 
         String parsedIngredients = String.join(",", request.getIngredients());

@@ -32,9 +32,10 @@ public class RecipeController {
 
     @PutMapping("{recipeId}")
     public ResponseEntity<Void> updateRecipe(@LoginUserId Long userId,
+                                             @PathVariable Long recipeId,
                                              @RequestBody @Valid UpdateRecipeRequest request){
-        recipeService.updateRecipe(userId, request);
-        recipeDetailService.uploadRecipeDetails(request.getRecipeId(), request.getRecipeDetails());
+        recipeService.updateRecipe(userId, recipeId, request);
+        recipeDetailService.uploadRecipeDetails(recipeId, request.getRecipeDetails());
         return ResponseEntity.ok().build();
     }
 
