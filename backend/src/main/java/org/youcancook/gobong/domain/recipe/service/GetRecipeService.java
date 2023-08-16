@@ -26,7 +26,6 @@ import java.util.Objects;
 @Transactional(readOnly = true)
 public class GetRecipeService {
 
-    private final RecipeService recipeService;
     private final FollowService followService;
     private final RecipeDetailService recipeDetailService;
     private final RecipeRepository recipeRepository;
