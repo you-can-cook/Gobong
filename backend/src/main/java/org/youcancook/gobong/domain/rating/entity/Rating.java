@@ -43,11 +43,14 @@ public class Rating {
         this.user = user;
         this.recipe = recipe;
         this.score = score;
-        this.recipe.addRating(this);
+        recipe.updateRatingDelta(score);
+        recipe.increaseTotalRatedNum();
     }
     public void updateScore(Integer score) {
         validateRatingRange(score);
+        recipe.updateRatingDelta(-this.score);
         this.score = score;
+        recipe.updateRatingDelta(this.score);
     }
 
     public void validateRatingRange(Integer rating){

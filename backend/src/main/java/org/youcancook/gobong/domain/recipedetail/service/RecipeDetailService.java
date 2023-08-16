@@ -3,14 +3,17 @@ package org.youcancook.gobong.domain.recipedetail.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.youcancook.gobong.domain.recipe.entity.Cookware;
 import org.youcancook.gobong.domain.recipe.entity.Recipe;
 import org.youcancook.gobong.domain.recipe.exception.RecipeNotFoundException;
 import org.youcancook.gobong.domain.recipe.repository.RecipeRepository;
 import org.youcancook.gobong.domain.recipedetail.dto.request.UploadRecipeDetailRequest;
+import org.youcancook.gobong.domain.recipedetail.dto.response.GetRecipeDetailResponse;
 import org.youcancook.gobong.domain.recipedetail.entity.RecipeDetail;
 import org.youcancook.gobong.domain.recipedetail.repository.RecipeDetailRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
@@ -28,14 +31,15 @@ public class RecipeDetailService {
 
         IntStream.range(0, requests.size()).forEach(index -> {
             UploadRecipeDetailRequest request = requests.get(index);
-            uploadRecipeDetail(recipe, request.getContent(), request.getImageURL(),
-                    request.getCookTimeInSeconds(), request.getCookware(), index);
+            uploadRecipeDetail(recipe.getId(), request.getContent(), request.getImageURL(),
+                    request.getCookTimeInSeconds(), request.getCookware(), index + 1);
         });
     }
 
     @Transactional
-    public void uploadRecipeDetail(Recipe recipe, String content, String imageURL,
+    public void uploadRecipeDetail(Long recipeId, String content, String imageURL,
                                    int cookTimeInSeconds, long cookware, int step){
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
         RecipeDetail recipeDetail = new RecipeDetail(recipe, content, imageURL, cookTimeInSeconds, cookware, step);
         recipeDetailRepository.save(recipeDetail);
     }
@@ -44,5 +48,18 @@ public class RecipeDetailService {
     public void clearRecipeDetails(Recipe recipe){
         recipe.clearDetails();
         recipeDetailRepository.deleteAllByRecipeId(recipe.getId());
+    }
+
+    public List<GetRecipeDetailResponse> getRecipeDetails(Recipe recipe){
+        List<RecipeDetail> recipeDetails = recipeDetailRepository.findAllByRecipeIdOrderByStep(recipe.getId());
+        return recipeDetails.stream()
+                .map(recipeDetail -> new GetRecipeDetailResponse(
+                        recipeDetail.getId(),
+                        recipeDetail.getContent(),
+                        recipeDetail.getImageURL(),
+                        recipeDetail.getCookTimeInSeconds(),
+                        Cookware.bitToList(recipeDetail.getCookware()),
+                        recipeDetail.getStep()))
+                .collect(Collectors.toList());
     }
 }

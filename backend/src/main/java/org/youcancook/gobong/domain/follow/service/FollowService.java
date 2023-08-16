@@ -57,6 +57,16 @@ public class FollowService {
         followRepository.delete(follow);
     }
 
+    public boolean isFollowing(Long followerId, Long followeeId){
+        User follower = userRepository.findById(followerId)
+                .orElseThrow(UserNotFoundException::new);
+        User followee = userRepository.findById(followeeId)
+                .orElseThrow(UserNotFoundException::new);
+
+        return followRepository.existsByFollowerAndFollowee(follower, followee);
+    }
+
+
     public List<FindFollowerResponse> findFollowerList(Long loginUserId) {
         User user = userRepository.findById(loginUserId)
                 .orElseThrow(UserNotFoundException::new);
@@ -82,4 +92,5 @@ public class FollowService {
                 ))
                 .toList();
     }
+
 }

@@ -2,6 +2,7 @@ package org.youcancook.gobong.domain.recipe.dto.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -24,6 +25,7 @@ public class CreateRecipeRequest {
     private String difficulty;
     private String thumbnailURL;
 
+    @NotNull(message = "단계별 레시피는 필수 항목입니다.")
     private List<@Valid UploadRecipeDetailRequest> recipeDetails;
 
 }
