@@ -106,7 +106,6 @@ class DetailActivity :
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.isBookmarked.collectLatest {
                         bookmarkImageView.isSelected = it
-
                     }
                 }
             }

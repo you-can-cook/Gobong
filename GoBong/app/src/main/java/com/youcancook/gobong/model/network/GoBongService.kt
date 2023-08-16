@@ -54,17 +54,30 @@ interface GoBongService {
     suspend fun reviewRecipe(
         @Header("Authorization") token: String,
         @Body data: ReviewDTO,
-    ): Response<Any>
+    ): Response<Void>
 
     @PUT("/api/ratings")
     suspend fun updaterReviewRecipe(
         @Header("Authorization") token: String,
         @Body data: ReviewDTO,
-    ): Response<Any>
+    ): Response<Void>
 
     @DELETE("/api/recipes/{recipe_id}")
     suspend fun deleteRecipe(
         @Header("Authorization") token: String,
         @Path("recipe_id") recipeId: Int,
-    ): Response<Any>
+    ): Response<Void>
+
+    @POST("/api/bookmarks/{recipeId}")
+    suspend fun bookmarkRecipe(
+        @Header("Authorization") token: String,
+        @Path("recipeId") recipeId: Int,
+    ): Response<Void>
+
+    @DELETE("/api/bookmarks/{recipeId}")
+    suspend fun deleteBookmarkRecipe(
+        @Header("Authorization") token: String,
+        @Path("recipeId") recipeId: Int,
+    ): Response<Void>
+
 }

@@ -102,8 +102,14 @@ class GoBongRemoteDataSource(
         }
     }
 
-    suspend fun bookmarkRecipe(marked: Boolean) {
-        goBongService
+    suspend fun bookmarkRecipe(marked: Boolean, recipeId: Int) {
+        val response = if (marked) {
+            goBongService.bookmarkRecipe(getToken(),recipeId)
+        } else {
+            goBongService.deleteBookmarkRecipe(getToken(),recipeId)
+        }
+
+        if(response.isSuccessful.not()) throw Exception("네트워크가 불안정합니다")
     }
 
     suspend fun deleteRecipe(recipeId: Int) {
@@ -112,7 +118,7 @@ class GoBongRemoteDataSource(
             "GoBongBab",
             "deleteRecipe ${response.body()} ${response.errorBody()?.string()}"
         )
-        if(response.isSuccessful.not()) throw Exception("네트워크가 불안정합니다")
+        if (response.isSuccessful.not()) throw Exception("네트워크가 불안정합니다")
     }
 
     suspend fun reviewRecipe(recipeId: Int, star: Int) {
@@ -123,7 +129,7 @@ class GoBongRemoteDataSource(
         val response = goBongService.reviewRecipe(getToken(), request)
         Log.e(
             "GoBongBab",
-            "reviewRecipe ${response} ${response.errorBody()?.string()}"
+            "reviewRecipe ${response.code()} ${response.errorBody()?.string()}"
         )
         if (response.isSuccessful.not()) {
             throw Exception("네트워크가 불안정합니다")
@@ -138,7 +144,7 @@ class GoBongRemoteDataSource(
         val response = goBongService.updaterReviewRecipe(getToken(), request)
         Log.e(
             "GoBongBab",
-            "reviewRecipe ${response} ${response.errorBody()?.string()}"
+            "updateReview ${response} ${response.errorBody()?.string()}"
         )
         if (response.isSuccessful.not()) {
             throw Exception("네트워크가 불안정합니다")

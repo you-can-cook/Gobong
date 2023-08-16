@@ -104,7 +104,7 @@ class MyFragment : NetworkFragment<FragmentMyBinding, MyProfileViewModel>(R.layo
                     requireContext().resources.getDimension(R.dimen.grid_margin)
                         .toInt()
             })
-            recyclerView.adapter = gridAdapter
+            gridAdapter.notifyItemRangeChanged(0, gridAdapter.itemCount)
         }
     }
 

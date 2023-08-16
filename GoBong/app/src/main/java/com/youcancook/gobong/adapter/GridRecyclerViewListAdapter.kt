@@ -79,7 +79,7 @@ class GridRecyclerViewListAdapter(
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<Card>() {
             override fun areItemsTheSame(oldItem: Card, newItem: Card): Boolean {
-                return oldItem.title == newItem.title
+                return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(oldItem: Card, newItem: Card): Boolean {
