@@ -124,6 +124,36 @@ class FollowServiceTest {
         assertThrows(NotFollowingException.class, () -> followService.unfollow(follower.getId(), followee.getId()));
     }
 
+    @Test
+    @DisplayName("팔로우하지 않았다면, 여부를 정상적으로 리턴한다.")
+    public void testNotFollowing(){
+        User follower = createTestUser(1L);
+        User followee = createTestUser(2L);
+        when(userRepository.findById(follower.getId()))
+                .thenReturn(Optional.of(follower));
+        when(userRepository.findById(followee.getId()))
+                .thenReturn(Optional.of(followee));
+        when(followRepository.existsByFollowerAndFollowee(follower, followee))
+                .thenReturn(false);
+
+        assertThat(followService.isFollowing(follower.getId(), followee.getId())).isFalse();
+    }
+
+    @Test
+    @DisplayName("팔로우했다면, 여부를 정상적으로 출력한다.")
+    public void testFollowing(){
+        User follower = createTestUser(1L);
+        User followee = createTestUser(2L);
+        when(userRepository.findById(follower.getId()))
+                .thenReturn(Optional.of(follower));
+        when(userRepository.findById(followee.getId()))
+                .thenReturn(Optional.of(followee));
+        when(followRepository.existsByFollowerAndFollowee(follower, followee))
+                .thenReturn(true);
+
+        assertThat(followService.isFollowing(follower.getId(), followee.getId())).isTrue();
+    }
+
     private User createTestUser(Long userId) {
         User user = User.builder()
                 .nickname("nickname" + userId)

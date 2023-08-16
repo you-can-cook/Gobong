@@ -45,7 +45,7 @@ class RecipeDetailServiceTest {
         recipeRepository.save(recipe);
 
         String content = "밥을 비벼주세요";
-        recipeDetailService.uploadRecipeDetail(recipe, content, "",
+        recipeDetailService.uploadRecipeDetail(recipe.getId(), content, "",
                 30, 1L, 1);
         List<RecipeDetail> actual = recipeDetailRepository.findAll();
 
@@ -71,6 +71,11 @@ class RecipeDetailServiceTest {
 
         List<RecipeDetail> actual = recipeDetailRepository.findAllByRecipeId(recipeId);
         assertThat(actual).hasSize(2);
+
+        List<Recipe> actualRecipe = recipeRepository.findAll();
+        assertThat(actualRecipe).isNotEmpty();
+        assertThat(actualRecipe.get(0).getTotalCookTimeInSeconds()).isEqualTo(45);
+        assertThat(actualRecipe.get(0).getCookwares()).isEqualTo(3L);
     }
 
     @Test
@@ -132,8 +137,8 @@ class RecipeDetailServiceTest {
         List<Recipe> recipeActual = recipeRepository.findAll();
         assertThat(recipeActual).hasSize(1);
 
-        assertThat(recipe.getTotalCookTimeInSeconds()).isEqualTo(45);
-        assertThat(recipe.getCookwares()).isEqualTo(5L);
+        assertThat(recipeActual.get(0).getTotalCookTimeInSeconds()).isEqualTo(45);
+        assertThat(recipeActual.get(0).getCookwares()).isEqualTo(5L);
     }
 
     @AfterEach

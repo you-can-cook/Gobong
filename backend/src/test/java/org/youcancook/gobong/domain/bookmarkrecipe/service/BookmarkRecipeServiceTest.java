@@ -1,6 +1,5 @@
 package org.youcancook.gobong.domain.bookmarkrecipe.service;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +18,7 @@ import org.youcancook.gobong.global.util.service.ServiceTest;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ServiceTest
@@ -42,8 +42,12 @@ class BookmarkRecipeServiceTest {
 
         bookmarkRecipeService.addBookmark(user.getId(), recipe.getId());
         List<BookmarkRecipe> actual = bookmarkRecipeRepository.findAll();
-        Assertions.assertThat(actual).hasSize(1);
-        Assertions.assertThat(actual.get(0).getUser().getId()).isEqualTo(user.getId());
+        assertThat(actual).hasSize(1);
+        assertThat(actual.get(0).getUser().getId()).isEqualTo(user.getId());
+
+        List<Recipe> recipeActual = recipeRepository.findAll();
+        assertThat(recipeActual).hasSize(1);
+        assertThat(recipeActual.get(0).getTotalBookmarkCount()).isEqualTo(1);
     }
 
     @Test
@@ -52,6 +56,7 @@ class BookmarkRecipeServiceTest {
         User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
         Recipe recipe = Recipe.builder().title("주먹밥").difficulty(Difficulty.EASY).build();
         userRepository.save(user);
+        recipe.increaseBookmarkCount();
         recipeRepository.save(recipe);
 
         BookmarkRecipe bookmarkRecipe = new BookmarkRecipe(user, recipe);
@@ -60,16 +65,23 @@ class BookmarkRecipeServiceTest {
         bookmarkRecipeService.removeBookmark(user.getId(), recipe.getId());
 
         List<BookmarkRecipe> actual = bookmarkRecipeRepository.findAll();
-        Assertions.assertThat(actual).isEmpty();
+        assertThat(actual).isEmpty();
+
+        List<Recipe> recipeActual = recipeRepository.findAll();
+        assertThat(recipeActual).hasSize(1);
+        assertThat(recipeActual.get(0).getTotalBookmarkCount()).isEqualTo(0);
     }
 
     @Test
     @DisplayName("존재하지 않는 북마크를 삭제하려고 하면 예외를 발생한다.")
     public void notFoundTest(){
         User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
+        Recipe recipe = Recipe.builder().title("주먹밥").difficulty(Difficulty.EASY).build();
         userRepository.save(user);
+        Long recipeId = recipeRepository.save(recipe).getId();
+
         assertThrows(BookmarkRecipeNotFoundException.class, ()->
-                bookmarkRecipeService.removeBookmark(user.getId(), 99L));
+                bookmarkRecipeService.removeBookmark(user.getId(), recipeId));
     }
 
     @Test

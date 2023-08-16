@@ -34,6 +34,7 @@ public class BookmarkRecipe {
     public BookmarkRecipe(User user, Recipe recipe) {
         this.user = user;
         this.recipe = recipe;
+        recipe.increaseBookmarkCount();
     }
 }
 
