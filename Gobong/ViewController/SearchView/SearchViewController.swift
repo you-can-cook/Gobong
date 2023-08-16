@@ -17,14 +17,14 @@ struct FilterModel {
     var tools: [String]
     
     func checkFilter() -> Bool {
-        if level != "init" || time != 0 || star != 0 || tools.count != 0 {
+        if level != nil || time != nil || star != nil || tools.count != nil {
             return true
         }
         return false
     }
 }
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController, UITabBarControllerDelegate {
     
     //property
     private let searchBar = UISearchBar()
@@ -36,12 +36,7 @@ class SearchViewController: UIViewController {
     
     var FeedData: [FeedInfo] = []
     
-    var filteredData: [dummyFeedData] = [
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5)
-    ]
+    var filteredData: [FeedInfo] = []
     
     var isSearching = false
     var filter: FilterModel?
@@ -56,10 +51,11 @@ class SearchViewController: UIViewController {
     
     //MARK: LIFE CYCLE
     override func viewWillAppear(_ animated: Bool) {
-        isShowingBlockView.onNext(true)
         tabBarController?.tabBar.isHidden = false
+        
+        isShowingBlockView.onNext(true)
     }
-
+    
     override func viewDidLoad() {
         
         // Do any additional setup after loading the view.
@@ -68,6 +64,7 @@ class SearchViewController: UIViewController {
         setupUI()
         setObservable()
         setupSearchBar()
+        isShowingBlockView.onNext(true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -85,6 +82,10 @@ class SearchViewController: UIViewController {
             VC.delegate = self
         }
     }
+    func refresh() {
+        isShowingBlockView.onNext(true)
+        print("TAAPAPAPAPAPAPPED")
+    }
     
 }
 
@@ -94,7 +95,17 @@ extension SearchViewController: FilterDelegate {
         isSearching = false
         searchBar.resignFirstResponder()
         filter = FilterModel(sort: controller.selectedSort ?? "", level: controller.levelSelected ?? "", time: Int(controller.stepSlider.index) * 5, star: controller.starSelected ?? 0, tools: controller.tools )
-        isShowingBlockView.onNext(true)
+        
+        Server.shared.filter(query: controller.searchBar.text, filterType: controller.selectedSort, difficulty: controller.levelSelected, maxTotalCookTime: Int(controller.stepSlider.index) * 5 * 60, minRating: controller.starSelected, cookwares: controller.tools) { result in
+            switch result {
+            case .success(let data):
+                print(data)
+                self.filteredData = data.feed
+                self.isShowingBlockView.onNext(true)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
 
@@ -282,17 +293,26 @@ extension SearchViewController : UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if filter != nil {
+            if filter!.checkFilter() {
+                return filteredData.count
+            }
+        }
+        
         return FeedData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeedBoxCell", for: indexPath) as! FeedBoxCell
         
-        if !isSearching {
+        if filter != nil {
+            if filter!.checkFilter() {
+                let url = URL(string: filteredData[indexPath.item].thumbnailURL!)
+                cell.img.load(url: url!)
+            }
+        } else {
             let url = URL(string: FeedData[indexPath.item].thumbnailURL!)
             cell.img.load(url: url!)
-        } else {
-            cell.img.image = UIImage(named: filteredData[indexPath.item].thumbnailImg)
         }
         
         NSLayoutConstraint.activate([
@@ -333,7 +353,6 @@ extension SearchViewController : UITableViewDelegate, UITableViewDataSource, Fee
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         //get other's profileID then show the profile
         
-    
     }
     
     private func tableViewSetup(){
@@ -345,13 +364,16 @@ extension SearchViewController : UITableViewDelegate, UITableViewDataSource, Fee
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if filter != nil {
+            return filteredData.count
+        }
         return FeedData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as! FeedCell
         
-        if !isSearching {
+        if filter != nil {
             let data = FeedData[indexPath.item]
             
             DispatchQueue.main.async {
@@ -369,11 +391,40 @@ extension SearchViewController : UITableViewDelegate, UITableViewDataSource, Fee
                     stars: data.averageRating ?? 0,
                     isFollowing: data.author.following
                 )
+                if data.author.following {
+                    cell.followingButton.isHidden = true
+                } else {
+                    cell.followingButton.isHidden = false
+                }
             }
             cell.followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        } else {
+        }
+        
+        else {
             let data = filteredData[indexPath.item]
-//            cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, isBookmarked: data.isBookmarked, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
+            
+            DispatchQueue.main.async {
+                cell.configuration(
+                    userImg: data.author.profileImageURL,
+                    username: data.author.nickname,
+                    following: data.author.following,
+                    thumbnailImg: data.thumbnailURL,
+                    title: data.title,
+                    bookmarkCount: data.totalBookmarkCount,
+                    isBookmarked: data.bookmarked,
+                    cookingTime: data.totalCookTimeInSeconds,
+                    tools: data.cookwares,
+                    level: data.difficulty,
+                    stars: data.averageRating ?? 0,
+                    isFollowing: data.author.following
+                )
+                if data.author.following {
+                    cell.followingButton.isHidden = true
+                } else {
+                    cell.followingButton.isHidden = false
+                }
+            }
+            
             cell.followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         }
         
@@ -388,7 +439,7 @@ extension SearchViewController : UITableViewDelegate, UITableViewDataSource, Fee
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 370.0
+        return 380.0
     }
     
 }

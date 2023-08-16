@@ -56,9 +56,9 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
     }
     
     //when home icon in toolbar is clicked
-//    func refresh() {
-//        setupUI()
-//    }
+    func refresh() {
+        setupUI()
+    }
 }
 
 extension ViewController {

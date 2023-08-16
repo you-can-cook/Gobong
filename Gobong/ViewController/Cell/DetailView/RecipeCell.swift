@@ -161,6 +161,7 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
             UIimage.topAnchor.constraint(equalTo: firstLineView.bottomAnchor, constant: 5),
             UIimage.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -23),
             
+            
             descriptionLabel.topAnchor.constraint(equalTo: UIimage.bottomAnchor, constant: 23),
             descriptionLabel.bottomAnchor.constraint(equalTo: informationView.bottomAnchor, constant: -12),
             
@@ -275,6 +276,7 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
                 UIimage.isHidden = false
                 let url = URL(string: image!)
                 UIimage.load(url: url!)
+                
             } else {
                 UIimage.isHidden = true
             }

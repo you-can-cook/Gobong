@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DeleteAccountViewController: UIViewController, UIGestureRecognizerDelegate {
+class DeleteAccountViewController: UIViewController {
 
     @IBOutlet weak var deleteAccountButton: UIButton!
     
@@ -17,12 +17,8 @@ class DeleteAccountViewController: UIViewController, UIGestureRecognizerDelegate
         // Do any additional setup after loading the view.
         setupUI()
         
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
     
     private func setupUI(){
         setupNavigationBar()

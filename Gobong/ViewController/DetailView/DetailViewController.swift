@@ -18,7 +18,7 @@ struct dummyHowTo {
 }
 
 //POST'S DETAILED INFORMATION
-class DetailViewController: UIViewController, UIGestureRecognizerDelegate{
+class DetailViewController: UIViewController{
     
     @IBOutlet weak var tableView: UITableView!
     var labelSizeCache: [String: CGSize] = [:]
@@ -47,21 +47,18 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate{
 
         // Do any additional setup after loading the view.
         setupData()
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showPopUpReview",
            let vc = segue.destination as? ReviewPopUpViewController {
             vc.delegate = self
+            vc.id = information.id
             if star > 0 {
                 vc.star = star
+                vc.sendedStar = star
             }
         }
-    }
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
     }
     
     //데이터 처리 
@@ -77,12 +74,51 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate{
                 self.tableViewSetup()
                 
                 self.isFolded = Array(repeating: true, count: self.recipeInformation.count)
-               
                 
             case .failure(let error):
                 print(error)
             }
         }
+        
+    }
+    
+    private func setupData2(){
+        Server.shared.getPostDetail(recipeId: index) { Result in
+            switch Result {
+            case .success(let success):
+                print(success)
+                self.information = success
+                self.hashTag = success.ingredients
+                self.recipeInformation = success.recipeDetails
+                self.setupUI()
+                self.tableViewSetup()
+                
+                self.tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        
+    }
+    
+    private func setupData3(){
+        Server.shared.getPostDetail(recipeId: index) { Result in
+            switch Result {
+            case .success(let success):
+                print(success)
+                self.information = success
+                self.hashTag = success.ingredients
+                self.recipeInformation = success.recipeDetails
+                self.setupUI()
+                self.tableViewSetup()
+                
+                self.navigationBarSetup()
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
         
     }
     
@@ -108,10 +144,21 @@ extension DetailViewController {
             
             navigationItem.rightBarButtonItem = saveItemButton
         } else {
-            let saveItemButton = UIBarButtonItem(image: UIImage(named: "BMark"), style: .plain, target: self, action: #selector(saveButtonTapped))
-            saveItemButton.tintColor = .black
+            if !information.summary.bookmarked {
+                let saveItemButton = UIBarButtonItem(image: UIImage(named: "BMark"), style: .plain, target: self, action: #selector(saveButtonTapped))
+                saveItemButton.tintColor = .black
+                
+                navigationItem.rightBarButtonItem = saveItemButton
+                
+            } else {
+                let saveItemButton = UIBarButtonItem(image: UIImage(named: "BMarkOk"), style: .plain, target: self, action: #selector(unsaveButtonTapped))
+                saveItemButton.tintColor = .black
+                
+                navigationItem.rightBarButtonItem = saveItemButton
+            }
+           
             
-            navigationItem.rightBarButtonItem = saveItemButton
+            
         }
         
         navigationItem.leftBarButtonItem = backItemButton
@@ -123,6 +170,15 @@ extension DetailViewController {
     }
     
     @objc private func saveButtonTapped(){
+        Server.shared.bookMark(id: information.id) {
+            self.setupData3()
+        }
+    }
+    
+    @objc private func unsaveButtonTapped(){
+        Server.shared.cancelBookMark(id: information.id) {
+            self.setupData3()
+        }
     }
     
     @objc private func deleteButtonTapped(){
@@ -135,6 +191,20 @@ extension DetailViewController {
 
 //MARK: TABLE VIEW
 extension DetailViewController: UITableViewDelegate, UITableViewDataSource, RecipeCellDelegate, ReviewDelegate, ReviewPopUpDelegate, DetailTitleDelegate {
+    func followingTapped(cell: DetailTitleCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        if information.summary.author.following {
+            Server.shared.unfollowUser(id: information.summary.author.id) { [self] in
+                self.setupData2()
+                
+            }
+        } else {
+            Server.shared.followUser(id: information.summary.author.id) {
+                self.setupData2()
+            }
+        }
+    }
+    
     func profileTapped(cell: DetailTitleCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         //get other's profileID then show the profile
@@ -144,8 +214,17 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
     
     //GET DATA FROM POPUP REVIEW VIEW
     func reviewTapped(controller: ReviewPopUpViewController) {
-        star = controller.star
-        tableView.reloadRows(at: [IndexPath(row: recipeInformation.count+2, section: 0)], with: .none)
+        Server.shared.getPostDetail(recipeId: index) { Result in
+            switch Result {
+            case .success(let success):
+                print(success)
+                self.information = success
+                self.tableView.reloadRows(at: [IndexPath(row: self.recipeInformation.count+2, section: 0)], with: .none)
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
         //리뷰 처리 !! 
     }
     
@@ -184,11 +263,10 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
             cell.selectionStyle = .none
             cell.delegate = self
             
-//            //if reviewed
-            if star > 0 {
+            if information.myRate > 0 {
+                star = information.myRate
                 cell.isReviewed(star)
             }
-//            //else if not reviewed
             else {
                 cell.isNotReviewed()
             }
@@ -309,28 +387,15 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
                 firstline = 30
             }
             
-            var imageHeight: CGFloat = 0
+//            var imageHeight: CGFloat = 0
             let last = calculateLabelSizeRecipe(text: data.content).height
             if !isFolded[indexPath.item-2] {
                 if data.imageURL != nil {
-                    let imgView = UIImageView()
-                    let url = URL(string: "https://example.com/image.png")
-                    imgView.kf.setImage(with: url)
-
-                    if let image = imgView.image {
-                        let maxWidth: CGFloat = CGFloat(view.bounds.width/1.5)
-                        let maxHeight: CGFloat = 130
-                        let aspectRatio: CGFloat = 16 / 9  // 1.91:1
-                        
-                        let imageWidth = image.size.width
-                        imageHeight = min(maxHeight, min(imageWidth * aspectRatio, maxWidth))
-                    }
-                    
-                    return CGFloat(firstline) + imageHeight + last + 80
+                    return CGFloat(firstline) + 130 + last + 80
                 }
             }
             
-            return CGFloat(firstline) + imageHeight + last + 50
+            return CGFloat(firstline) + 0 + last + 50
         }
     }
     

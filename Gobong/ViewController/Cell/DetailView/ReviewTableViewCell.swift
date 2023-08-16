@@ -52,6 +52,7 @@ class ReviewTableViewCell: UITableViewCell {
     }
     
     private func showStar(_ star: Int){
+        print(star)
         if star == 1 {
             oneStarImg.image = UIImage(named: "별점o")
             twoStarImg.image = UIImage(named: "별점x")

@@ -34,20 +34,27 @@ class FollowStateCell: UITableViewCell {
         delegate?.followingTapped(cell: self)
     }
     
-    func configuration(img: UIImage?, name: String, following: Bool) {
-        profileImg.image = img ?? UIImage(named: "프로필 이미지")
+    func configuration(img: String?, name: String, following: Bool) {
+        if img != nil {
+            let url = URL(string: img!)
+            profileImg.load(url: url!)
+        } else {
+            profileImg.image = UIImage(named: "프로필 이미지")
+        }
         nameLabel.text = name
         
         setButtonUI(following: following)
     }
     
     private func setButtonUI(following: Bool){
-        if following {
+        if !following {
             followButton.backgroundColor = UIColor(named: "pink")
             followButton.titleLabel?.textColor = .white
+            followButton.setTitle("팔로우", for: .normal)
         } else {
             followButton.backgroundColor =  UIColor(named: "softGray")
             followButton.titleLabel?.textColor = .white
+            followButton.setTitle("팔로잉", for: .normal)
         }
     }
 }
