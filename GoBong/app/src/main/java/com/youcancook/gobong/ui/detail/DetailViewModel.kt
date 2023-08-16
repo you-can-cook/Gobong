@@ -65,7 +65,9 @@ class DetailViewModel(
         _cardInfo.value = response.cardInfo
         _recipes.value = response.recipes
         _isMine.value = response.cardInfo.user.notMine.not()
-        _starCount.value = response.reviewed
+        _starCount.value = response.myRate
+        if (_starCount.value != 0) _isReviewed.value = true
+        _isBookmarked.value = _cardInfo.value.bookmarked
     }
 
     fun activeRecipeStep(position: Int) {
@@ -86,7 +88,7 @@ class DetailViewModel(
     }
 
     private suspend fun requestBookmark(isBookmarked: Boolean) {
-        goBongRepository.bookmarkRecipe(isBookmarked)
+        goBongRepository.bookmarkRecipe(isBookmarked, _cardInfo.value.id)
         _cardInfo.value = _cardInfo.value.copy(bookmarked = isBookmarked)
     }
 
@@ -125,6 +127,7 @@ class DetailViewModel(
                     setSnackBarMessage(e.message ?: "")
                 } else {
                     setSnackBarMessage("내가 올린 게시물에는 리뷰를 남길 수 없습니다.")
+                    _starCount.value = 0
                 }
             }
         }

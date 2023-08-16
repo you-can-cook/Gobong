@@ -38,6 +38,7 @@ data class CurrentRecipeDTO(
     @SerializedName("introduction") val introduction: String,
     @SerializedName("ingredients") val ingredients: List<String>,
     @SerializedName("recipeDetails") val recipeDetails: List<RecipeStepDTO>,
+    @SerializedName("myRate") val myRate: Int,
 )
 
 data class ReviewDTO(
@@ -60,6 +61,6 @@ fun CurrentRecipeDTO.toRecipePost(): RecipePost {
         id = id,
         cardInfo = summary.toCard(),
         recipes = recipeDetails.map { it.toRecipeStep() },
-        reviewed = 0
+        myRate = myRate
     )
 }

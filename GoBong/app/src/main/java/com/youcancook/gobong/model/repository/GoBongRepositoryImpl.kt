@@ -30,8 +30,8 @@ class GoBongRepositoryImpl(
         return goBongDataSource.getBookmarkedRecipes()
     }
 
-    override suspend fun bookmarkRecipe(marked: Boolean) {
-        goBongDataSource.bookmarkRecipe(marked)
+    override suspend fun bookmarkRecipe(marked: Boolean, recipeId: Int) {
+        goBongDataSource.bookmarkRecipe(marked, recipeId)
     }
 
     override suspend fun deleteRecipe(recipeId: Int) {

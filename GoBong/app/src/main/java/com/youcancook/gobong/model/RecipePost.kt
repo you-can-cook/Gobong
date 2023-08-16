@@ -19,7 +19,7 @@ data class RecipePost(
     val id: Int,
     val cardInfo: Card,
     val recipes: List<RecipeStep>,
-    val reviewed: Int,
+    val myRate: Int,
 )
 
 fun UploadRecipe.toUploadRecipeDTO(

@@ -17,14 +17,18 @@ interface GoBongRepository {
     suspend fun getFilteredRecipes(filter: Filter): List<Card>
 
     suspend fun getBookmarkedRecipes(): List<Card>
-    suspend fun bookmarkRecipe(marked: Boolean)
+
+    suspend fun bookmarkRecipe(marked: Boolean, recipeId: Int)
 
     suspend fun deleteRecipe(recipeId: Int)
+
     suspend fun reviewRecipe(recipeId: Int, star: Int)
+
     suspend fun updateReviewRecipe(recipeId: Int, star: Int)
 
     suspend fun uploadRecipe(uploadRecipe: UploadRecipe)
 
     suspend fun getMyRecipes(): User
+
     suspend fun getUserRecipes(userId: String): User
 }

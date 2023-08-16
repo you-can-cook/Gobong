@@ -35,7 +35,7 @@ fun setProfileImageByteArray(view: ImageView, data: ByteArray) {
 fun setImageUrl(view: ImageView, url: String) {
     Glide.with(view.context)
         .load(url)
-        .placeholder(R.drawable.example_img)
+        .placeholder(R.drawable.background_default_image)
         .into(view)
 }
 
