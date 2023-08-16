@@ -1,15 +1,11 @@
 package com.youcancook.gobong.ui.my
 
-import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.User
 import com.youcancook.gobong.model.repository.GoBongRepository
-import com.youcancook.gobong.model.repository.GoBongRepositoryImpl
 import com.youcancook.gobong.ui.base.NetworkViewModel
-import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 open class ProfileViewModel(
     private val goBongRepository: GoBongRepository,

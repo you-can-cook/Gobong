@@ -68,7 +68,6 @@ abstract class NetworkFragment<T : ViewDataBinding, VM : NetworkViewModel>(
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.networkState.collectLatest {
-                    println("ittttt")
                     when (it) {
                         NetworkState.DONE -> {
                             loadingDialog.dismiss()

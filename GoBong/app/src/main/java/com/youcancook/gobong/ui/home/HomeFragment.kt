@@ -3,14 +3,12 @@ package com.youcancook.gobong.ui.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.CardRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentHomeBinding
 import com.youcancook.gobong.ui.addRecipe.AddRecipeActivity
 import com.youcancook.gobong.ui.base.NetworkFragment
 import com.youcancook.gobong.ui.base.NetworkStateListener
-import com.youcancook.gobong.ui.detail.DetailActivity
 
 class HomeFragment : NetworkFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fragment_home) {
     override val viewModel: HomeViewModel by lazy {
@@ -27,6 +25,7 @@ class HomeFragment : NetworkFragment<FragmentHomeBinding, HomeViewModel>(R.layou
 
     override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
         override fun onSuccess() {
+            println("success")
             binding.swipeRefresh.isRefreshing = false
         }
 

@@ -9,7 +9,6 @@ import android.view.View
 import androidx.core.app.ActivityCompat
 import com.canhub.cropper.CropImage.ActivityResult
 import com.canhub.cropper.CropImageActivity
-import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ExtendedActivityBinding

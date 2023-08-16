@@ -1,15 +1,14 @@
 package com.youcancook.gobong.ui.addRecipe
 
 import androidx.lifecycle.viewModelScope
-import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Recipe
 import com.youcancook.gobong.model.RecipeAdd
 import com.youcancook.gobong.model.RecipePost
 import com.youcancook.gobong.model.RecipeStepAdded
+import com.youcancook.gobong.model.UploadRecipe
 import com.youcancook.gobong.model.repository.GoBongRepository
 import com.youcancook.gobong.ui.base.NetworkViewModel
 import com.youcancook.gobong.util.NetworkState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -79,7 +78,7 @@ class AddRecipeViewModel(
     }
 
     private suspend fun upload(ingredients: List<String>) {
-        val recipe = RecipePost(
+        val recipe = UploadRecipe(
             thumbnailByteArray = _thumbnailByteArray.value,
             title = titleInput.value,
             description = descriptionInput.value,

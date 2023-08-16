@@ -1,7 +1,5 @@
 package com.youcancook.gobong.ui.my.other
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import androidx.recyclerview.widget.GridLayoutManager
@@ -11,9 +9,7 @@ import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.ActivityOthersBinding
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
-import com.youcancook.gobong.ui.detail.DetailActivity
 import com.youcancook.gobong.ui.my.OthersProfileViewModel
-import com.youcancook.gobong.ui.my.follow.FollowActivity
 
 class OthersActivity :
     NetworkActivity<ActivityOthersBinding, OthersProfileViewModel>(R.layout.activity_others) {

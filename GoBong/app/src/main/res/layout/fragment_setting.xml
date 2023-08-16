@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/backArrowButton"
@@ -86,6 +86,36 @@
         app:layout_constraintTop_toBottomOf="@id/alarmTextView" />
 
     <TextView
+        android:id="@+id/logoutTextView"
+        style="@style/TextAppearance.GoBong.SemiBold16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="로그아웃"
+        app:layout_constraintStart_toStartOf="@id/backArrowButton"
+        app:layout_constraintTop_toBottomOf="@id/alarmDivider" />
+
+    <ImageView
+        android:id="@+id/logoutMoreImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/icon_right_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/logoutTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/logoutTextView" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/logoutDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logoutTextView" />
+
+    <TextView
         android:id="@+id/quitTextView"
         style="@style/TextAppearance.GoBong.SemiBold16"
         android:layout_width="wrap_content"
@@ -93,7 +123,7 @@
         android:layout_marginTop="16dp"
         android:text="회원탈퇴"
         app:layout_constraintStart_toStartOf="@id/backArrowButton"
-        app:layout_constraintTop_toBottomOf="@id/alarmDivider" />
+        app:layout_constraintTop_toBottomOf="@id/logoutDivider" />
 
     <ImageView
         android:id="@+id/quitMoreImageView"

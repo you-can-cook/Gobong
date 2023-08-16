@@ -10,9 +10,7 @@ import com.youcancook.gobong.adapter.GridRecyclerViewListAdapter
 import com.youcancook.gobong.databinding.FragmentMyBinding
 import com.youcancook.gobong.ui.base.NetworkFragment
 import com.youcancook.gobong.ui.base.NetworkStateListener
-import com.youcancook.gobong.ui.detail.DetailActivity
 import com.youcancook.gobong.ui.my.follow.FollowActivity
-import com.youcancook.gobong.ui.my.other.OthersActivity
 import com.youcancook.gobong.ui.my.setting.SettingActivity
 
 class MyFragment : NetworkFragment<FragmentMyBinding, MyProfileViewModel>(R.layout.fragment_my) {
