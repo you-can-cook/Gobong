@@ -103,7 +103,7 @@ fun toolText(view: TextView, tools: List<String>) {
     } else if (tools.size == 1) {
         tools[0]
     } else {
-        "${tools[0]} +${tools.size - 1}"
+        "${tools[0]}\n+${tools.size - 1}"
     }
 }
 

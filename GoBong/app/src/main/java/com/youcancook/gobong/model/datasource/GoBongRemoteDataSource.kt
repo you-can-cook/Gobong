@@ -35,7 +35,7 @@ class GoBongRemoteDataSource(
     }
 
     suspend fun getCurrentRecipe(recipePostId: String): RecipePost {
-        val response = goBongService.getCurrentRecipe(getToken(),recipePostId.toInt())
+        val response = goBongService.getCurrentRecipe(getToken(), recipePostId.toInt())
         Log.e(
             "GoBongBab",
             "getCurrentRecipe $response ${response.body()} ${response.errorBody().toString()}"
@@ -108,7 +108,11 @@ class GoBongRemoteDataSource(
     suspend fun uploadRecipe(uploadRecipe: UploadRecipe): String {
         val thumbnailUrl = getImageUrlByByteArray(uploadRecipe.thumbnailByteArray)
         val request = uploadRecipe.toUploadRecipeDTO(thumbnailUrl, uploadRecipe.recipes.map {
-            it.toRecipeStepAddedDTO(getImageUrlByByteArray(it.photoUrl))
+            if (it.photoUrl.isNotEmpty()) {
+                it.toRecipeStepAddedDTO(getImageUrlByByteArray(it.photoUrl))
+            } else {
+                it.toRecipeStepAddedDTO(null)
+            }
         })
 
         Log.e("GoBongBab", "uploadRecipe request ${request}")
