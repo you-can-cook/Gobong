@@ -43,5 +43,4 @@ class UserRepositoryImpl(
         return userDataSource.requestMyFollowingList()
     }
 
-
 }

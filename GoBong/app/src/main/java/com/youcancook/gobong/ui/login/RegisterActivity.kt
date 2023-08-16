@@ -14,10 +14,12 @@ import com.youcancook.gobong.databinding.ActivityRegisterBinding
 import com.youcancook.gobong.model.LoginUser
 import com.youcancook.gobong.ui.ImageActivity
 import com.youcancook.gobong.ui.MainActivity
+import com.youcancook.gobong.ui.RoutingActivity
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.util.ACCESS_TOKEN_KEY
 import com.youcancook.gobong.util.REFRESH_TOKEN_KEY
+import com.youcancook.gobong.util.TOKEN_KEY
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -30,8 +32,7 @@ class RegisterActivity :
 
     override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
         override fun onSuccess() {
-            val token = viewModel.getToken()
-            saveToken(token.accessToken, token.refreshToken)
+            saveToken()
         }
 
         override fun onFail() {
@@ -85,19 +86,21 @@ class RegisterActivity :
         }
     }
 
-    private fun saveToken(accessToken: String, refreshToken: String) {
-        println("saveToken $accessToken $refreshToken")
-        getPreferences(Context.MODE_PRIVATE).edit {
-            putString(ACCESS_TOKEN_KEY, accessToken)
-            putString(REFRESH_TOKEN_KEY, refreshToken)
+    private fun saveToken() {
+        val token = viewModel.getToken()
+
+        println("saveToken ${token.accessToken} ${token.refreshToken}")
+        getSharedPreferences(TOKEN_KEY, Context.MODE_PRIVATE).edit {
+            putString(ACCESS_TOKEN_KEY, token.accessToken)
+            putString(REFRESH_TOKEN_KEY, token.refreshToken)
             commit()
 
-            moveToMainActivity()
+            moveToRoutingActivity()
         }
     }
 
-    private fun moveToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
+    private fun moveToRoutingActivity() {
+        val intent = Intent(this, RoutingActivity::class.java)
             .apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             }
