@@ -55,7 +55,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @Query("SELECT r FROM Recipe r " +
             "WHERE r.user.id =:userId " +
             "AND r.id <:recipeId")
-    Slice<Recipe> getAllMyFeed(Long userId, long recipeId, PageRequest of);
-
+    Slice<Recipe> getAllUserFeed(Long userId, long recipeId, PageRequest of);
+  
     Long countByUser(User user);
 }

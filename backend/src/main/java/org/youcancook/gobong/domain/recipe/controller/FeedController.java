@@ -56,6 +56,16 @@ public class FeedController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("{userId}")
+    public ResponseEntity<GetFeedResponse> getUserFeed(@LoginUserId Long myId,
+                                                       @PathVariable Long userId,
+                                                       @RequestParam(name = "last", required = false) Long lastRecipeId,
+                                                       @RequestParam(name = "count", required = true) int count) {
+        lastRecipeId = lastRecipeId == null ? Long.MAX_VALUE : lastRecipeId;
+        GetFeedResponse response = getRecipeService.getUserFeed(userId, myId, lastRecipeId, count);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("filter")
     public ResponseEntity<GetFeedResponse> getFilteredFeedByTitle(@LoginUserId Long userId,
                                                            @RequestParam(name = "page", required = true) int page,
