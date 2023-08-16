@@ -7,6 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.youcancook.gobong.domain.follow.repository.FollowRepository;
+import org.youcancook.gobong.domain.recipe.repository.RecipeRepository;
 import org.youcancook.gobong.domain.user.dto.response.UserInformationResponse;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
@@ -28,6 +30,12 @@ class UserInformationServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private FollowRepository followRepository;
+
+    @Mock
+    private RecipeRepository recipeRepository;
+
     @Test
     @DisplayName("회원정보 조회")
     void checkInformation() {
@@ -36,7 +44,12 @@ class UserInformationServiceTest {
         ReflectionTestUtils.setField(user, "id", 1L);
         when(userRepository.findById(user.getId()))
                 .thenReturn(Optional.of(user));
-
+        when(followRepository.countByFollower(user))
+                .thenReturn(5L);
+        when(followRepository.countByFollowee(user))
+                .thenReturn(3L);
+        when(recipeRepository.countByUser(user))
+                .thenReturn(1L);
         // when
         UserInformationResponse result = userInformationService.getUserInformation(user.getId());
 
@@ -45,6 +58,9 @@ class UserInformationServiceTest {
         assertThat(result.getNickname()).isEqualTo(user.getNickname());
         assertThat(result.getOauthProvider()).isEqualTo(user.getOAuthProvider().name());
         assertThat(result.getProfileImageURL()).isEqualTo(user.getProfileImageURL());
+        assertThat(result.getFollowingNumber()).isEqualTo(5L);
+        assertThat(result.getFollowerNumber()).isEqualTo(3L);
+        assertThat(result.getRecipeNumber()).isEqualTo(1L);
     }
 
     @Test
