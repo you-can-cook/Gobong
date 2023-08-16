@@ -49,7 +49,7 @@ data class RegisterUser(
     val provider: String,
     val oAuthId: String,
     val temporaryToken: String,
-    val profileImageURL: String? = null,
+    val profileImageByteArray: ByteArray? = null,
 )
 
 data class UserToken(
@@ -70,7 +70,6 @@ fun RegisterUser.toRegisterDTO(): RegisterDTO {
         nickname,
         provider,
         oAuthId,
-        temporaryToken,
-        profileImageURL
+        temporaryToken
     )
 }

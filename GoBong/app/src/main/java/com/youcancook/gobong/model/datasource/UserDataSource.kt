@@ -8,6 +8,10 @@ import com.youcancook.gobong.model.network.UserService
 import com.youcancook.gobong.model.network.dto.toUserToken
 import com.youcancook.gobong.model.toLoginDTO
 import com.youcancook.gobong.model.toRegisterDTO
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+
 
 class UserDataSource(
     private val userService: UserService,
@@ -38,7 +42,14 @@ class UserDataSource(
     }
 
     suspend fun requestRegister(registerUser: RegisterUser): UserToken {
-        val response = userService.postSignUp(registerUser.toRegisterDTO())
+        println("register request $registerUser")
+        var request = registerUser.toRegisterDTO()
+        registerUser.profileImageByteArray?.let {
+            val url = getImageUrlByByteArray(registerUser.profileImageByteArray)
+            request = request.copy(profileImageURL = url)
+        }
+
+        val response = userService.postSignUp(request)
         if (response.isSuccessful) {
             return response.body()?.toUserToken() ?: throw Exception(response.message())
         } else {
@@ -55,7 +66,9 @@ class UserDataSource(
     }
 
     private suspend fun getImageUrlByByteArray(imageByte: ByteArray): String {
-        val response = imageService.postImage()
+        val requestFile = RequestBody.create(MediaType.parse("image/*"), imageByte);
+        val uploadFile = MultipartBody.Part.createFormData("image", "", requestFile);
+        val response = imageService.postImage(uploadFile)
         if (response.isSuccessful) {
             return response.body()?.imageUrl ?: throw Exception("이미지 업로드에 실패했습니다")
         } else {

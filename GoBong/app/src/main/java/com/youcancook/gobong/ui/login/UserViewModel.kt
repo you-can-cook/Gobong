@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 open class UserViewModel(
     private val userRepository: UserRepositoryImpl,
 ) : NetworkViewModel() {
-
+    private val nicknameRegex = """[0-9a-zA-Z가-힣]{1,10}""".toRegex()
     val nicknameInput = MutableStateFlow("")
 
     private val _profileImage = MutableStateFlow("")
@@ -47,6 +47,10 @@ open class UserViewModel(
             _profileImage.value,
             nicknameInput.value,
         )
+    }
+
+    fun isValidNickname(): Boolean {
+        return nicknameInput.value.matches(nicknameRegex)
     }
 
 }

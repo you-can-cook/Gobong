@@ -2,7 +2,7 @@
 <resources>
 
     <style name="TextAppearance.GoBong" parent="">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:includeFontPadding">false</item>
     </style>
 
