@@ -2,6 +2,7 @@ package com.youcancook.gobong.model.network
 
 import com.youcancook.gobong.model.network.dto.LoginDTO
 import com.youcancook.gobong.model.network.dto.LoginResponseDTO
+import com.youcancook.gobong.model.network.dto.RefreshTokenDTO
 import com.youcancook.gobong.model.network.dto.RegisterDTO
 import com.youcancook.gobong.model.network.dto.TemporaryTokenResponseDTO
 import retrofit2.Response
@@ -15,6 +16,11 @@ interface UserService {
     suspend fun postTemporaryToken(
 
     ): Response<TemporaryTokenResponseDTO>
+
+    @POST("/api/auth/reissue")
+    suspend fun reissueAccessToken(
+        @Body data: RefreshTokenDTO
+    ): Response<LoginResponseDTO>
 
     @POST("/api/users/login")
     suspend fun postLogin(

@@ -21,7 +21,6 @@ class HomeViewModel(
     fun getFollowingRecipes() {
         viewModelScope.launch {
             setNetworkState(NetworkState.LOADING)
-            println("follow loading!")
             try {
                 requestFollowingRecipes()
                 setNetworkState(NetworkState.SUCCESS)

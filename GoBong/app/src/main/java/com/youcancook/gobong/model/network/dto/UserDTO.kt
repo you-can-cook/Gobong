@@ -15,3 +15,7 @@ data class LoginDTO(
     @SerializedName("oauthId") val oAuthId: String,
     @SerializedName("temporaryToken") val temporaryToken: String,
 )
+
+data class RefreshTokenDTO(
+    @SerializedName("refreshToken") val refreshToken: String,
+)

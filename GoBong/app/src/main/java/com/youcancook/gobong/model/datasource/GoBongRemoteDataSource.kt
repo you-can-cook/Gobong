@@ -1,5 +1,6 @@
 package com.youcancook.gobong.model.datasource
 
+import android.util.Log
 import com.youcancook.gobong.R
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.RecipeStep
@@ -8,6 +9,14 @@ import com.youcancook.gobong.model.User
 import com.youcancook.gobong.model.UserProfile
 import com.youcancook.gobong.model.network.GoBongService
 import com.youcancook.gobong.model.network.ImageService
+import com.youcancook.gobong.model.network.dto.toCard
+import com.youcancook.gobong.model.toRecipeStepDTO
+import com.youcancook.gobong.model.toUploadRecipeDTO
+import com.youcancook.gobong.util.ACCESS_TOKEN
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.lang.Exception
 
 
 class GoBongRemoteDataSource(
@@ -16,6 +25,11 @@ class GoBongRemoteDataSource(
 ) {
     fun getUrl(res: Int): String {
         return "android.resource://com.youcancook.gobong/$res"
+    }
+
+    private fun getToken(): String {
+        println("access ${ACCESS_TOKEN}")
+        return "Bearer $ACCESS_TOKEN"
     }
 
     suspend fun getCurrentRecipe(recipePostId: String): Card {
@@ -73,119 +87,26 @@ class GoBongRemoteDataSource(
     }
 
     suspend fun getFollowingRecipes(): List<Card> {
-//        return emptyList()
-        return listOf(
-            Card(
-                "mark",
-                UserProfile(followed = true),
-                getUrl(R.drawable.markthumb),
-                "마크정식 100% 원조 레시피",
-                "100",
-                true,
-                "5분",
-                listOf("전자레인지"),
-                "쉬워요",
-                "4.5공기",
-                "편의점 꿀조합 레시피 best of best",
-                listOf(
-                    "자이언트떡볶이 1개",
-                    "의성마늘후랑크 소시지 1개",
-                    "콕콕콕 스파게티  1개",
-                    "모짜렐라 피자치즈 20g"
-                ),
-                listOf()
-            ),
-            Card(
-                "potato",
-                UserProfile(followed = true),
-                getUrl(R.drawable.potatothumb),
-                "초간단 고구마말랭이",
-                "125",
-                false,
-                "10분",
-                listOf("전자레인지"),
-                "쉬워요",
-                "4.2공기",
-                "전자레인지로 간단하게 만들 수 있는 고구마말랭이",
-                listOf(),
-                listOf()
-            ),
-            Card(
-                "noodle",
-                UserProfile(nickname = "국수 박사학위", followed = true),
-                getUrl(R.drawable.noodlethumb),
-                "냐혼자산다 화사의 간장국수 따라해보기",
-                "324",
-                false,
-                "7분 30초",
-                listOf("전자레인지"),
-                "보통이에요",
-                "4.4공기",
-                "만드는데 비용도 얼마 들지 않고 시간도 얼마 안걸리는 진짜 초간단 레시피",
-                listOf(),
-                listOf()
-            )
-        )
+        val response = goBongService.getFollowingRecipes(getToken(), 10)
+        Log.e("GoBongBab", "getFollowingRecipes ${response.body()}")
+        if (response.isSuccessful) {
+            return response.body()?.feeds?.map { it.toCard() } ?: throw Exception("네트워크가 불안정합니다")
+        } else {
+            throw Exception("네트워크가 불안정합니다")
+        }
     }
 
     suspend fun getAllRecipes(): List<Card> {
-//        return emptyList()
-        return listOf(
-            Card(
-                "mark",
-                UserProfile(),
-                getUrl(R.drawable.markthumb),
-                "마크정식 100% 원조 레시피",
-                "100",
-                true,
-                "5분",
-                listOf("전자레인지"),
-                "쉬워요",
-                "4.5공기",
-                "편의점 꿀조합 레시피 best of best",
-                listOf(
-                    "자이언트떡볶이 1개",
-                    "의성마늘후랑크 소시지 1개",
-                    "콕콕콕 스파게티  1개",
-                    "모짜렐라 피자치즈 20g"
-                ),
-                listOf()
-            ),
-            Card(
-                "potato",
-                UserProfile(),
-                getUrl(R.drawable.potatothumb),
-                "초간단 고구마말랭이",
-                "125",
-                false,
-                "10분",
-                listOf("전자레인지"),
-                "쉬워요",
-                "4.2공기",
-                "전자레인지로 간단하게 만들 수 있는 고구마말랭이",
-                listOf(),
-                listOf()
-            ),
-            Card(
-                "noodle",
-                UserProfile(nickname = "국수 박사학위"),
-                getUrl(R.drawable.noodlethumb),
-                "냐혼자산다 화사의 간장국수 따라해보기",
-                "324",
-                false,
-                "7분 30초",
-                listOf("전자레인지"),
-                "보통이에요",
-                "4.4공기",
-                "만드는데 비용도 얼마 들지 않고 시간도 얼마 안걸리는 진짜 초간단 레시피",
-                listOf(),
-                listOf()
-            )
-        )
+        val response = goBongService.getAllRecipes(getToken(), 10)
+        Log.e("GoBongBab", "getAllRecipe ${response.body()}")
+        if (response.isSuccessful) {
+            return response.body()?.feeds?.map { it.toCard() } ?: throw Exception("네트워크가 불안정합니다")
+        } else {
+            throw Exception("네트워크가 불안정합니다")
+        }
     }
 
     suspend fun getFilteredRecipes(): List<Card> {
-//        return emptyList()
         return listOf(
             Card.createEmpty(),
             Card.createEmpty(),
@@ -196,7 +117,13 @@ class GoBongRemoteDataSource(
     }
 
     suspend fun getBookmarkedRecipes(): List<Card> {
-        return emptyList()
+        val response = goBongService.getBookmarkedRecipes(getToken(), 10)
+        Log.e("GoBongBab", "getBookmarkedRecipes ${response.body()}")
+        if (response.isSuccessful) {
+            return response.body()?.feeds?.map { it.toCard() } ?: throw Exception("네트워크가 불안정합니다")
+        } else {
+            throw Exception("네트워크가 불안정합니다")
+        }
     }
 
     suspend fun bookmarkRecipe(marked: Boolean) {
@@ -211,8 +138,20 @@ class GoBongRemoteDataSource(
         goBongService
     }
 
-    suspend fun uploadRecipe(uploadRecipe: UploadRecipe) {
+    suspend fun uploadRecipe(uploadRecipe: UploadRecipe): String {
+        val thumbnailUrl = getImageUrlByByteArray(uploadRecipe.thumbnailByteArray)
+        val request = uploadRecipe.toUploadRecipeDTO(thumbnailUrl, uploadRecipe.recipes.map {
+            it.toRecipeStepDTO(getImageUrlByByteArray(it.photoUrl))
+        })
 
+        Log.e("GoBongBab", "uploadRecipe request ${request}")
+        val response = goBongService.uploadRecipe(getToken(), request)
+        Log.e("GoBongBab", "uploadRecipe ${response} ${response.errorBody().toString()}")
+        if (response.isSuccessful) {
+            return response.body()?.id.toString() ?: throw Exception("네트워크가 불안정합니다")
+        } else {
+            throw Exception("네트워크가 불안정합니다")
+        }
     }
 
     suspend fun getMyRecipes(): User {
@@ -222,4 +161,69 @@ class GoBongRemoteDataSource(
     suspend fun getUserRecipes(userId: String): User {
         return User.createEmpty()
     }
+
+    private suspend fun getImageUrlByByteArray(imageByte: ByteArray): String {
+        val requestFile = RequestBody.create(MediaType.parse("image/*"), imageByte);
+        val uploadFile = MultipartBody.Part.createFormData("image", "", requestFile);
+        val response = imageService.postImage(uploadFile)
+        if (response.isSuccessful) {
+            return response.body()?.imageUrl ?: throw Exception("이미지 업로드에 실패했습니다")
+        } else {
+            throw Exception("이미지 업로드에 실패했습니다")
+        }
+    }
 }
+
+
+//        return listOf(
+//            Card(
+//                "mark",
+//                UserProfile(followed = true),
+//                getUrl(R.drawable.markthumb),
+//                "마크정식 100% 원조 레시피",
+//                "100",
+//                true,
+//                "5분",
+//                listOf("전자레인지"),
+//                "쉬워요",
+//                "4.5공기",
+//                "편의점 꿀조합 레시피 best of best",
+//                listOf(
+//                    "자이언트떡볶이 1개",
+//                    "의성마늘후랑크 소시지 1개",
+//                    "콕콕콕 스파게티  1개",
+//                    "모짜렐라 피자치즈 20g"
+//                ),
+//                listOf()
+//            ),
+//            Card(
+//                "potato",
+//                UserProfile(followed = true),
+//                getUrl(R.drawable.potatothumb),
+//                "초간단 고구마말랭이",
+//                "125",
+//                false,
+//                "10분",
+//                listOf("전자레인지"),
+//                "쉬워요",
+//                "4.2공기",
+//                "전자레인지로 간단하게 만들 수 있는 고구마말랭이",
+//                listOf(),
+//                listOf()
+//            ),
+//            Card(
+//                "noodle",
+//                UserProfile(nickname = "국수 박사학위", followed = true),
+//                getUrl(R.drawable.noodlethumb),
+//                "냐혼자산다 화사의 간장국수 따라해보기",
+//                "324",
+//                false,
+//                "7분 30초",
+//                listOf("전자레인지"),
+//                "보통이에요",
+//                "4.4공기",
+//                "만드는데 비용도 얼마 들지 않고 시간도 얼마 안걸리는 진짜 초간단 레시피",
+//                listOf(),
+//                listOf()
+//            )
+//        )

@@ -68,6 +68,7 @@ class RegisterUserViewModel(
                 _loginUser.value
             )
         )
+        println("login token ${getToken()}")
     }
 
     fun registerNickname() {

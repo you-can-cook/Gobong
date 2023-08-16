@@ -1,5 +1,6 @@
 package com.youcancook.gobong.ui.base
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.CoroutineDispatcher
@@ -22,6 +23,10 @@ open class NetworkViewModel : GoBongViewModel() {
                 delay(5000)
                 finishNetwork()
             }
+        }
+
+        if (state == NetworkState.FAIL) {
+            Log.e("GoBongBab", snackBarMessage.value)
         }
     }
 
