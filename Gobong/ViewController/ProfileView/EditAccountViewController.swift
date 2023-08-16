@@ -9,7 +9,7 @@ import UIKit
 import YPImagePicker
 import Photos
 
-class EditAccountViewController: UIViewController, UITextFieldDelegate {
+class EditAccountViewController: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
     
     var okButton: UIButton = {
         var button = UIButton()
@@ -18,6 +18,7 @@ class EditAccountViewController: UIViewController, UITextFieldDelegate {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         button.titleLabel?.textColor = .white
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = true
         return button
     }()
     
@@ -27,9 +28,14 @@ class EditAccountViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
         setupUI()
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
     
     private func setupUI(){
@@ -38,8 +44,8 @@ class EditAccountViewController: UIViewController, UITextFieldDelegate {
         setupTextField()
         imageSetup()
         
-        
         //데이터 받고 이미지 체인지
+        setupData()
         profileImg.image = UIImage(named: "프로필 이미지")
     }
         
@@ -54,6 +60,26 @@ class EditAccountViewController: UIViewController, UITextFieldDelegate {
     @objc
     private func backButtonTapped(){
         navigationController?.popViewController(animated: true)
+    }
+    
+    //MARK: DATAA
+    private func setupData(){
+        Server.shared.getUserInfo { result in
+            switch result {
+            case .success(let UserInfoResponse):
+                self.nickNameLabel.text = UserInfoResponse.nickname
+                //SET THE IMAGE TO THE UI
+                
+            case .failure(let error):
+                print(error)
+                
+                let alert = UIAlertController(title: "데이터 찾을 수 없습니다", message: "잠시 후 다시 시도 해보세요", preferredStyle: .alert)
+                let okButton = UIAlertAction(title: "네", style: .default)
+                alert.addAction(okButton)
+                
+                self.present(alert, animated: true)
+            }
+        }
     }
     
     //MARK: PROFILE IMAGE

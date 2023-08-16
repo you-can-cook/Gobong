@@ -112,21 +112,12 @@ extension SignUpViewController: UITextFieldDelegate {
     //MARK: BUTTON
     private func addButton(){
         self.view.addSubview(okButton)
-//        if #available(iOS 15.0, *) {
-//            NSLayoutConstraint.activate([
-//                okButton.bottomAnchor.constraint(equalTo: self.view.keyboardLayoutGuide.topAnchor, constant: -20),
-//                okButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
-//                okButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16)
-//            ])
-//        } else {
-//            // Fallback on earlier versions
-            NSLayoutConstraint.activate([
-                okButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100),
-                okButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
-                okButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
-                okButton.heightAnchor.constraint(equalToConstant: 50)
-            ])
-//        }
+        NSLayoutConstraint.activate([
+            okButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100),
+            okButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
+            okButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
+            okButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
         
         okButton.isUserInteractionEnabled = false
         okButton.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
@@ -134,12 +125,7 @@ extension SignUpViewController: UITextFieldDelegate {
     
     @objc
     private func okButtonTapped(){
-        var imageUrl: String? = "test"
-        
-        if profileImg.image == UIImage(named: "프로필 이미지") {
-            imageUrl = nil
-        }
-        //사진 저장..? 여김
+        var imageUrl: String? = nil
         
         Server.shared.signUp(nickName: nickNameLabel.text ?? "", provider: provider ?? "", oauthId: oauthId ?? "", temporaryToken: temporaryToken ?? "", profileImageUrl: imageUrl) { result in
             switch result {
@@ -147,9 +133,36 @@ extension SignUpViewController: UITextFieldDelegate {
                 self.userDefault.set(info.grantType, forKey: "grantType")
                 self.userDefault.set(info.accessToken, forKey: "accessToken")
                 self.userDefault.set(info.refreshToken, forKey: "refreshToken")
+
+                self.userDefault.set(self.nickNameLabel.text, forKey: "nickName")
                 
-                self.performSegue(withIdentifier: "showMainView", sender: self)
+                //UPLOAD IMAGE
+                if self.profileImg.image == UIImage(named: "프로필 이미지") {
+                    //암것도 안 함
+                    self.performSegue(withIdentifier: "showMainView", sender: self)
+                } else {
+                    Server.shared.uploadImage(image: self.profileImg.image!, nickname: self.nickNameLabel.text ?? "") { result in
+                        switch result {
+                        case .success(let result):
+                            print(result)
+                            
+                            Server.shared.changeUserInfo(nickName: self.nickNameLabel.text ?? "", profileURL: result) { Result in
+                                print("sended")
+                                switch Result {
+                                case.success(_):
+                                    self.performSegue(withIdentifier: "showMainView", sender: self)
+                                case .failure(let error):
+                                    print(error)
+                                }
+                            }
+                            
+                        case.failure(let error):
+                            print(error)
+                        }
+                    }
+                }
                 
+
             case .failure(let error):
                 //무슨
                 print("Error:", error.localizedDescription)

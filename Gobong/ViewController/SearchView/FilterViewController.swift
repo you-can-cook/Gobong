@@ -13,7 +13,7 @@ protocol FilterDelegate: Any {
     func passFilter(controller: FilterViewController)
 }
 
-class FilterViewController: UIViewController {
+class FilterViewController: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var defaultButton: UIButton!
     @IBOutlet weak var searchButton: UIButton!
@@ -45,6 +45,7 @@ class FilterViewController: UIViewController {
     
     //MARK: LIFE CYCLE
     override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
     }
     
     override func viewDidLoad() {
@@ -52,7 +53,9 @@ class FilterViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        tabBarController?.tabBar.isHidden = true
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        
+        
         setupUI()
     }
     
@@ -79,6 +82,7 @@ class FilterViewController: UIViewController {
         starSelected = 0
         levelSelected = "init"
         searchBar.text = ""
+        stepSlider.index = 0
     }
     
     //별점 //STAR
@@ -272,7 +276,7 @@ extension FilterViewController {
     
     //SETUP SLIDER
     private func setupSlider(){
-        stepSlider.labels = ["0분", "5분", "10분", "15분", "20분", "25분", ">30분"]
+        stepSlider.labels = ["0분", "5분", "10분", "15분", "20분", "25분", "30분 이상"]
         stepSlider.trackColor = UIColor(named: "softGray")
         stepSlider.tintColor = UIColor(named: "pink")
         stepSlider.labelColor = UIColor(named: "gray")
@@ -354,8 +358,6 @@ extension FilterViewController: UICollectionViewDelegate, UICollectionViewDataSo
         
         collectionView.register(HashtagCollectionCell.self, forCellWithReuseIdentifier: "HashtagCollectionCell")
         
-        collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 34)
-        collectionViewHeightConstraint.isActive = true
         collectionView.invalidateIntrinsicContentSize()
     }
     

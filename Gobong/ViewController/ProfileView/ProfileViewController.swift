@@ -9,31 +9,33 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var mainTableView: UITableView!
-    var selectedIndexPath = 0 
-
+    var selectedIndexPath = 0
+    
     var dummyData: [dummyFeedData] = [
-//        dummyFeedData(username: "1", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-//        dummyFeedData(username: "2", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-
+        //        dummyFeedData(username: "1", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+        //        dummyFeedData(username: "2", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+        //        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+        //        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+        
     ]
-
+    
     var followStateTapped = ""
     private var ShowingBlockView = true
     private var isShowingBlockView = PublishSubject<Bool>()
     private var isShowingBlockViewObservable : Observable<Bool> {
         return isShowingBlockView.asObservable()
     }
-
+    
     private let disposeBag = DisposeBag()
-
+    
     //MARK: LIFE CYCLE
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
+        navigationController?.navigationBar.isHidden = false
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     override func viewDidLoad() {
@@ -57,7 +59,10 @@ class ProfileViewController: UIViewController {
             }
         }
     }
-
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
 }
 
 //MARK: BUTTON FUNC
@@ -84,7 +89,7 @@ extension ProfileViewController {
                 let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "액자형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
                 tableViewToogleButton.tintColor = .black
                 
-                navigationItem.rightBarButtonItem = tableViewToogleButton
+                navigationItem.leftBarButtonItem = tableViewToogleButton
             } else {
                 ShowingBlockView = false
                 mainTableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
@@ -93,7 +98,7 @@ extension ProfileViewController {
                 let tableViewToogleButton = UIBarButtonItem(image: UIImage(named: "카드형"), style: .plain, target: self, action: #selector(toogleButtonTapped))
                 tableViewToogleButton.tintColor = .black
                 
-                navigationItem.rightBarButtonItem = tableViewToogleButton
+                navigationItem.leftBarButtonItem = tableViewToogleButton
             }
 
         }).disposed(by: disposeBag)
@@ -133,8 +138,12 @@ extension ProfileViewController: UISearchBarDelegate{
         let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gearshape.fill"), style: .plain, target: self, action: #selector(settingsButtonTapped))
         settingsButton.tintColor = .black
 
-        navigationItem.rightBarButtonItem = tableViewToogleButton
-        navigationItem.leftBarButtonItem = settingsButton
+        navigationItem.leftBarButtonItem = tableViewToogleButton
+        
+        //IF MY PROFILE
+        navigationItem.rightBarButtonItem = settingsButton
+        
+        //ELSE CHANGE THE SETTINGS TO FOLLOW BUTTON 
         
         navigationItem.title = "유저 이름"
     }

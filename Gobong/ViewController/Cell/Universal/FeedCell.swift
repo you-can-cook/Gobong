@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol FeedCellDelegate: Any {
+    func profileTapped(cell: FeedCell)
+}
+
 class FeedCell: UITableViewCell {
     
     @IBOutlet weak var starStack: UIStackView!
@@ -26,6 +30,8 @@ class FeedCell: UITableViewCell {
     @IBOutlet weak var userProfile: UIImageView!
     @IBOutlet weak var userName: UILabel!
     
+    var delegate: FeedCellDelegate?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -33,6 +39,9 @@ class FeedCell: UITableViewCell {
         followingButton.titleLabel?.adjustsFontSizeToFitWidth = true
         followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         setBackgroundShadow()
+        
+        userProfile.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileTapped)))
+        userName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileTapped)))
     }
     
     func setBackgroundShadow(){
@@ -43,18 +52,30 @@ class FeedCell: UITableViewCell {
         background.layer.shadowOffset = CGSize(width: 0, height: 0)
     }
 
-    func configuration(userImg: String? , username: String, following: Bool, thumbnailImg: String, title: String, bookmarkCount: Int, cookingTime: Int, tools: String, level: String, stars: Int) {
+    func configuration(userImg: String? , username: String, following: Bool, thumbnailImg: String, title: String, bookmarkCount: Int, isBookmarked: Bool, cookingTime: Int, tools: String, level: String, stars: Double) {
         userProfile.image = UIImage(named: userImg ?? "프로필 이미지")
         userName.text = username
         followingButton.setTitle(following ? "팔로잉" : "팔로우", for: .normal)
         thumbnailImage.image = UIImage(named: thumbnailImg)
         postTitle.text = title
+        
+        if isBookmarked {
+            bookmarkImage.image = UIImage(named: "BMarkOk")
+        } else {
+            bookmarkImage.image = UIImage(named: "Bookmark")
+        }
+        
         bookmarkCountLabel.text = "\(bookmarkCount)"
         cookTimeLabel.text = "\(cookingTime)분"
         cookingToolsLabel.text = tools
         levelLabel.text = level
         starLabel.text = "\(stars)공기"
-        
-        
     }
+    
+    @objc
+    private func profileTapped(){
+        delegate?.profileTapped(cell: self)
+    }
+    
+    
 }

@@ -34,18 +34,18 @@ class SearchViewController: UIViewController {
     
     var selectedIndexPath = 0
     
-    var dummyData = [
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5)
+    var dummyData: [dummyFeedData] = [
+//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5)
     ]
     
-    var filteredData = [
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5)
+    var filteredData: [dummyFeedData] = [
+//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
+//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5)
     ]
     
     var isSearching = false
@@ -131,6 +131,8 @@ extension SearchViewController {
                 if filter != nil {
                     if filter!.checkFilter() {
                         filterButton.tintColor = UIColor(named: "pink")
+                    } else {
+                        filterButton.tintColor = .black
                     }
                 } else {
                     filterButton.tintColor = .black
@@ -154,7 +156,9 @@ extension SearchViewController {
                 if filter != nil {
                     if filter!.checkFilter() {
                         filterButton.tintColor = UIColor(named: "pink")
-                    } 
+                    } else {
+                        filterButton.tintColor = .black
+                    }
                 } else {
                     filterButton.tintColor = .black
                 }
@@ -307,7 +311,14 @@ extension SearchViewController : UICollectionViewDelegate, UICollectionViewDataS
 }
 
 //MARK: TABLEVIEW
-extension SearchViewController : UITableViewDelegate, UITableViewDataSource {
+extension SearchViewController : UITableViewDelegate, UITableViewDataSource, FeedCellDelegate {
+    func profileTapped(cell: FeedCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        //get other's profileID then show the profile
+        
+    
+    }
+    
     private func tableViewSetup(){
         tableView.dataSource = self
         tableView.delegate = self
@@ -325,14 +336,15 @@ extension SearchViewController : UITableViewDelegate, UITableViewDataSource {
         
         if !isSearching {
             let data = dummyData[indexPath.item]
-            cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
+            cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, isBookmarked: true, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
             cell.followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         } else {
             let data = filteredData[indexPath.item]
-            cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
+            cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, isBookmarked: data.isBookmarked, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
             cell.followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         }
         
+        cell.delegate = self
         cell.selectionStyle = .none
         return cell
     }
@@ -343,7 +355,7 @@ extension SearchViewController : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 314.0
+        return 370.0
     }
     
 }

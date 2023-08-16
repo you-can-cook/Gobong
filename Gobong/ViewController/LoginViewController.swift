@@ -12,7 +12,7 @@ import KakaoSDKUser
 import NVActivityIndicatorView
 import GoogleSignIn
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var googleLoginView: UIView!
     @IBOutlet weak var kakaoLoginView: UIView!
@@ -31,6 +31,10 @@ class LoginViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         tabBarController?.tabBar.isHidden = true
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        
         setupUI()
         kakaoLoginView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(kakaoLogin)))
         googleLoginView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(googleLogin)))
@@ -43,6 +47,10 @@ class LoginViewController: UIViewController {
             vc.temporaryToken = tempToken
             vc.provider = provider
         }
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
     }
     
     //MARK: UI
@@ -58,7 +66,7 @@ class LoginViewController: UIViewController {
             guard error == nil else { return }
             
             // If sign in succeeded, display the app's main content View.
-            self.oauthId = signInResult?.user.accessToken.tokenString
+            self.oauthId = signInResult?.user.userID
             self.provider = "GOOGLE"
             self.LoginSuccess()
             
@@ -76,10 +84,8 @@ class LoginViewController: UIViewController {
                 }
                 else {
                     // 회원가입 성공 시 oauthToken 저장가능하다
-                    self.oauthId = oauthToken?.accessToken ?? ""
                     self.provider = "KAKAO"
-                    self.LoginSuccess()
-                    
+                    self.setUserInfo()
                 }
             }
         }
@@ -91,9 +97,8 @@ class LoginViewController: UIViewController {
                     print(error)
                 }
                 else {
-                    self.oauthId = oauthToken?.accessToken ?? ""
                     self.provider = "KAKAO"
-                    self.LoginSuccess()
+                    self.setUserInfo()
                     
                 }
             }
@@ -123,6 +128,7 @@ class LoginViewController: UIViewController {
                         self.userDefault.set(loginInfo.accessToken, forKey: "accessToken")
                         self.userDefault.set(loginInfo.refreshToken, forKey: "refreshToken")
                         
+                        self.navigationController?.popViewController(animated: false)
                         
                     //회원가입이 필요하면 ... 
                     case .failure(let error):
@@ -142,5 +148,16 @@ class LoginViewController: UIViewController {
         }
     }
     
-    
+    func setUserInfo() {
+            UserApi.shared.me() {(user, error) in
+                if let error = error {
+                    print(error)
+                }
+                else {
+                    self.oauthId = String(user?.id ?? -1)
+                    self.LoginSuccess()
+                    
+                }
+            }
+        }
 }
