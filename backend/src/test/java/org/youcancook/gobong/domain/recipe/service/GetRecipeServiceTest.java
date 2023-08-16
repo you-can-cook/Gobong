@@ -149,4 +149,24 @@ class GetRecipeServiceTest {
         GetFeedResponse response = getRecipeService.getMyFeed(user1.getId(), Long.MAX_VALUE, 5);
         assertThat(response.getFeed()).hasSize(3);
     }
+
+    @Test
+    @DisplayName("특정 유저가 작성한 게시물의 피드를 확인한다.")
+    public void getUserFeed() {
+        User user1 = new User("name1", "11", OAuthProvider.GOOGLE, null);
+        User user2 = new User("name2", "12", OAuthProvider.GOOGLE, null);
+        userRepository.save(user1);
+        userRepository.save(user2);
+
+        Recipe recipe1 = new Recipe(user1, "주먹밥1", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe2 = new Recipe(user1, "주먹밥2", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe3 = new Recipe(user1, "주먹밥3", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+
+        recipeRepository.save(recipe1);
+        recipeRepository.save(recipe2);
+        recipeRepository.save(recipe3);
+
+        GetFeedResponse response = getRecipeService.getUserFeed(user1.getId(), user2.getId(), Long.MAX_VALUE, 5);
+        assertThat(response.getFeed()).hasSize(3);
+    }
 }
