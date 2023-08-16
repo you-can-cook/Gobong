@@ -12,6 +12,7 @@ public class RecipeAuthorResponse {
 
     private Long id;
     private String nickname;
+    private String profileImageURL;
     private boolean isFollowing;
     private boolean isMyself;
 }
