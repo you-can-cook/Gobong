@@ -66,7 +66,13 @@ public enum ErrorCode {
     NOT_FOLLOWING(HttpStatus.BAD_REQUEST, "F102", "팔로우하지 않은 사용자입니다."),
 
     // Cookwares
-    ILLEGAL_COOKWARE(HttpStatus.NOT_FOUND, "C104", "존재하지 않는 조리기구입니다.");
+    ILLEGAL_COOKWARE(HttpStatus.NOT_FOUND, "C104", "존재하지 않는 조리기구입니다."),
+
+    // FilterType
+    INVALID_FILTER_TYPE(HttpStatus.BAD_REQUEST, "F201", "필터 타입은 'recent', 'popular' 중 하나여야 합니다."),
+    INVALID_QUERY_TYPE(HttpStatus.BAD_REQUEST, "F202", "쿼리 필터 타입은 'name', 'authorName' 중 하나여야 합니다."),
+
+    ;
 
     private final HttpStatus status;
     private final String code;
