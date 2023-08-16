@@ -83,7 +83,25 @@ class UserInformationServiceTest {
         // expect
         assertThrows(DuplicationNicknameException.class,
                 () -> userInformationService.updateInformation(1L, newNickname, "newProfileImageURL"));
+    }
 
+    @Test
+    @DisplayName("회원정보 수정 성공 - 같은 닉네임이면 중복 확인을 하지 않음")
+    void updateInformationSuccessWhenEqualNickname() {
+        // given
+        User user = createTestUser();
+        Long userId = 1L;
+        when(userRepository.findById(userId))
+                .thenReturn(Optional.of(user));
+
+        // expect
+        String userNickname = user.getNickname();
+        String newProfileImageURL = "newProfileImageURL";
+        userInformationService.updateInformation(userId, userNickname, newProfileImageURL);
+
+        // then
+        assertThat(user.getNickname()).isEqualTo(userNickname);
+        assertThat(user.getProfileImageURL()).isEqualTo(newProfileImageURL);
     }
 
     private User createTestUser() {
