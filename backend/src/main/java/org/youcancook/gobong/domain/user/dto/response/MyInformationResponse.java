@@ -9,7 +9,7 @@ import org.youcancook.gobong.domain.user.entity.User;
 @Getter
 @Builder
 @AllArgsConstructor
-public class UserInformationResponse {
+public class MyInformationResponse {
     private Long id;
     private String nickname;
     private String profileImageURL;
@@ -20,12 +20,8 @@ public class UserInformationResponse {
     @JsonProperty("oAuthProvider")
     private String oauthProvider;
 
-    @JsonProperty("isFollowed")
-    private Boolean isFollowed;
-
-    public static UserInformationResponse of(User user, long followerNumber, long followingNumber,
-                                             long recipeNumber, boolean isFollowed) {
-        return UserInformationResponse.builder()
+    public static MyInformationResponse of(User user, long followerNumber, long followingNumber, long recipeNumber) {
+        return MyInformationResponse.builder()
                 .id(user.getId())
                 .nickname(user.getNickname())
                 .profileImageURL(user.getProfileImageURL())
@@ -33,7 +29,6 @@ public class UserInformationResponse {
                 .followerNumber(followerNumber)
                 .followingNumber(followingNumber)
                 .recipeNumber(recipeNumber)
-                .isFollowed(isFollowed)
                 .build();
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.youcancook.gobong.domain.recipe.dto.request.CreateRecipeRequest;
 import org.youcancook.gobong.domain.user.dto.request.SignupRequest;
 import org.youcancook.gobong.domain.user.dto.response.TemporaryTokenIssueResponse;
-import org.youcancook.gobong.domain.user.dto.response.UserInformationResponse;
+import org.youcancook.gobong.domain.user.dto.response.MyInformationResponse;
 import org.youcancook.gobong.global.util.token.TokenDto;
 
 public class AcceptanceUtils {
@@ -63,7 +63,7 @@ public class AcceptanceUtils {
                 .when().get("/api/users")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
-                .extract().as(UserInformationResponse.class)
+                .extract().as(MyInformationResponse.class)
                 .getId();
     }
 
