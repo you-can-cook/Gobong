@@ -1,11 +1,12 @@
 package org.youcancook.gobong.domain.recipe.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.youcancook.gobong.domain.recipe.dto.feedfilterdto.FeedFilterDto;
+import org.youcancook.gobong.domain.recipe.dto.feedfilterdto.ModifiedFeedFilterDto;
+import org.youcancook.gobong.domain.recipe.dto.feedfilterdto.QueryType;
 import org.youcancook.gobong.domain.recipe.dto.response.GetFeedResponse;
 import org.youcancook.gobong.domain.recipe.service.GetRecipeService;
 import org.youcancook.gobong.global.resolver.LoginUserId;
@@ -42,5 +43,18 @@ public class FeedController {
         GetFeedResponse response = getRecipeService.getFollowingFeed(userId, lastRecipeId, count);
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("filter")
+    public ResponseEntity<GetFeedResponse> getFilteredFeedByTitle(@LoginUserId Long userId,
+                                                           @RequestParam(name = "page", required = true) int page,
+                                                           @RequestParam(name = "count", required = true) int count,
+                                                           @RequestBody @Valid FeedFilterDto filter){
+        ModifiedFeedFilterDto modifiedFilter = ModifiedFeedFilterDto.from(filter);
+        GetFeedResponse response = modifiedFilter.getQueryType() == QueryType.TITLE ?
+                getRecipeService.getFilteredFeedByName(userId, count, page, modifiedFilter) :
+                getRecipeService.getFilteredFeedByRecipeTitle(userId, count, page, modifiedFilter);
+        return ResponseEntity.ok(response);
+    }
+
 
 }
