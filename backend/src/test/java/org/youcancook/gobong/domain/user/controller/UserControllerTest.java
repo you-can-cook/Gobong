@@ -17,15 +17,18 @@ import org.youcancook.gobong.domain.authentication.repository.TemporaryTokenRepo
 import org.youcancook.gobong.domain.authentication.service.TemporaryTokenService;
 import org.youcancook.gobong.domain.user.dto.request.LoginRequest;
 import org.youcancook.gobong.domain.user.dto.request.SignupRequest;
+import org.youcancook.gobong.domain.user.dto.request.UpdateUserInformationRequest;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
 import org.youcancook.gobong.domain.user.repository.UserRepository;
 import org.youcancook.gobong.global.error.ErrorCode;
+import org.youcancook.gobong.global.util.token.TokenDto;
+import org.youcancook.gobong.global.util.token.TokenManager;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,6 +55,9 @@ class UserControllerTest {
 
     @Autowired
     private TemporaryTokenService temporaryTokenService;
+
+    @Autowired
+    private TokenManager tokenManager;
 
     @Test
     @DisplayName("임시 토큰 발급")
@@ -263,6 +269,77 @@ class UserControllerTest {
 
         List<TemporaryToken> temporaryTokens = temporaryTokenRepository.findAll();
         assertThat(temporaryTokens).hasSize(1);
+    }
+
+    @Test
+    @DisplayName("회원정보 조회")
+    void getUserInformation() throws Exception {
+        // given
+        User savedUser = saveTestUser();
+        TokenDto tokenDto = tokenManager.createTokenDto(savedUser.getId());
+
+        // when
+        mockMvc.perform(get("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + tokenDto.getAccessToken()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nickname").value(savedUser.getNickname()))
+                .andExpect(jsonPath("$.profileImageURL").value(savedUser.getProfileImageURL()))
+                .andExpect(jsonPath("$.oAuthProvider").value(savedUser.getOAuthProvider().name()))
+                .andExpect(jsonPath("$.id").value(savedUser.getId()))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("회원정보 수정 성공")
+    void updateInformationSuccess() throws Exception {
+        // given
+        User savedUser = saveTestUser();
+        TokenDto tokenDto = tokenManager.createTokenDto(savedUser.getId());
+
+        // when
+        UpdateUserInformationRequest updateRequest =
+                new UpdateUserInformationRequest("newNick", "newProfileImageURL");
+        String request = objectMapper.writeValueAsString(updateRequest);
+        mockMvc.perform(patch("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + tokenDto.getAccessToken())
+                        .content(request))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        List<User> users = userRepository.findAll();
+        assertThat(users).hasSize(1);
+        User user = users.get(0);
+        assertThat(user.getNickname()).isEqualTo(updateRequest.getNickname());
+        assertThat(user.getProfileImageURL()).isEqualTo(updateRequest.getProfileImageURL());
+    }
+
+    @Test
+    @DisplayName("회원정보 수정 실패 - 중복된 닉네임")
+    void updateInformationFailByDuplicatedNickname() throws Exception {
+        // given
+        userRepository.save(User.builder()
+                .oAuthId("987654321")
+                .oAuthProvider(OAuthProvider.GOOGLE)
+                .nickname("newNick")
+                .profileImageURL("imageURL")
+                .build());
+        User savedUser = saveTestUser();
+        TokenDto tokenDto = tokenManager.createTokenDto(savedUser.getId());
+
+        // when
+        UpdateUserInformationRequest updateRequest =
+                new UpdateUserInformationRequest("newNick", "newProfileImageURL");
+        String request = objectMapper.writeValueAsString(updateRequest);
+        mockMvc.perform(patch("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + tokenDto.getAccessToken())
+                        .content(request))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value(ErrorCode.DUPLICATE_NICKNAME.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.DUPLICATE_NICKNAME.getMessage()))
+                .andDo(print());
     }
 
     private User saveTestUser() {
