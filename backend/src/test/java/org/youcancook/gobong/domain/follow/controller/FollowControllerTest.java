@@ -1,7 +1,5 @@
 package org.youcancook.gobong.domain.follow.controller;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +41,6 @@ class FollowControllerTest {
 
     @Autowired
     private TokenManager tokenManager;
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     private static int testUserCount = 0;
 
@@ -146,6 +141,10 @@ class FollowControllerTest {
                 .follower(follower1)
                 .followee(loginUser)
                 .build());
+        followRepository.save(Follow.builder()
+                .follower(loginUser)
+                .followee(follower1)
+                .build());
 
         User follower2 = saveTestUser();
         followRepository.save(Follow.builder()
@@ -153,7 +152,6 @@ class FollowControllerTest {
                 .followee(loginUser)
                 .build());
 
-        entityManager.clear();
         // when
         mockMvc.perform(get("/api/follower")
                         .header("Authorization", "Bearer " + accessToken))
@@ -165,6 +163,8 @@ class FollowControllerTest {
                 .andExpect(jsonPath("$.[?(@.nickname == '%s')]", follower2.getNickname()).exists())
                 .andExpect(jsonPath("$.[?(@.profileImageURL == '%s')]", follower1.getProfileImageURL()).exists())
                 .andExpect(jsonPath("$.[?(@.profileImageURL == '%s')]", follower2.getProfileImageURL()).exists())
+                .andExpect(jsonPath("$.[?(@.isFollowed == %b)]", true).exists())
+                .andExpect(jsonPath("$.[?(@.isFollowed == %b)]", false).exists())
                 .andDo(print());
     }
 
@@ -186,7 +186,6 @@ class FollowControllerTest {
                 .followee(followee2)
                 .build());
 
-        entityManager.clear();
         // when
         mockMvc.perform(get("/api/following")
                         .header("Authorization", "Bearer " + accessToken))
