@@ -97,6 +97,12 @@ public class GetRecipeService {
         return getFeedResponse(userId, feedRecipes);
     }
 
+    public GetFeedResponse getMyFeed(Long userId, long recipeId, int count) {
+        Slice<Recipe> feedRecipes = recipeRepository.getAllMyFeed(userId, recipeId,
+                PageRequest.of(0, count, Sort.by("id").descending()));
+        return getFeedResponse(userId, feedRecipes);
+    }
+
     private GetFeedResponse getFeedResponse(Long userId, Slice<Recipe> feedRecipes) {
         List<GetRecipeSummaryResponse> summaries = feedRecipes.getContent().stream()
                 .map(recipe -> getSummary(userId, RecipeDto.from(recipe)))
