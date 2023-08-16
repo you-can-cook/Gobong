@@ -16,12 +16,21 @@ import org.youcancook.gobong.global.resolver.LoginUserId;
 public class FeedController {
 
     private final GetRecipeService getRecipeService;
-
     @GetMapping("all")
-    public ResponseEntity<GetFeedResponse> getFeed(@LoginUserId Long userId,
+    public ResponseEntity<GetFeedResponse> getAllFeed(@LoginUserId Long userId,
+                                                      @RequestParam(name = "last", required = false) Long lastRecipeId,
+                                                      @RequestParam(name = "count", required = true) int count){
+        lastRecipeId = lastRecipeId == null ? Long.MAX_VALUE : lastRecipeId;
+        GetFeedResponse response = getRecipeService.getAllFeed(userId, lastRecipeId, count);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("bookmarked")
+    public ResponseEntity<GetFeedResponse> getBookmarkedFeed(@LoginUserId Long userId,
                                                    @RequestParam(name = "last", required = false) Long lastRecipeId,
                                                    @RequestParam(name = "count", required = true) int count){
-        GetFeedResponse response = getRecipeService.getAllFeed(userId, lastRecipeId, count);
+        lastRecipeId = lastRecipeId == null ? Long.MAX_VALUE : lastRecipeId;
+        GetFeedResponse response = getRecipeService.getBookmarkedFeed(userId, lastRecipeId, count);
         return ResponseEntity.ok(response);
     }
 

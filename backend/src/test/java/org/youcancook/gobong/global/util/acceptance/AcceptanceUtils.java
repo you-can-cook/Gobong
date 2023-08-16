@@ -46,4 +46,13 @@ public class AcceptanceUtils {
                 .statusCode(HttpStatus.OK.value())
                 .extract();
     }
+
+    public static void bookmarkRecipe(String token, Long recipeId){
+        RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .when().post("/api/bookmarks/" + recipeId)
+            .then().log().all()
+            .statusCode(HttpStatus.OK.value())
+            .extract();
+    }
 }
