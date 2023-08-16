@@ -21,8 +21,8 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
     public void createRecipe(){
         String accessToken = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
         CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "쉽게 만드는 주먹밥", List.of("밥", "김"), "쉬워요", null, List.of(
-                new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, 0L),
-                new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, 0L)
+                new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of()),
+                new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, List.of())
         ));
 
         RestAssured.given().log().all()
@@ -40,8 +40,8 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
     public void deleteRecipe(){
         String accessToken = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
         CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "쉽게 만드는 주먹밥", List.of("밥", "김"), "쉬워요", null, List.of(
-                new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, 0L),
-                new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, 0L)
+                new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of()),
+                new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, List.of())
         ));
         Long recipeId = AcceptanceUtils.createDummyRecipe(accessToken, request).as(CreateRecipeResponse.class).getId();
 
@@ -59,8 +59,8 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
         String accessToken1 = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
         String accessToken2 = AcceptanceUtils.signUpAndGetToken("쩝쩝학사", "GOOGLE", "123a");
         CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "쉽게 만드는 주먹밥", List.of("밥", "김"), "쉬워요", null, List.of(
-                new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, 0L),
-                new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, 0L)
+                new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of()),
+                new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, List.of())
         ));
         Long recipeId = AcceptanceUtils.createDummyRecipe(accessToken1, request).as(CreateRecipeResponse.class).getId();
 
@@ -77,14 +77,14 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
     public void updateRecipe(){
         String accessToken = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
         CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "쉽게 만드는 주먹밥", List.of("밥", "김"), "쉬워요", null, List.of(
-                new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, 0L),
-                new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, 0L)
+                new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of()),
+                new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, List.of())
         ));
         Long recipeId = AcceptanceUtils.createDummyRecipe(accessToken, request).as(CreateRecipeResponse.class).getId();
         UpdateRecipeRequest updateRequest = new UpdateRecipeRequest(recipeId, "고소한 주먹밥", "쉽게 만드는 주먹밥",
                 List.of("밥", "김"), "쉬워요", null, List.of(
-                new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, 0L),
-                new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, 0L)));
+                new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of()),
+                new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, List.of())));
 
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
@@ -101,8 +101,8 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
     public void getRecipe(){
         String accessToken = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
         CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "쉽게 만드는 주먹밥", List.of("밥", "김"), "쉬워요", null, List.of(
-                new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, 1L),
-                new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, 2L)
+                new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of("MICROWAVE")),
+                new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, List.of("PAN"))
         ));
         Long recipeId = AcceptanceUtils.createDummyRecipe(accessToken, request).as(CreateRecipeResponse.class).getId();
 

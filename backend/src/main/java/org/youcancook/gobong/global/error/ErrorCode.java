@@ -65,7 +65,8 @@ public enum ErrorCode {
     ALREADY_FOLLOWING(HttpStatus.BAD_REQUEST, "F101", "이미 팔로우한 사용자입니다."),
     NOT_FOLLOWING(HttpStatus.BAD_REQUEST, "F102", "팔로우하지 않은 사용자입니다."),
 
-    ;
+    // Cookwares
+    ILLEGAL_COOKWARE(HttpStatus.NOT_FOUND, "C104", "존재하지 않는 조리기구입니다.");
 
     private final HttpStatus status;
     private final String code;
