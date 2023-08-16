@@ -36,6 +36,7 @@ class RegisterUserViewModel(
             setNetworkState(NetworkState.LOADING)
             try {
                 requestTemporaryToken()
+                setNetworkState(NetworkState.DONE)
             } catch (e: Exception) {
                 setNetworkState(NetworkState.FAIL)
                 setSnackBarMessage(e.message ?: "")
@@ -70,8 +71,11 @@ class RegisterUserViewModel(
     }
 
     fun registerNickname() {
-        if (nicknameInput.value.isEmpty()) {
-            setSnackBarMessage("닉네임을 입력하세요")
+
+        if (isValidNickname().not()) {
+            setErrorMessage("사용이 불가한 닉네임입니다")
+            _isLoginFailed.value = true
+            setNetworkState(NetworkState.FAIL)
             return
         }
 
@@ -89,15 +93,24 @@ class RegisterUserViewModel(
 
     private suspend fun registerUser() {
         val user = getUser()
-        val registerUser = RegisterUser(
-            user.nickname,
-            _loginUser.value.provider,
-            _loginUser.value.oAuthId,
-            _loginUser.value.temporaryToken,
-            user.profileUrl
-        )
+        val registerUser = if (profileImageByteArray.value.isEmpty()) {
+            RegisterUser(
+                user.nickname,
+                _loginUser.value.provider,
+                _loginUser.value.oAuthId,
+                _loginUser.value.temporaryToken
+            )
+        } else {
+            RegisterUser(
+                user.nickname,
+                _loginUser.value.provider,
+                _loginUser.value.oAuthId,
+                _loginUser.value.temporaryToken,
+                profileImageByteArray.value
+            )
+        }
         setToken(userRepository.register(registerUser))
-        println("response ${getToken()}")
+        println("response register${getToken()}")
     }
 
     fun loading() = setNetworkState(NetworkState.LOADING)
