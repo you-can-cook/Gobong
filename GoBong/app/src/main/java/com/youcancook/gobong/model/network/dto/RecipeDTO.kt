@@ -17,7 +17,7 @@ data class UploadRecipeDTO(
 
 data class RecipeStepAddedDTO(
     @SerializedName("content") val content: String,
-    @SerializedName("imageURL") val imageURL: String,
+    @SerializedName("imageURL") val imageURL: String? = null,
     @SerializedName("cookTimeInSeconds") val cookTimeInSeconds: Int,
     @SerializedName("cookwares") val cookwares: List<String>,
 )
@@ -25,19 +25,11 @@ data class RecipeStepAddedDTO(
 data class RecipeStepDTO(
     @SerializedName("id") val id: String,
     @SerializedName("content") val content: String,
-    @SerializedName("imageURL") val imageURL: String,
+    @SerializedName("imageURL") val imageURL: String? = null,
     @SerializedName("cookTimeInSeconds") val cookTimeInSeconds: Int,
     @SerializedName("cookwares") val cookwares: List<String>,
     @SerializedName("step") val step: Int,
 )
-
-data class SummaryDTO(
-    @SerializedName("id") val id: Int,
-    @SerializedName("title") val title: Int,
-    @SerializedName("thumbnailURL") val thumbnailURL: Int,
-    @SerializedName("author") val author: AuthorDTO,
-
-    )
 
 data class CurrentRecipeDTO(
     @SerializedName("id") val id: Int,
@@ -51,7 +43,7 @@ fun RecipeStepDTO.toRecipeStep(): RecipeStep {
     return RecipeStep(
         time = cookTimeInSeconds.toTime(),
         tools = cookwares.map { it.toKoreanTool() },
-        photoUrl = imageURL,
+        photoUrl = imageURL ?: "",
         description = content,
         id = id.toLong()
     )

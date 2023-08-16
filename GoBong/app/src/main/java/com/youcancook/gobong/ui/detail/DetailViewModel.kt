@@ -21,6 +21,9 @@ class DetailViewModel(
     private val _isReviewed = MutableStateFlow(false)
     val isReviewed: StateFlow<Boolean> get() = _isReviewed
 
+    private val _isBookmarked = MutableStateFlow(false)
+    val isBookmarked: StateFlow<Boolean> get() = _isBookmarked
+
     private val _isDeleted = MutableStateFlow(false)
     val isDeleted: StateFlow<Boolean> get() = _isDeleted
 
@@ -42,8 +45,6 @@ class DetailViewModel(
 
     fun getStar() = _starCount.value
 
-    fun getIsBookmarked() = _cardInfo.value.bookmarked
-
     fun getCurrentRecipe(recipePostId: String) {
         viewModelScope.launch {
             setNetworkState(NetworkState.LOADING)
@@ -56,6 +57,8 @@ class DetailViewModel(
             }
         }
     }
+
+    fun getTools() = _cardInfo.value.tools
 
     private suspend fun requestCurrentRecipe(recipePostId: String) {
         val response = goBongRepository.getCurrentRecipe(recipePostId)

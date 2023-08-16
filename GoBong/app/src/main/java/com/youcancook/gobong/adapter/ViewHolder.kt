@@ -1,8 +1,10 @@
 package com.youcancook.gobong.adapter
 
 import android.content.Intent
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.youcancook.gobong.databinding.ItemMainCardBinding
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.UserProfile
@@ -27,6 +29,11 @@ class CardViewHolder(
                 )
                 binding.root.context.startActivity(intent)
             }
+            toolTextView.setOnClickListener {
+                MaterialAlertDialogBuilder(binding.root.context)
+                    .setItems((adapter.currentList[adapterPosition] as Card).tools.toTypedArray()) { _, _ -> }
+                    .show()
+            }
             profileImageView.setOnClickListener {
                 val intent = Intent(binding.root.context, OthersActivity::class.java)
                 binding.root.context.startActivity(intent)
@@ -41,5 +48,6 @@ class CardViewHolder(
         } else {
             "팔로우"
         }
+
     }
 }

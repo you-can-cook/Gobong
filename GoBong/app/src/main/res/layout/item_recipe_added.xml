@@ -101,7 +101,6 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/background_round_image"
                 android:clipToOutline="true"
-                android:scaleType="centerCrop"
                 android:src="@drawable/example_img"
                 app:layout_constraintEnd_toEndOf="@id/recipeBox"
                 app:layout_constraintStart_toStartOf="@id/recipeBox"

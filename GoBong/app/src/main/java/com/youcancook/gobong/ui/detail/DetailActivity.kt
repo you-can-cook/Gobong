@@ -13,6 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.RecipeListAdapter
 import com.youcancook.gobong.databinding.ActivityDetailBinding
+import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.ui.my.other.OthersActivity
@@ -68,10 +69,11 @@ class DetailActivity :
 
         initListeners()
 
+        intent?.getStringExtra(RECIPE_ID)?.let {
+            viewModel.getCurrentRecipe(it)
+        }
+
         binding.run {
-            if (viewModel.getIsBookmarked()) {
-                bookmarkImageView.isSelected = true
-            }
 
             lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -100,13 +102,14 @@ class DetailActivity :
                     }
                 }
             }
-        }
-    }
 
-    override fun onStart() {
-        super.onStart()
-        intent?.getStringExtra(RECIPE_ID)?.let {
-            viewModel.getCurrentRecipe(it)
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.isBookmarked.collectLatest {
+                        bookmarkImageView.isSelected = it
+                    }
+                }
+            }
         }
     }
 
@@ -114,6 +117,12 @@ class DetailActivity :
         binding.run {
             toolbar.setNavigationOnClickListener {
                 finish()
+            }
+
+            toolTextView.setOnClickListener {
+                MaterialAlertDialogBuilder(binding.root.context)
+                    .setItems(viewModel.getTools().toTypedArray()) { _, _ -> }
+                    .show()
             }
 
             bookmarkImageView.setOnClickListener {

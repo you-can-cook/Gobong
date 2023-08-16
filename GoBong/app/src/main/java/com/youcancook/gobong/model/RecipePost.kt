@@ -36,7 +36,7 @@ fun UploadRecipe.toUploadRecipeDTO(
     )
 }
 
-fun RecipeStepAdded.toRecipeStepAddedDTO(imageUrl: String): RecipeStepAddedDTO {
+fun RecipeStepAdded.toRecipeStepAddedDTO(imageUrl: String?): RecipeStepAddedDTO {
     return RecipeStepAddedDTO(
         content = description,
         imageURL = imageUrl,

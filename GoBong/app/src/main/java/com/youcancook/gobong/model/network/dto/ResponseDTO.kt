@@ -25,6 +25,7 @@ data class ImageUrlResponseDTO(
 data class AuthorDTO(
     @SerializedName("id") val id: Int,
     @SerializedName("nickname") val nickname: String,
+    @SerializedName("profileImageURL") val profileImageURL: String? = null,
     @SerializedName("myself") val myself: Boolean,
     @SerializedName("following") val following: Boolean,
 )
@@ -62,7 +63,7 @@ fun FeedDTO.toCard(): Card {
     return Card(
         id = id.toString(),
         user = UserProfile(
-            profileUrl = "",
+            profileUrl = author.profileImageURL ?: "",
             userId = author.id.toString(),
             notMine = author.myself.not(),
             followed = author.following
