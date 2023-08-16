@@ -23,7 +23,6 @@ class RoutingViewModel(
         refreshToken
     )
 
-
     fun getAccessToken(refreshToken: String) {
         this.refreshToken = refreshToken
         setNetworkState(NetworkState.LOADING)

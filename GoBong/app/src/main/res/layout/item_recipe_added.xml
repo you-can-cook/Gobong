@@ -73,7 +73,7 @@
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.GoBong.Chip.RecipeStepTool"
-                    recipeStepTime="@{item.time}"
+                    recipeStepTimeChip="@{item.time}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="3분" />

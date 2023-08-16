@@ -1,5 +1,6 @@
 package com.youcancook.gobong.model
 
+import com.youcancook.gobong.model.network.dto.RecipeStepAddedDTO
 import com.youcancook.gobong.model.network.dto.RecipeStepDTO
 import com.youcancook.gobong.model.network.dto.UploadRecipeDTO
 import com.youcancook.gobong.util.toEnglishTool
@@ -15,17 +16,14 @@ data class UploadRecipe(
 )
 
 data class RecipePost(
+    val id: String,
     val cardInfo: Card,
-    val title: String,
-    val description: String = "",
-    val ingredients: List<String>,
-    val level: String,
-    val recipes: List<RecipeStepAdded>,
+    val recipes: List<RecipeStep>,
 )
 
 fun UploadRecipe.toUploadRecipeDTO(
     thumbnailUrl: String,
-    recipeStepDTO: List<RecipeStepDTO>,
+    recipeStepDTO: List<RecipeStepAddedDTO>,
 ): UploadRecipeDTO {
     println("uploadRecipe ${recipeStepDTO.joinToString("\n")}")
     return UploadRecipeDTO(
@@ -38,8 +36,8 @@ fun UploadRecipe.toUploadRecipeDTO(
     )
 }
 
-fun RecipeStepAdded.toRecipeStepDTO(imageUrl: String): RecipeStepDTO {
-    return RecipeStepDTO(
+fun RecipeStepAdded.toRecipeStepAddedDTO(imageUrl: String): RecipeStepAddedDTO {
+    return RecipeStepAddedDTO(
         content = description,
         imageURL = imageUrl,
         cookTimeInSeconds = time.toSeconds(),

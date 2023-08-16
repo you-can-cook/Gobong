@@ -8,7 +8,7 @@ fun Int.toTime(): String {
 }
 
 fun Double?.toStarRating(): String {
-    return if (this == null) {
+    return if (this == 0.0) {
         "-"
     } else {
         "${this}공기"

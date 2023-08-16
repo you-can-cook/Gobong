@@ -12,7 +12,6 @@ class FollowListAdapter : ListAdapter<User, FollowListAdapter.FollowViewHolder>(
 
     inner class FollowViewHolder(val binding: ItemFollowBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
         fun bind(data: User) {
 
         }

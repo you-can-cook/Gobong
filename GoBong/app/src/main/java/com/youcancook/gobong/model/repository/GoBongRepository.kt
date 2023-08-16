@@ -2,12 +2,13 @@ package com.youcancook.gobong.model.repository
 
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Filter
+import com.youcancook.gobong.model.RecipePost
 import com.youcancook.gobong.model.UploadRecipe
 import com.youcancook.gobong.model.User
 
 interface GoBongRepository {
 
-    suspend fun getCurrentRecipe(recipePostId: String): Card
+    suspend fun getCurrentRecipe(recipePostId: String): RecipePost
 
     suspend fun getFollowingRecipes(): List<Card>
 

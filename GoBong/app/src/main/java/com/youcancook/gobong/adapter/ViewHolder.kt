@@ -21,7 +21,7 @@ class CardViewHolder(
             followingButton.setOnClickListener {
                 onFollowClick((adapter.currentList[adapterPosition] as Card).user)
             }
-            thumbnailImageView.setOnClickListener {
+            root.setOnClickListener {
                 val intent = Intent(binding.root.context, DetailActivity::class.java).putExtra(
                     DetailActivity.RECIPE_ID, (adapter.currentList[adapterPosition] as Card).id
                 )
