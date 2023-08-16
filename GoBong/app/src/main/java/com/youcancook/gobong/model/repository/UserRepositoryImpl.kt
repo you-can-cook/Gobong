@@ -43,4 +43,12 @@ class UserRepositoryImpl(
         return userDataSource.requestMyFollowingList()
     }
 
+    override suspend fun updateProfile(
+        nickname: String,
+        oldProfileImageUrl: String,
+        newProfileByteArray: ByteArray,
+    ) {
+        userDataSource.requestUpdateProfile(nickname, oldProfileImageUrl, newProfileByteArray)
+    }
+
 }

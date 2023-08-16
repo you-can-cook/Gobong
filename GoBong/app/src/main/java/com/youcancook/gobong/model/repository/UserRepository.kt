@@ -23,4 +23,10 @@ interface UserRepository {
 
     suspend fun getFollowingList(): List<UserProfile>
 
+    suspend fun updateProfile(
+        nickname: String,
+        oldProfileImageUrl: String,
+        newProfileByteArray: ByteArray,
+    )
+
 }

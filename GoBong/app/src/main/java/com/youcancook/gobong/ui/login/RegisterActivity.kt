@@ -89,7 +89,6 @@ class RegisterActivity :
     private fun saveToken() {
         val token = viewModel.getToken()
 
-        println("saveToken ${token.accessToken} ${token.refreshToken}")
         getSharedPreferences(TOKEN_KEY, Context.MODE_PRIVATE).edit {
             putString(ACCESS_TOKEN_KEY, token.accessToken)
             putString(REFRESH_TOKEN_KEY, token.refreshToken)

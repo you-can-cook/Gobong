@@ -2,13 +2,14 @@ package com.youcancook.gobong.ui.login
 
 import com.youcancook.gobong.model.User
 import com.youcancook.gobong.model.UserToken
+import com.youcancook.gobong.model.repository.UserRepository
 import com.youcancook.gobong.model.repository.UserRepositoryImpl
 import com.youcancook.gobong.ui.base.NetworkViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 open class UserViewModel(
-    private val userRepository: UserRepositoryImpl,
+    private val userRepository: UserRepository,
 ) : NetworkViewModel() {
     private val nicknameRegex = """[0-9a-zA-Z가-힣]{1,10}""".toRegex()
     val nicknameInput = MutableStateFlow("")

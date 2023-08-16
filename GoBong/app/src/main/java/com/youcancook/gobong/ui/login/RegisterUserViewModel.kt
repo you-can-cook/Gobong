@@ -115,6 +115,5 @@ class RegisterUserViewModel(
     fun loading() = setNetworkState(NetworkState.LOADING)
 
     fun fail() = setNetworkState(NetworkState.FAIL)
-    fun done() = finishNetwork()
 
 }

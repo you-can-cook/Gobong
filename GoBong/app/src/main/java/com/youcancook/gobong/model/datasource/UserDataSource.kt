@@ -3,12 +3,12 @@ package com.youcancook.gobong.model.datasource
 import android.util.Log
 import com.youcancook.gobong.model.LoginUser
 import com.youcancook.gobong.model.RegisterUser
-import com.youcancook.gobong.model.User
 import com.youcancook.gobong.model.UserProfile
 import com.youcancook.gobong.model.UserToken
 import com.youcancook.gobong.model.network.ImageService
 import com.youcancook.gobong.model.network.UserService
 import com.youcancook.gobong.model.network.dto.RefreshTokenDTO
+import com.youcancook.gobong.model.network.dto.UpdateUserDTO
 import com.youcancook.gobong.model.network.dto.toUserProfile
 import com.youcancook.gobong.model.network.dto.toUserToken
 import com.youcancook.gobong.model.toLoginDTO
@@ -75,7 +75,7 @@ class UserDataSource(
         val response = userService.follow(getToken(), userId)
         Log.e(
             "GoBongBab",
-            "follow ${response} ${response.errorBody()?.string()}"
+            "follow $response ${response.errorBody()?.string()}"
         )
         if (response.isSuccessful.not()) {
             throw Exception("이미 팔로우한 사용자입니다.")
@@ -86,7 +86,7 @@ class UserDataSource(
         val response = userService.unfollow(getToken(), userId)
         Log.e(
             "GoBongBab",
-            "unfollow ${response} ${response.errorBody()?.string()}"
+            "unfollow $response ${response.errorBody()?.string()}"
         )
         if (response.isSuccessful.not()) {
             throw Exception("팔로우하지 않은 사용자입니다.")
@@ -97,7 +97,7 @@ class UserDataSource(
         val response = userService.getMyFollower(getToken())
         Log.e(
             "GoBongBab",
-            "myFollower ${response} ${response.errorBody()?.string()}"
+            "myFollower $response ${response.errorBody()?.string()}"
         )
         if (response.isSuccessful) {
             return response.body()?.map { it.toUserProfile() } ?: throw Exception("")
@@ -110,13 +110,32 @@ class UserDataSource(
         val response = userService.getMyFollowing(getToken())
         Log.e(
             "GoBongBab",
-            "myFollowing ${response} ${response.errorBody()?.string()}"
+            "myFollowing $response ${response.errorBody()?.string()}"
         )
         if (response.isSuccessful) {
             return response.body()?.map { it.toUserProfile() } ?: throw Exception("")
         } else {
             throw Exception("")
         }
+    }
+
+    suspend fun requestUpdateProfile(
+        nickname: String,
+        oldProfileImageUrl: String,
+        newProfileByteArray: ByteArray,
+    ) {
+        val userDTO = if (newProfileByteArray.isEmpty()) {
+            UpdateUserDTO(nickname, oldProfileImageUrl)
+
+        } else {
+            UpdateUserDTO(
+                nickname,
+                getImageUrlByByteArray(newProfileByteArray)
+            )
+        }
+        println("userDTO $userDTO")
+        val response = userService.updateProfile(getToken(), userDTO)
+        println("userDTO response $response")
     }
 
     private suspend fun getImageUrlByByteArray(imageByte: ByteArray): String {
