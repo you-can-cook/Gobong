@@ -80,7 +80,7 @@ class SearchViewModel(
         _recipes.value = goBongRepository.getFilteredRecipes(filter.value)
     }
 
-    fun follow(userId: String) {
+    fun follow(userId: Int) {
         viewModelScope.launch {
             setNetworkState(NetworkState.LOADING)
             try {
@@ -93,7 +93,7 @@ class SearchViewModel(
         }
     }
 
-    fun unfollow(userId: String) {
+    fun unfollow(userId: Int) {
         viewModelScope.launch {
             setNetworkState(NetworkState.LOADING)
             try {
@@ -106,10 +106,10 @@ class SearchViewModel(
         }
     }
 
-    private suspend fun requestFollow(userId: String) {
+    private suspend fun requestFollow(userId: Int) {
         userRepository.follow(userId)
         _recipes.value = _recipes.value.map {
-            if (it.user.nickname == userId) {
+            if (it.user.userId == userId) {
                 it.copy(user = it.user.copy(followed = true))
             } else {
                 it
@@ -117,10 +117,10 @@ class SearchViewModel(
         }
     }
 
-    private suspend fun requestUnfollow(userId: String) {
+    private suspend fun requestUnfollow(userId: Int) {
         userRepository.unfollow(userId)
         _recipes.value = _recipes.value.map {
-            if (it.user.nickname == userId) {
+            if (it.user.userId == userId) {
                 it.copy(user = it.user.copy(followed = false))
             } else {
                 it

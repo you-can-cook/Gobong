@@ -26,11 +26,11 @@ class UserRepositoryImpl(
 
     }
 
-    override suspend fun follow(userId: String) {
+    override suspend fun follow(userId: Int) {
         userDataSource.requestFollow(userId)
     }
 
-    override suspend fun unfollow(userId: String) {
+    override suspend fun unfollow(userId: Int) {
         userDataSource.requestUnfollow(userId)
     }
 

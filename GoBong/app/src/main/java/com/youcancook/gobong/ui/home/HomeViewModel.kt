@@ -36,7 +36,7 @@ class HomeViewModel(
         _recipes.value = goBongRepository.getFollowingRecipes()
     }
 
-    fun follow(userId: String) {
+    fun follow(userId: Int) {
         viewModelScope.launch {
             setNetworkState(NetworkState.LOADING)
             try {
@@ -49,7 +49,7 @@ class HomeViewModel(
         }
     }
 
-    fun unfollow(userId: String) {
+    fun unfollow(userId: Int) {
         viewModelScope.launch {
             setNetworkState(NetworkState.LOADING)
             try {
@@ -62,10 +62,10 @@ class HomeViewModel(
         }
     }
 
-    private suspend fun requestFollow(userId: String) {
+    private suspend fun requestFollow(userId: Int) {
         userRepository.follow(userId)
         _recipes.value = _recipes.value.map {
-            if (it.user.nickname == userId) {
+            if (it.user.userId == userId) {
                 it.copy(user = it.user.copy(followed = true))
             } else {
                 it
@@ -73,10 +73,10 @@ class HomeViewModel(
         }
     }
 
-    private suspend fun requestUnfollow(userId: String) {
+    private suspend fun requestUnfollow(userId: Int) {
         userRepository.unfollow(userId)
         _recipes.value = _recipes.value.map {
-            if (it.user.nickname == userId) {
+            if (it.user.userId == userId) {
                 it.copy(user = it.user.copy(followed = false))
             } else {
                 it

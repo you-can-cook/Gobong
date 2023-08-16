@@ -14,8 +14,8 @@ interface UserRepository {
 
     suspend fun register(registerUser: RegisterUser): UserToken
 
-    suspend fun follow(userId: String)
+    suspend fun follow(userId: Int)
 
-    suspend fun unfollow(userId: String)
+    suspend fun unfollow(userId: Int)
 
 }

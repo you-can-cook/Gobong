@@ -64,7 +64,7 @@ fun FeedDTO.toCard(): Card {
         id = id,
         user = UserProfile(
             profileUrl = author.profileImageURL ?: "",
-            userId = author.id.toString(),
+            userId = author.id,
             notMine = author.myself.not(),
             followed = author.following,
             nickname = author.nickname

@@ -17,9 +17,9 @@ class HomeFragment : NetworkFragment<FragmentHomeBinding, HomeViewModel>(R.layou
 
     private val cardAdapter = CardRecyclerViewListAdapter(onFollowClick = {
         if (it.followed) {
-            viewModel.unfollow(it.nickname)
+            viewModel.unfollow(it.userId)
         } else {
-            viewModel.follow(it.nickname)
+            viewModel.follow(it.userId)
         }
     })
 

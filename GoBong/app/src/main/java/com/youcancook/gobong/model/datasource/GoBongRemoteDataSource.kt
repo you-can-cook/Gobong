@@ -107,7 +107,12 @@ class GoBongRemoteDataSource(
     }
 
     suspend fun deleteRecipe(recipeId: Int) {
-
+        val response = goBongService.deleteRecipe(getToken(), recipeId)
+        Log.e(
+            "GoBongBab",
+            "deleteRecipe ${response.body()} ${response.errorBody()?.string()}"
+        )
+        if(response.isSuccessful.not()) throw Exception("네트워크가 불안정합니다")
     }
 
     suspend fun reviewRecipe(recipeId: Int, star: Int) {

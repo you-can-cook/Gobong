@@ -20,10 +20,10 @@ class BookmarkFragment :
 
     private val gridAdapter = GridRecyclerViewListAdapter(3, onFollowClick = {
         if (it.followed) {
-            viewModel.unfollow(it.nickname)
+            viewModel.unfollow(it.userId)
             (it as Button).text = "팔로우"
         } else {
-            viewModel.follow(it.nickname)
+            viewModel.follow(it.userId)
             (it as Button).text = "팔로잉"
         }
     })

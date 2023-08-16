@@ -64,11 +64,11 @@ class UserDataSource(
         }
     }
 
-    suspend fun requestFollow(userId: String) {
+    suspend fun requestFollow(userId: Int) {
 
     }
 
-    suspend fun requestUnfollow(userId: String) {
+    suspend fun requestUnfollow(userId: Int) {
 
     }
 

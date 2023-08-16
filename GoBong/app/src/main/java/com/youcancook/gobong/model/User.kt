@@ -7,7 +7,7 @@ import java.io.Serializable
 data class User(
     val profileUrl: String = "",
     val nickname: String = "쩝쩝박사",
-    val userId: String = "",
+    val userId: Int = 0,
     val recipe: String = "0",
     val follower: String = "0",
     val following: String = "0",
@@ -19,7 +19,7 @@ data class User(
             return User(
                 "",
                 "쩝쩝박사",
-                "",
+                0,
                 "0",
                 "0",
                 "0",
@@ -33,7 +33,7 @@ data class User(
 data class UserProfile(
     val profileUrl: String = "",
     val nickname: String = "쩝쩝박사",
-    val userId: String = "",
+    val userId: Int = 0,
     val notMine: Boolean = true,
     val followed: Boolean = false,
 )
