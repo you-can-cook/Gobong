@@ -55,6 +55,7 @@ class RoutingActivity :
     }
 
     private fun isTokenExist(): Boolean {
+        println("isTokenExist")
         val token = getSharedPreferences(
             TOKEN_KEY,
             Context.MODE_PRIVATE
@@ -64,6 +65,7 @@ class RoutingActivity :
 
         if (accessToken.isNullOrEmpty()) return false
 
+        println("oldToken $accessToken")
         viewModel.getAccessToken(
             token.getString(REFRESH_TOKEN_KEY, "") ?: ""
         )
@@ -72,7 +74,6 @@ class RoutingActivity :
     }
 
     private fun saveToken() {
-        println("saveToken")
         val token = viewModel.getToken()
         getSharedPreferences(
             TOKEN_KEY,

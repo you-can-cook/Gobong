@@ -13,7 +13,6 @@ data class Card(
     val star: String,
     val description: String,
     val ingredients: List<String>,
-    val recipes: List<RecipeStep>,
 ) {
     companion object {
         fun createEmpty(): Card {
@@ -34,8 +33,7 @@ data class Card(
                     "스트링 치즈",
                     "의성마늘 소시지 1인",
                     "모짜렐라(슈레드) 치즈"
-                ),
-                recipes = listOf()
+                )
             )
         }
     }

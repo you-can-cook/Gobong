@@ -30,7 +30,7 @@ class UserDataSource(
     }
 
     suspend fun requestAccessToken(refreshToken: String): String {
-        val response = userService.reissueAccessToken(RefreshTokenDTO(REFRESH_TOKEN))
+        val response = userService.reissueAccessToken(RefreshTokenDTO(refreshToken))
         if (response.isSuccessful) {
             return response.body()?.toUserToken()?.accessToken ?: throw Exception("네트워크가 불안정합니다")
         } else {

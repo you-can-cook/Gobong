@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.UserProfile
 import com.youcancook.gobong.model.UserToken
+import com.youcancook.gobong.util.toKoreanTool
 import com.youcancook.gobong.util.toStarRating
 import com.youcancook.gobong.util.toTime
 
@@ -38,6 +39,7 @@ data class FeedDTO(
     @SerializedName("cookwares") val cookwares: List<String>,
     @SerializedName("difficulty") val difficulty: String,
     @SerializedName("averageRating") val averageRating: Double,
+    @SerializedName("bookmarked") val bookmarked: Boolean,
 )
 
 data class RecipeFeedsResponseDTO(
@@ -56,7 +58,6 @@ fun LoginResponseDTO.toUserToken(): UserToken {
     )
 }
 
-
 fun FeedDTO.toCard(): Card {
     return Card(
         id = id.toString(),
@@ -69,13 +70,12 @@ fun FeedDTO.toCard(): Card {
         thumbnailUrl = thumbnailURL ?: "",
         title = title,
         bookmark = totalBookmarkCount.toString(),
-        bookmarked = false,
+        bookmarked = bookmarked,
         time = totalCookTimeInSeconds.toTime(),
-        tools = cookwares,
+        tools = cookwares.map { it.toKoreanTool() },
         level = difficulty,
         star = averageRating.toStarRating(),
         description = "",
-        ingredients = emptyList(),
-        emptyList()
+        ingredients = emptyList()
     )
 }

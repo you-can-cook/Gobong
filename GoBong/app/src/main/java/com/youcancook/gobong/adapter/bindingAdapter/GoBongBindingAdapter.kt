@@ -76,13 +76,34 @@ fun setNecessaryTextView(view: TextView, text: String) {
     view.text = wordToSpan
 }
 
-@BindingAdapter("recipeStepTime")
+@BindingAdapter("recipeStepTimeChip")
 fun recipeStepTime(view: Chip, text: String) {
     val times = text.split(" ")
     view.text = if (times.size > 1 && times[1] == "0초") {
         times[0]
     } else {
         text
+    }
+}
+
+@BindingAdapter("recipeStepTime")
+fun recipeStepTime(view: TextView, text: String) {
+    val times = text.split(" ")
+    view.text = if (times.size > 1 && times[1] == "0초") {
+        times[0]
+    } else {
+        text
+    }
+}
+
+@BindingAdapter("toolText")
+fun toolText(view: TextView, tools: List<String>) {
+    view.text = if (tools.isEmpty()) {
+        "-"
+    } else if (tools.size == 1) {
+        tools[0]
+    } else {
+        "${tools[0]} +${tools.size - 1}"
     }
 }
 

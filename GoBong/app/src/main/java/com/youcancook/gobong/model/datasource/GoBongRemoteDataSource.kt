@@ -3,6 +3,7 @@ package com.youcancook.gobong.model.datasource
 import android.util.Log
 import com.youcancook.gobong.R
 import com.youcancook.gobong.model.Card
+import com.youcancook.gobong.model.RecipePost
 import com.youcancook.gobong.model.RecipeStep
 import com.youcancook.gobong.model.UploadRecipe
 import com.youcancook.gobong.model.User
@@ -10,7 +11,8 @@ import com.youcancook.gobong.model.UserProfile
 import com.youcancook.gobong.model.network.GoBongService
 import com.youcancook.gobong.model.network.ImageService
 import com.youcancook.gobong.model.network.dto.toCard
-import com.youcancook.gobong.model.toRecipeStepDTO
+import com.youcancook.gobong.model.network.dto.toRecipePost
+import com.youcancook.gobong.model.toRecipeStepAddedDTO
 import com.youcancook.gobong.model.toUploadRecipeDTO
 import com.youcancook.gobong.util.ACCESS_TOKEN
 import okhttp3.MediaType
@@ -32,63 +34,25 @@ class GoBongRemoteDataSource(
         return "Bearer $ACCESS_TOKEN"
     }
 
-    suspend fun getCurrentRecipe(recipePostId: String): Card {
-        return Card(
-            "mark",
-            UserProfile(followed = true),
-            getUrl(R.drawable.markthumb),
-            "마크정식 100% 원조 레시피",
-            "100",
-            true,
-            "5분",
-            listOf("전자레인지"),
-            "쉬워요",
-            "4.5공기",
-            "편의점 꿀조합 레시피 best of best",
-            listOf(
-                "자이언트떡볶이 1개",
-                "의성마늘후랑크 소시지 1개",
-                "콕콕콕 스파게티  1개",
-                "모짜렐라 피자치즈 20g"
-            ),
-            listOf(
-                RecipeStep(
-                    "30초",
-                    listOf("전자레인지"),
-                    getUrl(R.drawable.mark1),
-                    "준비한 소시지를 전자렌지에 약 30초간 데워주세요",
-                ),
-                RecipeStep(
-                    "20초",
-                    listOf(),
-                    getUrl(R.drawable.mark2),
-                    "자이언트떡볶이와 콕콕콕 스파게티에 물을 넣어주세요",
-                ),
-                RecipeStep(
-                    "3분",
-                    listOf("전자레인지"),
-                    getUrl(R.drawable.mark3),
-                    "물을 넣은 자이언트 떡볶이를 전자렌지에 3분 돌려주세요",
-                ),
-                RecipeStep(
-                    "50초",
-                    listOf(),
-                    "",
-                    "스파게티 물을 버리고 전자렌지에 돌린 떡볶이에 라면과 스프를 넣고 잘 섞어주세요. 의성마늘후랑크소시지를 먹기 좋은 크기로 잘라 넣어주세요",
-                ),
-                RecipeStep(
-                    "30초",
-                    listOf("전자레인지"),
-                    getUrl(R.drawable.mark4),
-                    "모짜렐라 피자치즈를 위에 얹어주고, 치즈가 녹을 정도로 전자렌지에 약 30초간 데워주세요",
-                )
-            )
+    suspend fun getCurrentRecipe(recipePostId: String): RecipePost {
+        val response = goBongService.getCurrentRecipe(getToken(),recipePostId.toInt())
+        Log.e(
+            "GoBongBab",
+            "getCurrentRecipe $response ${response.body()} ${response.errorBody().toString()}"
         )
+        if (response.isSuccessful) {
+            return response.body()?.toRecipePost() ?: throw Exception("네트워크가 불안정합니다")
+        } else {
+            throw Exception("네트워크가 불안정합니다")
+        }
     }
 
     suspend fun getFollowingRecipes(): List<Card> {
         val response = goBongService.getFollowingRecipes(getToken(), 10)
-        Log.e("GoBongBab", "getFollowingRecipes ${response.body()}")
+        Log.e(
+            "GoBongBab",
+            "getFollowingRecipes $response ${response.body()} ${response.errorBody().toString()}"
+        )
         if (response.isSuccessful) {
             return response.body()?.feeds?.map { it.toCard() } ?: throw Exception("네트워크가 불안정합니다")
         } else {
@@ -98,7 +62,7 @@ class GoBongRemoteDataSource(
 
     suspend fun getAllRecipes(): List<Card> {
         val response = goBongService.getAllRecipes(getToken(), 10)
-        Log.e("GoBongBab", "getAllRecipe ${response.body()}")
+        Log.e("GoBongBab", "getAllRecipe ${response.body()} ${response.errorBody().toString()}")
         if (response.isSuccessful) {
             return response.body()?.feeds?.map { it.toCard() } ?: throw Exception("네트워크가 불안정합니다")
         } else {
@@ -118,7 +82,10 @@ class GoBongRemoteDataSource(
 
     suspend fun getBookmarkedRecipes(): List<Card> {
         val response = goBongService.getBookmarkedRecipes(getToken(), 10)
-        Log.e("GoBongBab", "getBookmarkedRecipes ${response.body()}")
+        Log.e(
+            "GoBongBab",
+            "getBookmarkedRecipes ${response.body()} ${response.errorBody().toString()}"
+        )
         if (response.isSuccessful) {
             return response.body()?.feeds?.map { it.toCard() } ?: throw Exception("네트워크가 불안정합니다")
         } else {
@@ -141,7 +108,7 @@ class GoBongRemoteDataSource(
     suspend fun uploadRecipe(uploadRecipe: UploadRecipe): String {
         val thumbnailUrl = getImageUrlByByteArray(uploadRecipe.thumbnailByteArray)
         val request = uploadRecipe.toUploadRecipeDTO(thumbnailUrl, uploadRecipe.recipes.map {
-            it.toRecipeStepDTO(getImageUrlByByteArray(it.photoUrl))
+            it.toRecipeStepAddedDTO(getImageUrlByByteArray(it.photoUrl))
         })
 
         Log.e("GoBongBab", "uploadRecipe request ${request}")
@@ -225,5 +192,58 @@ class GoBongRemoteDataSource(
 //                "만드는데 비용도 얼마 들지 않고 시간도 얼마 안걸리는 진짜 초간단 레시피",
 //                listOf(),
 //                listOf()
+//            )
+//        )
+
+
+//return Card(
+//            "mark",
+//            UserProfile(followed = true),
+//            getUrl(R.drawable.markthumb),
+//            "마크정식 100% 원조 레시피",
+//            "100",
+//            true,
+//            "5분",
+//            listOf("전자레인지"),
+//            "쉬워요",
+//            "4.5공기",
+//            "편의점 꿀조합 레시피 best of best",
+//            listOf(
+//                "자이언트떡볶이 1개",
+//                "의성마늘후랑크 소시지 1개",
+//                "콕콕콕 스파게티  1개",
+//                "모짜렐라 피자치즈 20g"
+//            ),
+//            listOf(
+//                RecipeStep(
+//                    "30초",
+//                    listOf("전자레인지"),
+//                    getUrl(R.drawable.mark1),
+//                    "준비한 소시지를 전자렌지에 약 30초간 데워주세요",
+//                ),
+//                RecipeStep(
+//                    "20초",
+//                    listOf(),
+//                    getUrl(R.drawable.mark2),
+//                    "자이언트떡볶이와 콕콕콕 스파게티에 물을 넣어주세요",
+//                ),
+//                RecipeStep(
+//                    "3분",
+//                    listOf("전자레인지"),
+//                    getUrl(R.drawable.mark3),
+//                    "물을 넣은 자이언트 떡볶이를 전자렌지에 3분 돌려주세요",
+//                ),
+//                RecipeStep(
+//                    "50초",
+//                    listOf(),
+//                    "",
+//                    "스파게티 물을 버리고 전자렌지에 돌린 떡볶이에 라면과 스프를 넣고 잘 섞어주세요. 의성마늘후랑크소시지를 먹기 좋은 크기로 잘라 넣어주세요",
+//                ),
+//                RecipeStep(
+//                    "30초",
+//                    listOf("전자레인지"),
+//                    getUrl(R.drawable.mark4),
+//                    "모짜렐라 피자치즈를 위에 얹어주고, 치즈가 녹을 정도로 전자렌지에 약 30초간 데워주세요",
+//                )
 //            )
 //        )
