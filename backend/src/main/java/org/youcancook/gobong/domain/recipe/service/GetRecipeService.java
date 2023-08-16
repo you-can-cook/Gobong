@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.youcancook.gobong.domain.bookmarkrecipe.service.BookmarkRecipeService;
 import org.youcancook.gobong.domain.follow.service.FollowService;
+import org.youcancook.gobong.domain.rating.entity.Rating;
+import org.youcancook.gobong.domain.rating.repository.RatingRepository;
 import org.youcancook.gobong.domain.recipe.dto.recipeDto.RecipeDto;
 import org.youcancook.gobong.domain.recipe.dto.response.GetFeedResponse;
 import org.youcancook.gobong.domain.recipe.dto.response.GetRecipeResponse;
@@ -22,6 +24,7 @@ import org.youcancook.gobong.domain.user.service.UserInformationService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,18 +36,30 @@ public class GetRecipeService {
     private final RecipeRepository recipeRepository;
     private final BookmarkRecipeService bookmarkRecipeService;
     private final UserInformationService userInformationService;
+    private final RatingRepository ratingRepository;
 
-    public GetRecipeResponse getRecipe(Long userId, Long recipeId){
+    public GetRecipeResponse getRecipe(Long userId, Long recipeId) {
         Recipe recipe = recipeRepository.fetchFindById(recipeId).orElseThrow(RecipeNotFoundException::new);
         RecipeDto recipeDto = RecipeDto.from(recipe);
         List<GetRecipeDetailResponse> recipeDetails = recipeDetailService.getRecipeDetails(recipe);
         GetRecipeSummaryResponse summaryResponse = getSummary(userId, recipeDto);
 
+        int myRate = getMyRate(userId, recipeId);
         return new GetRecipeResponse(recipeDto.getId(), summaryResponse,
-                recipeDto.getIntroduction(), recipeDto.getIngredients(), recipeDetails);
+                recipeDto.getIntroduction(), recipeDto.getIngredients(), recipeDetails, myRate);
     }
 
-    public GetRecipeSummaryResponse getSummary(Long userId, RecipeDto recipeDto){
+    private int getMyRate(Long userId, Long recipeId) {
+        Optional<Rating> ratingOptional = ratingRepository.findByUserIdAndRecipeId(userId, recipeId);
+        if (ratingOptional.isPresent()) {
+            return ratingOptional.get().getScore();
+        }
+        else {
+            return 0;
+        }
+    }
+
+    public GetRecipeSummaryResponse getSummary(Long userId, RecipeDto recipeDto) {
         RecipeAuthorResponse authorResponse = getAuthor(userId, recipeDto);
         boolean isBookmarked = bookmarkRecipeService.checkBookmark(userId, recipeDto.getId());
         return new GetRecipeSummaryResponse(
@@ -54,7 +69,7 @@ public class GetRecipeService {
         );
     }
 
-    public RecipeAuthorResponse getAuthor(Long userId, RecipeDto recipeDto){
+    public RecipeAuthorResponse getAuthor(Long userId, RecipeDto recipeDto) {
         Long authorId = recipeDto.getAuthorId();
         String authorNickname = recipeDto.getAuthorName();
         String profileImageURL = userInformationService.getUserInformation(authorId).getProfileImageURL();
@@ -64,25 +79,25 @@ public class GetRecipeService {
         return new RecipeAuthorResponse(authorId, authorNickname, profileImageURL, isFollowing, isMyself);
     }
 
-    public GetFeedResponse getAllFeed(Long userId, long recipeId, int count){
+    public GetFeedResponse getAllFeed(Long userId, long recipeId, int count) {
         Slice<Recipe> feedRecipes = recipeRepository.getAllFeed(recipeId,
                 PageRequest.of(0, count, Sort.by("id").descending()));
         return getFeedResponse(userId, feedRecipes);
     }
 
-    public GetFeedResponse getBookmarkedFeed(Long userId, long recipeId, int count){
+    public GetFeedResponse getBookmarkedFeed(Long userId, long recipeId, int count) {
         Slice<Recipe> feedRecipes = recipeRepository.getAllBookmarkedFeed(userId, recipeId,
                 PageRequest.of(0, count, Sort.by("id").descending()));
         return getFeedResponse(userId, feedRecipes);
     }
 
-    public GetFeedResponse getFollowingFeed(Long userId, long recipeId, int count){
+    public GetFeedResponse getFollowingFeed(Long userId, long recipeId, int count) {
         Slice<Recipe> feedRecipes = recipeRepository.getAllFollowingFeed(userId, recipeId,
                 PageRequest.of(0, count, Sort.by("id").descending()));
         return getFeedResponse(userId, feedRecipes);
     }
 
-    private GetFeedResponse getFeedResponse(Long userId, Slice<Recipe> feedRecipes){
+    private GetFeedResponse getFeedResponse(Long userId, Slice<Recipe> feedRecipes) {
         List<GetRecipeSummaryResponse> summaries = feedRecipes.getContent().stream()
                 .map(recipe -> getSummary(userId, RecipeDto.from(recipe)))
                 .toList();
