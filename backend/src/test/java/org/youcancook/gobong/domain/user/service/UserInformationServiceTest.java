@@ -9,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.youcancook.gobong.domain.follow.repository.FollowRepository;
 import org.youcancook.gobong.domain.recipe.repository.RecipeRepository;
-import org.youcancook.gobong.domain.user.dto.response.UserInformationResponse;
+import org.youcancook.gobong.domain.user.dto.response.MyInformationResponse;
 import org.youcancook.gobong.domain.user.entity.OAuthProvider;
 import org.youcancook.gobong.domain.user.entity.User;
 import org.youcancook.gobong.domain.user.exception.DuplicationNicknameException;
@@ -51,7 +51,7 @@ class UserInformationServiceTest {
         when(recipeRepository.countByUser(user))
                 .thenReturn(1L);
         // when
-        UserInformationResponse result = userInformationService.getUserInformation(user.getId());
+        MyInformationResponse result = userInformationService.getMyInformation(user.getId());
 
         // then
         assertThat(result.getId()).isEqualTo(user.getId());

@@ -72,7 +72,7 @@ public class GetRecipeService {
     public RecipeAuthorResponse getAuthor(Long userId, RecipeDto recipeDto) {
         Long authorId = recipeDto.getAuthorId();
         String authorNickname = recipeDto.getAuthorName();
-        String profileImageURL = userInformationService.getUserInformation(authorId).getProfileImageURL();
+        String profileImageURL = userInformationService.getMyInformation(authorId).getProfileImageURL();
         boolean isFollowing = followService.isFollowing(userId, authorId);
         boolean isMyself = Objects.equals(userId, authorId);
 
