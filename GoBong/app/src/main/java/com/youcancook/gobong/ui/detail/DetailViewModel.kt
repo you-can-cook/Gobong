@@ -60,6 +60,8 @@ class DetailViewModel(
 
     fun getTools() = _cardInfo.value.tools
 
+    fun getId() = _cardInfo.value.user.userId
+
     private suspend fun requestCurrentRecipe(recipePostId: Int) {
         val response = goBongRepository.getCurrentRecipe(recipePostId)
         _cardInfo.value = response.cardInfo

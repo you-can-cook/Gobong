@@ -35,6 +35,10 @@ class CardViewHolder(
             }
             profileImageView.setOnClickListener {
                 val intent = Intent(binding.root.context, OthersActivity::class.java)
+                    .putExtra(
+                        OthersActivity.USER_ID,
+                        (adapter.currentList[adapterPosition] as Card).user.userId
+                    )
                 binding.root.context.startActivity(intent)
             }
         }

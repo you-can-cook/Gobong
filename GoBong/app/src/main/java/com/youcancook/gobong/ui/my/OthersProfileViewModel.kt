@@ -5,21 +5,30 @@ import com.youcancook.gobong.model.User
 import com.youcancook.gobong.model.repository.GoBongRepository
 import com.youcancook.gobong.model.repository.UserRepository
 import com.youcancook.gobong.util.NetworkState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class OthersProfileViewModel(
     private val goBongRepository: GoBongRepository,
     private val userRepository: UserRepository,
 ) : ProfileViewModel(goBongRepository) {
-    fun isUserFollowed(): Boolean {
-        return getUserInfo().followed
+    private val _userId = MutableStateFlow(0)
+    val userId: StateFlow<Int> get() = _userId
+
+    fun setUserId(userId: Int) {
+        _userId.value = userId
     }
 
-    fun getOthersInfo(userId: String) {
+    private fun setOthersInfo(user: User) {
+        setUserInfo(user)
+    }
+
+    fun getOthersInfo() {
         viewModelScope.launch {
             setNetworkState(NetworkState.LOADING)
             try {
-                requestOthersInfo(userId)
+                requestOthersInfo()
                 setNetworkState(NetworkState.SUCCESS)
             } catch (e: Exception) {
                 setNetworkState(NetworkState.FAIL)
@@ -28,14 +37,9 @@ class OthersProfileViewModel(
         }
     }
 
-    private fun setOthersInfo(user: User) {
-        setUserInfo(user)
-    }
-
-    private suspend fun requestOthersInfo(userId: String) {
-//        val response = goBongRepository.getUserRecipes(userId)
-//        setUserInfo(response)
-//        setUserRecipe(response.recipes)
+    private suspend fun requestOthersInfo() {
+        setUserInfo(goBongRepository.getOthersInfo(userId.value))
+        setUserRecipe(goBongRepository.getOthersRecipes(userId.value))
     }
 
     fun follow() {

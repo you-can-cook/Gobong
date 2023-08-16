@@ -25,12 +25,11 @@ class GoBongRemoteDataSource(
     private val userService: UserService,
     private val imageService: ImageService,
 ) {
-    fun getUrl(res: Int): String {
-        return "android.resource://com.youcancook.gobong/$res"
-    }
+//    fun getUrl(res: Int): String {
+//        return "android.resource://com.youcancook.gobong/$res"
+//    }
 
     private fun getToken(): String {
-        println("access ${ACCESS_TOKEN}")
         return "Bearer $ACCESS_TOKEN"
     }
 
@@ -179,12 +178,27 @@ class GoBongRemoteDataSource(
 
     }
 
-    suspend fun getUserRecipes(userId: String): User {
-        return User.createEmpty()
+    suspend fun getOthersRecipes(userId: Int): List<Card> {
+        val response = goBongService.getOthersRecipes(getToken(), userId,10)
+        if (response.isSuccessful) {
+            return response.body()?.feeds?.map { it.toCard() } ?: throw Exception("네트워크가 불안정합니다")
+        } else {
+            throw Exception("네트워크가 불안정합니다")
+        }
+
     }
 
     suspend fun getMyInfo(): User {
         val response = userService.getMyInfo(getToken())
+        if (response.isSuccessful) {
+            return response.body()?.toUser() ?: throw Exception("네트워크가 불안정합니다")
+        } else {
+            throw Exception("네트워크가 불안정합니다")
+        }
+    }
+
+    suspend fun getOthersInfo(userId: Int): User {
+        val response = userService.getOthersInfo(getToken(), userId)
         if (response.isSuccessful) {
             return response.body()?.toUser() ?: throw Exception("네트워크가 불안정합니다")
         } else {

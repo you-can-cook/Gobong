@@ -25,7 +25,6 @@ class HomeFragment : NetworkFragment<FragmentHomeBinding, HomeViewModel>(R.layou
 
     override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
         override fun onSuccess() {
-            println("success")
             binding.swipeRefresh.isRefreshing = false
         }
 

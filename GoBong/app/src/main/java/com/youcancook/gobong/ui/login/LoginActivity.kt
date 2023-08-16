@@ -170,7 +170,6 @@ class LoginActivity :
             if (error != null || user == null) {
                 return@me
             } else {
-                println("userid $user")
                 userId = user.id.toString()
                 viewModel.setLoginUser(makeLoginUser())
                 viewModel.login()
@@ -191,7 +190,6 @@ class LoginActivity :
             putString(ACCESS_TOKEN_KEY, token.accessToken)
             putString(REFRESH_TOKEN_KEY, token.refreshToken)
             commit()
-            println("login saveToken ${token}")
 
             ACCESS_TOKEN = token.accessToken
             REFRESH_TOKEN = token.refreshToken

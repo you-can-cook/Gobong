@@ -3,11 +3,11 @@ package com.youcancook.gobong.model.network
 import com.youcancook.gobong.model.network.dto.FollowResponseDTO
 import com.youcancook.gobong.model.network.dto.LoginDTO
 import com.youcancook.gobong.model.network.dto.LoginResponseDTO
-import com.youcancook.gobong.model.network.dto.MyInfoResponseDTO
 import com.youcancook.gobong.model.network.dto.RefreshTokenDTO
 import com.youcancook.gobong.model.network.dto.RegisterDTO
 import com.youcancook.gobong.model.network.dto.TemporaryTokenResponseDTO
 import com.youcancook.gobong.model.network.dto.UpdateUserDTO
+import com.youcancook.gobong.model.network.dto.UserInfoResponseDTO
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -63,7 +63,13 @@ interface UserService {
     @GET("/api/users")
     suspend fun getMyInfo(
         @Header("Authorization") token: String,
-    ): Response<MyInfoResponseDTO>
+    ): Response<UserInfoResponseDTO>
+
+    @GET("/api/users/{userId}")
+    suspend fun getOthersInfo(
+        @Header("Authorization") token: String,
+        @Path("userId") userId: Int,
+    ): Response<UserInfoResponseDTO>
 
     @PATCH("/api/users")
     suspend fun updateProfile(

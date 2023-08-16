@@ -67,7 +67,7 @@ data class FollowResponseDTO(
     @SerializedName("isFollowed") val isFollowed: Boolean?,
 )
 
-data class MyInfoResponseDTO(
+data class UserInfoResponseDTO(
     @SerializedName("id") val id: Int,
     @SerializedName("nickname") val nickname: String,
     @SerializedName("profileImageURL") val profileImageURL: String? = null,
@@ -75,6 +75,7 @@ data class MyInfoResponseDTO(
     @SerializedName("followerNumber") val followerNumber: Int,
     @SerializedName("followingNumber") val followingNumber: Int,
     @SerializedName("recipeNumber") val recipeNumber: Int,
+    @SerializedName("isFollowed") val isFollowed: Boolean? = null,
 )
 
 fun FeedDTO.toCard(): Card {
@@ -109,13 +110,14 @@ fun FollowResponseDTO.toUserProfile(): UserProfile {
     )
 }
 
-fun MyInfoResponseDTO.toUser(): User {
+fun UserInfoResponseDTO.toUser(): User {
     return User(
         profileUrl = profileImageURL ?: "",
         nickname,
         userId = id,
         recipe = recipeNumber.toString(),
         follower = followerNumber.toString(),
-        following = followingNumber.toString()
+        following = followingNumber.toString(),
+        followed = isFollowed ?: true
     )
 }

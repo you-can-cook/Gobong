@@ -72,23 +72,19 @@ abstract class NetworkFragment<T : ViewDataBinding, VM : NetworkViewModel>(
                         NetworkState.DONE -> {
                             loadingDialog.dismiss()
                             onNetworkStateChange.onDone()
-                            println("done")
                         }
 
                         NetworkState.LOADING -> {
                             loadingDialog.show()
-                            println("loading")
                         }
 
                         NetworkState.SUCCESS -> {
                             loadingDialog.dismiss()
-                            println("success")
                             onNetworkStateChange.onSuccess()
                         }
 
                         NetworkState.FAIL -> {
                             loadingDialog.dismiss()
-                            println("fail")
                             onNetworkStateChange.onFail()
                         }
 
