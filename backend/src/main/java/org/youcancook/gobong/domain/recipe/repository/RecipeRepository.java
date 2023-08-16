@@ -17,5 +17,10 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     Optional<Recipe> fetchFindById(Long recipeId);
 
     @Query("SELECT r FROM Recipe r WHERE r.id <:recipeId")
-    Slice<Recipe> getChunkById(Long recipeId, PageRequest of);
+    Slice<Recipe> getAllFeed(Long recipeId, PageRequest of);
+
+    @Query("SELECT r FROM BookmarkRecipe br " +
+            "JOIN br.recipe r " +
+            "WHERE r.id <:recipeId AND br.user.id =:userId")
+    Slice<Recipe> getAllBookmarkedFeed(Long userId, Long recipeId, PageRequest of);
 }
