@@ -18,5 +18,6 @@ public class GetRecipeResponse {
     private String introduction;
     private List<String> ingredients;
     private List<GetRecipeDetailResponse> recipeDetails;
+    private int myRate;
 
 }
