@@ -2,7 +2,6 @@ package com.youcancook.gobong.ui.login
 
 import android.content.Context
 import android.content.Intent
-import android.media.Image
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,7 +14,6 @@ import com.youcancook.gobong.databinding.ActivityRegisterBinding
 import com.youcancook.gobong.model.LoginUser
 import com.youcancook.gobong.ui.ImageActivity
 import com.youcancook.gobong.ui.MainActivity
-import com.youcancook.gobong.ui.RoutingActivity
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.util.ACCESS_TOKEN_KEY

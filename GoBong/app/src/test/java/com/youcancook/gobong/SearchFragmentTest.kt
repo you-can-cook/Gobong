@@ -3,7 +3,6 @@ package com.youcancook.gobong
 import com.youcancook.gobong.di.GoBongContainer
 import com.youcancook.gobong.fake.FakeGoBongContainer
 import com.youcancook.gobong.model.Filter
-import com.youcancook.gobong.ui.home.HomeViewModel
 import com.youcancook.gobong.ui.search.SearchViewModel
 import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.CoroutineScope
@@ -11,10 +10,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.setMain
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
 
 class SearchFragmentTest {
 

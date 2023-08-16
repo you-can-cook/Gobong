@@ -1,14 +1,10 @@
 package com.youcancook.gobong.ui.my.follow
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.FollowListAdapter
 import com.youcancook.gobong.databinding.FragmentFollowerBinding
-import com.youcancook.gobong.model.User
 import com.youcancook.gobong.ui.base.NetworkFragment
 import com.youcancook.gobong.ui.base.NetworkStateListener
 

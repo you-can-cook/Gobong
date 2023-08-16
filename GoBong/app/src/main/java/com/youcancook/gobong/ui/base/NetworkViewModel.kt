@@ -1,8 +1,14 @@
 package com.youcancook.gobong.ui.base
 
+import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.util.NetworkState
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 open class NetworkViewModel : GoBongViewModel() {
 
@@ -11,6 +17,12 @@ open class NetworkViewModel : GoBongViewModel() {
 
     protected fun setNetworkState(state: NetworkState) {
         _networkState.value = state
+        if (state == NetworkState.LOADING) {
+            CoroutineScope(Dispatchers.Unconfined).launch {
+                delay(5000)
+                finishNetwork()
+            }
+        }
     }
 
     protected fun finishNetwork() {

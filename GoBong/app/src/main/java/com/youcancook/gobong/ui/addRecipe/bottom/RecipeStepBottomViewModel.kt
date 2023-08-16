@@ -1,6 +1,5 @@
 package com.youcancook.gobong.ui.addRecipe.bottom
 
-import com.youcancook.gobong.model.RecipeStepAdded
 import com.youcancook.gobong.model.Tool
 import com.youcancook.gobong.ui.base.GoBongViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

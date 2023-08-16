@@ -4,16 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.activityViewModels
 import com.google.android.material.chip.Chip
 import com.google.android.material.slider.Slider
 import com.google.android.material.slider.Slider.OnSliderTouchListener
 import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityFilterBinding
 import com.youcancook.gobong.model.Filter
-import com.youcancook.gobong.model.RecipeStepAdded
-import com.youcancook.gobong.ui.addRecipe.bottom.add.RecipeStepAddBottomSheet
-import com.youcancook.gobong.ui.addRecipe.bottom.edit.RecipeStepEditBottomSheet
 import com.youcancook.gobong.ui.base.GoBongActivity
 import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.EASY
 import com.youcancook.gobong.ui.search.filter.FilterViewModel.Companion.EMPTY
@@ -67,7 +63,6 @@ class FilterActivity : GoBongActivity<ActivityFilterBinding>(R.layout.activity_f
     }
 
     private fun setOldFilter(filter: Filter) {
-        println("oldFilter $filter")
         if (filter.isEmpty()) return
 
         viewModel.setFilter(filter)

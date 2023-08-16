@@ -2,7 +2,7 @@ package com.youcancook.gobong.model.repository
 
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.Filter
-import com.youcancook.gobong.model.RecipePost
+import com.youcancook.gobong.model.UploadRecipe
 import com.youcancook.gobong.model.User
 import com.youcancook.gobong.model.datasource.GoBongRemoteDataSource
 
@@ -41,8 +41,8 @@ class GoBongRepositoryImpl(
         goBongDataSource.reviewRecipe(star)
     }
 
-    override suspend fun uploadRecipe(recipePost: RecipePost) {
-        goBongDataSource.uploadRecipe(recipePost)
+    override suspend fun uploadRecipe(uploadRecipe: UploadRecipe) {
+        goBongDataSource.uploadRecipe(uploadRecipe)
     }
 
     override suspend fun getMyRecipes(): User {

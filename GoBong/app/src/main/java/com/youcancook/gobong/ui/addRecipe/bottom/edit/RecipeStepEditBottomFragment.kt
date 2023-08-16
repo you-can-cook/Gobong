@@ -7,7 +7,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.youcancook.gobong.ui.addRecipe.bottom.RecipeStepBottomFragment
-import com.youcancook.gobong.ui.addRecipe.bottom.RecipeStepBottomViewModel
 
 class RecipeStepEditBottomFragment : RecipeStepBottomFragment() {
     override val viewModel: RecipeStepEditBottomViewModel by activityViewModels()

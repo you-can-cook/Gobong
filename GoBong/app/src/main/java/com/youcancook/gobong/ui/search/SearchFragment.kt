@@ -3,7 +3,6 @@ package com.youcancook.gobong.ui.search
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +15,6 @@ import com.youcancook.gobong.databinding.FragmentSearchBinding
 import com.youcancook.gobong.model.Filter
 import com.youcancook.gobong.ui.base.NetworkFragment
 import com.youcancook.gobong.ui.base.NetworkStateListener
-import com.youcancook.gobong.ui.detail.DetailActivity
 import com.youcancook.gobong.ui.search.filter.FilterActivity
 import com.youcancook.gobong.ui.search.filter.FilterActivity.Companion.OLD_DATA
 

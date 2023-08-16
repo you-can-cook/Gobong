@@ -4,9 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.content.edit
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityRoutingBinding
 import com.youcancook.gobong.ui.base.NetworkActivity
@@ -17,8 +14,6 @@ import com.youcancook.gobong.util.ACCESS_TOKEN_KEY
 import com.youcancook.gobong.util.REFRESH_TOKEN
 import com.youcancook.gobong.util.REFRESH_TOKEN_KEY
 import com.youcancook.gobong.util.TOKEN_KEY
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class RoutingActivity :
     NetworkActivity<ActivityRoutingBinding, RoutingViewModel>(R.layout.activity_routing) {
@@ -52,11 +47,11 @@ class RoutingActivity :
         super.onCreate(savedInstanceState)
 
         if (isTokenExist().not()) {
+            println("token Not Exist")
             val intent = Intent(this@RoutingActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
-
     }
 
     private fun isTokenExist(): Boolean {

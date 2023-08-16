@@ -4,9 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.RecipeStep
 import com.youcancook.gobong.model.repository.GoBongRepository
-import com.youcancook.gobong.model.repository.GoBongRepositoryImpl
 import com.youcancook.gobong.model.repository.UserRepository
-import com.youcancook.gobong.model.repository.UserRepositoryImpl
 import com.youcancook.gobong.ui.base.NetworkViewModel
 import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -90,7 +88,9 @@ class DetailViewModel(
     }
 
     private suspend fun requestCurrentRecipe(recipePostId: String) {
-        _cardInfo.value = goBongRepository.getCurrentRecipe(recipePostId)
+        val response = goBongRepository.getCurrentRecipe(recipePostId)
+        _cardInfo.value = response
+        _recipes.value = response.recipes
     }
 
     fun activeRecipeStep(position: Int) {

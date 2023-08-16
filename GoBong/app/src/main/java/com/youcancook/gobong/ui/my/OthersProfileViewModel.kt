@@ -3,9 +3,7 @@ package com.youcancook.gobong.ui.my
 import androidx.lifecycle.viewModelScope
 import com.youcancook.gobong.model.User
 import com.youcancook.gobong.model.repository.GoBongRepository
-import com.youcancook.gobong.model.repository.GoBongRepositoryImpl
 import com.youcancook.gobong.model.repository.UserRepository
-import com.youcancook.gobong.model.repository.UserRepositoryImpl
 import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.launch
 
