@@ -29,12 +29,12 @@
     <td>건국대학교<br>컴퓨터공학부</td>
     <td>건국대학교<br>컴퓨터공학부</td>
   </tr>
-  <tr align="center" font-size="10px">
-    <td>hyur0920@gmail.com</td>
-    <td>febbyviolen@gmail.com</td>
-    <td>20211028@sungshin.ac.kr</td>
-    <td>hsk4991149@naver.com</td>
-    <td>aru0504@naver.com</td>
+  <tr align="center">
+    <td><sup>hyur0920@gmail.com</sup></td>
+    <td><sup>febbyviolen@gmail.com</sup></td>
+    <td><sup>20211028@sungshin.ac.kr</sup></td>
+    <td><sup>hsk4991149@naver.com</sup></td>
+    <td><sup>aru0504@naver.com</sup></td>
   </tr>
 </table>
 
