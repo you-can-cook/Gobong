@@ -150,7 +150,7 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
 
         RestAssured.given().log().all()
                 .auth().oauth2(accessToken1)
-                .when().get("/api/feed/all?count=3")
+                .when().get("/api/feed/bookmarked?count=3")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract();
