@@ -18,5 +18,5 @@ public class UploadRecipeDetailRequest {
     private Integer cookTimeInSeconds;
 
     @NotNull(message = "조리도구는 필수 항목입니다.")
-    private List<String> cookware;
+    private List<String> cookwares;
 }
