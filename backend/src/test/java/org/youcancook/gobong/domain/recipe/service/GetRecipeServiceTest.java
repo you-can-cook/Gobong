@@ -44,14 +44,14 @@ class GetRecipeServiceTest {
 
     @Test
     @DisplayName("전체 피드를 성공적으로 가져온다.")
-    public void getFeed(){
+    public void getFeed() {
         User user = new User("name", "abc", OAuthProvider.GOOGLE, null);
         Long userId = userRepository.save(user).getId();
 
-        Recipe recipe1 = new Recipe(user,"주먹밥1", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
-        Recipe recipe2 = new Recipe(user,"주먹밥2", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
-        Recipe recipe3 = new Recipe(user,"주먹밥3", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
-        Recipe recipe4 = new Recipe(user,"주먹밥4", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe1 = new Recipe(user, "주먹밥1", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe2 = new Recipe(user, "주먹밥2", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe3 = new Recipe(user, "주먹밥3", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe4 = new Recipe(user, "주먹밥4", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
 
         recipeRepository.save(recipe1);
         recipeRepository.save(recipe2);
@@ -72,16 +72,16 @@ class GetRecipeServiceTest {
 
     @Test
     @DisplayName("북마크 피드를 성공적으로 가져온다.")
-    public void getBookmarkedFeed(){
+    public void getBookmarkedFeed() {
         User user = new User("name", "abc", OAuthProvider.GOOGLE, null);
         User user2 = new User("name1", "abcdd", OAuthProvider.GOOGLE, null);
         userRepository.save(user);
         Long user2Id = userRepository.save(user2).getId();
 
-        Recipe recipe1 = new Recipe(user,"주먹밥1", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
-        Recipe recipe2 = new Recipe(user,"주먹밥2", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
-        Recipe recipe3 = new Recipe(user,"주먹밥3", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
-        Recipe recipe4 = new Recipe(user,"주먹밥4", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe1 = new Recipe(user, "주먹밥1", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe2 = new Recipe(user, "주먹밥2", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe3 = new Recipe(user, "주먹밥3", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe4 = new Recipe(user, "주먹밥4", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
 
         recipeRepository.save(recipe1);
         recipeRepository.save(recipe2);
@@ -105,7 +105,7 @@ class GetRecipeServiceTest {
 
     @Test
     @DisplayName("팔로우 중인 유저들의 피드를 확인한다.")
-    public void getFollowingFeed(){
+    public void getFollowingFeed() {
         User user1 = new User("name1", "11", OAuthProvider.GOOGLE, null);
         User user2 = new User("name2", "22", OAuthProvider.GOOGLE, null);
         User user3 = new User("name3", "33", OAuthProvider.GOOGLE, null);
@@ -114,10 +114,10 @@ class GetRecipeServiceTest {
         Long user2Id = userRepository.save(user2).getId();
         userRepository.save(user3);
 
-        Recipe recipe1 = new Recipe(user1,"주먹밥1", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
-        Recipe recipe2 = new Recipe(user1,"주먹밥2", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
-        Recipe recipe3 = new Recipe(user2,"주먹밥3", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
-        Recipe recipe4 = new Recipe(user2,"주먹밥4", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe1 = new Recipe(user1, "주먹밥1", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe2 = new Recipe(user1, "주먹밥2", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe3 = new Recipe(user2, "주먹밥3", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe4 = new Recipe(user2, "주먹밥4", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
 
         recipeRepository.save(recipe1);
         recipeRepository.save(recipe2);
@@ -130,5 +130,23 @@ class GetRecipeServiceTest {
         GetFeedResponse response = getRecipeService.getFollowingFeed(user2.getId(), Long.MAX_VALUE, 5);
         assertThat(response.getFeed()).hasSize(4);
 
+    }
+
+    @Test
+    @DisplayName("내가 작성한 게시물의 피드를 확인한다.")
+    public void getMyFeed() {
+        User user1 = new User("name1", "11", OAuthProvider.GOOGLE, null);
+        userRepository.save(user1);
+
+        Recipe recipe1 = new Recipe(user1, "주먹밥1", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe2 = new Recipe(user1, "주먹밥2", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+        Recipe recipe3 = new Recipe(user1, "주먹밥3", "주먹밥을 만들자", "밥", Difficulty.EASY, null);
+
+        recipeRepository.save(recipe1);
+        recipeRepository.save(recipe2);
+        recipeRepository.save(recipe3);
+
+        GetFeedResponse response = getRecipeService.getMyFeed(user1.getId(), Long.MAX_VALUE, 5);
+        assertThat(response.getFeed()).hasSize(3);
     }
 }
