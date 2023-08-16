@@ -5,6 +5,7 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.youcancook.gobong.domain.recipe.dto.feedfilterdto.FeedFilterDto;
 import org.youcancook.gobong.domain.recipe.dto.request.CreateRecipeRequest;
 import org.youcancook.gobong.domain.recipe.dto.request.UpdateRecipeRequest;
 import org.youcancook.gobong.domain.recipe.dto.response.CreateRecipeResponse;
@@ -225,6 +226,34 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
         RestAssured.given().log().all()
                 .auth().oauth2(accessToken2)
                 .when().get("/api/feed/" + userId +"?count=3")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
+    }
+
+    @Test
+    @DisplayName("필터링한 피드를 조회한다.")
+    public void getFilteredFeed() {
+        String accessToken1 = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
+        String accessToken2 = AcceptanceUtils.signUpAndGetToken("쩝쩝박사123", "KAKAO", "121233");
+
+        AcceptanceUtils.getUserIdFromToken(accessToken2);
+
+        for (int i = 1; i <= 10; i++) {
+            CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "레시피", List.of("밥", "김"), "쉬워요", null, List.of(
+                    new UploadRecipeDetailRequest("소금간을 해 주세요", null, i, List.of("MICROWAVE")),
+                    new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, i, List.of("PAN"))
+            ));
+            AcceptanceUtils.createDummyRecipe(accessToken1, request);
+        }
+
+        FeedFilterDto feedFilterDto = new FeedFilterDto("주먹", "recent", "쉬워요", 13, null, null);
+
+        RestAssured.given().log().all()
+                .auth().oauth2(accessToken2)
+                .contentType(ContentType.JSON)
+                .body(feedFilterDto)
+                .when().post("/api/feed/filter?page=0&count=10")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract();
