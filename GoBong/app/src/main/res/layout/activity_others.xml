@@ -38,7 +38,7 @@
                     app:layout_collapseMode="pin"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
                     app:navigationIcon="@drawable/selector_toggle"
-                    app:title="쩝쩝박사"
+                    app:title="@{vm.user.nickname}"
                     app:titleCentered="true"
                     app:titleTextAppearance="@style/TextAppearance.GoBong.Bold20"
                     tools:text="쩝쩝박사">

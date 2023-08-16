@@ -67,7 +67,6 @@ class RegisterUserViewModel(
                 _loginUser.value
             )
         )
-        println("login token ${getToken()}")
     }
 
     fun registerNickname() {
@@ -109,7 +108,6 @@ class RegisterUserViewModel(
             )
         }
         setToken(userRepository.register(registerUser))
-        println("response register${getToken()}")
     }
 
     fun loading() = setNetworkState(NetworkState.LOADING)

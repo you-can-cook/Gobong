@@ -30,8 +30,10 @@ interface GoBongRepository {
 
     suspend fun getMyRecipes(): List<Card>
 
-    suspend fun getUserRecipes(userId: String): User
+    suspend fun getOthersRecipes(userId: Int): List<Card>
 
     suspend fun getMyInfo(): User
+
+    suspend fun getOthersInfo(userId: Int): User
 
 }

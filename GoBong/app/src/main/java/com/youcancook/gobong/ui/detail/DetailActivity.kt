@@ -12,6 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.RecipeListAdapter
 import com.youcancook.gobong.databinding.ActivityDetailBinding
+import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.ui.my.other.OthersActivity
@@ -129,6 +130,10 @@ class DetailActivity :
 
             profileImageView.setOnClickListener {
                 val intent = Intent(this@DetailActivity, OthersActivity::class.java)
+                    .putExtra(
+                        OthersActivity.USER_ID,
+                        viewModel.getId()
+                    )
                 binding.root.context.startActivity(intent)
             }
 

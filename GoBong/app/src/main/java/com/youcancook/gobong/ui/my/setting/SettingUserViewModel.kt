@@ -52,7 +52,6 @@ class SettingUserViewModel(
             return
         }
 
-        println("!!")
         userRepository.updateProfile(
             nicknameInput.value,
             profileImage.value,

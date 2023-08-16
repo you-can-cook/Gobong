@@ -2,6 +2,9 @@ package com.youcancook.gobong.ui.my.other
 
 import android.os.Bundle
 import android.widget.Button
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.GridItemDecorator
@@ -10,20 +13,27 @@ import com.youcancook.gobong.databinding.ActivityOthersBinding
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.ui.my.OthersProfileViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class OthersActivity :
     NetworkActivity<ActivityOthersBinding, OthersProfileViewModel>(R.layout.activity_others) {
     override val viewModel: OthersProfileViewModel by lazy {
         OthersProfileViewModel(appContainer.goBongRepository, appContainer.userRepository)
     }
-    private val gridAdapter = GridRecyclerViewListAdapter(3)
+    private val gridAdapter = GridRecyclerViewListAdapter(3, onFollowClick = {
+        if (it.followed) {
+            viewModel.unfollow()
+        } else {
+            viewModel.follow()
+        }
+    })
 
     private val gridItemDecorator =
         GridItemDecorator()
 
     override val onNetworkStateChange: NetworkStateListener = object : NetworkStateListener {
         override fun onSuccess() {
-            binding.followingButton.isSelected = viewModel.isUserFollowed()
         }
 
         override fun onFail() {
@@ -38,8 +48,11 @@ class OthersActivity :
         super.onCreate(savedInstanceState)
         binding.vm = viewModel
 
-        //TODO intent로 userId 받아오기
-        viewModel.getOthersInfo("")
+        intent?.getIntExtra(USER_ID, 0)?.let {
+            println("userId $it")
+            viewModel.setUserId(it)
+            viewModel.getOthersInfo()
+        }
 
         binding.run {
             toolbar.setNavigationOnClickListener {
@@ -64,19 +77,7 @@ class OthersActivity :
                 }
             }
 
-            //TODO 다른 사람 팔로잉 목록도 볼 수 있도록
-//            followerNumberTextView.setOnClickListener {
-//                val intent = Intent(requireContext(), FollowActivity::class.java)
-//                startActivity(intent)
-//            }
-//
-//            //TODO 팔로잉 팔로워에 따라서 시작 위치 변경
-//            followingNumberTextView.setOnClickListener {
-//                val intent = Intent(requireContext(), FollowActivity::class.java)
-//                startActivity(intent)
-//            }
         }
-
     }
 
     private fun setGridRecyclerView() {
@@ -99,4 +100,7 @@ class OthersActivity :
         gridAdapter.notifyItemRangeChanged(0, gridAdapter.itemCount)
     }
 
+    companion object {
+        val USER_ID = "userId"
+    }
 }

@@ -54,11 +54,15 @@ class GoBongRepositoryImpl(
         return goBongDataSource.getMyRecipes()
     }
 
-    override suspend fun getUserRecipes(userId: String): User {
-        return goBongDataSource.getUserRecipes(userId)
+    override suspend fun getOthersRecipes(userId: Int): List<Card> {
+        return goBongDataSource.getOthersRecipes(userId)
     }
 
     override suspend fun getMyInfo(): User {
         return goBongDataSource.getMyInfo()
+    }
+
+    override suspend fun getOthersInfo(userId: Int): User {
+        return goBongDataSource.getOthersInfo(userId)
     }
 }

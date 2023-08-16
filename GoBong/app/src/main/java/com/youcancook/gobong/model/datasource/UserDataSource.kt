@@ -23,13 +23,11 @@ class UserDataSource(
     private val imageService: ImageService,
 ) {
     private fun getToken(): String {
-        println("access $ACCESS_TOKEN")
         return "Bearer $ACCESS_TOKEN"
     }
 
     suspend fun requestTemporaryToken(): String {
         val response = userService.postTemporaryToken()
-        println("Response ${response.body()}")
         if (response.isSuccessful) {
             return response.body()?.temporaryToken ?: throw Exception("네트워크 요청에 실패했습니다")
         } else {
@@ -48,7 +46,6 @@ class UserDataSource(
 
     suspend fun requestLogin(user: LoginUser): UserToken {
         val response = userService.postLogin(user.toLoginDTO())
-        println("response $user ${response} ${response.body()}")
         if (response.isSuccessful) {
             return response.body()?.toUserToken() ?: throw Exception("존재하지 않는 사용자입니다")
         } else {
@@ -133,9 +130,7 @@ class UserDataSource(
                 getImageUrlByByteArray(newProfileByteArray)
             )
         }
-        println("userDTO $userDTO")
-        val response = userService.updateProfile(getToken(), userDTO)
-        println("userDTO response $response")
+        userService.updateProfile(getToken(), userDTO)
     }
 
     private suspend fun getImageUrlByByteArray(imageByte: ByteArray): String {
