@@ -1,5 +1,6 @@
 package com.youcancook.gobong.model.network
 
+import com.youcancook.gobong.model.network.dto.FollowResponseDTO
 import com.youcancook.gobong.model.network.dto.LoginDTO
 import com.youcancook.gobong.model.network.dto.LoginResponseDTO
 import com.youcancook.gobong.model.network.dto.RefreshTokenDTO
@@ -7,6 +8,8 @@ import com.youcancook.gobong.model.network.dto.RegisterDTO
 import com.youcancook.gobong.model.network.dto.TemporaryTokenResponseDTO
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -19,7 +22,7 @@ interface UserService {
 
     @POST("/api/auth/reissue")
     suspend fun reissueAccessToken(
-        @Body data: RefreshTokenDTO
+        @Body data: RefreshTokenDTO,
     ): Response<LoginResponseDTO>
 
     @POST("/api/users/login")
@@ -34,11 +37,23 @@ interface UserService {
 
     @POST("/api/follow/{folloeeId}")
     suspend fun follow(
-        @Path("folloeeId") folloeeId: String,
-    ): Response<Any>
+        @Header("Authorization") token: String,
+        @Path("folloeeId") folloeeId: Int,
+    ): Response<Void>
 
     @POST("/api/unfollow/{folloeeId}")
     suspend fun unfollow(
-        @Path("folloeeId") folloeeId: String,
-    ): Response<Any>
+        @Header("Authorization") token: String,
+        @Path("folloeeId") folloeeId: Int,
+    ): Response<Void>
+
+    @GET("/api/following")
+    suspend fun getMyFollowing(
+        @Header("Authorization") token: String,
+    ): Response<List<FollowResponseDTO>>
+
+    @GET("/api/unfollow/{folloeeId}")
+    suspend fun getMyFollower(
+        @Header("Authorization") token: String,
+    ): Response<List<FollowResponseDTO>>
 }

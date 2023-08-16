@@ -1,6 +1,7 @@
 package com.youcancook.gobong.model.network.dto
 
 import com.google.gson.annotations.SerializedName
+import com.youcancook.gobong.model.UserProfile
 
 data class RegisterDTO(
     @SerializedName("nickname") val nickname: String,
@@ -19,3 +20,4 @@ data class LoginDTO(
 data class RefreshTokenDTO(
     @SerializedName("refreshToken") val refreshToken: String,
 )
+

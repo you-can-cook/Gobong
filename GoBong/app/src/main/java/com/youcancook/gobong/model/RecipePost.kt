@@ -1,7 +1,6 @@
 package com.youcancook.gobong.model
 
 import com.youcancook.gobong.model.network.dto.RecipeStepAddedDTO
-import com.youcancook.gobong.model.network.dto.RecipeStepDTO
 import com.youcancook.gobong.model.network.dto.UploadRecipeDTO
 import com.youcancook.gobong.util.toEnglishTool
 import com.youcancook.gobong.util.toSeconds

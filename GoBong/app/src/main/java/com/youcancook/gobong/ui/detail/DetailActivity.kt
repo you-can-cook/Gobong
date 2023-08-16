@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -13,7 +12,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.youcancook.gobong.R
 import com.youcancook.gobong.adapter.RecipeListAdapter
 import com.youcancook.gobong.databinding.ActivityDetailBinding
-import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.ui.my.other.OthersActivity

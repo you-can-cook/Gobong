@@ -2,20 +2,18 @@ package com.youcancook.gobong
 
 import com.youcancook.gobong.di.GoBongContainer
 import com.youcancook.gobong.fake.FakeGoBongContainer
-import com.youcancook.gobong.ui.my.MyProfileViewModel
 import com.youcancook.gobong.ui.my.OthersProfileViewModel
-import com.youcancook.gobong.ui.search.SearchViewModel
 import com.youcancook.gobong.util.NetworkState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.setMain
-import org.junit.Before
-import org.junit.Test
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Test
 
 class OthersProfileTest {
 

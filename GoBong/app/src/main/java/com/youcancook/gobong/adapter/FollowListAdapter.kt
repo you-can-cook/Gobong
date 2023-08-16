@@ -1,18 +1,47 @@
 package com.youcancook.gobong.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.youcancook.gobong.databinding.ItemFollowBinding
+import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.User
+import com.youcancook.gobong.model.UserProfile
+import com.youcancook.gobong.ui.detail.DetailActivity
 
-class FollowListAdapter : ListAdapter<User, FollowListAdapter.FollowViewHolder>(diffUtil) {
+class FollowListAdapter(
+    val onFollowClick: (UserProfile) -> Unit = {},
+
+    ) : ListAdapter<UserProfile, FollowListAdapter.FollowViewHolder>(diffUtil) {
 
     inner class FollowViewHolder(val binding: ItemFollowBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: User) {
+
+        init {
+            binding.root.setOnClickListener {
+                val intent = Intent(binding.root.context, DetailActivity::class.java).putExtra(
+                    DetailActivity.RECIPE_ID, (currentList[adapterPosition] as UserProfile).userId
+                )
+                binding.root.context.startActivity(intent)
+            }
+
+            binding.followingButton.setOnClickListener {
+                onFollowClick((currentList[adapterPosition] as UserProfile))
+                binding.followingButton.isSelected = binding.followingButton.isSelected.not()
+            }
+
+        }
+
+        fun bind(data: UserProfile) {
+            binding.item = data
+            binding.followingButton.text = if (data.followed) {
+                "팔로잉"
+            } else {
+                "팔로우"
+            }
 
         }
     }
@@ -35,12 +64,12 @@ class FollowListAdapter : ListAdapter<User, FollowListAdapter.FollowViewHolder>(
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<User>() {
-            override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-                return oldItem.nickname == newItem.nickname
+        val diffUtil = object : DiffUtil.ItemCallback<UserProfile>() {
+            override fun areItemsTheSame(oldItem: UserProfile, newItem: UserProfile): Boolean {
+                return oldItem.userId == newItem.userId
             }
 
-            override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+            override fun areContentsTheSame(oldItem: UserProfile, newItem: UserProfile): Boolean {
                 return oldItem == newItem
             }
 

@@ -23,7 +23,6 @@ import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityLoginBinding
 import com.youcancook.gobong.model.LoginUser
 import com.youcancook.gobong.ui.MainActivity
-import com.youcancook.gobong.ui.RoutingActivity
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.util.ACCESS_TOKEN

@@ -1,24 +1,32 @@
 package com.youcancook.gobong.model.datasource
 
+import android.util.Log
 import com.youcancook.gobong.model.LoginUser
 import com.youcancook.gobong.model.RegisterUser
+import com.youcancook.gobong.model.User
+import com.youcancook.gobong.model.UserProfile
 import com.youcancook.gobong.model.UserToken
 import com.youcancook.gobong.model.network.ImageService
 import com.youcancook.gobong.model.network.UserService
 import com.youcancook.gobong.model.network.dto.RefreshTokenDTO
+import com.youcancook.gobong.model.network.dto.toUserProfile
 import com.youcancook.gobong.model.network.dto.toUserToken
 import com.youcancook.gobong.model.toLoginDTO
 import com.youcancook.gobong.model.toRegisterDTO
-import com.youcancook.gobong.util.REFRESH_TOKEN
+import com.youcancook.gobong.util.ACCESS_TOKEN
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-
 
 class UserDataSource(
     private val userService: UserService,
     private val imageService: ImageService,
 ) {
+    private fun getToken(): String {
+        println("access $ACCESS_TOKEN")
+        return "Bearer $ACCESS_TOKEN"
+    }
+
     suspend fun requestTemporaryToken(): String {
         val response = userService.postTemporaryToken()
         println("Response ${response.body()}")
@@ -49,7 +57,6 @@ class UserDataSource(
     }
 
     suspend fun requestRegister(registerUser: RegisterUser): UserToken {
-        println("register request $registerUser")
         var request = registerUser.toRegisterDTO()
         registerUser.profileImageByteArray?.let {
             val url = getImageUrlByByteArray(registerUser.profileImageByteArray)
@@ -65,11 +72,51 @@ class UserDataSource(
     }
 
     suspend fun requestFollow(userId: Int) {
-
+        val response = userService.follow(getToken(), userId)
+        Log.e(
+            "GoBongBab",
+            "follow ${response} ${response.errorBody()?.string()}"
+        )
+        if (response.isSuccessful.not()) {
+            throw Exception("이미 팔로우한 사용자입니다.")
+        }
     }
 
     suspend fun requestUnfollow(userId: Int) {
+        val response = userService.unfollow(getToken(), userId)
+        Log.e(
+            "GoBongBab",
+            "unfollow ${response} ${response.errorBody()?.string()}"
+        )
+        if (response.isSuccessful.not()) {
+            throw Exception("팔로우하지 않은 사용자입니다.")
+        }
+    }
 
+    suspend fun requestMyFollowerList(): List<UserProfile> {
+        val response = userService.getMyFollower(getToken())
+        Log.e(
+            "GoBongBab",
+            "myFollower ${response} ${response.errorBody()?.string()}"
+        )
+        if (response.isSuccessful) {
+            return response.body()?.map { it.toUserProfile() } ?: throw Exception("")
+        } else {
+            throw Exception("")
+        }
+    }
+
+    suspend fun requestMyFollowingList(): List<UserProfile> {
+        val response = userService.getMyFollowing(getToken())
+        Log.e(
+            "GoBongBab",
+            "myFollowing ${response} ${response.errorBody()?.string()}"
+        )
+        if (response.isSuccessful) {
+            return response.body()?.map { it.toUserProfile() } ?: throw Exception("")
+        } else {
+            throw Exception("")
+        }
     }
 
     private suspend fun getImageUrlByByteArray(imageByte: ByteArray): String {

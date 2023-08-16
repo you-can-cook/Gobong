@@ -1,7 +1,6 @@
 package com.youcancook.gobong.adapter
 
 import android.content.Intent
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
