@@ -2,6 +2,7 @@ package com.youcancook.gobong.model.network
 
 import com.youcancook.gobong.model.network.dto.CurrentRecipeDTO
 import com.youcancook.gobong.model.network.dto.RecipeFeedsResponseDTO
+import com.youcancook.gobong.model.network.dto.ReviewDTO
 import com.youcancook.gobong.model.network.dto.UploadRecipeDTO
 import com.youcancook.gobong.model.network.dto.UploadRecipeResponseDTO
 import retrofit2.Response
@@ -46,4 +47,11 @@ interface GoBongService {
         @Header("Authorization") token: String,
         @Path("recipe_id") recipeId: Int,
     ): Response<CurrentRecipeDTO>
+
+    @POST("/api/ratings/{recipeId}")
+    suspend fun reviewRecipe(
+        @Header("Authorization") token: String,
+        @Path("recipeId") recipeId: Int,
+        @Body data: ReviewDTO,
+    ): Response<Any>
 }

@@ -69,7 +69,7 @@ class DetailActivity :
 
         initListeners()
 
-        intent?.getStringExtra(RECIPE_ID)?.let {
+        intent?.getIntExtra(RECIPE_ID, 0)?.let {
             viewModel.getCurrentRecipe(it)
         }
 
@@ -107,6 +107,7 @@ class DetailActivity :
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.isBookmarked.collectLatest {
                         bookmarkImageView.isSelected = it
+
                     }
                 }
             }
