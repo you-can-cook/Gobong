@@ -2,7 +2,9 @@ package com.youcancook.gobong.ui.addRecipe.bottom
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -31,8 +33,11 @@ abstract class RecipeStepBottomFragment :
         imagePickActivityLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
-                    val imageData = result.data?.getByteArrayExtra("imageData")
+                    val imageUri = result.data?.getStringExtra(ImageActivity.IMAGE_DATA_TAG)
+                    imageUri ?: return@registerForActivityResult
+                    val imageData = ImageActivity.getImageByteArray(requireContext(), Uri.parse(imageUri))
                     imageData ?: return@registerForActivityResult
+                    Log.e("GOBONG", "imageUri $imageUri $imageData")
                     viewModel.setThumbnailByteArray(imageData)
                 }
             }

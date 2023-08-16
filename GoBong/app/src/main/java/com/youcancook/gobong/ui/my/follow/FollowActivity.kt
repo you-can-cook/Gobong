@@ -23,6 +23,11 @@ class FollowActivity : AppCompatActivity() {
 
             viewPager.adapter = viewPagerAdapter
 
+            val nickname = intent?.getStringExtra(NICKNAME)
+            nickname?.let {
+                binding.nicknameTextView.text = it
+            }
+
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 tab.text = if (position == 0) {
                     "팔로워"
@@ -33,6 +38,19 @@ class FollowActivity : AppCompatActivity() {
 
         }
 
+        val isFollower = intent?.getBooleanExtra(IS_FOLLOWER, true)
+        isFollower?.let {
+            if (it.not()) {
+                binding.viewPager.currentItem = 1
 
+            }
+        }
+
+
+    }
+
+    companion object {
+        const val IS_FOLLOWER = "isFollower"
+        const val NICKNAME = "nickname"
     }
 }

@@ -54,6 +54,20 @@ class OthersActivity :
             viewModel.getOthersInfo()
         }
 
+//        lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                viewModel.user.collectLatest {
+//                    println("user !!!!! $it")
+//                    binding.followingButton.isSelected = it.followed
+//                    if (it.followed) {
+//                        (binding.followingButton).text = "팔로우"
+//                    } else {
+//                        (binding.followingButton).text = "팔로우"
+//                    }
+//                }
+//            }
+//        }
+
         binding.run {
             toolbar.setNavigationOnClickListener {
                 if (it.isSelected) {

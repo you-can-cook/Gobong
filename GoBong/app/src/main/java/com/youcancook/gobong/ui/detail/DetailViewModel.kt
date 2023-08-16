@@ -64,7 +64,10 @@ class DetailViewModel(
 
     private suspend fun requestCurrentRecipe(recipePostId: Int) {
         val response = goBongRepository.getCurrentRecipe(recipePostId)
-        _cardInfo.value = response.cardInfo
+        _cardInfo.value = response.cardInfo.copy(
+            description = response.description,
+            ingredients = response.ingredients
+        )
         _recipes.value = response.recipes
         _isMine.value = response.cardInfo.user.notMine.not()
         _starCount.value = response.myRate

@@ -2,7 +2,9 @@ package com.youcancook.gobong.ui.login
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
@@ -55,8 +57,11 @@ class RegisterActivity :
         imagePickActivityLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
-                    val imageData = result.data?.getByteArrayExtra(ImageActivity.IMAGE_DATA_TAG)
-                        ?: return@registerForActivityResult
+                    val imageUri = result.data?.getStringExtra(ImageActivity.IMAGE_DATA_TAG)
+                    imageUri ?: return@registerForActivityResult
+                    val imageData = ImageActivity.getImageByteArray(this, Uri.parse(imageUri))
+                    imageData ?: return@registerForActivityResult
+                    Log.e("GOBONG", "imageUri $imageUri $imageData")
                     viewModel.setProfileImageByteArray(imageData)
                 }
             }

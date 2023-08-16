@@ -49,18 +49,21 @@ class SearchViewModel(
     }
 
     fun setFilter(filter: Filter) {
+        println("setFilter $filter")
         _filter.value = filter
         _filtered.value = _filter.value.isEmpty().not()
-    }
-
-    fun filter(newWord: String) {
-        setSearchWord(newWord)
 
         if (_filter.value.isEmpty()) {
             getAllRecipes()
         } else {
             getFilteredData()
         }
+    }
+
+    fun filter(newWord: String) {
+        setSearchWord(newWord)
+
+
     }
 
     private fun getFilteredData() {
@@ -77,7 +80,7 @@ class SearchViewModel(
     }
 
     private suspend fun requestFilteredData() {
-        _recipes.value = goBongRepository.getFilteredRecipes(filter.value)
+        _recipes.value = goBongRepository.getFilteredRecipes(_filter.value)
     }
 
     fun follow(userId: Int) {

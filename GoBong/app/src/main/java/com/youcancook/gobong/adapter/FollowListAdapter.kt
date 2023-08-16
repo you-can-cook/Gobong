@@ -11,6 +11,7 @@ import com.youcancook.gobong.model.Card
 import com.youcancook.gobong.model.User
 import com.youcancook.gobong.model.UserProfile
 import com.youcancook.gobong.ui.detail.DetailActivity
+import com.youcancook.gobong.ui.my.other.OthersActivity
 
 class FollowListAdapter(
     val onFollowClick: (UserProfile) -> Unit = {},
@@ -21,9 +22,9 @@ class FollowListAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.root.setOnClickListener {
-                val intent = Intent(binding.root.context, DetailActivity::class.java).putExtra(
-                    DetailActivity.RECIPE_ID, (currentList[adapterPosition] as UserProfile).userId
+            binding.profileImageView.setOnClickListener {
+                val intent = Intent(binding.root.context, OthersActivity::class.java).putExtra(
+                    OthersActivity.USER_ID, (currentList[adapterPosition] as UserProfile).userId
                 )
                 binding.root.context.startActivity(intent)
             }

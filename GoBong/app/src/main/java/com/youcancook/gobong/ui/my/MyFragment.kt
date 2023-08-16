@@ -11,6 +11,8 @@ import com.youcancook.gobong.databinding.FragmentMyBinding
 import com.youcancook.gobong.ui.base.NetworkFragment
 import com.youcancook.gobong.ui.base.NetworkStateListener
 import com.youcancook.gobong.ui.my.follow.FollowActivity
+import com.youcancook.gobong.ui.my.follow.FollowActivity.Companion.IS_FOLLOWER
+import com.youcancook.gobong.ui.my.follow.FollowActivity.Companion.NICKNAME
 import com.youcancook.gobong.ui.my.setting.SettingActivity
 
 class MyFragment : NetworkFragment<FragmentMyBinding, MyProfileViewModel>(R.layout.fragment_my) {
@@ -80,14 +82,17 @@ class MyFragment : NetworkFragment<FragmentMyBinding, MyProfileViewModel>(R.layo
 
             setGridRecyclerView()
 
-            followerNumberTextView.setOnClickListener {
+            followerView.setOnClickListener {
                 val intent = Intent(requireContext(), FollowActivity::class.java)
+                    .putExtra(IS_FOLLOWER, true)
+                    .putExtra(NICKNAME,viewModel.getMyNickname())
                 startActivity(intent)
             }
 
-            //TODO 팔로잉 팔로워에 따라서 시작 위치 변경
-            followingNumberTextView.setOnClickListener {
+            followingView.setOnClickListener {
                 val intent = Intent(requireContext(), FollowActivity::class.java)
+                    .putExtra(IS_FOLLOWER, false)
+                    .putExtra(NICKNAME,viewModel.getMyNickname())
                 startActivity(intent)
             }
         }
@@ -108,7 +113,7 @@ class MyFragment : NetworkFragment<FragmentMyBinding, MyProfileViewModel>(R.layo
                     requireContext().resources.getDimension(R.dimen.grid_margin)
                         .toInt()
             })
-            gridAdapter.notifyItemRangeChanged(0, gridAdapter.itemCount)
+            recyclerView.adapter = gridAdapter
         }
     }
 

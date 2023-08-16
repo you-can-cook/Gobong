@@ -70,13 +70,13 @@ class SearchFragment :
 
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
+                    query?.let {
+                        viewModel.filter(it)
+                    }
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    newText ?: return true
-                    println("query change")
-                    viewModel.filter(newText)
                     return true
                 }
 
@@ -101,14 +101,9 @@ class SearchFragment :
                     val filterData =
                         result.data?.getSerializableExtra(FilterActivity.FILTER_DATA) as Filter
                     viewModel.setFilter(filterData)
-                    binding.searchView.setQuery(filterData.searchWord, false)
-                    viewModel.getAllRecipes()
                 }
             }
-    }
 
-    override fun onStart() {
-        super.onStart()
         viewModel.getAllRecipes()
     }
 

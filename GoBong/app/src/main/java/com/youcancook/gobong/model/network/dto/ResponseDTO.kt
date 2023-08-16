@@ -111,6 +111,7 @@ fun FollowResponseDTO.toUserProfile(): UserProfile {
 }
 
 fun UserInfoResponseDTO.toUser(): User {
+    println("userInfoDTO $this")
     return User(
         profileUrl = profileImageURL ?: "",
         nickname,

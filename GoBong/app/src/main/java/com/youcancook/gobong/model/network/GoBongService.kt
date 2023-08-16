@@ -1,6 +1,7 @@
 package com.youcancook.gobong.model.network
 
 import com.youcancook.gobong.model.network.dto.CurrentRecipeDTO
+import com.youcancook.gobong.model.network.dto.FilterDTO
 import com.youcancook.gobong.model.network.dto.RecipeFeedsResponseDTO
 import com.youcancook.gobong.model.network.dto.ReviewDTO
 import com.youcancook.gobong.model.network.dto.UploadRecipeDTO
@@ -36,6 +37,14 @@ interface GoBongService {
         @Header("Authorization") token: String,
         @Query("count") count: Int,
         @Query("last") last: Int? = null,
+    ): Response<RecipeFeedsResponseDTO>
+
+    @POST("/api/feed/filter")
+    suspend fun getFilteredRecipes(
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        @Query("count") count: Int? = null,
+        @Body data: FilterDTO,
     ): Response<RecipeFeedsResponseDTO>
 
     @GET("/api/feed/my")

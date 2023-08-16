@@ -83,6 +83,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/TextAppearance.GoBong.Regular14"
                 android:layout_width="match_parent"
+                android:maxLines="1"
+                android:imeOptions="actionSend"
+                android:inputType="text"
                 android:layout_height="wrap_content"
                 android:text="@={vm.nicknameInput}" />
 

@@ -1,7 +1,9 @@
 package com.youcancook.gobong.ui.my.setting
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +11,19 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.youcancook.gobong.R
+import com.youcancook.gobong.adapter.bindingAdapter.setProfileImageUrl
 import com.youcancook.gobong.databinding.FragmentSettingProfileBinding
 import com.youcancook.gobong.ui.ImageActivity
 import com.youcancook.gobong.ui.base.NetworkFragment
 import com.youcancook.gobong.ui.base.NetworkStateListener
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class SettingProfileFragment :
     NetworkFragment<FragmentSettingProfileBinding, SettingUserViewModel>(R.layout.fragment_setting_profile) {
@@ -44,8 +53,12 @@ class SettingProfileFragment :
         imagePickActivityLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == AppCompatActivity.RESULT_OK) {
-                    val imageData = result.data?.getByteArrayExtra(ImageActivity.IMAGE_DATA_TAG)
-                        ?: return@registerForActivityResult
+                    val imageUri = result.data?.getStringExtra(ImageActivity.IMAGE_DATA_TAG)
+                    imageUri ?: return@registerForActivityResult
+                    val imageData =
+                        ImageActivity.getImageByteArray(requireContext(), Uri.parse(imageUri))
+                    imageData ?: return@registerForActivityResult
+                    Log.e("GOBONG", "imageUri $imageUri $imageData")
                     viewModel.setProfileImageByteArray(imageData)
                 }
             }
@@ -67,6 +80,16 @@ class SettingProfileFragment :
                 viewModel.updateUserProfile()
             }
 
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.profileImage.collectLatest {
+                    if (it.isNotEmpty()) {
+                       binding.profileImageView.setProfileImageUrl(it)
+                    }
+                }
+            }
         }
 
         viewModel.getOldProfile()

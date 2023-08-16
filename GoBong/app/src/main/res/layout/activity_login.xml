@@ -23,8 +23,7 @@
             android:layout_marginTop="38dp"
             android:text="고봉밥에서\n맛있는 식사를\n즐겨보세요"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/googleLoginButton"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton

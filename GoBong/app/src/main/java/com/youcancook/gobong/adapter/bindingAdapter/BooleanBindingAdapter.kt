@@ -42,6 +42,7 @@ fun isSelected(view: View, selected: Boolean) {
 
 @BindingAdapter("isFollowSelected")
 fun isFollowSelected(view: Button, selected: Boolean) {
+    println("selected $selected")
     view.isSelected = selected
 }
 

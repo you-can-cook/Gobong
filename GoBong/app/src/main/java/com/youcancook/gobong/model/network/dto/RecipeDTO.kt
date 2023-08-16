@@ -1,8 +1,10 @@
 package com.youcancook.gobong.model.network.dto
 
 import com.google.gson.annotations.SerializedName
+import com.youcancook.gobong.model.Filter
 import com.youcancook.gobong.model.RecipePost
 import com.youcancook.gobong.model.RecipeStep
+import com.youcancook.gobong.util.toEnglishTool
 import com.youcancook.gobong.util.toKoreanTool
 import com.youcancook.gobong.util.toTime
 
@@ -45,6 +47,15 @@ data class ReviewDTO(
     @SerializedName("score") val score: Int,
 )
 
+data class FilterDTO(
+    @SerializedName("query") val query: String?,
+    @SerializedName("filterType") val filterType: String?,
+    @SerializedName("difficulty") val difficulty: String?,
+    @SerializedName("maxTotalCookTime") val maxTotalCookTime: Int?,
+    @SerializedName("minRating") val minRating: Int?,
+    @SerializedName("cookwares") val cookwares: List<String>?,
+)
+
 fun RecipeStepDTO.toRecipeStep(): RecipeStep {
     return RecipeStep(
         time = cookTimeInSeconds.toTime(),
@@ -59,7 +70,20 @@ fun CurrentRecipeDTO.toRecipePost(): RecipePost {
     return RecipePost(
         id = id,
         cardInfo = summary.toCard(),
+        description = introduction,
+        ingredients = ingredients,
         recipes = recipeDetails.map { it.toRecipeStep() },
         myRate = myRate
+    )
+}
+
+fun Filter.toFilterDTO(): FilterDTO {
+    return FilterDTO(
+        searchWord,
+        if (sortType == "" || sortType == "최신순") "recent" else "popular",
+        if (level == "") null else level,
+        time.toInt() * 60,
+        if (star == "") null else star.toInt(),
+        cookwares = tools.map { it.toEnglishTool() }
     )
 }
