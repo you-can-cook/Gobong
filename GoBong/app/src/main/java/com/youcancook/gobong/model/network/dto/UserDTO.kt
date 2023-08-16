@@ -21,3 +21,7 @@ data class RefreshTokenDTO(
     @SerializedName("refreshToken") val refreshToken: String,
 )
 
+data class UpdateUserDTO(
+    @SerializedName("nickname") val nickname: String,
+    @SerializedName("profileImageURL") val profileImageURL: String,
+)
