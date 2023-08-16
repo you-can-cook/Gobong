@@ -60,12 +60,16 @@ public class FollowService {
     public List<FindFollowerResponse> findFollowerList(Long loginUserId) {
         User user = userRepository.findById(loginUserId)
                 .orElseThrow(UserNotFoundException::new);
+        List<Long> userFollowedMe = followRepository.findByFollower(user).stream()
+                .map(follow -> follow.getFollowee().getId())
+                .toList();
 
         return followRepository.findByFollowee(user).stream()
                 .map(follow -> FindFollowerResponse.of(
                         follow.getFollower().getId(),
                         follow.getFollower().getNickname(),
-                        follow.getFollower().getProfileImageURL()
+                        follow.getFollower().getProfileImageURL(),
+                        userFollowedMe.contains(follow.getFollower().getId())
                 ))
                 .toList();
     }
@@ -83,7 +87,7 @@ public class FollowService {
                 .toList();
     }
 
-    public boolean isFollowing(Long followerId, Long followeeId){
+    public boolean isFollowing(Long followerId, Long followeeId) {
         User follower = userRepository.findById(followerId)
                 .orElseThrow(UserNotFoundException::new);
         User followee = userRepository.findById(followeeId)
