@@ -22,7 +22,7 @@ data class Card(
                 thumbnailUrl = "",
                 title = "내 레시피 대박임",
                 bookmark = "0",
-                time = "5분",
+                time = "5분 0초",
                 tools = listOf("전자레인지"),
                 level = "쉬워요",
                 star = "3.2공기",

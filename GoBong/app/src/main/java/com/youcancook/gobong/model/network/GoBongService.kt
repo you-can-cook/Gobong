@@ -7,6 +7,7 @@ import com.youcancook.gobong.model.network.dto.UploadRecipeDTO
 import com.youcancook.gobong.model.network.dto.UploadRecipeResponseDTO
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -59,5 +60,11 @@ interface GoBongService {
     suspend fun updaterReviewRecipe(
         @Header("Authorization") token: String,
         @Body data: ReviewDTO,
+    ): Response<Any>
+
+    @DELETE("/api/recipes/{recipe_id}")
+    suspend fun deleteRecipe(
+        @Header("Authorization") token: String,
+        @Path("recipe_id") recipeId: Int,
     ): Response<Any>
 }
