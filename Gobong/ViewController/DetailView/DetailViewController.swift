@@ -23,14 +23,10 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate{
     @IBOutlet weak var tableView: UITableView!
     var labelSizeCache: [String: CGSize] = [:]
     
-    var information: dummyFeedData!
-    var hashTag = ["자이언트떡볶이 1개", "의성마늘후랑크 소시지 1개 ", "콕콕콕 스파게티 1개", "모짜렐라 피자치즈 20g"]
-    var recipeInformation: [dummyHowTo] = [
-        dummyHowTo(minute: "", second: "30", tool: ["전자레인지"], img: UIImage(named: "data11"), description: "준비한 소시지를 전자렌지에 약 30초간 데워주세요"),
-        dummyHowTo(minute: "", second: "20", tool: [], img: UIImage(named: "data12"), description: "자이언트떡볶이와 콕콕콕 스파게티에 물을 넣어주세요"),
-        dummyHowTo(minute: "3", second: "", tool: ["전자레인지"], description: "물을 넣은 자이언트 떡볶이를 전자렌지에 3분 돌려주세요"),
-        dummyHowTo(minute: "", second: "50", tool: [], description: "스파게티 물을 버리고 전자렌지에 돌린 떡볶이에 라면과 스프를 넣고 잘 섞어주세요, 의성마늘후랑크소시지를 먹기 좋은 크기로 잘라 넣어주세요"),
-        dummyHowTo(minute: "", second: "30", tool: ["전자레인지"], img: UIImage(named: "data13"), description: "모짜렐라 피자치즈를 위에 얹어주고, 치즈가 녹을 정도로 전자렌지에 약 30초간 데워주세요"),
+    var index: Int!
+    var information: DetailResponse!
+    var hashTag: [String] = []
+    var recipeInformation: [RecipeDetailSummary] = [
     ]
     
     //table view height 관련 property
@@ -50,11 +46,7 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate{
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        setupUI()
         setupData()
-        tableViewSetup()
-        
-        isFolded = Array(repeating: true, count: recipeInformation.count)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
@@ -74,6 +66,23 @@ class DetailViewController: UIViewController, UIGestureRecognizerDelegate{
     
     //데이터 처리 
     private func setupData(){
+        Server.shared.getPostDetail(recipeId: index) { Result in
+            switch Result {
+            case .success(let success):
+                print(success)
+                self.information = success
+                self.hashTag = success.ingredients
+                self.recipeInformation = success.recipeDetails
+                self.setupUI()
+                self.tableViewSetup()
+                
+                self.isFolded = Array(repeating: true, count: self.recipeInformation.count)
+               
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
         
     }
     
@@ -87,17 +96,25 @@ extension DetailViewController {
     }
     
     private func navigationBarSetup(){
-        navigationItem.title = information.title
+        navigationItem.title = information.summary.title
         
         let backItemButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTapped))
         backItemButton.tintColor = .black
        
         //SAVE OR DELETE BASED ON MY OR OTHER'S POST
-        let saveItemButton = UIBarButtonItem(image: UIImage(named: "BMark"), style: .plain, target: self, action: #selector(backButtonTapped))
-        saveItemButton.tintColor = .black
+        if information.summary.author.myself {
+            let saveItemButton = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(deleteButtonTapped))
+            saveItemButton.tintColor = .black
+            
+            navigationItem.rightBarButtonItem = saveItemButton
+        } else {
+            let saveItemButton = UIBarButtonItem(image: UIImage(named: "BMark"), style: .plain, target: self, action: #selector(saveButtonTapped))
+            saveItemButton.tintColor = .black
+            
+            navigationItem.rightBarButtonItem = saveItemButton
+        }
         
         navigationItem.leftBarButtonItem = backItemButton
-        navigationItem.rightBarButtonItem = saveItemButton
     }
     
     //NAVIGATION BUTTON
@@ -107,6 +124,13 @@ extension DetailViewController {
     
     @objc private func saveButtonTapped(){
     }
+    
+    @objc private func deleteButtonTapped(){
+        Server.shared.deletePost(id: information.id) {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
 }
 
 //MARK: TABLE VIEW
@@ -175,8 +199,14 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
         } else if indexPath.item == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DetailTitleCell", for: indexPath) as! DetailTitleCell
             
-            cell.configuration(userImg: information.userImg, username: information.username, following: information.following, thumbnailImg: information.thumbnailImg, title: information.title, bookmarkCount: information.bookmarkCount, cookingTime: information.cookingTime, tools: information.tools, level: information.level, stars: information.stars)
+            cell.configuration(userImg: information.summary.author.profileImageURL , username: information.summary.author.nickname, following: information.summary.author.following, thumbnailImg: information.summary.thumbnailURL!, title: information.summary.title, bookmarkCount: information.summary.totalBookmarkCount, cookingTime: information.summary.totalCookTimeInSeconds, tools: information.summary.cookwares, level: information.summary.difficulty, stars: information.summary.averageRating)
             cell.selectionStyle = .none
+            
+            if information.summary.author.myself {
+                cell.followingButton.isHidden = true
+            } else {
+                cell.followingButton.isHidden = false
+            }
            
             cell.delegate = self
             cell.backgroundColor = .brown
@@ -186,7 +216,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
         // EXPLANATION AND INGREDIENTS CELL (2'ND)
         else if indexPath.item == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "HashtagCell", for: indexPath) as! HashtagCell
-            cell.titleLabel.text = "편의점 꿀조합 레시피 best of best"
+            cell.titleLabel.text = information.introduction
             cell.setupCollectionView(dataSource: self, delegate: self)
             cell.selectionStyle = .none
             
@@ -198,21 +228,22 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
             let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as! RecipeCell
             let data = recipeInformation[indexPath.item-2]
             
-            let minute = data.minute == "" ? "" : "\(data.minute)분"
-            let second = data.second == "" ? "" : "\(data.second)초"
-            let time = "\(minute)\(second)"
+            let minute = data.cookTimeInSeconds / 60
+            let second = data.cookTimeInSeconds % 60
+    
+            let time = "\(minute)분\(second)초"
             
-            cell.configuration(step: indexPath.item-1, time: time, tool: data.tool, image: data.img, description: data.description, isFolded: isFolded[indexPath.item-2])
+            cell.configuration2(step: indexPath.item-1, time: time, tool: data.cookwares, image: data.imageURL, description: data.content, isFolded: isFolded[indexPath.item-2])
             cell.delegate = self
             
             if !isFolded[indexPath.item-2] {
-                cell.toggleImageViewVisibility(isFolded: isFolded[indexPath.item-2], image: data.img)
+                cell.toggleImageViewVisibility2(isFolded: isFolded[indexPath.item-2], image: data.imageURL)
                 cell.informationView.layer.borderColor = UIColor(named: "pink")?.cgColor
                 cell.dottedLine.backgroundColor = UIColor(named: "pink")
                 cell.stepLabelBackground.tintColor = UIColor(named: "pink")
                 cell.stepLabel.textColor = .white
             } else {
-                cell.toggleImageViewVisibility(isFolded: isFolded[indexPath.item-2], image: data.img)
+                cell.toggleImageViewVisibility2(isFolded: isFolded[indexPath.item-2], image: data.imageURL)
                 cell.informationView.layer.borderColor = UIColor(named: "gray")?.cgColor
                 cell.dottedLine.backgroundColor = UIColor(named: "gray")
                 cell.stepLabelBackground.tintColor = UIColor(named: "softGray")
@@ -262,14 +293,14 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
             cell.layoutIfNeeded()
             let data = recipeInformation[indexPath.item-2]
             
-            let minute = data.minute == "" ? "" : "\(data.minute)분"
-            let second = data.second == "" ? "" : "\(data.second)초"
-            let time = "\(minute)\(second)"
+            let minute = data.cookTimeInSeconds / 6
+            let second = data.cookTimeInSeconds % 6
+            let time = "\(minute)분\(second)초"
             
             var firstline: CGFloat = calculateLabelSize(text: time).width
-            firstline += data.tool.map({calculateLabelSize(text: $0).width}).reduce(0, +)
+            firstline += data.cookwares.map({calculateLabelSize(text: $0).width}).reduce(0, +)
 //            firstline += CGFloat(1 * 12) + 32
-            firstline += CGFloat(data.tool.count * 12) + 32
+            firstline += CGFloat(data.cookwares.count * 12) + 32
             
             if firstline/(view.bounds.width/1.5) > 1 {
                 let line = firstline/(view.bounds.width/1.8)
@@ -279,10 +310,14 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
             }
             
             var imageHeight: CGFloat = 0
-            let last = calculateLabelSizeRecipe(text: data.description).height
+            let last = calculateLabelSizeRecipe(text: data.content).height
             if !isFolded[indexPath.item-2] {
-                if data.img != nil {
-                    if let image = data.img {
+                if data.imageURL != nil {
+                    let imgView = UIImageView()
+                    let url = URL(string: "https://example.com/image.png")
+                    imgView.kf.setImage(with: url)
+
+                    if let image = imgView.image {
                         let maxWidth: CGFloat = CGFloat(view.bounds.width/1.5)
                         let maxHeight: CGFloat = 130
                         let aspectRatio: CGFloat = 16 / 9  // 1.91:1

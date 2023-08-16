@@ -51,20 +51,20 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
             
             let data = recipes[indexPath.item]
             
-            let minute = data.minute == "" ? "" : "\(data.minute)분"
-            let second = data.second == "" ? "" : "\(data.second)초"
-            let time = "\(minute)\(second)"
+            let minute = data.cookTimeInSeconds / 60
+            let second = data.cookTimeInSeconds % 60
+            let time = "\(minute)분\(second)초"
             
-            cell.configuration(step: indexPath.item + 1, time: time, tool: data.tool, image: data.img, description: data.description, isFolded: isFolded[indexPath.item])
+            cell.configuration(step: indexPath.item + 1, time: time, tool: data.cookwares, image: data.imageURL, description: data.content, isFolded: isFolded[indexPath.item])
             
             if !isFolded[indexPath.item] {
-                cell.toggleImageViewVisibility(isFolded: isFolded[indexPath.item], image: data.img)
+                cell.toggleImageViewVisibility(isFolded: isFolded[indexPath.item], image: data.imageURL)
                 cell.informationView.layer.borderColor = UIColor(named: "pink")?.cgColor
                 cell.dottedLine.backgroundColor = UIColor(named: "pink")
                 cell.stepLabelBackground.tintColor = UIColor(named: "pink")
                 cell.stepLabel.textColor = .white
             } else {
-                cell.toggleImageViewVisibility(isFolded: isFolded[indexPath.item], image: data.img)
+                cell.toggleImageViewVisibility(isFolded: isFolded[indexPath.item], image: data.imageURL)
                 cell.informationView.layer.borderColor = UIColor(named: "gray")?.cgColor
                 cell.dottedLine.backgroundColor = UIColor(named: "gray")
                 cell.stepLabelBackground.tintColor = UIColor(named: "softGray")
@@ -87,14 +87,14 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
                 cell.layoutIfNeeded()
                 let data = recipes[indexPath.item]
                 
-                let minute = data.minute == "" ? "" : "\(data.minute)분"
-                let second = data.second == "" ? "" : "\(data.second)초"
-                let time = "\(minute)\(second)"
+                let minute = data.cookTimeInSeconds / 60
+                let second = data.cookTimeInSeconds % 60
+                let time = "\(minute)분\(second)초"
                 
                 var firstline : CGFloat = calculateLabelSize(text: time).width
-                firstline += data.tool.map({calculateLabelSize(text: $0).width}).reduce(0, +)
+                firstline += data.cookwares.map({calculateLabelSize(text: $0).width}).reduce(0, +)
                 firstline += CGFloat(1 * 12) + 32
-                firstline += CGFloat(data.tool.count * 12) + 32
+                firstline += CGFloat(data.cookwares.count * 12) + 32
                 
                 if firstline/(view.bounds.width/1.6) > 1 {
                     let line = firstline/(view.bounds.width/1.8)
@@ -106,14 +106,14 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
                 var imageHeight: CGFloat = 0
                 var last: CGFloat = 0
                 
-                if data.description != "" {
-                    last = calculateLabelSizeRecipe(text: data.description).height
+                if data.content != "" {
+                    last = calculateLabelSizeRecipe(text: data.content).height
                 } else {
                     last = -5
                 }
                 
                 if !isFolded[indexPath.item] {
-                    if data.img != nil {
+                    if data.imageURL != nil {
                         if let image = UIImage(named: "dummyImg") {
                             let maxWidth: CGFloat = CGFloat(view.bounds.width/1.5)
                             let maxHeight: CGFloat = 130

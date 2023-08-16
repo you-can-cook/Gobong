@@ -16,6 +16,7 @@ target 'Gobong' do
 	pod 'KakaoSDK'
 	pod 'GoogleSignIn'
 	pod 'NVActivityIndicatorView'
+	pod 'Kingfisher', '~> 7.0'
 end
 
 post_install do |installer|

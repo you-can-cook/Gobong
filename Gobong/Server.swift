@@ -63,6 +63,27 @@ class Server {
         }
     }
     
+    func getAccessTokenAgain(completion: @escaping (Result<LoginResponse, Error>) -> Void) {
+        let urlString = "\(url)/api/auth/reissue"
+        let refreshToken = UserDefaults.standard.string(forKey: "refreshToken")
+        
+        let requestBody = getTokenRequest(refreshToken: refreshToken ?? "")
+        
+        AF.request(urlString, method: .post, parameters: requestBody, encoder: JSONParameterEncoder.default).responseDecodable(of: LoginResponse.self) { response in
+            debugPrint(response)
+            switch response.result {
+            case .success(let loginResponse):
+                // Handle successful response
+                print("Login response:", loginResponse)
+                completion(.success(loginResponse))
+            case .failure(let error):
+                // Handle error
+                print("Login error:", error)
+                completion(.failure(error))
+            }
+        }
+    }
+    
     //GET FEED
     func getRecipeFeed(completion: @escaping(Result<FeedResponse, Error>) -> Void ){
         let urlString = "\(url)/api/feed/all"
@@ -73,16 +94,177 @@ class Server {
             "Authorization": "Bearer \(accessToken ?? "")"
         ]
         
-        AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseDecodable(of: FeedResponse.self) { response in
+        AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseData { response in
+            debugPrint(response)
             switch response.result {
-            case .success(let feedResponse):
-                completion(.success(feedResponse))
+            case .success(let data):
+                print("Raw JSON Data:", String(data: data, encoding: .utf8) ?? "")
+                do {
+                    let decoder = JSONDecoder()
+                    let recipes = try decoder.decode(FeedResponse.self, from: data)
+                    completion(.success(recipes))
+                } catch {
+                    completion(.failure(error))
+                }
             case .failure(let error):
                 completion(.failure(error))
             }
         }
-        
     }
+    
+    //PROFILEEEE FEEEDDDDD
+    func getMyFeed(completion: @escaping(Result<FeedResponse, Error>) -> Void ){
+        let urlString = "\(url)/api/feed/my"
+        let parameters: [String: Any] = ["count": 10]
+        let accessToken = UserDefaults.standard.string(forKey: "accessToken")
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(accessToken ?? "")"
+        ]
+        
+        AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseData { response in
+            debugPrint(response)
+            switch response.result {
+            case .success(let data):
+                print("Raw JSON Data:", String(data: data, encoding: .utf8) ?? "")
+                do {
+                    let decoder = JSONDecoder()
+                    let recipes = try decoder.decode(FeedResponse.self, from: data)
+                    completion(.success(recipes))
+                } catch {
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    //GET BOOKMARK DATAA
+    func getRecipeBookMark(completion: @escaping(Result<FeedResponse, Error>) -> Void ){
+        let urlString = "\(url)/api/feed/bookmarked"
+        let parameters: [String: Any] = ["count": 10]
+        let accessToken = UserDefaults.standard.string(forKey: "accessToken")
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(accessToken ?? "")"
+        ]
+        
+        AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseData { response in
+            debugPrint(response)
+            switch response.result {
+            case .success(let data):
+                print("Raw JSON Data:", String(data: data, encoding: .utf8) ?? "")
+                do {
+                    let decoder = JSONDecoder()
+                    let recipes = try decoder.decode(FeedResponse.self, from: data)
+                    completion(.success(recipes))
+                } catch {
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    //GET FOLLOWING FEEEEDDDDDDDDD
+    func getMainRecipeList(completion: @escaping(Result<FeedResponse, Error>) -> Void ){
+        let urlString = "\(url)/api/feed/following"
+        let parameters: [String: Any] = ["count": 10]
+        let accessToken = UserDefaults.standard.string(forKey: "accessToken")
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(accessToken ?? "")"
+        ]
+        
+        AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseData { response in
+            debugPrint(response)
+            switch response.result {
+            case .success(let data):
+                print("Raw JSON Data:", String(data: data, encoding: .utf8) ?? "")
+                do {
+                    let decoder = JSONDecoder()
+                    let recipes = try decoder.decode(FeedResponse.self, from: data)
+                    completion(.success(recipes))
+                } catch {
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    //POST DETAIL VIEW
+    func getPostDetail(recipeId: Int, completion: @escaping(Result<DetailResponse, Error>) -> Void ){
+        let urlString = "\(url)/api/recipes/\(recipeId)"
+        let accessToken = UserDefaults.standard.string(forKey: "accessToken")
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(accessToken ?? "")"
+        ]
+        
+        AF.request(urlString, method: .get, headers: headers).responseData { response in
+            switch response.result {
+            case .success(let data):
+                print("Raw JSON Data:", String(data: data, encoding: .utf8) ?? "")
+                do {
+                    let decoder = JSONDecoder()
+                    let recipes = try decoder.decode(DetailResponse.self, from: data)
+                    completion(.success(recipes))
+                } catch {
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    //ADD RECIPE
+    func addRecipe(title: String, introduction: String, ingredients: [String], difficulty: String, thumbnailURL: String, recipeDetails: [RecipeDetails], completion: @escaping (Result<addRecipeResponse, Error>) -> Void) {
+        let urlString = "\(url)/api/recipes" // Update with the actual URL
+        let accessToken = UserDefaults.standard.string(forKey: "accessToken")
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(accessToken ?? "")"
+        ]
+        
+        let requestBody = RecipeRequest(title: title, introduction: introduction, ingredients: ingredients, difficulty: difficulty, thumbnailURL: thumbnailURL, recipeDetails: recipeDetails)
+        
+        AF.request(urlString, method: .post, parameters: requestBody, encoder: JSONParameterEncoder.default, headers: headers).responseData { response in
+            switch response.result {
+            case .success(let data):
+                print("Raw JSON Data:", String(data: data, encoding: .utf8) ?? "")
+            case .failure(let error):
+                completion(.failure(error))
+                print("Add recipe error:", error)
+            }
+        }
+    }
+    
+    //DELETE POST
+    func deletePost(id: Int, completion: @escaping () -> Void ) {
+        let urlString = "\(url)/api/recipes/\(id)"
+        let accessToken = UserDefaults.standard.string(forKey: "accessToken")
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(accessToken ?? "")"
+        ]
+        
+        AF.request(urlString, method: .delete, headers: headers).responseData { response in
+            switch response.result {
+            case .success(let data):
+                print("Raw JSON Data:", String(data: data, encoding: .utf8) ?? "")
+                completion()
+            case .failure(let error):
+                completion()
+                print("Add recipe error:", error)
+            }
+        }
+    }
+
     
     //FOLLOWER AND FOLLOWING
     func getFollowers(completion: @escaping (Result<[UserProfile], Error>) -> Void) {
@@ -176,18 +358,5 @@ class Server {
             }
         }
     }
-    
-    //DOWNLOAD IMAGE
-    func downloadImage(url: URL, completion: @escaping (Result<UIImage, Error>) -> Void) {
-        AF.request(url).responseImage { response in
-            switch response.result {
-            case .success(let image):
-                completion(.success(image))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-    
 
 }

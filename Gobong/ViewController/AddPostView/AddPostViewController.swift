@@ -28,7 +28,7 @@ class AddPostViewController: UIViewController, UIGestureRecognizerDelegate {
     
     var levelSelected: String = "" {
         didSet{
-            if levelSelected == "easy" {
+            if levelSelected == "쉬워요" {
                 easyButton.layer.borderColor = UIColor(named: "pink")?.cgColor
                 easyButton.layer.borderWidth = 1
                 easyButton.backgroundColor = UIColor(named: "pink")
@@ -45,7 +45,7 @@ class AddPostViewController: UIViewController, UIGestureRecognizerDelegate {
                 hardButton.backgroundColor = .white
                 hardButton.titleLabel?.textColor = UIColor(named: "gray")
                 hardButton.titleLabel?.tintColor = UIColor(named: "gray")
-            } else if levelSelected == "normal" {
+            } else if levelSelected == "보통이에요" {
                 easyButton.layer.borderColor = UIColor(named: "gray")?.cgColor
                 easyButton.layer.borderWidth = 1
                 easyButton.backgroundColor = .white
@@ -63,7 +63,7 @@ class AddPostViewController: UIViewController, UIGestureRecognizerDelegate {
                 hardButton.backgroundColor = .white
                 hardButton.titleLabel?.textColor = UIColor(named: "gray")
                 hardButton.titleLabel?.tintColor = UIColor(named: "gray")
-            } else if levelSelected == "hard" {
+            } else if levelSelected == "어려워요" {
                 easyButton.layer.borderColor = UIColor(named: "gray")?.cgColor
                 easyButton.layer.borderWidth = 1
                 easyButton.backgroundColor = .white
@@ -87,16 +87,16 @@ class AddPostViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     var ingredients: [String] = []
-    var recipes: [dummyHowTo] = [
-    ]
+    var recipes: [RecipeDetailsModel] = []
     
     //RECIPE'S CELL IS FOLDED OR NOT.
     var isFolded = [Bool]()
+    
     //RECIPE'S TABLE VIEW HEIGHT
     var tableViewCellHeight: [CGFloat] = [CGFloat(0), CGFloat(0), CGFloat(127)]
     
     //Property for edit
-    var selectedForEdit: dummyHowTo?
+    var selectedForEdit: RecipeDetailsModel?
     var editIndex: IndexPath?
     
     //MARK: LIFE CYCLE
@@ -282,15 +282,15 @@ extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationCo
     }
     
     @IBAction func hardButtonTapped(_ sender: Any) {
-        levelSelected = "hard"
+        levelSelected = "어려워요"
     }
     
     @IBAction func normalButtonTapped(_ sender: Any) {
-        levelSelected = "normal"
+        levelSelected = "보통이에요"
     }
     
     @IBAction func easyButtonTapped(_ sender: Any) {
-        levelSelected = "easy"
+        levelSelected = "쉬워요"
     }
     
     
@@ -311,19 +311,18 @@ extension AddPostViewController: AddDetailPostDelegate {
     func passData(controller: AddDetailPostViewController) {
         
         let description = controller.descriptionTextField.text == "자세한 조리 과정을 입력하세요" ? "" : controller.descriptionTextField.text
-        let minute = controller.minuteField.text ?? ""
-        let second = controller.secondField.text ?? ""
+        let minute = Int(controller.minuteField.text ?? "0") ?? 0
+        let second = Int(controller.secondField.text ?? "0") ?? 0
     
-        var newRecipe: dummyHowTo
+        var newRecipe: RecipeDetailsModel
         
         if controller.postImage.image != UIImage(named: "uploadPhoto") {
-            newRecipe = dummyHowTo(minute: minute, second: second, tool: controller.tools, img: controller.postImage.image, description: description ?? "")
+            newRecipe = RecipeDetailsModel(content: description ?? "", imageURL: controller.postImage.image, cookTimeInSeconds: (minute * 60 + second), cookwares: controller.tools)
         } else {
-            newRecipe = dummyHowTo(minute: minute, second: second, tool: controller.tools, description: description ?? "")
+            newRecipe = RecipeDetailsModel(content: description ?? "", imageURL: nil, cookTimeInSeconds: (minute * 60 + second), cookwares: controller.tools)
         }
         
         print(newRecipe)
-        
         if controller.selectedForEdit != nil {
             recipes[controller.editIndex!.item] = newRecipe
             
@@ -331,10 +330,10 @@ extension AddPostViewController: AddDetailPostDelegate {
         } else {
             recipes.append(newRecipe)
             isFolded.append(true)
-            
+
             tableViewCellHeight.append(0)
             self.tableView.reloadData()
-            
+
         }
         
         tableView.reloadRows(at: [controller.editIndex!], with: .automatic)
@@ -357,7 +356,81 @@ extension AddPostViewController: AddDetailPostDelegate {
 
     //POST BUTTON TAPPED
     @objc private func postButtonTapped(){
-        navigationController?.popViewController(animated: true)
+        
+        var recipe = [RecipeDetails]()
+        var recipeURL = [String]()
+        
+        for i in recipes {
+            if i.imageURL != nil {
+                Server.shared.uploadImage(image: i.imageURL!, nickname: "") { Result in
+                    switch Result {
+                    case .success(let success):
+                        print(success)
+                        
+                        var engTools = [String]()
+                        
+                        for j in i.cookwares {
+                            engTools.append(CookingTools(rawValue: j)?.eng ?? "")
+                        }
+                        
+                        recipe.append(RecipeDetails(content: i.content, imageURL: success, cookTimeInSeconds: i.cookTimeInSeconds, cookwares: engTools))
+                        
+                        if recipe.count == self.recipes.count {
+                            self.lastSave(recipe: recipe)
+                        }
+                        
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            } else {
+                
+                var engTools = [String]()
+                
+                for j in i.cookwares {
+                    engTools.append(CookingTools(rawValue: j)?.eng ?? "")
+                }
+                
+                recipe.append(RecipeDetails(content: i.content, imageURL: nil, cookTimeInSeconds: i.cookTimeInSeconds, cookwares: engTools))
+                
+                if recipe.count == self.recipes.count {
+                    self.lastSave(recipe: recipe)
+                }
+                
+            }
+        }
+    }
+    
+    private func lastSave(recipe: [RecipeDetails]){
+        //THUMBNAIL IMG
+        Server.shared.uploadImage(image: postImage.image!, nickname: "") { Result in
+            switch Result {
+            case .success(let url):
+                Server.shared.addRecipe(
+                    title: self.titleTextField.text ?? "",
+                    introduction: self.introductionField.text ?? "",
+                    ingredients: self.ingredients,
+                    difficulty: self.levelSelected,
+                    thumbnailURL: url,
+                    recipeDetails: recipe
+                ) { Result in
+                        switch Result {
+                        case .success(let success):
+                            print(success)
+                            self.navigationController?.popViewController(animated: true)
+                            
+                        case .failure(let error):
+                            print(error)
+                            
+                        }
+                    }
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        self.navigationController?.popViewController(animated: true)
+        
     }
 }
 

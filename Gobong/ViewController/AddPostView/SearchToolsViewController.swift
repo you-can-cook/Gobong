@@ -26,7 +26,7 @@ class SearchToolsViewController: UIViewController {
     
     var forFilter = [String]()
     var selectedTools = [String]()
-        
+    
     //MARK: LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()

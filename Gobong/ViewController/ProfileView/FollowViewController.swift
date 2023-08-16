@@ -45,6 +45,10 @@ class FollowViewController: UIViewController, FollowDelegate, UIGestureRecognize
     
     //MARK: LIFE CYCLE
     
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

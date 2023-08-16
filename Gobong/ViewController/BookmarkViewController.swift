@@ -24,12 +24,7 @@ class BookmarkViewController: UIViewController {
     //index path to show in detail view
     var selectedIndexPath = 0
 
-    var dummyData : [dummyFeedData] = [
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5)
-    ]
+    var FeedData: [FeedInfo] = []
     
     private var ShowingBlockView = true
     private var isShowingBlockView = PublishSubject<Bool>()
@@ -55,8 +50,9 @@ class BookmarkViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetailView",
-                let detailVC = segue.destination as? DetailViewController {
-            detailVC.information = dummyData[selectedIndexPath]
+           let detailVC = segue.destination as? DetailViewController {
+            detailVC.index = FeedData[selectedIndexPath].id
+            print("SENDING DATA>>..",  FeedData[selectedIndexPath].id)
         }
     }
 }
@@ -85,6 +81,7 @@ extension BookmarkViewController {
                 tableViewToogleButton.tintColor = .black
                 
                 navigationItem.leftBarButtonItem = tableViewToogleButton
+                self.collectionView.reloadData()
             }
             //CARD VIEW
             else {
@@ -97,6 +94,7 @@ extension BookmarkViewController {
                 tableViewToogleButton.tintColor = .black
                 
                 navigationItem.leftBarButtonItem = tableViewToogleButton
+                self.tableView.reloadData()
             }
             
         }).disposed(by: disposeBag)
@@ -106,11 +104,30 @@ extension BookmarkViewController {
 //MARK: UI
 extension BookmarkViewController: UISearchBarDelegate {
     private func setupData(){
-        if dummyData.isEmpty {
-            emptyStateView.isHidden = false
-        } else {
-            emptyStateView.isHidden = true
+        activityIndicator?.startAnimating()
+        
+        Server.shared.getRecipeBookMark { Result in
+            switch Result {
+            case .success(let FeedResponse):
+                print(Result)
+                self.FeedData = FeedResponse.feed
+                
+                if self.FeedData.isEmpty {
+                    self.emptyStateView.isHidden = false
+                } else {
+                    self.emptyStateView.isHidden = true
+                    self.collectionView.reloadData()
+                }
+                
+            case .failure(let Error):
+                print(Error)
+            }
+            
         }
+        
+        activityIndicator?.stopAnimating()
+        
+        
     }
     
     private func setupUI(){
@@ -156,13 +173,14 @@ extension BookmarkViewController : UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dummyData.count
+        return FeedData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeedBoxCell", for: indexPath) as! FeedBoxCell
         
-        cell.img.image = UIImage(named: dummyData[indexPath.item].thumbnailImg)
+        let url = URL(string: FeedData[indexPath.item].thumbnailURL!)
+        cell.img.load(url: url!)
         
         NSLayoutConstraint.activate([
             cell.img.widthAnchor.constraint(equalToConstant: view.frame.width/3-2),
@@ -214,18 +232,34 @@ extension BookmarkViewController : UITableViewDelegate, UITableViewDataSource, F
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dummyData.count
+        return FeedData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as! FeedCell
-        
-        let data = dummyData[indexPath.item]
-        cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, isBookmarked: true, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
-        cell.followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12) 
-        
         cell.delegate = self
         cell.selectionStyle = .none
+        
+        let data = FeedData[indexPath.item]
+        
+        DispatchQueue.main.async {
+            cell.configuration(
+                userImg: data.author.profileImageURL,
+                username: data.author.nickname,
+                following: data.author.following,
+                thumbnailImg: data.thumbnailURL,
+                title: data.title,
+                bookmarkCount: data.totalBookmarkCount,
+                isBookmarked: data.bookmarked,
+                cookingTime: data.totalCookTimeInSeconds,
+                tools: data.cookwares,
+                level: data.difficulty,
+                stars: data.averageRating ?? 0,
+                isFollowing: data.author.following
+            )
+        }
+        
+        
         return cell
     }
     

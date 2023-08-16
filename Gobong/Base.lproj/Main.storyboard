@@ -394,7 +394,7 @@
                     <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="dz0-PJ-Hs0"/>
                     <connections>
                         <outlet property="collectionView" destination="tLA-0j-4eO" id="jeC-yP-z0v"/>
-                        <outlet property="emptyStateView" destination="Z1q-NL-n8e" id="lyl-F0-YXb"/>
+                        <outlet property="emptyStateView" destination="Z1q-NL-n8e" id="e9Q-eT-fc6"/>
                         <outlet property="tableView" destination="0ux-y1-E0K" id="fmm-ee-jC9"/>
                         <segue destination="Rt5-em-RtD" kind="show" identifier="showDetailView" id="gIa-rw-Hju"/>
                     </connections>
@@ -2846,7 +2846,7 @@
     </designables>
     <inferredMetricsTieBreakers>
         <segue reference="YTW-5r-0AN"/>
-        <segue reference="aw6-BK-YBx"/>
+        <segue reference="7X6-lR-vAV"/>
         <segue reference="crg-nf-mnT"/>
     </inferredMetricsTieBreakers>
     <resources>
