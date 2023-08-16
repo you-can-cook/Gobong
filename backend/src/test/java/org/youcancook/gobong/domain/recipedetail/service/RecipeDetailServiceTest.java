@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.youcancook.gobong.domain.recipe.entity.Cookware;
 import org.youcancook.gobong.domain.recipe.entity.Difficulty;
 import org.youcancook.gobong.domain.recipe.entity.Recipe;
 import org.youcancook.gobong.domain.recipe.exception.RecipeNotFoundException;
@@ -63,8 +62,8 @@ class RecipeDetailServiceTest {
         Long recipeId = recipeRepository.save(recipe).getId();
 
         List<UploadRecipeDetailRequest> requests = List.of(
-            new UploadRecipeDetailRequest("Content1", "", 30, 1L),
-            new UploadRecipeDetailRequest("Content2", "", 15, 2L)
+            new UploadRecipeDetailRequest("Content1", "", 30, List.of("MICROWAVE")),
+            new UploadRecipeDetailRequest("Content2", "", 15, List.of("AIR_FRYER"))
         );
 
         recipeDetailService.uploadRecipeDetails(recipeId, requests);
@@ -88,8 +87,8 @@ class RecipeDetailServiceTest {
         Long recipeId = recipeRepository.save(recipe).getId();
 
         List<UploadRecipeDetailRequest> requests = List.of(
-                new UploadRecipeDetailRequest("Content1", "", 30, Cookware.MICROWAVE.getValue()),
-                new UploadRecipeDetailRequest("Content2", "", 15, Cookware.OVEN.getValue()));
+                new UploadRecipeDetailRequest("Content1", "", 30, List.of("MICROWAVE")),
+                new UploadRecipeDetailRequest("Content2", "", 15, List.of("OVEN")));
 
         assertThrows(RecipeNotFoundException.class, ()->
                 recipeDetailService.uploadRecipeDetails(recipeId + 100, requests));
@@ -101,7 +100,7 @@ class RecipeDetailServiceTest {
         User user = User.builder().nickname("쩝쩝박사").oAuthProvider(OAuthProvider.GOOGLE).oAuthId("123").build();
         Recipe recipe = Recipe.builder().user(user).difficulty(Difficulty.EASY).title("주먹밥").build();
         userRepository.save(user);
-        Long recipeId = recipeRepository.save(recipe).getId();
+        recipeRepository.save(recipe);
 
         recipeDetailRepository.save(new RecipeDetail(recipe, "Content1", "", 30, 1L, 0));
         recipeDetailRepository.save(new RecipeDetail(recipe, "Content2", "", 15, 2L, 1));
@@ -125,8 +124,8 @@ class RecipeDetailServiceTest {
         recipeDetailRepository.save(new RecipeDetail(recipe, "Content3", "", 10, 3L, 2));
 
         List<UploadRecipeDetailRequest> requests = List.of(
-                new UploadRecipeDetailRequest("Content4", "", 30, 1L),
-                new UploadRecipeDetailRequest("Content5", "", 15, 4L)
+                new UploadRecipeDetailRequest("Content4", "", 30, List.of("MICROWAVE")),
+                new UploadRecipeDetailRequest("Content5", "", 15, List.of("OVEN"))
         );
 
         recipeDetailService.uploadRecipeDetails(recipeId, requests);

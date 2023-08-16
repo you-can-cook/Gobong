@@ -32,7 +32,7 @@ public class RecipeDetailService {
         IntStream.range(0, requests.size()).forEach(index -> {
             UploadRecipeDetailRequest request = requests.get(index);
             uploadRecipeDetail(recipe.getId(), request.getContent(), request.getImageURL(),
-                    request.getCookTimeInSeconds(), request.getCookware(), index + 1);
+                    request.getCookTimeInSeconds(), Cookware.namesToCookwareBit(request.getCookware()), index + 1);
         });
     }
 
