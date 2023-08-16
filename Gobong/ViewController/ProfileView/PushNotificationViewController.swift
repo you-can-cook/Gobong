@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PushNotificationViewController: UIViewController {
+class PushNotificationViewController: UIViewController, UIGestureRecognizerDelegate{
 
     @IBOutlet weak var notificationSwitch: UISwitch!
     
@@ -16,6 +16,12 @@ class PushNotificationViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         setupUI()
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
     
     private func setupUI(){

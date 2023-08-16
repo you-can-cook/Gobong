@@ -15,10 +15,11 @@ struct dummyFeedData {
     var thumbnailImg: String
     var title: String
     var bookmarkCount: Int
+    var isBookmarked: Bool
     var cookingTime: Int
     var tools: String
     var level: String
-    var stars: Int
+    var stars: Double
 }
 
 class ViewController: UIViewController, UITabBarControllerDelegate {
@@ -31,14 +32,10 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
     var selectedIndexPath = 0
     var activityIndicator: NVActivityIndicatorView?
     
-    var dummyData: [dummyFeedData] = [
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5)
-    ]
+    var FeedData: [FeedInfo] = []
     
     override func viewWillAppear(_ animated: Bool) {
+        setupUser()
         setupNavigationBar()
         tabBarController?.tabBar.isHidden = false
     }
@@ -53,11 +50,11 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetailView",
                 let detailVC = segue.destination as? DetailViewController {
-            detailVC.information = dummyData[selectedIndexPath]
+//            detailVC.information = FeedData[selectedIndexPath]
         }
     }
     
-    //when heme icon in toolbar is clicked
+    //when home icon in toolbar is clicked
 //    func refresh() {
 //        setupUI()
 //    }
@@ -67,17 +64,27 @@ extension ViewController {
     // MARK: DATA
     private func setupUser() {
         //!!!!!임시!!!!
-        userDefault.set("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInN1YiI6IkFDQ0VTUyIsImlzcyI6ImdvYm9uZy55b3VjYW5jb29rLm9yZyIsImlhdCI6MTY5MTQ3Nzk5OSwiZXhwIjoyNDExNDc3OTk5fQ.m_uF4Tpu9dp2UZWVeGLNj39TYArHtmFidSv4SWfw-Sc", forKey: "accessKey")
-        
-        if userDefault.string(forKey: "accessKey") == nil {
+        if userDefault.string(forKey: "accessToken") == nil {
             performSegue(withIdentifier: "showLoginView", sender: self)
         }
     }
     
     private func setupData(){
-//        activityIndicator?.startAnimating()
+        activityIndicator?.startAnimating()
         
-        if dummyData.isEmpty {
+        Server.shared.getRecipeFeed { Result in
+            switch Result {
+            case .success(let FeedResponse):
+                print(Result)
+                self.FeedData = FeedResponse.feed
+                self.tableView.reloadData()
+            case .failure(let Error):
+                print(Error)
+            }
+            
+        }
+        
+        if FeedData.isEmpty {
             emptyStateView.isHidden = false
         } else {
             emptyStateView.isHidden = true
@@ -99,7 +106,14 @@ extension ViewController {
 }
 
 //MARK: FEED (CARD 형식)
-extension ViewController : UITableViewDelegate, UITableViewDataSource {
+extension ViewController : UITableViewDelegate, UITableViewDataSource, FeedCellDelegate {
+    func profileTapped(cell: FeedCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        //get other's profileID then show the profile
+        
+    
+    }
+    
     private func setupTableView(){
         tableView.dataSource = self
         tableView.delegate = self
@@ -108,14 +122,15 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dummyData.count
+        return FeedData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as! FeedCell
         
-        let data = dummyData[indexPath.item]
-        cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
+        let data = FeedData[indexPath.item]
+        cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, isBookmarked: data.isBookmarked, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
+        cell.delegate = self
         
         cell.selectionStyle = .none
         return cell
@@ -127,7 +142,7 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 314.0
+        return 380.0
     }
     
 }

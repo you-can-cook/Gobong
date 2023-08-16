@@ -172,7 +172,7 @@ extension AddPostViewController: UITableViewDelegate, UITableViewDataSource, Add
     
     //TABLE VIEW HEIGHT
     func reloadHeight(){
-        tableViewHeight.constant = tableViewCellHeight.reduce(0, +) + 127
+        tableViewHeight.constant = tableViewCellHeight.reduce(0, +)
     }
     
     

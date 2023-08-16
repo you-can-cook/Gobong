@@ -12,7 +12,7 @@ struct dummyProfileData {
     var following: Bool
 }
 
-class FollowViewController: UIViewController, FollowDelegate {
+class FollowViewController: UIViewController, FollowDelegate, UIGestureRecognizerDelegate {
     
     //IS USER TAP FOLLOWERS OR FOLLOWING?
     func followingTapped(cell: FollowStateCell) {
@@ -26,7 +26,6 @@ class FollowViewController: UIViewController, FollowDelegate {
             tableView.reloadRows(at: [indexPath], with: .none)
         }
     }
-    
     
     @IBOutlet weak var emptyStateLabel: UILabel!
     @IBOutlet weak var emptyStateView: UIView!
@@ -45,6 +44,7 @@ class FollowViewController: UIViewController, FollowDelegate {
     var username = "유저 이름"
     
     //MARK: LIFE CYCLE
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -52,6 +52,12 @@ class FollowViewController: UIViewController, FollowDelegate {
         followStateUI()
         tableViewSetup()
         setupNavigationBar()
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
     
     //MARK: UI

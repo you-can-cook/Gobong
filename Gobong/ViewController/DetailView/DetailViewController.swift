@@ -18,15 +18,19 @@ struct dummyHowTo {
 }
 
 //POST'S DETAILED INFORMATION
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, UIGestureRecognizerDelegate{
     
     @IBOutlet weak var tableView: UITableView!
     var labelSizeCache: [String: CGSize] = [:]
     
     var information: dummyFeedData!
-    var hashTag = ["면", "면 면", "면 면", "면", "모차렐라(슈레드) 치즈", "자이언트 떡볶이", "자이언트 떡볶이", "자이언트 떡볶이", "면 면"]
+    var hashTag = ["자이언트떡볶이 1개", "의성마늘후랑크 소시지 1개 ", "콕콕콕 스파게티 1개", "모짜렐라 피자치즈 20g"]
     var recipeInformation: [dummyHowTo] = [
-
+        dummyHowTo(minute: "", second: "30", tool: ["전자레인지"], img: UIImage(named: "data11"), description: "준비한 소시지를 전자렌지에 약 30초간 데워주세요"),
+        dummyHowTo(minute: "", second: "20", tool: [], img: UIImage(named: "data12"), description: "자이언트떡볶이와 콕콕콕 스파게티에 물을 넣어주세요"),
+        dummyHowTo(minute: "3", second: "", tool: ["전자레인지"], description: "물을 넣은 자이언트 떡볶이를 전자렌지에 3분 돌려주세요"),
+        dummyHowTo(minute: "", second: "50", tool: [], description: "스파게티 물을 버리고 전자렌지에 돌린 떡볶이에 라면과 스프를 넣고 잘 섞어주세요, 의성마늘후랑크소시지를 먹기 좋은 크기로 잘라 넣어주세요"),
+        dummyHowTo(minute: "", second: "30", tool: ["전자레인지"], img: UIImage(named: "data13"), description: "모짜렐라 피자치즈를 위에 얹어주고, 치즈가 녹을 정도로 전자렌지에 약 30초간 데워주세요"),
     ]
     
     //table view height 관련 property
@@ -51,6 +55,7 @@ class DetailViewController: UIViewController {
         tableViewSetup()
         
         isFolded = Array(repeating: true, count: recipeInformation.count)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -61,6 +66,10 @@ class DetailViewController: UIViewController {
                 vc.star = star
             }
         }
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
     
     //데이터 처리 
@@ -101,7 +110,13 @@ extension DetailViewController {
 }
 
 //MARK: TABLE VIEW
-extension DetailViewController: UITableViewDelegate, UITableViewDataSource, RecipeCellDelegate, ReviewDelegate, ReviewPopUpDelegate {
+extension DetailViewController: UITableViewDelegate, UITableViewDataSource, RecipeCellDelegate, ReviewDelegate, ReviewPopUpDelegate, DetailTitleDelegate {
+    func profileTapped(cell: DetailTitleCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        //get other's profileID then show the profile
+        
+    
+    }
     
     //GET DATA FROM POPUP REVIEW VIEW
     func reviewTapped(controller: ReviewPopUpViewController) {
@@ -159,9 +174,11 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
             //PICTURE AND 요약 정보 OF THE POST CELL (1'ST)
         } else if indexPath.item == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DetailTitleCell", for: indexPath) as! DetailTitleCell
+            
             cell.configuration(userImg: information.userImg, username: information.username, following: information.following, thumbnailImg: information.thumbnailImg, title: information.title, bookmarkCount: information.bookmarkCount, cookingTime: information.cookingTime, tools: information.tools, level: information.level, stars: information.stars)
             cell.selectionStyle = .none
            
+            cell.delegate = self
             cell.backgroundColor = .brown
             return cell
         }
@@ -169,7 +186,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
         // EXPLANATION AND INGREDIENTS CELL (2'ND)
         else if indexPath.item == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "HashtagCell", for: indexPath) as! HashtagCell
-            cell.titleLabel.text = "여기는.. 간단한 소개 "
+            cell.titleLabel.text = "편의점 꿀조합 레시피 best of best"
             cell.setupCollectionView(dataSource: self, delegate: self)
             cell.selectionStyle = .none
             
@@ -251,7 +268,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
             
             var firstline: CGFloat = calculateLabelSize(text: time).width
             firstline += data.tool.map({calculateLabelSize(text: $0).width}).reduce(0, +)
-            firstline += CGFloat(1 * 12) + 32
+//            firstline += CGFloat(1 * 12) + 32
             firstline += CGFloat(data.tool.count * 12) + 32
             
             if firstline/(view.bounds.width/1.5) > 1 {
@@ -274,11 +291,11 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
                         imageHeight = min(maxHeight, min(imageWidth * aspectRatio, maxWidth))
                     }
                     
-                    return CGFloat(firstline) + imageHeight + last + 77
+                    return CGFloat(firstline) + imageHeight + last + 80
                 }
             }
             
-            return CGFloat(firstline) + imageHeight + last + 47
+            return CGFloat(firstline) + imageHeight + last + 50
         }
     }
     
@@ -311,7 +328,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource, Reci
         
         let options: NSStringDrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]
         let attributes = [NSAttributedString.Key.font: label.font!]
-        let size = CGSize(width: CGFloat(view.bounds.width/1.5), height: .greatestFiniteMagnitude)
+        let size = CGSize(width: CGFloat(view.bounds.width/1.3), height: .greatestFiniteMagnitude)
         
         let boundingRect = (text as NSString).boundingRect(
             with: size,

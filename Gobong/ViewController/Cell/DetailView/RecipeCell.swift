@@ -51,8 +51,6 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .black
         label.numberOfLines = 0
-        label.paddingBottom = 10
-        label.paddingTop = 10
         return label
     }()
     
@@ -71,7 +69,6 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
     }()
     
     let firstLineView = UIView()
-    let infoStackView = UIStackView()
     
     let informationView = UIView()
     
@@ -107,11 +104,6 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         informationView.layer.borderWidth = 1
         informationView.layer.borderColor = UIColor(named: "darkGray")?.cgColor
         
-        infoStackView.axis = .vertical
-        infoStackView.spacing = 5
-        infoStackView.distribution = .fill
-        infoStackView.translatesAutoresizingMaskIntoConstraints = false
-        
         firstLineView.translatesAutoresizingMaskIntoConstraints = false
         
         subMainView.addSubview(stepView)
@@ -120,14 +112,11 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         stepView.addSubview(stepLabelBackground)
         stepView.addSubview(stepLabel)
         
-        informationView.addSubview(infoStackView)
-        
-        infoStackView.addArrangedSubview(firstLineView)
-        
         firstLineView.addSubview(collectionView)
         
-        infoStackView.addArrangedSubview(UIimage)
-        infoStackView.addArrangedSubview(descriptionLabel)
+        informationView.addSubview(firstLineView)
+        informationView.addSubview(UIimage)
+        informationView.addSubview(descriptionLabel)
         
         descriptionLabel.backgroundColor = .white
         
@@ -152,13 +141,10 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
             informationView.topAnchor.constraint(equalTo: subMainView.topAnchor, constant: 0),
             informationView.trailingAnchor.constraint(equalTo: subMainView.trailingAnchor, constant: 0),
             informationView.bottomAnchor.constraint(equalTo: subMainView.bottomAnchor, constant: 15),
-            
-            infoStackView.topAnchor.constraint(equalTo: informationView.topAnchor, constant: 0),
-            infoStackView.bottomAnchor.constraint(equalTo: informationView.bottomAnchor),
-            
-            firstLineView.leadingAnchor.constraint(equalTo: infoStackView.leadingAnchor),
-            firstLineView.trailingAnchor.constraint(equalTo: infoStackView.trailingAnchor),
-            firstLineView.topAnchor.constraint(equalTo: infoStackView.topAnchor),
+//
+            firstLineView.leadingAnchor.constraint(equalTo: informationView.leadingAnchor, constant: 12),
+            firstLineView.trailingAnchor.constraint(equalTo: informationView.trailingAnchor, constant: -12),
+            firstLineView.topAnchor.constraint(equalTo: informationView.topAnchor),
             
             collectionView.leadingAnchor.constraint(equalTo: firstLineView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: firstLineView.trailingAnchor),
@@ -170,7 +156,18 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
             UIimage.leadingAnchor.constraint(equalTo: informationView.leadingAnchor, constant: 12),
             UIimage.trailingAnchor.constraint(equalTo: informationView.trailingAnchor, constant: -12),
             UIimage.heightAnchor.constraint(lessThanOrEqualToConstant: 130),
-            UIimage.widthAnchor.constraint(equalTo: informationView.widthAnchor, constant: -24)
+            UIimage.widthAnchor.constraint(equalTo: informationView.widthAnchor, constant: -24),
+            
+            UIimage.topAnchor.constraint(equalTo: firstLineView.bottomAnchor, constant: 5),
+
+            UIimage.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -23),
+            
+            descriptionLabel.topAnchor.constraint(equalTo: UIimage.bottomAnchor, constant: 23),
+            descriptionLabel.bottomAnchor.constraint(equalTo: informationView.bottomAnchor, constant: -12),
+            
+            descriptionLabel.leadingAnchor.constraint(equalTo: informationView.leadingAnchor, constant: 12),
+            descriptionLabel.trailingAnchor.constraint(equalTo: informationView.trailingAnchor, constant: -12)
+            
             
         ])
         
@@ -181,6 +178,7 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
             subMainView.trailingAnchor.constraint(equalTo: mainUIView.trailingAnchor, constant: -16),
             subMainView.bottomAnchor.constraint(equalTo: mainUIView.bottomAnchor, constant: -24)
         ])
+        
         
         dottedLine.backgroundColor = UIColor(named: "gray")
         
@@ -202,7 +200,6 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         ])
         
         collectionView.invalidateIntrinsicContentSize()
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -222,6 +219,7 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
             if image != nil{
                 UIimage.isHidden = false
                 UIimage.image = image
+                
             } else {
                 UIimage.isHidden = true
             }

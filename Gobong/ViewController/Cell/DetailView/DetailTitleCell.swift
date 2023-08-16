@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol DetailTitleDelegate: Any {
+    func profileTapped(cell: DetailTitleCell)
+}
+
 class DetailTitleCell: UITableViewCell {
 
     @IBOutlet weak var background: UIView!
@@ -19,6 +23,8 @@ class DetailTitleCell: UITableViewCell {
     @IBOutlet weak var userProfile: UIImageView!
     @IBOutlet weak var userName: UILabel!
     
+    var delegate: DetailTitleDelegate?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -26,6 +32,14 @@ class DetailTitleCell: UITableViewCell {
         followingButton.titleLabel?.adjustsFontSizeToFitWidth = true
         followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         setBackgroundShadow()
+        
+        userName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileTapped)))
+        userProfile.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileTapped)))
+    }
+    
+    @objc
+    private func profileTapped(){
+        delegate?.profileTapped(cell: self)
     }
     
     func setBackgroundShadow(){
@@ -36,7 +50,7 @@ class DetailTitleCell: UITableViewCell {
         background.layer.shadowOffset = CGSize(width: 0, height: 0)
     }
 
-    func configuration(userImg: String? , username: String, following: Bool, thumbnailImg: String, title: String, bookmarkCount: Int, cookingTime: Int, tools: String, level: String, stars: Int) {
+    func configuration(userImg: String? , username: String, following: Bool, thumbnailImg: String, title: String, bookmarkCount: Int, cookingTime: Int, tools: String, level: String, stars: Double) {
         userProfile.image = UIImage(named: userImg ?? "프로필 이미지")
         userName.text = username
         followingButton.setTitle(following ? "팔로잉" : "팔로우", for: .normal)
@@ -46,4 +60,5 @@ class DetailTitleCell: UITableViewCell {
         levelLabel.text = level
         starLabel.text = "\(stars)공기"
     }
+    
 }

@@ -10,7 +10,7 @@ import Photos
 import YPImagePicker
 import AlignedCollectionViewFlowLayout
 
-class AddPostViewController: UIViewController {
+class AddPostViewController: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
@@ -38,41 +38,49 @@ class AddPostViewController: UIViewController {
                 normalButton.layer.borderWidth = 1
                 normalButton.backgroundColor = .white
                 normalButton.titleLabel?.textColor = UIColor(named: "gray")
+                normalButton.titleLabel?.tintColor = UIColor(named: "gray")
                 
                 hardButton.layer.borderColor = UIColor(named: "gray")?.cgColor
                 hardButton.layer.borderWidth = 1
                 hardButton.backgroundColor = .white
                 hardButton.titleLabel?.textColor = UIColor(named: "gray")
+                hardButton.titleLabel?.tintColor = UIColor(named: "gray")
             } else if levelSelected == "normal" {
                 easyButton.layer.borderColor = UIColor(named: "gray")?.cgColor
                 easyButton.layer.borderWidth = 1
                 easyButton.backgroundColor = .white
                 easyButton.titleLabel?.textColor = UIColor(named: "gray")
+                easyButton.titleLabel?.tintColor = UIColor(named: "gray")
                 
                 normalButton.layer.borderColor = UIColor(named: "pink")?.cgColor
                 normalButton.layer.borderWidth = 1
                 normalButton.backgroundColor = UIColor(named: "pink")
+                normalButton.titleLabel?.textColor = .white
                 normalButton.titleLabel?.tintColor = .white
                 
                 hardButton.layer.borderColor = UIColor(named: "gray")?.cgColor
                 hardButton.layer.borderWidth = 1
                 hardButton.backgroundColor = .white
                 hardButton.titleLabel?.textColor = UIColor(named: "gray")
+                hardButton.titleLabel?.tintColor = UIColor(named: "gray")
             } else if levelSelected == "hard" {
                 easyButton.layer.borderColor = UIColor(named: "gray")?.cgColor
                 easyButton.layer.borderWidth = 1
                 easyButton.backgroundColor = .white
                 easyButton.titleLabel?.textColor = UIColor(named: "gray")
+                easyButton.titleLabel?.tintColor = UIColor(named: "gray")
                 
                 normalButton.layer.borderColor = UIColor(named: "gray")?.cgColor
                 normalButton.layer.borderWidth = 1
                 normalButton.backgroundColor = .white
                 normalButton.titleLabel?.textColor = UIColor(named: "gray")
+                normalButton.titleLabel?.tintColor = UIColor(named: "gray")
                 
                 hardButton.layer.borderColor = UIColor(named: "pink")?.cgColor
                 hardButton.layer.borderWidth = 1
                 hardButton.backgroundColor = UIColor(named: "pink")
                 hardButton.titleLabel?.tintColor = .white
+                hardButton.titleLabel?.textColor = .white
             }
             checkOK()
         }
@@ -94,6 +102,7 @@ class AddPostViewController: UIViewController {
     //MARK: LIFE CYCLE
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
+        navigationController?.navigationBar.isHidden = false
     }
     
     override func viewDidLoad() {
@@ -102,9 +111,15 @@ class AddPostViewController: UIViewController {
         // Do any additional setup after loading the view.
         setupUI()
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         isFolded = Array(repeating: true, count: recipes.count)
     }
     
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+       
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showAddDetailPost" {
             if let VC = segue.destination as? AddDetailPostViewController {
@@ -134,6 +149,8 @@ extension AddPostViewController: UIImagePickerControllerDelegate, UINavigationCo
         textFieldUI()
         collectionViewSetup()
         tableViewSetup()
+        
+        scrollView.isDirectionalLockEnabled = true
     }
     
     private func setupNavigationBar(){

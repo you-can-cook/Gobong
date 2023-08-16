@@ -390,8 +390,6 @@ extension AddDetailPostViewController: UICollectionViewDelegate, UICollectionVie
         
         collectionView.register(HashtagCollectionCell.self, forCellWithReuseIdentifier: "HashtagCollectionCell")
         
-        collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 34)
-        collectionViewHeightConstraint.isActive = true
         collectionView.invalidateIntrinsicContentSize()
     }
     

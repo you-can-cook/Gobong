@@ -56,6 +56,7 @@
 		80D3F20A2A890591009313CB /* ReviewPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F2092A890591009313CB /* ReviewPopUpViewController.swift */; };
 		80D3F20D2A8A0777009313CB /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F20C2A8A0777009313CB /* SettingsViewController.swift */; };
 		80D3F20F2A8A0DEE009313CB /* activityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F20E2A8A0DEE009313CB /* activityIndicator.swift */; };
+		80D3F2112A8B6B7A009313CB /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D3F2102A8B6B7A009313CB /* NavigationController.swift */; };
 		80E3C01E2A83CEBB00845A9B /* Recipe_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */; };
 		80E3C0212A83CF6F00845A9B /* Ingredients_AddPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0202A83CF6F00845A9B /* Ingredients_AddPost.swift */; };
 		80E3C0242A83D0E900845A9B /* DashedLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3C0232A83D0E900845A9B /* DashedLineView.swift */; };
@@ -118,6 +119,7 @@
 		80D3F2092A890591009313CB /* ReviewPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewPopUpViewController.swift; sourceTree = "<group>"; };
 		80D3F20C2A8A0777009313CB /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		80D3F20E2A8A0DEE009313CB /* activityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = activityIndicator.swift; sourceTree = "<group>"; };
+		80D3F2102A8B6B7A009313CB /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		80E3C01D2A83CEBB00845A9B /* Recipe_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe_AddPost.swift; sourceTree = "<group>"; };
 		80E3C0202A83CF6F00845A9B /* Ingredients_AddPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredients_AddPost.swift; sourceTree = "<group>"; };
 		80E3C0232A83D0E900845A9B /* DashedLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedLineView.swift; sourceTree = "<group>"; };
@@ -233,6 +235,10 @@
 				80D3F1E82A8794CE009313CB /* SearchView */,
 				80E3C01C2A83CEA100845A9B /* AddPostView */,
 				80D2B6112A792B1600B777D1 /* Cell */,
+				80D3F2102A8B6B7A009313CB /* NavigationController.swift */,
+				80CE8B212A80E33F003DE318 /* PaddingLabel.swift */,
+				80CE8B2B2A831F88003DE318 /* SelfSizingCollectionView.swift */,
+				80E3C0232A83D0E900845A9B /* DashedLineView.swift */,
 				8029E5502A851D3D00C927F0 /* TestViewController.swift */,
 			);
 			path = ViewController;
@@ -245,9 +251,6 @@
 				80CE8B1E2A7F7E55003DE318 /* Universal */,
 				80CE8B1D2A7F7E31003DE318 /* ProfileView */,
 				80CE8B0A2A7CDE0F003DE318 /* DetailView */,
-				80CE8B212A80E33F003DE318 /* PaddingLabel.swift */,
-				80CE8B2B2A831F88003DE318 /* SelfSizingCollectionView.swift */,
-				80E3C0232A83D0E900845A9B /* DashedLineView.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -485,6 +488,7 @@
 				8029E5512A851D3D00C927F0 /* TestViewController.swift in Sources */,
 				80D2B5FD2A791AD600B777D1 /* ViewController.swift in Sources */,
 				80CE8B2C2A831F88003DE318 /* SelfSizingCollectionView.swift in Sources */,
+				80D3F2112A8B6B7A009313CB /* NavigationController.swift in Sources */,
 				80CE8AE82A7A8113003DE318 /* CustomTabBar.swift in Sources */,
 				80E3C01E2A83CEBB00845A9B /* Recipe_AddPost.swift in Sources */,
 				80CE8AF02A7AA75A003DE318 /* BookmarkViewController.swift in Sources */,
@@ -654,6 +658,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HK9U3ZG9M5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Gobong/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "사진 라이브러리에 접근하여 사진을 업로드하려고 합니다.";
@@ -665,6 +670,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -687,6 +693,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HK9U3ZG9M5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Gobong/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "사진 라이브러리에 접근하여 사진을 업로드하려고 합니다.";
@@ -698,6 +705,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

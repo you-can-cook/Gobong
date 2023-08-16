@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: UIViewController, UIGestureRecognizerDelegate{
 
     @IBOutlet weak var myPageView: UIView!
     @IBOutlet weak var notifView: UIView!
@@ -23,6 +23,12 @@ class SettingsViewController: UIViewController {
         // Do any additional setup after loading the view.
         setupUI()
         setupFunc()
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
     
     private func setupFunc(){

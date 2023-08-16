@@ -95,6 +95,8 @@ extension AddPostViewController: UICollectionViewDelegate, UICollectionViewDataS
         alignedFlowLayout?.minimumLineSpacing = 8
         alignedFlowLayout?.minimumInteritemSpacing = 8
         
+        
+        collectionView.isScrollEnabled = false
         collectionView.dataSource = self
         collectionView.register(AddIngredientCell.self, forCellWithReuseIdentifier: "AddIngredientCell")
         collectionView.register(AddButtonIngredientCell.self, forCellWithReuseIdentifier: "AddButtonIngredientCell")

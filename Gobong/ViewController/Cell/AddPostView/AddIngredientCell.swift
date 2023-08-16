@@ -97,6 +97,11 @@ class AddIngredientCell: UICollectionViewCell, UITextFieldDelegate {
         return true
     }
     
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        delegate?.textFieldDidPressReturn(in: self)
+        textField.resignFirstResponder()
+    }
+    
     @objc func deleteButtonTapped(){
         delegate?.deleteButtonTapped(in: self)
     }
