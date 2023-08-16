@@ -2,10 +2,7 @@ package org.youcancook.gobong.domain.recipe.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.youcancook.gobong.domain.recipe.dto.response.GetFeedResponse;
 import org.youcancook.gobong.domain.recipe.service.GetRecipeService;
 import org.youcancook.gobong.global.resolver.LoginUserId;
@@ -50,6 +47,16 @@ public class FeedController {
                                                      @RequestParam(name = "count", required = true) int count) {
         lastRecipeId = lastRecipeId == null ? Long.MAX_VALUE : lastRecipeId;
         GetFeedResponse response = getRecipeService.getMyFeed(userId, lastRecipeId, count);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("{userId}")
+    public ResponseEntity<GetFeedResponse> getUserFeed(@LoginUserId Long myId,
+                                                       @PathVariable Long userId,
+                                                       @RequestParam(name = "last", required = false) Long lastRecipeId,
+                                                       @RequestParam(name = "count", required = true) int count) {
+        lastRecipeId = lastRecipeId == null ? Long.MAX_VALUE : lastRecipeId;
+        GetFeedResponse response = getRecipeService.getUserFeed(userId, myId, lastRecipeId, count);
         return ResponseEntity.ok(response);
     }
 
