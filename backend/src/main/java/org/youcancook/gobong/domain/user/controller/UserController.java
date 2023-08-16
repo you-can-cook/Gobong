@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserInformationResponse> getUserInformation(@LoginUserId Long loginUserId) {
+    public ResponseEntity<UserInformationResponse> getMyInformation(@LoginUserId Long loginUserId) {
         UserInformationResponse response = userInformationService.getUserInformation(loginUserId);
         return ResponseEntity.ok(response);
     }
@@ -64,5 +64,11 @@ public class UserController {
                                                       @RequestBody @Valid UpdateUserInformationRequest request) {
         userInformationService.updateInformation(loginUserId, request.getNickname(), request.getProfileImageURL());
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("{userId}")
+    public ResponseEntity<UserInformationResponse> getUserInformation(@PathVariable Long userId) {
+        UserInformationResponse response = userInformationService.getUserInformation(userId);
+        return ResponseEntity.ok(response);
     }
 }
