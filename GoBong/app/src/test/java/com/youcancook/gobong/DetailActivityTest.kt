@@ -33,20 +33,22 @@ class DetailActivityTest {
     @Test
     fun getRecipeInfoSuccess() {
         //When
-        viewModel.getCurrentRecipe("3")
+        viewModel.getCurrentRecipe(3)
         CoroutineScope(Dispatchers.Main).launch {
             delay(5000)
+
+            //Then
+            assertEquals(NetworkState.SUCCESS, viewModel.networkState.value)
+            assertTrue(viewModel.cardInfo.value.title.isNotEmpty())
         }
 
-        //Then
-        assertEquals(NetworkState.SUCCESS, viewModel.networkState.value)
-        assertTrue(viewModel.cardInfo.value.title.isNotEmpty())
+
     }
 
     @Test
     fun getRecipeInfoError() {
         //When
-        fakeViewModel.getCurrentRecipe("3")
+        fakeViewModel.getCurrentRecipe(3)
         CoroutineScope(Dispatchers.Main).launch {
             delay(5000)
         }
@@ -135,9 +137,14 @@ class DetailActivityTest {
         viewModel.setStar(2)
         viewModel.reviewRecipe()
 
-        //Then
-        assertEquals(NetworkState.SUCCESS, viewModel.networkState.value)
-        assertNotEquals(viewModel.cardInfo.value.star, "0")
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(5000)
+
+            //Then
+            assertEquals(NetworkState.SUCCESS, viewModel.networkState.value)
+            assertNotEquals(viewModel.cardInfo.value.star, "0")
+        }
+
     }
 
     @Test
@@ -161,9 +168,15 @@ class DetailActivityTest {
         viewModel.setStar(3)
         viewModel.reviewRecipe()
 
-        //Then
-        assertEquals(NetworkState.SUCCESS, viewModel.networkState.value)
-        assertNotEquals(viewModel.cardInfo.value.star, "0")
+
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(5000)
+
+            //Then
+            assertEquals(NetworkState.SUCCESS, viewModel.networkState.value)
+            assertNotEquals(viewModel.cardInfo.value.star, "0")
+        }
+
     }
 
     @Test
