@@ -32,7 +32,7 @@ public class ModifiedFeedFilterDto {
                 : List.of(Difficulty.from(dto.getDifficulty()));
         modifiedDto.maxTotalCookTime = dto.getMaxTotalCookTime() == null ? Integer.MAX_VALUE : dto.getMaxTotalCookTime();
         modifiedDto.minRating = dto.getMinRating() == null ? 0 : dto.getMinRating();
-        modifiedDto.cookwares = Cookware.namesToCookwareBit(dto.getCookwares());
+        modifiedDto.cookwares = dto.getCookwares() == null ? 0 : Cookware.namesToCookwareBit(dto.getCookwares());
 
         return modifiedDto;
     }
