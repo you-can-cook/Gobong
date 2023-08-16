@@ -19,10 +19,16 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-            if let refreshableVC = viewController as? ViewController {
-//                refreshableVC.refresh()
-            }
+        if let refreshableVC = viewController as? ViewController {
+            refreshableVC.refresh()
         }
+        if let refreshableVC1 = viewController as? SearchViewController {
+            refreshableVC1.refresh()
+        }
+        if let refreshableVC2 = viewController as? BookmarkViewController {
+            refreshableVC2.refresh()
+        }
+    }
 
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {

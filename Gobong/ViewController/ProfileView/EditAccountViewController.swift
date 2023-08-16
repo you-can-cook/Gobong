@@ -69,6 +69,8 @@ class EditAccountViewController: UIViewController, UITextFieldDelegate, UIGestur
             case .success(let UserInfoResponse):
                 self.nickNameLabel.text = UserInfoResponse.nickname
                 //SET THE IMAGE TO THE UI
+                let url = URL(string: UserInfoResponse.profileImageURL)
+                self.profileImg.load(url: url!)
                 
             case .failure(let error):
                 print(error)
@@ -196,6 +198,28 @@ class EditAccountViewController: UIViewController, UITextFieldDelegate, UIGestur
     
     @objc
     private func okButtonTapped(){
+        Server.shared.uploadImage(image: profileImg.image!, nickname: "") { result in
+            switch result {
+            case .success(let url):
+                Server.shared.changeUserInfo(nickName: self.nickNameLabel.text ?? "" , profileURL: url) { result in
+                    switch result {
+                    case .success(let success):
+                        let alert = UIAlertController(title: "변경 성공했습니다", message: "", preferredStyle: .alert)
+                        let okButton = UIAlertAction(title: "확인", style: .default, handler: { _ in
+                            self.navigationController?.popViewController(animated: true)
+                        })
+                                                     
+                        alert.addAction(okButton)
+                        
+                        self.present(alert, animated: true)
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
         
     }
 

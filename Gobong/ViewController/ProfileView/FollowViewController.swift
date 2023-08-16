@@ -12,18 +12,31 @@ struct dummyProfileData {
     var following: Bool
 }
 
-class FollowViewController: UIViewController, FollowDelegate, UIGestureRecognizerDelegate {
+class FollowViewController: UIViewController, FollowDelegate {
     
     //IS USER TAP FOLLOWERS OR FOLLOWING?
     func followingTapped(cell: FollowStateCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         
         if followStateTapped == "followers" {
-            followerData[indexPath.item].following.toggle()
-            tableView.reloadRows(at: [indexPath], with: .none)
+            if followerData[indexPath.item].isFollowed {
+                Server.shared.unfollowUser(id: followerData[indexPath.item].userId) {
+                    self.tableView.reloadRows(at: [indexPath], with: .none)
+                }
+            } else {
+                Server.shared.followUser(id: followerData[indexPath.item].userId) {
+                    self.tableView.reloadRows(at: [indexPath], with: .none)
+                }
+            }
+            
         } else if followStateTapped == "followings" {
-            followingData[indexPath.item].following.toggle()
-            tableView.reloadRows(at: [indexPath], with: .none)
+            //CANCEL FOLLOW
+            Server.shared.unfollowUser(id: followingData[indexPath.item].userId) {
+                cell.followButton.backgroundColor = UIColor(named: "pink")
+                cell.followButton.titleLabel?.textColor = .white
+                cell.followButton.setTitle("팔로우", for: .normal)
+                self.tableView.reloadRows(at: [indexPath], with: .none)
+            }
         }
     }
     
@@ -33,12 +46,8 @@ class FollowViewController: UIViewController, FollowDelegate, UIGestureRecognize
     @IBOutlet weak var followingButton: UIButton!
     @IBOutlet weak var followerButton: UIButton!
     
-    var followingData = [dummyProfileData]()
-    
-    var followerData = [
-        dummyProfileData(name: "asdas", following: false),
-        dummyProfileData(name: "닉넴", following: true)
-    ]
+    var followingData = [UserProfile]()
+    var followerData = [UserWithFollowStatus]()
     
     var followStateTapped = ""
     var username = "유저 이름"
@@ -47,24 +56,59 @@ class FollowViewController: UIViewController, FollowDelegate, UIGestureRecognize
     
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
+        setupData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        followStateUI()
-        tableViewSetup()
-        setupNavigationBar()
         
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        self.setupNavigationBar()
+        self.followStateUI()
+        
+        setupData()
+        
     }
     
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
     
     //MARK: UI
+    
+    private func setupData(){
+        if followStateTapped == "followings" {
+            Server.shared.getFollowing { result in
+                switch result {
+                case .success(let UserInfo):
+                    //SET THE IMAGE TO THE UI
+                    self.followingData = UserInfo
+                    self.tableViewSetup()
+                    self.checkIfEmpty()
+                    self.tableView.reloadData()
+                    print("here")
+                    
+                case .failure(let error):
+                    print(error)
+                    
+                }
+            }
+        } else {
+            Server.shared.getFollowers {result in
+                switch result {
+                case .success(let UserInfo):
+                    //SET THE IMAGE TO THE UI
+                    self.followerData = UserInfo
+                    self.tableViewSetup()
+                    self.checkIfEmpty()
+                    self.tableView.reloadData()
+                    
+                case .failure(let error):
+                    print(error)
+                    
+                }
+            }
+        }
+    }
+    
     private func setupNavigationBar(){
         navigationItem.title = username
         
@@ -178,7 +222,7 @@ extension FollowViewController: UITableViewDelegate, UITableViewDataSource {
             cell.selectionStyle = .none
             
             let data = followerData[indexPath.item]
-            cell.configuration(img: nil, name: data.name, following: data.following)
+            cell.configuration(img: data.profileImageURL, name: data.nickname, following: data.isFollowed)
         }
         
         //following
@@ -187,7 +231,7 @@ extension FollowViewController: UITableViewDelegate, UITableViewDataSource {
             cell.selectionStyle = .none
             
             let data = followingData[indexPath.item]
-            cell.configuration(img: nil, name: data.name, following: data.following)
+            cell.configuration(img: data.profileImageURL, name: data.nickname, following: true)
         }
         
         return cell

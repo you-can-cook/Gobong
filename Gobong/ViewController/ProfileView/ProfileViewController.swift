@@ -52,6 +52,7 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         if segue.identifier == "showFollowView" {
             if let vc = segue.destination as? FollowViewController {
                 vc.followStateTapped = followStateTapped
+                vc.username = userInfo.nickname
             }
         }
     }

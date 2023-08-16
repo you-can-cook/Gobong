@@ -23,7 +23,9 @@ class ReviewPopUpViewController: UIViewController {
     @IBOutlet weak var twoStarImg: UIImageView!
     @IBOutlet weak var oneStarImg: UIImageView!
     
+    var sendedStar = 0
     var star = 0
+    var id: Int!
     var delegate: ReviewPopUpDelegate?
     
     //MARK: LIFE CYCLE
@@ -52,8 +54,17 @@ class ReviewPopUpViewController: UIViewController {
     }
     
     @IBAction func reviewButtonTapped(_ sender: Any) {
-        delegate?.reviewTapped(controller: self)
-        self.dismiss(animated: false)
+        if sendedStar > 0 {
+            Server.shared.editRating(id: id!, score: star) {
+                self.delegate?.reviewTapped(controller: self)
+                self.dismiss(animated: false)
+            }
+        } else {
+            Server.shared.sendRating(id: id!, score: star) {
+                self.delegate?.reviewTapped(controller: self)
+                self.dismiss(animated: false)
+            }
+        }
     }
     
     //STAR TAPPED FUNCTION

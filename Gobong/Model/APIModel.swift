@@ -128,6 +128,14 @@ struct UserProfile: Encodable, Decodable {
     let userId: Int
 }
 
+struct UserWithFollowStatus: Codable {
+    let userId: Int
+    let nickname: String
+    let profileImageURL: String
+    let isFollowed: Bool
+}
+
+
 
 // DETAIL VIEW
 struct SummaryDetail: Decodable {
@@ -159,4 +167,21 @@ struct DetailResponse: Decodable {
     let ingredients: [String]
     let recipeDetails: [RecipeDetailSummary]
     let myRate: Int
+}
+
+
+//RATING
+struct RecipeRating: Codable {
+    let recipeId: Int
+    let score: Int
+}
+
+//FILTER
+struct RecipeSearchQuery: Codable {
+    let query: String?
+    let filterType: String?
+    let difficulty: String?
+    let maxTotalCookTime: Int?
+    let minRating: Int?
+    let cookwares: [String]?
 }

@@ -10,7 +10,7 @@ import RxCocoa
 import RxSwift
 import NVActivityIndicatorView
 
-class BookmarkViewController: UIViewController {
+class BookmarkViewController: UIViewController, UITabBarControllerDelegate {
     
     @IBOutlet weak var emptyStateView: UIView!
     private let searchBar = UISearchBar()
@@ -37,6 +37,7 @@ class BookmarkViewController: UIViewController {
     //MARK: LIFE CYCLE
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
+        setupData()
     }
 
     override func viewDidLoad() {
@@ -54,6 +55,11 @@ class BookmarkViewController: UIViewController {
             detailVC.index = FeedData[selectedIndexPath].id
             print("SENDING DATA>>..",  FeedData[selectedIndexPath].id)
         }
+    }
+    
+    func refresh() {
+        isShowingBlockView.onNext(true)
+        print("TAAPAPAPAPAPAPPED")
     }
 }
 
@@ -257,6 +263,11 @@ extension BookmarkViewController : UITableViewDelegate, UITableViewDataSource, F
                 stars: data.averageRating ?? 0,
                 isFollowing: data.author.following
             )
+            if data.author.following {
+                cell.followingButton.isHidden = true
+            } else {
+                cell.followingButton.isHidden = false
+            }
         }
         
         
@@ -269,7 +280,7 @@ extension BookmarkViewController : UITableViewDelegate, UITableViewDataSource, F
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 370.0
+        return 380.0
     }
     
 }

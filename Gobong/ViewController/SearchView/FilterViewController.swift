@@ -13,7 +13,7 @@ protocol FilterDelegate: Any {
     func passFilter(controller: FilterViewController)
 }
 
-class FilterViewController: UIViewController, UIGestureRecognizerDelegate {
+class FilterViewController: UIViewController {
 
     @IBOutlet weak var defaultButton: UIButton!
     @IBOutlet weak var searchButton: UIButton!
@@ -53,8 +53,6 @@ class FilterViewController: UIViewController, UIGestureRecognizerDelegate {
 
         // Do any additional setup after loading the view.
         
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-        
         
         setupUI()
     }
@@ -78,11 +76,12 @@ class FilterViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func defaultButtonTapped(_ sender: Any) {
-        selectedSort = "newest"
-        starSelected = 0
-        levelSelected = "init"
-        searchBar.text = ""
-        stepSlider.index = 0
+        selectedSort = "recent"
+        starSelected = nil
+        levelSelected = nil
+        searchBar.text = nil
+        stepSlider.index = 6
+        
     }
     
     //별점 //STAR
@@ -157,17 +156,17 @@ class FilterViewController: UIViewController, UIGestureRecognizerDelegate {
     //LEVEL // 난이도
     var levelSelected: String? {
         didSet{
-            if levelSelected == "easy" {
+            if levelSelected == "쉬워요" {
                 selected(easyButton)
                 notSelected(normalButton)
                 notSelected(hardButton)
                 
-            } else if levelSelected == "normal" {
+            } else if levelSelected == "보통이에요" {
                 notSelected(easyButton)
                 selected(normalButton)
                 notSelected(hardButton)
                 
-            } else if levelSelected == "hard" {
+            } else if levelSelected == "어려워요" {
                 notSelected(easyButton)
                 notSelected(normalButton)
                 selected(hardButton)
@@ -181,21 +180,21 @@ class FilterViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func easyTapped(_ sender: Any) {
-        levelSelected = "easy"
+        levelSelected = "쉬워요"
     }
     
     @IBAction func normalTapped(_ sender: Any) {
-        levelSelected = "normal"
+        levelSelected = "보통이에요"
     }
     
     @IBAction func hardTapped(_ sender: Any) {
-        levelSelected = "hard"
+        levelSelected = "어려워요"
     }
     
     //정렬 // SORT
     var selectedSort: String? {
         didSet {
-            if selectedSort == "newest" {
+            if selectedSort == "recent" {
                 
                 selected(byNewestButton)
                 notSelected(byPopularityButton)
@@ -211,11 +210,11 @@ class FilterViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func byNewestTapped(_ sender: Any) {
-        selectedSort = "newest"
+        selectedSort = "recent"
     }
     
     @IBAction func byPopularityTapped(_ sender: Any) {
-        selectedSort = "popularity"
+        selectedSort = "popular"
     }
     
 }
@@ -230,9 +229,9 @@ extension FilterViewController {
             starSelected = lastFilter?.star
             tools = lastFilter?.tools ?? []
         } else {
-            levelSelected = "init"
-            starSelected = 0
-            selectedSort = "newest"
+            levelSelected = nil
+            starSelected = nil
+            selectedSort = "recent"
         }
         
         collectionViewSetup()
@@ -289,6 +288,7 @@ extension FilterViewController {
         let borderedImage = createTintedWithCircularBorderImage(systemName: "circle.fill", tintColor: UIColor.white ,borderColor: UIColor(named: "pink")!, borderWidth: 4, imageSize: imageSize)
         
         stepSlider.sliderCircleImage = borderedImage
+        stepSlider.index = 6
     }
     
     //STEP SLIDER CIRCLE

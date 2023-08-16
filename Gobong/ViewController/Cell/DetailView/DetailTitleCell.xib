@@ -28,7 +28,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jgn-Hy-rxa">
                                         <rect key="frame" x="0.0" y="0.0" width="376" height="48"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="q6L-8n-nr6">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="q6L-8n-nr6" customClass="CircularImageView" customModule="Gobong" customModuleProvider="target">
                                                 <rect key="frame" x="16" y="8" width="32" height="32"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="32" id="GJd-2s-Lq4"/>
@@ -61,6 +61,9 @@
                                                         </fragment>
                                                     </attributedString>
                                                 </buttonConfiguration>
+                                                <connections>
+                                                    <action selector="followingTapped:" destination="thc-dM-nGk" eventType="touchUpInside" id="eOz-Da-Qho"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -141,7 +144,7 @@
                                                         <rect key="frame" x="301.66666666666669" y="0.0" width="44.333333333333314" height="33.666666666666664"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="조리 별점" translatesAutoresizingMaskIntoConstraints="NO" id="NBC-xa-dVD">
-                                                                <rect key="frame" x="13" y="0.0" width="18" height="20"/>
+                                                                <rect key="frame" x="12" y="0.0" width="20" height="20"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="20" id="sV7-rc-Vxe"/>
                                                                 </constraints>
@@ -205,7 +208,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="조리 별점" width="18" height="20"/>
+        <image name="조리 별점" width="20" height="20"/>
         <image name="조리난이도" width="20" height="20"/>
         <image name="조리방법" width="20" height="20"/>
         <image name="조리시간" width="20" height="20"/>

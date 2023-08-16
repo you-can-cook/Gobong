@@ -220,6 +220,12 @@ extension ProfileFeedCell : UITableViewDelegate, UITableViewDataSource {
                 stars: data.averageRating ?? 0,
                 isFollowing: data.author.following
             )
+            
+            if data.author.following {
+                cell.followingButton.isHidden = true
+            } else {
+                cell.followingButton.isHidden = false
+            }
         }
         cell.followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
 

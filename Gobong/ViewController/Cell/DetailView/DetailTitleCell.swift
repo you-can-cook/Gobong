@@ -10,6 +10,7 @@ import Kingfisher
 
 protocol DetailTitleDelegate: Any {
     func profileTapped(cell: DetailTitleCell)
+    func followingTapped(cell: DetailTitleCell)
 }
 
 class DetailTitleCell: UITableViewCell {
@@ -36,6 +37,11 @@ class DetailTitleCell: UITableViewCell {
         
         userName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileTapped)))
         userProfile.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileTapped)))
+        
+    }
+    
+    @IBAction func followingTapped(_ sender: Any) {
+        delegate?.followingTapped(cell: self)
     }
     
     @objc
