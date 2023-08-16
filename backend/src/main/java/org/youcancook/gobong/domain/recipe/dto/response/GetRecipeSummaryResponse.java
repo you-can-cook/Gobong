@@ -21,5 +21,6 @@ public class GetRecipeSummaryResponse {
     private List<String> cookwares;
     private String difficulty;
     private Double averageRating;
+    private boolean isBookmarked;
 
 }

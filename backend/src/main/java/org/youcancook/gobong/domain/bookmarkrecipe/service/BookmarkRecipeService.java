@@ -45,4 +45,8 @@ public class BookmarkRecipeService {
         recipe.decreaseBookmarkCount();
         bookmarkRecipeRepository.delete(bookmarkRecipe);
     }
+
+    public boolean checkBookmark(Long userId, Long recipeId){
+        return bookmarkRecipeRepository.existsByUserIdAndRecipeId(userId, recipeId);
+    }
 }
