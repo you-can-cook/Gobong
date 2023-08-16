@@ -59,6 +59,8 @@ class UserControllerTest {
     @Autowired
     private TokenManager tokenManager;
 
+    private static Long userId = 1L;
+
     @Test
     @DisplayName("임시 토큰 발급")
     void getTemporaryToken() throws Exception {
@@ -272,8 +274,8 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("회원정보 조회")
-    void getUserInformation() throws Exception {
+    @DisplayName("내 정보 조회")
+    void getMyInformation() throws Exception {
         // given
         User savedUser = saveTestUser();
         TokenDto tokenDto = tokenManager.createTokenDto(savedUser.getId());
@@ -287,6 +289,26 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.profileImageURL").value(savedUser.getProfileImageURL()))
                 .andExpect(jsonPath("$.oAuthProvider").value(savedUser.getOAuthProvider().name()))
                 .andExpect(jsonPath("$.id").value(savedUser.getId()))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("다른 회원정보 조회")
+    void getUserInformation() throws Exception {
+        // given
+        User savedUser = saveTestUser();
+        TokenDto tokenDto = tokenManager.createTokenDto(savedUser.getId());
+        User requestUser = saveTestUser();
+
+        // when
+        mockMvc.perform(get("/api/users/" + requestUser.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + tokenDto.getAccessToken()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nickname").value(requestUser.getNickname()))
+                .andExpect(jsonPath("$.profileImageURL").value(requestUser.getProfileImageURL()))
+                .andExpect(jsonPath("$.oAuthProvider").value(requestUser.getOAuthProvider().name()))
+                .andExpect(jsonPath("$.id").value(requestUser.getId()))
                 .andDo(print());
     }
 
@@ -344,11 +366,12 @@ class UserControllerTest {
 
     private User saveTestUser() {
         User user = User.builder()
-                .oAuthId("12345678")
+                .oAuthId("12345678" + userId)
                 .oAuthProvider(OAuthProvider.KAKAO)
-                .nickname("nickname")
-                .profileImageURL("profileImageURL")
+                .nickname("nickname" + userId)
+                .profileImageURL("profileImageURL" + userId)
                 .build();
+        userId += 1;
         return userRepository.save(user);
     }
 }
