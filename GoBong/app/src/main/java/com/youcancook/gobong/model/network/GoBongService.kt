@@ -38,6 +38,13 @@ interface GoBongService {
         @Query("last") last: Int? = null,
     ): Response<RecipeFeedsResponseDTO>
 
+    @GET("/api/feed/my")
+    suspend fun getMyRecipes(
+        @Header("Authorization") token: String,
+        @Query("count") count: Int,
+        @Query("last") last: Int? = null,
+    ): Response<RecipeFeedsResponseDTO>
+
     @POST("/api/recipes")
     suspend fun uploadRecipe(
         @Header("Authorization") token: String,

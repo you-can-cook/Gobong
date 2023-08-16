@@ -37,7 +37,7 @@ class GoBongContainer {
         .build()
         .create(ImageService::class.java)
 
-    private val remoteGoBongDataSource = GoBongRemoteDataSource(goBongRetrofit,imageRetrofit)
+    private val remoteGoBongDataSource = GoBongRemoteDataSource(goBongRetrofit,userRetrofit,imageRetrofit)
     private val remoteUserDataSource = UserDataSource(userRetrofit,imageRetrofit)
 
     val goBongRepository = GoBongRepositoryImpl(remoteGoBongDataSource)

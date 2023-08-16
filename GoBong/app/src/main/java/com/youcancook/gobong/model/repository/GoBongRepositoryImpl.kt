@@ -50,11 +50,15 @@ class GoBongRepositoryImpl(
         goBongDataSource.uploadRecipe(uploadRecipe)
     }
 
-    override suspend fun getMyRecipes(): User {
+    override suspend fun getMyRecipes(): List<Card> {
         return goBongDataSource.getMyRecipes()
     }
 
     override suspend fun getUserRecipes(userId: String): User {
         return goBongDataSource.getUserRecipes(userId)
+    }
+
+    override suspend fun getMyInfo(): User {
+        return goBongDataSource.getMyInfo()
     }
 }

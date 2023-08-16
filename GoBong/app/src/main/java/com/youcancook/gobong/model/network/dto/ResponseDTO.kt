@@ -2,6 +2,7 @@ package com.youcancook.gobong.model.network.dto
 
 import com.google.gson.annotations.SerializedName
 import com.youcancook.gobong.model.Card
+import com.youcancook.gobong.model.User
 import com.youcancook.gobong.model.UserProfile
 import com.youcancook.gobong.model.UserToken
 import com.youcancook.gobong.util.toKoreanTool
@@ -66,6 +67,16 @@ data class FollowResponseDTO(
     @SerializedName("isFollowed") val isFollowed: Boolean?,
 )
 
+data class MyInfoResponseDTO(
+    @SerializedName("id") val id: Int,
+    @SerializedName("nickname") val nickname: String,
+    @SerializedName("profileImageURL") val profileImageURL: String? = null,
+    @SerializedName("oAuthProvider") val oAuthProvider: String,
+    @SerializedName("followerNumber") val followerNumber: Int,
+    @SerializedName("followingNumber") val followingNumber: Int,
+    @SerializedName("recipeNumber") val recipeNumber: Int,
+)
+
 fun FeedDTO.toCard(): Card {
     return Card(
         id = id,
@@ -95,5 +106,16 @@ fun FollowResponseDTO.toUserProfile(): UserProfile {
         nickname = nickname,
         userId = userId,
         followed = isFollowed ?: true
+    )
+}
+
+fun MyInfoResponseDTO.toUser(): User {
+    return User(
+        profileUrl = profileImageURL ?: "",
+        nickname,
+        userId = id,
+        recipe = recipeNumber.toString(),
+        follower = followerNumber.toString(),
+        following = followingNumber.toString()
     )
 }
