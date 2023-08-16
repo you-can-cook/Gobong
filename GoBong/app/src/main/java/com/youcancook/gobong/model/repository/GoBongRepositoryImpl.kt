@@ -42,6 +42,10 @@ class GoBongRepositoryImpl(
         goBongDataSource.reviewRecipe(recipeId, star)
     }
 
+    override suspend fun updateReviewRecipe(recipeId: Int, star: Int) {
+        goBongDataSource.updateReviewRecipe(recipeId, star)
+    }
+
     override suspend fun uploadRecipe(uploadRecipe: UploadRecipe) {
         goBongDataSource.uploadRecipe(uploadRecipe)
     }

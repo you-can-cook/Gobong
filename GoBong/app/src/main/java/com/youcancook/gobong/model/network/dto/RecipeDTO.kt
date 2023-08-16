@@ -59,6 +59,7 @@ fun CurrentRecipeDTO.toRecipePost(): RecipePost {
     return RecipePost(
         id = id,
         cardInfo = summary.toCard(),
-        recipes = recipeDetails.map { it.toRecipeStep() }
+        recipes = recipeDetails.map { it.toRecipeStep() },
+        reviewed = 0
     )
 }

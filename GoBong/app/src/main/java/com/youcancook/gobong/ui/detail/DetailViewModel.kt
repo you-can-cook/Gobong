@@ -65,6 +65,7 @@ class DetailViewModel(
         _cardInfo.value = response.cardInfo
         _recipes.value = response.recipes
         _isMine.value = response.cardInfo.user.notMine.not()
+        _starCount.value = response.reviewed
     }
 
     fun activeRecipeStep(position: Int) {
@@ -111,7 +112,7 @@ class DetailViewModel(
         viewModelScope.launch {
             setNetworkState(NetworkState.LOADING)
             try {
-                if (_isReviewed.value) {
+                if (_isReviewed.value.not()) {
                     requestReview()
                     _isReviewed.value = true
                 } else {
@@ -120,7 +121,11 @@ class DetailViewModel(
                 setNetworkState(NetworkState.SUCCESS)
             } catch (e: Exception) {
                 setNetworkState(NetworkState.FAIL)
-                setSnackBarMessage(e.message ?: "")
+                if (_cardInfo.value.user.notMine) {
+                    setSnackBarMessage(e.message ?: "")
+                } else {
+                    setSnackBarMessage("내가 올린 게시물에는 리뷰를 남길 수 없습니다.")
+                }
             }
         }
     }
@@ -130,7 +135,7 @@ class DetailViewModel(
     }
 
     private suspend fun requestUpdatedReview() {
-        goBongRepository.reviewRecipe(_cardInfo.value.id, _starCount.value)
+        goBongRepository.updateReviewRecipe(_cardInfo.value.id, _starCount.value)
     }
 
     fun follow() {

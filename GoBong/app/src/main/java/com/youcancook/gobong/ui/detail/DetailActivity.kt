@@ -44,6 +44,7 @@ class DetailActivity :
     })
     private val reviewDialog = ReviewDialogFragment(onDismissListener = {
         viewModel.setStar(it)
+        viewModel.reviewRecipe()
     })
 
     private val deleteDialog: AlertDialog by lazy {
@@ -79,9 +80,7 @@ class DetailActivity :
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.starCount.collectLatest {
                         if (it != 0) {
-                            editReviewConstraintLayout.isVisible = true
                             showReviewedStar(it)
-                            addReviewConstraintLayout.isVisible = false
                         }
                     }
                 }

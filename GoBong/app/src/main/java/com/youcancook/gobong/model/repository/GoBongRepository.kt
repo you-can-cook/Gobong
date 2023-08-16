@@ -21,6 +21,7 @@ interface GoBongRepository {
 
     suspend fun deleteRecipe(recipeId: Int)
     suspend fun reviewRecipe(recipeId: Int, star: Int)
+    suspend fun updateReviewRecipe(recipeId: Int, star: Int)
 
     suspend fun uploadRecipe(uploadRecipe: UploadRecipe)
 
