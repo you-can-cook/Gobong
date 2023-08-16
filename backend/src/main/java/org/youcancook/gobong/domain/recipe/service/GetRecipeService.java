@@ -1,12 +1,12 @@
 package org.youcancook.gobong.domain.recipe.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.youcancook.gobong.domain.follow.service.FollowService;
+import org.youcancook.gobong.domain.recipe.dto.feedfilterdto.FilterType;
+import org.youcancook.gobong.domain.recipe.dto.feedfilterdto.ModifiedFeedFilterDto;
 import org.youcancook.gobong.domain.recipe.dto.recipeDto.RecipeDto;
 import org.youcancook.gobong.domain.recipe.dto.response.GetFeedResponse;
 import org.youcancook.gobong.domain.recipe.dto.response.GetRecipeResponse;
@@ -73,6 +73,24 @@ public class GetRecipeService {
     public GetFeedResponse getFollowingFeed(Long userId, long recipeId, int count){
         Slice<Recipe> feedRecipes = recipeRepository.getAllFollowingFeed(userId, recipeId,
                 PageRequest.of(0, count, Sort.by("id").descending()));
+        return getFeedResponse(userId, feedRecipes);
+    }
+
+    public GetFeedResponse getFilteredFeedByName(Long userId, int page, int count, ModifiedFeedFilterDto filter){
+        String sortProperty = filter.getFilterType() == FilterType.RECENT ? "id" : "totalBookmarkCount";
+
+        Slice<Recipe> feedRecipes = recipeRepository.getFilteredFeedByRecipeTitle(filter.getQuery(),
+                filter.getDifficulties(), filter.getMaxTotalCookTime(), filter.getMinRating(),
+                filter.getCookwares(), PageRequest.of(page, count, Sort.by(sortProperty).descending()));
+        return getFeedResponse(userId, feedRecipes);
+    }
+
+    public GetFeedResponse getFilteredFeedByRecipeTitle(Long userId, int page, int count, ModifiedFeedFilterDto filter){
+        String sortProperty = filter.getFilterType() == FilterType.RECENT ? "id" : "totalBookmarkCount";
+
+        Slice<Recipe> feedRecipes = recipeRepository.getFilteredFeedByAuthorName(filter.getQuery(),
+                filter.getDifficulties(), filter.getMaxTotalCookTime(), filter.getMinRating(),
+                filter.getCookwares(), PageRequest.of(page, count, Sort.by(sortProperty).descending()));
         return getFeedResponse(userId, feedRecipes);
     }
 
