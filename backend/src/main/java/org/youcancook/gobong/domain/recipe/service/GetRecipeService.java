@@ -1,10 +1,14 @@
 package org.youcancook.gobong.domain.recipe.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.youcancook.gobong.domain.follow.service.FollowService;
 import org.youcancook.gobong.domain.recipe.dto.recipeDto.RecipeDto;
+import org.youcancook.gobong.domain.recipe.dto.response.GetFeedResponse;
 import org.youcancook.gobong.domain.recipe.dto.response.GetRecipeResponse;
 import org.youcancook.gobong.domain.recipe.dto.response.GetRecipeSummaryResponse;
 import org.youcancook.gobong.domain.recipe.dto.response.RecipeAuthorResponse;
@@ -40,7 +44,7 @@ public class GetRecipeService {
     public GetRecipeSummaryResponse getSummary(Long userId, RecipeDto recipeDto){
         RecipeAuthorResponse authorResponse = getAuthor(userId, recipeDto);
         return new GetRecipeSummaryResponse(
-                recipeDto.getId(), recipeDto.getThumbnailURL(), authorResponse,
+                recipeDto.getId(), recipeDto.getTitle(), recipeDto.getThumbnailURL(), authorResponse,
                 recipeDto.getTotalBookmarkCount(), recipeDto.getTotalCookTimeInSeconds(), recipeDto.getCookwares(),
                 recipeDto.getDifficulty(), recipeDto.getAverageRating()
         );
@@ -53,5 +57,15 @@ public class GetRecipeService {
         boolean isMyself = Objects.equals(userId, authorId);
 
         return new RecipeAuthorResponse(authorId, authorNickname, isFollowing, isMyself);
+    }
+
+    public GetFeedResponse getAllFeed(Long userId, Long recipeId, int count){
+        if (recipeId == null) recipeId = Long.MAX_VALUE;
+        Slice<Recipe> feedRecipes = recipeRepository.getChunkById(recipeId,
+                PageRequest.of(0, count, Sort.by("id").descending()));
+        List<GetRecipeSummaryResponse> summaries = feedRecipes.getContent().stream()
+                .map(recipe -> getSummary(userId, RecipeDto.from(recipe)))
+                .toList();
+        return new GetFeedResponse(summaries, feedRecipes.hasNext());
     }
 }

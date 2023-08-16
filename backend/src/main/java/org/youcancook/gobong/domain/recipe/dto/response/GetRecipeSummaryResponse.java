@@ -13,6 +13,7 @@ import java.util.List;
 public class GetRecipeSummaryResponse {
 
     private Long id;
+    private String title;
     private String thumbnailURL;
     private RecipeAuthorResponse author;
     private int totalBookmarkCount;
