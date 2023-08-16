@@ -34,6 +34,13 @@ public class FeedController {
         return ResponseEntity.ok(response);
     }
 
-
+    @GetMapping("following")
+    public ResponseEntity<GetFeedResponse> getFollowingFeed(@LoginUserId Long userId,
+                                                             @RequestParam(name = "last", required = false) Long lastRecipeId,
+                                                             @RequestParam(name = "count", required = true) int count){
+        lastRecipeId = lastRecipeId == null ? Long.MAX_VALUE : lastRecipeId;
+        GetFeedResponse response = getRecipeService.getFollowingFeed(userId, lastRecipeId, count);
+        return ResponseEntity.ok(response);
+    }
 
 }

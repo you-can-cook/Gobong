@@ -26,7 +26,6 @@ import java.util.Objects;
 @Transactional(readOnly = true)
 public class GetRecipeService {
 
-    private final RecipeService recipeService;
     private final FollowService followService;
     private final RecipeDetailService recipeDetailService;
     private final RecipeRepository recipeRepository;
@@ -59,18 +58,25 @@ public class GetRecipeService {
         return new RecipeAuthorResponse(authorId, authorNickname, isFollowing, isMyself);
     }
 
-    public GetFeedResponse getAllFeed(Long userId, Long recipeId, int count){
+    public GetFeedResponse getAllFeed(Long userId, long recipeId, int count){
         Slice<Recipe> feedRecipes = recipeRepository.getAllFeed(recipeId,
                 PageRequest.of(0, count, Sort.by("id").descending()));
-        List<GetRecipeSummaryResponse> summaries = feedRecipes.getContent().stream()
-                .map(recipe -> getSummary(userId, RecipeDto.from(recipe)))
-                .toList();
-        return new GetFeedResponse(summaries, feedRecipes.hasNext());
+        return getFeedResponse(userId, feedRecipes);
     }
 
-    public GetFeedResponse getBookmarkedFeed(Long userId, Long recipeId, int count){
+    public GetFeedResponse getBookmarkedFeed(Long userId, long recipeId, int count){
         Slice<Recipe> feedRecipes = recipeRepository.getAllBookmarkedFeed(userId, recipeId,
                 PageRequest.of(0, count, Sort.by("id").descending()));
+        return getFeedResponse(userId, feedRecipes);
+    }
+
+    public GetFeedResponse getFollowingFeed(Long userId, long recipeId, int count){
+        Slice<Recipe> feedRecipes = recipeRepository.getAllFollowingFeed(userId, recipeId,
+                PageRequest.of(0, count, Sort.by("id").descending()));
+        return getFeedResponse(userId, feedRecipes);
+    }
+
+    private GetFeedResponse getFeedResponse(Long userId, Slice<Recipe> feedRecipes){
         List<GetRecipeSummaryResponse> summaries = feedRecipes.getContent().stream()
                 .map(recipe -> getSummary(userId, RecipeDto.from(recipe)))
                 .toList();

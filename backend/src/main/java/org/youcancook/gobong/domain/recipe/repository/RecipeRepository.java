@@ -23,4 +23,9 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
             "JOIN br.recipe r " +
             "WHERE r.id <:recipeId AND br.user.id =:userId")
     Slice<Recipe> getAllBookmarkedFeed(Long userId, Long recipeId, PageRequest of);
+
+    @Query("SELECT r FROM Recipe r " +
+            "WHERE (r.user.id IN (SELECT f.followee.id FROM Follow f WHERE f.follower.id =:userId) OR r.user.id =:userId) " +
+            "AND r.id <:recipeId")
+    Slice<Recipe> getAllFollowingFeed(Long userId, long recipeId, PageRequest of);
 }

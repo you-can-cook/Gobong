@@ -155,4 +155,32 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
                 .statusCode(HttpStatus.OK.value())
                 .extract();
     }
+
+    @Test
+    @DisplayName("팔로우 피드를 조회한다.")
+    public void getFollowingFeed(){
+        String accessToken1 = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
+        String accessToken2 = AcceptanceUtils.signUpAndGetToken("쩝쩝박사2", "KAKAO", "1234");
+        String accessToken3 = AcceptanceUtils.signUpAndGetToken("쩝쩝박사3", "KAKAO", "12345");
+
+        Long user1Id = AcceptanceUtils.getUserIdFromToken(accessToken1);
+        AcceptanceUtils.followUser(accessToken2, user1Id);
+
+        for(int i = 1; i <= 10; i++){
+            CreateRecipeRequest request = new CreateRecipeRequest("주먹밥", "1번 레시피", List.of("밥", "김"), "쉬워요", null, List.of(
+                    new UploadRecipeDetailRequest("소금간을 해 주세요", null, 30, List.of("MICROWAVE")),
+                    new UploadRecipeDetailRequest("주먹을 쥐어 밥을 뭉쳐주세요", null, 15, List.of("PAN"))
+            ));
+
+            if (i == 10) AcceptanceUtils.createDummyRecipe(accessToken3, request);
+            else AcceptanceUtils.createDummyRecipe(accessToken1, request);
+        }
+
+        RestAssured.given().log().all()
+                .auth().oauth2(accessToken2)
+                .when().get("/api/feed/following?count=3")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
+    }
 }
