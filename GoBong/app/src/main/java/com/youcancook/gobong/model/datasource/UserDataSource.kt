@@ -5,9 +5,11 @@ import com.youcancook.gobong.model.RegisterUser
 import com.youcancook.gobong.model.UserToken
 import com.youcancook.gobong.model.network.ImageService
 import com.youcancook.gobong.model.network.UserService
+import com.youcancook.gobong.model.network.dto.RefreshTokenDTO
 import com.youcancook.gobong.model.network.dto.toUserToken
 import com.youcancook.gobong.model.toLoginDTO
 import com.youcancook.gobong.model.toRegisterDTO
+import com.youcancook.gobong.util.REFRESH_TOKEN
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -28,7 +30,12 @@ class UserDataSource(
     }
 
     suspend fun requestAccessToken(refreshToken: String): String {
-        return ""
+        val response = userService.reissueAccessToken(RefreshTokenDTO(REFRESH_TOKEN))
+        if (response.isSuccessful) {
+            return response.body()?.toUserToken()?.accessToken ?: throw Exception("네트워크가 불안정합니다")
+        } else {
+            throw Exception("네트워크가 불안정합니다")
+        }
     }
 
     suspend fun requestLogin(user: LoginUser): UserToken {

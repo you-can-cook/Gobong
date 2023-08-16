@@ -72,6 +72,7 @@ class RoutingActivity :
     }
 
     private fun saveToken() {
+        println("saveToken")
         val token = viewModel.getToken()
         getSharedPreferences(
             TOKEN_KEY,

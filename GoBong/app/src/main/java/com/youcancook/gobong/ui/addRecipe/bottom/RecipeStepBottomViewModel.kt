@@ -15,12 +15,12 @@ open class RecipeStepBottomViewModel : GoBongViewModel() {
     private val _tools = MutableStateFlow(
         listOf(
             Tool("전자레인지", false, true),
-            Tool("에어프라이기", false, true),
+            Tool("에어프라이어", false, true),
             Tool("오븐", false, true),
             Tool("가스레인지", false, true),
             Tool("믹서", false, true),
-            Tool("전기주전자", false, true),
-            Tool("거품기", false, true)
+            Tool("커피포트", false, true),
+            Tool("프라이팬", false, true)
         )
     )
     val tools: StateFlow<List<Tool>> get() = _tools

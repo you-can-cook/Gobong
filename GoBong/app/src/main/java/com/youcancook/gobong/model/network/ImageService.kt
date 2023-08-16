@@ -11,7 +11,7 @@ interface ImageService {
 
     @Multipart
     @POST("/api/images/upload")
-    fun postImage(
+    suspend fun postImage(
         @Part file: MultipartBody.Part,
     ): Response<ImageUrlResponseDTO>
 

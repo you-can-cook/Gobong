@@ -23,10 +23,13 @@ import com.youcancook.gobong.R
 import com.youcancook.gobong.databinding.ActivityLoginBinding
 import com.youcancook.gobong.model.LoginUser
 import com.youcancook.gobong.ui.MainActivity
+import com.youcancook.gobong.ui.RoutingActivity
 import com.youcancook.gobong.ui.base.NetworkActivity
 import com.youcancook.gobong.ui.base.NetworkStateListener
+import com.youcancook.gobong.util.ACCESS_TOKEN
 import com.youcancook.gobong.util.ACCESS_TOKEN_KEY
 import com.youcancook.gobong.util.GOOGLE_CLIENT_ID
+import com.youcancook.gobong.util.REFRESH_TOKEN
 import com.youcancook.gobong.util.REFRESH_TOKEN_KEY
 import com.youcancook.gobong.util.TOKEN_KEY
 import kotlinx.coroutines.flow.collectLatest
@@ -186,13 +189,17 @@ class LoginActivity :
     private fun saveToken() {
         val sharedPref = getSharedPreferences(TOKEN_KEY, Context.MODE_PRIVATE) ?: return
         val token = viewModel.getToken()
-        println("login saveToken $token")
         sharedPref.edit {
             putString(ACCESS_TOKEN_KEY, token.accessToken)
             putString(REFRESH_TOKEN_KEY, token.refreshToken)
             commit()
+            println("login saveToken ${token}")
+
+            ACCESS_TOKEN = token.accessToken
+            REFRESH_TOKEN = token.refreshToken
+            moveToMain()
         }
-        moveToMain()
+
     }
 
     private fun moveToMain() {
