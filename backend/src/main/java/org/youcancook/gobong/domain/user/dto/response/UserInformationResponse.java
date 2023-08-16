@@ -20,7 +20,11 @@ public class UserInformationResponse {
     @JsonProperty("oAuthProvider")
     private String oauthProvider;
 
-    public static UserInformationResponse of(User user, long followerNumber, long followingNumber, long recipeNumber) {
+    @JsonProperty("isFollowed")
+    private Boolean isFollowed;
+
+    public static UserInformationResponse of(User user, long followerNumber, long followingNumber,
+                                             long recipeNumber, boolean isFollowed) {
         return UserInformationResponse.builder()
                 .id(user.getId())
                 .nickname(user.getNickname())
@@ -29,6 +33,7 @@ public class UserInformationResponse {
                 .followerNumber(followerNumber)
                 .followingNumber(followingNumber)
                 .recipeNumber(recipeNumber)
+                .isFollowed(isFollowed)
                 .build();
     }
 }

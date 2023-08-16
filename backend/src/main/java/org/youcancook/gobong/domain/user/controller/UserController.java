@@ -10,10 +10,7 @@ import org.youcancook.gobong.domain.user.dto.SignupDto;
 import org.youcancook.gobong.domain.user.dto.request.LoginRequest;
 import org.youcancook.gobong.domain.user.dto.request.SignupRequest;
 import org.youcancook.gobong.domain.user.dto.request.UpdateUserInformationRequest;
-import org.youcancook.gobong.domain.user.dto.response.LoginResponse;
-import org.youcancook.gobong.domain.user.dto.response.SignupResponse;
-import org.youcancook.gobong.domain.user.dto.response.TemporaryTokenIssueResponse;
-import org.youcancook.gobong.domain.user.dto.response.UserInformationResponse;
+import org.youcancook.gobong.domain.user.dto.response.*;
 import org.youcancook.gobong.domain.user.service.UserInformationService;
 import org.youcancook.gobong.domain.user.service.UserLoginService;
 import org.youcancook.gobong.domain.user.service.UserSignupService;
@@ -54,8 +51,15 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserInformationResponse> getMyInformation(@LoginUserId Long loginUserId) {
-        UserInformationResponse response = userInformationService.getUserInformation(loginUserId);
+    public ResponseEntity<MyInformationResponse> getMyInformation(@LoginUserId Long loginUserId) {
+        MyInformationResponse response = userInformationService.getMyInformation(loginUserId);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("{userId}")
+    public ResponseEntity<UserInformationResponse> getUserInformation(@LoginUserId Long loginUserId,
+                                                                      @PathVariable Long userId) {
+        UserInformationResponse response = userInformationService.getUserInformation(loginUserId, userId);
         return ResponseEntity.ok(response);
     }
 
@@ -64,11 +68,5 @@ public class UserController {
                                                       @RequestBody @Valid UpdateUserInformationRequest request) {
         userInformationService.updateInformation(loginUserId, request.getNickname(), request.getProfileImageURL());
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("{userId}")
-    public ResponseEntity<UserInformationResponse> getUserInformation(@PathVariable Long userId) {
-        UserInformationResponse response = userInformationService.getUserInformation(userId);
-        return ResponseEntity.ok(response);
     }
 }
