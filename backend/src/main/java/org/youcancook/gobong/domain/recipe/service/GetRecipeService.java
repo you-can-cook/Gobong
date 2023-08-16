@@ -60,8 +60,16 @@ public class GetRecipeService {
     }
 
     public GetFeedResponse getAllFeed(Long userId, Long recipeId, int count){
-        if (recipeId == null) recipeId = Long.MAX_VALUE;
-        Slice<Recipe> feedRecipes = recipeRepository.getChunkById(recipeId,
+        Slice<Recipe> feedRecipes = recipeRepository.getAllFeed(recipeId,
+                PageRequest.of(0, count, Sort.by("id").descending()));
+        List<GetRecipeSummaryResponse> summaries = feedRecipes.getContent().stream()
+                .map(recipe -> getSummary(userId, RecipeDto.from(recipe)))
+                .toList();
+        return new GetFeedResponse(summaries, feedRecipes.hasNext());
+    }
+
+    public GetFeedResponse getBookmarkedFeed(Long userId, Long recipeId, int count){
+        Slice<Recipe> feedRecipes = recipeRepository.getAllBookmarkedFeed(userId, recipeId,
                 PageRequest.of(0, count, Sort.by("id").descending()));
         List<GetRecipeSummaryResponse> summaries = feedRecipes.getContent().stream()
                 .map(recipe -> getSummary(userId, RecipeDto.from(recipe)))
