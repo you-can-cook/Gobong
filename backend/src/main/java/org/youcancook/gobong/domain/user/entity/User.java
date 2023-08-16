@@ -46,4 +46,9 @@ public class User {
         this.oAuthProvider = oAuthProvider;
         this.profileImageURL = profileImageURL;
     }
+
+    public void updateNicknameAndProfileImageURL(String nickname, String profileImageURL) {
+        this.nickname = nickname;
+        this.profileImageURL = profileImageURL;
+    }
 }
