@@ -115,6 +115,7 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @DisplayName("전체 피드를 조회한다.")
     public void getFeed(){
         String accessToken = AcceptanceUtils.signUpAndGetToken("쩝쩝박사", "KAKAO", "123");
         for(int i = 1; i <= 10; i++){
@@ -127,7 +128,7 @@ public class RecipeAcceptanceTest extends AcceptanceTest {
 
         RestAssured.given().log().all()
                 .auth().oauth2(accessToken)
-                .when().get("/api/recipes/feed?count=3")
+                .when().get("/api/feed/all?count=3")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract();
