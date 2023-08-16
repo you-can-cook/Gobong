@@ -1,5 +1,7 @@
 package org.youcancook.gobong.domain.recipe.repository;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.youcancook.gobong.domain.recipe.entity.Recipe;
@@ -13,4 +15,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
             "JOIN FETCH r.user u " +
             "WHERE r.id =:recipeId")
     Optional<Recipe> fetchFindById(Long recipeId);
+
+    @Query("SELECT r FROM Recipe r WHERE r.id <:recipeId")
+    Slice<Recipe> getChunkById(Long recipeId, PageRequest of);
 }
