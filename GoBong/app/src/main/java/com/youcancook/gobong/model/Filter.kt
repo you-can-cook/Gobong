@@ -16,7 +16,7 @@ data class Filter(
                 "",
                 "",
                 "",
-                "0",
+                "30",
                 "",
                 emptyList()
             )

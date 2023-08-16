@@ -1,7 +1,10 @@
 package com.youcancook.gobong.ui.addRecipe
 
 import android.content.Intent
+import android.media.Image
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -64,7 +67,7 @@ class AddRecipeActivity :
 
     private val recipeAdapter = RecipeListAdapter(onEditItemClick = {
         editStepBottomSheet.show(supportFragmentManager, RecipeStepEditBottomSheet.TAG)
-        editStepBottomSheet.apply{
+        editStepBottomSheet.apply {
             setOldRecipe(it as RecipeStepAdded)
         }
     }, onAddItemClick = {
@@ -94,8 +97,12 @@ class AddRecipeActivity :
         imagePickActivityLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
-                    val imageData = result.data?.getByteArrayExtra(ImageActivity.IMAGE_DATA_TAG)
-                        ?: return@registerForActivityResult
+
+                    val imageUri = result.data?.getStringExtra(ImageActivity.IMAGE_DATA_TAG)
+                    imageUri ?: return@registerForActivityResult
+                    val imageData = ImageActivity.getImageByteArray(this, Uri.parse(imageUri))
+                    imageData ?: return@registerForActivityResult
+                    Log.e("GOBONG", "imageUri $imageUri $imageData")
                     viewModel.setThumbnailByteArray(imageData)
                 }
             }

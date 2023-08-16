@@ -14,12 +14,12 @@ import com.youcancook.gobong.R
 
 
 @BindingAdapter("setProfileImageUrl")
-fun setProfileImageUrl(view: ImageView, url: String) {
-    Glide.with(view.context)
+fun ImageView.setProfileImageUrl(url: String) {
+    Glide.with(context)
         .load(url)
         .placeholder(R.drawable.default_profile_img)
         .circleCrop()
-        .into(view)
+        .into(this)
 }
 
 @BindingAdapter("setProfileImageByteArray")

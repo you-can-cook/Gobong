@@ -112,7 +112,7 @@ class FilterActivity : GoBongActivity<ActivityFilterBinding>(R.layout.activity_f
 
             levelGroup.clearCheck()
 
-            timeSlider.value = 0f
+            timeSlider.value = 30f
 
             starGroup.clearCheck()
         }

@@ -2,14 +2,17 @@ package com.youcancook.gobong.model.datasource
 
 import android.util.Log
 import com.youcancook.gobong.model.Card
+import com.youcancook.gobong.model.Filter
 import com.youcancook.gobong.model.RecipePost
 import com.youcancook.gobong.model.UploadRecipe
 import com.youcancook.gobong.model.User
 import com.youcancook.gobong.model.network.GoBongService
 import com.youcancook.gobong.model.network.ImageService
 import com.youcancook.gobong.model.network.UserService
+import com.youcancook.gobong.model.network.dto.FilterDTO
 import com.youcancook.gobong.model.network.dto.ReviewDTO
 import com.youcancook.gobong.model.network.dto.toCard
+import com.youcancook.gobong.model.network.dto.toFilterDTO
 import com.youcancook.gobong.model.network.dto.toRecipePost
 import com.youcancook.gobong.model.network.dto.toUser
 import com.youcancook.gobong.model.toRecipeStepAddedDTO
@@ -76,14 +79,22 @@ class GoBongRemoteDataSource(
         }
     }
 
-    suspend fun getFilteredRecipes(): List<Card> {
-        return listOf(
-            Card.createEmpty(),
-            Card.createEmpty(),
-            Card.createEmpty(),
-            Card.createEmpty(),
-            Card.createEmpty()
+    suspend fun getFilteredRecipes(filter: Filter): List<Card> {
+
+        val request = filter.toFilterDTO()
+        println("request filter $request")
+
+        val response = goBongService.getFilteredRecipes(getToken(), 0, 10, request)
+        Log.e(
+            "GoBongBab",
+            "getFilteredRecipe ${response.body()} ${response.errorBody()?.string()}"
         )
+
+        if (response.isSuccessful) {
+            return response.body()?.feeds?.map { it.toCard() } ?: throw Exception("네트워크가 불안정합니다")
+        } else {
+            throw Exception("네트워크가 불안정합니다")
+        }
     }
 
     suspend fun getBookmarkedRecipes(): List<Card> {
@@ -179,7 +190,7 @@ class GoBongRemoteDataSource(
     }
 
     suspend fun getOthersRecipes(userId: Int): List<Card> {
-        val response = goBongService.getOthersRecipes(getToken(), userId,10)
+        val response = goBongService.getOthersRecipes(getToken(), userId, 10)
         if (response.isSuccessful) {
             return response.body()?.feeds?.map { it.toCard() } ?: throw Exception("네트워크가 불안정합니다")
         } else {

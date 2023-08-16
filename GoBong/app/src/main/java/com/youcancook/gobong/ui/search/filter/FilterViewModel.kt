@@ -10,13 +10,13 @@ class FilterViewModel : ViewModel() {
 
     private val _searchInput = MutableStateFlow("")
 
-    private val _sort = MutableStateFlow("")
+    private val _sort = MutableStateFlow(RECENT)
     val sort: StateFlow<String> get() = _sort
 
     private val _level = MutableStateFlow("")
     val level: StateFlow<String> get() = _level
 
-    private val _time = MutableStateFlow(0)
+    private val _time = MutableStateFlow(30)
     val time: StateFlow<Int> get() = _time
 
     private val _star = MutableStateFlow("")

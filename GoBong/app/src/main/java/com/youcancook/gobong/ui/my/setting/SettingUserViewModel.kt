@@ -1,6 +1,8 @@
 package com.youcancook.gobong.ui.my.setting
 
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
+import com.youcancook.gobong.R
 import com.youcancook.gobong.model.repository.GoBongRepository
 import com.youcancook.gobong.model.repository.UserRepository
 import com.youcancook.gobong.model.repository.UserRepositoryImpl
@@ -30,6 +32,7 @@ class SettingUserViewModel(
         val response = goBongRepository.getMyInfo()
         setProfileImage(response.profileUrl)
         nicknameInput.value = response.nickname
+
     }
 
     fun updateUserProfile() {
@@ -47,9 +50,7 @@ class SettingUserViewModel(
 
     private suspend fun requestUpdateProfile() {
         if (isValidNickname().not()) {
-            setErrorMessage("사용이 불가한 닉네임입니다")
-            setNetworkState(NetworkState.FAIL)
-            return
+            throw Exception("사용이 불가한 닉네임입니다")
         }
 
         userRepository.updateProfile(

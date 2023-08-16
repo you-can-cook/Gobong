@@ -23,7 +23,7 @@ class GoBongRepositoryImpl(
     }
 
     override suspend fun getFilteredRecipes(filter: Filter): List<Card> {
-        return goBongDataSource.getFilteredRecipes()
+        return goBongDataSource.getFilteredRecipes(filter)
     }
 
     override suspend fun getBookmarkedRecipes(): List<Card> {

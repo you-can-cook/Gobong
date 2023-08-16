@@ -1,9 +1,11 @@
 package com.youcancook.gobong.ui
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import androidx.core.app.ActivityCompat
@@ -22,6 +24,15 @@ internal class ImageActivity : CropImageActivity() {
                 Intent(activity, ImageActivity::class.java),
                 null,
             )
+        }
+
+        fun getImageByteArray(context: Context, uri: Uri?): ByteArray? {
+            uri ?: return null
+            val inputStream = context.contentResolver.openInputStream(uri)
+            val cropImageByteArray = inputStream?.readBytes() ?: return null
+
+            inputStream.close()
+            return cropImageByteArray
         }
 
         val IMAGE_DATA_TAG = "imageData"
@@ -109,20 +120,16 @@ internal class ImageActivity : CropImageActivity() {
 
         binding.cropImageView.setImageUriAsync(result.uriContent)
 
+        Log.e("GOBONG", "uri ${uri} ")
+
         if (uri == null) {
             finish()
             return
         }
 
-        val inputStream = contentResolver.openInputStream(uri)
-        val cropImageByteArray = inputStream?.readBytes()
-
-        if (cropImageByteArray == null) {
-            finish()
-            return
-        }
-        inputStream.close()
-        setResult(RESULT_OK, Intent().putExtra(IMAGE_DATA_TAG, cropImageByteArray))
+        setResult(
+            RESULT_OK, Intent().putExtra(IMAGE_DATA_TAG, uri.toString())
+        )
         finish()
     }
 

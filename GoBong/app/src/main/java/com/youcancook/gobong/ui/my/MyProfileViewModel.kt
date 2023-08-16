@@ -9,6 +9,8 @@ class MyProfileViewModel(
     private val goBongRepository: GoBongRepository,
 ) : ProfileViewModel(goBongRepository) {
 
+    fun getMyNickname() = user.value.nickname
+
     fun getMyInfo() {
         viewModelScope.launch {
             setNetworkState(NetworkState.LOADING)
