@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -48,6 +49,16 @@ fun isFollowSelected(view: Button, selected: Boolean) {
 @BindingAdapter("isFollowVisible")
 fun <T> isFollowVisible(view: Button, visible: Boolean) {
     view.isVisible = visible
+}
+
+@BindingAdapter("setReviewVisible")
+fun setReviewVisible(view: ConstraintLayout, star: Int) {
+    view.isVisible = star == 0
+}
+
+@BindingAdapter("setEditReviewVisible")
+fun setEditReviewVisible(view: ConstraintLayout, star: Int) {
+    view.isVisible = star != 0
 }
 
 @BindingAdapter(value = ["minute", "second"], requireAll = true)

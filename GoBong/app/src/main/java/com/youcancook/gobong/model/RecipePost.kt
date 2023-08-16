@@ -19,13 +19,13 @@ data class RecipePost(
     val id: Int,
     val cardInfo: Card,
     val recipes: List<RecipeStep>,
+    val reviewed: Int,
 )
 
 fun UploadRecipe.toUploadRecipeDTO(
     thumbnailUrl: String,
     recipeStepDTO: List<RecipeStepAddedDTO>,
 ): UploadRecipeDTO {
-    println("uploadRecipe ${recipeStepDTO.joinToString("\n")}")
     return UploadRecipeDTO(
         title,
         description,

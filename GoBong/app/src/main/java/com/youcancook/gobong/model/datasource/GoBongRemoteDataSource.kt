@@ -19,6 +19,7 @@ import com.youcancook.gobong.util.ACCESS_TOKEN
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
 import java.lang.Exception
 
 
@@ -39,7 +40,9 @@ class GoBongRemoteDataSource(
         val response = goBongService.getCurrentRecipe(getToken(), recipePostId)
         Log.e(
             "GoBongBab",
-            "getCurrentRecipe $response ${response.body()} ${response.errorBody().toString()}"
+            "getCurrentRecipe $response ${response.body()} ${
+                response.errorBody()?.string()
+            }"
         )
         if (response.isSuccessful) {
             return response.body()?.toRecipePost() ?: throw Exception("네트워크가 불안정합니다")
@@ -52,7 +55,9 @@ class GoBongRemoteDataSource(
         val response = goBongService.getFollowingRecipes(getToken(), 10)
         Log.e(
             "GoBongBab",
-            "getFollowingRecipes $response ${response.body()} ${response.errorBody().toString()}"
+            "getFollowingRecipes $response ${response.body()} ${
+                response.errorBody()?.string()
+            }"
         )
         if (response.isSuccessful) {
             return response.body()?.feeds?.map { it.toCard() } ?: throw Exception("네트워크가 불안정합니다")
@@ -63,7 +68,10 @@ class GoBongRemoteDataSource(
 
     suspend fun getAllRecipes(): List<Card> {
         val response = goBongService.getAllRecipes(getToken(), 10)
-        Log.e("GoBongBab", "getAllRecipe ${response.body()} ${response.errorBody().toString()}")
+        Log.e(
+            "GoBongBab",
+            "getAllRecipe ${response.body()} ${response.errorBody()?.string()}"
+        )
         if (response.isSuccessful) {
             return response.body()?.feeds?.map { it.toCard() } ?: throw Exception("네트워크가 불안정합니다")
         } else {
@@ -85,7 +93,7 @@ class GoBongRemoteDataSource(
         val response = goBongService.getBookmarkedRecipes(getToken(), 10)
         Log.e(
             "GoBongBab",
-            "getBookmarkedRecipes ${response.body()} ${response.errorBody().toString()}"
+            "getBookmarkedRecipes ${response.body()} ${response.errorBody()?.string()}"
         )
         if (response.isSuccessful) {
             return response.body()?.feeds?.map { it.toCard() } ?: throw Exception("네트워크가 불안정합니다")
@@ -107,9 +115,29 @@ class GoBongRemoteDataSource(
             recipeId = recipeId,
             score = star
         )
-        val response = goBongService.reviewRecipe(getToken(), star, request)
-        if (response.isSuccessful.not()) throw Exception("네트워크가 불안정합니다")
+        val response = goBongService.reviewRecipe(getToken(), request)
+        Log.e(
+            "GoBongBab",
+            "reviewRecipe ${response} ${response.errorBody()?.string()}"
+        )
+        if (response.isSuccessful.not()) {
+            throw Exception("네트워크가 불안정합니다")
+        }
+    }
 
+    suspend fun updateReviewRecipe(recipeId: Int, star: Int) {
+        val request = ReviewDTO(
+            recipeId = recipeId,
+            score = star
+        )
+        val response = goBongService.updaterReviewRecipe(getToken(), request)
+        Log.e(
+            "GoBongBab",
+            "reviewRecipe ${response} ${response.errorBody()?.string()}"
+        )
+        if (response.isSuccessful.not()) {
+            throw Exception("네트워크가 불안정합니다")
+        }
     }
 
     suspend fun uploadRecipe(uploadRecipe: UploadRecipe): String {
@@ -124,7 +152,7 @@ class GoBongRemoteDataSource(
 
         Log.e("GoBongBab", "uploadRecipe request ${request}")
         val response = goBongService.uploadRecipe(getToken(), request)
-        Log.e("GoBongBab", "uploadRecipe ${response} ${response.errorBody().toString()}")
+        Log.e("GoBongBab", "uploadRecipe ${response} ${response.errorBody()?.string()}")
         if (response.isSuccessful) {
             return response.body()?.id.toString()
         } else {
@@ -151,7 +179,6 @@ class GoBongRemoteDataSource(
         }
     }
 }
-
 
 //        return listOf(
 //            Card(
