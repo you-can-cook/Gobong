@@ -3,6 +3,8 @@ package org.youcancook.gobong.domain.follow.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.youcancook.gobong.domain.follow.dto.response.FindFolloweeResponse;
+import org.youcancook.gobong.domain.follow.dto.response.FindFollowerResponse;
 import org.youcancook.gobong.domain.follow.entity.Follow;
 import org.youcancook.gobong.domain.follow.exception.AlreadyFollowingException;
 import org.youcancook.gobong.domain.follow.exception.NotFollowingException;
@@ -10,6 +12,8 @@ import org.youcancook.gobong.domain.follow.repository.FollowRepository;
 import org.youcancook.gobong.domain.user.entity.User;
 import org.youcancook.gobong.domain.user.exception.UserNotFoundException;
 import org.youcancook.gobong.domain.user.repository.UserRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -60,6 +64,33 @@ public class FollowService {
                 .orElseThrow(UserNotFoundException::new);
 
         return followRepository.existsByFollowerAndFollowee(follower, followee);
+    }
+
+
+    public List<FindFollowerResponse> findFollowerList(Long loginUserId) {
+        User user = userRepository.findById(loginUserId)
+                .orElseThrow(UserNotFoundException::new);
+
+        return followRepository.findByFollowee(user).stream()
+                .map(follow -> FindFollowerResponse.of(
+                        follow.getFollower().getId(),
+                        follow.getFollower().getNickname(),
+                        follow.getFollower().getProfileImageURL()
+                ))
+                .toList();
+    }
+
+    public List<FindFolloweeResponse> findFolloeeList(Long loginUserId) {
+        User user = userRepository.findById(loginUserId)
+                .orElseThrow(UserNotFoundException::new);
+
+        return followRepository.findByFollower(user).stream()
+                .map(follow -> FindFolloweeResponse.of(
+                        follow.getFollowee().getId(),
+                        follow.getFollowee().getNickname(),
+                        follow.getFollowee().getProfileImageURL()
+                ))
+                .toList();
     }
 
 }

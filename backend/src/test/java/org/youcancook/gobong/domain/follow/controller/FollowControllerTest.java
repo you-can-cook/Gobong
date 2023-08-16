@@ -1,5 +1,7 @@
 package org.youcancook.gobong.domain.follow.controller;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.youcancook.gobong.global.util.token.TokenManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -40,6 +43,9 @@ class FollowControllerTest {
 
     @Autowired
     private TokenManager tokenManager;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private static int testUserCount = 0;
 
@@ -126,6 +132,72 @@ class FollowControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ErrorCode.NOT_FOLLOWING.getCode()))
                 .andExpect(jsonPath("$.message").value(ErrorCode.NOT_FOLLOWING.getMessage()))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("나를 팔로우 하는 유저 목록 조회")
+    void findFollower() throws Exception {
+        // given
+        User loginUser = saveTestUser();
+        String accessToken = tokenManager.createTokenDto(loginUser.getId()).getAccessToken();
+        User follower1 = saveTestUser();
+        followRepository.save(Follow.builder()
+                .follower(follower1)
+                .followee(loginUser)
+                .build());
+
+        User follower2 = saveTestUser();
+        followRepository.save(Follow.builder()
+                .follower(follower2)
+                .followee(loginUser)
+                .build());
+
+        entityManager.clear();
+        // when
+        mockMvc.perform(get("/api/follower")
+                        .header("Authorization", "Bearer " + accessToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$.[?(@.userId == '%d')]", follower1.getId()).exists())
+                .andExpect(jsonPath("$.[?(@.userId == '%d')]", follower2.getId()).exists())
+                .andExpect(jsonPath("$.[?(@.nickname == '%s')]", follower1.getNickname()).exists())
+                .andExpect(jsonPath("$.[?(@.nickname == '%s')]", follower2.getNickname()).exists())
+                .andExpect(jsonPath("$.[?(@.profileImageURL == '%s')]", follower1.getProfileImageURL()).exists())
+                .andExpect(jsonPath("$.[?(@.profileImageURL == '%s')]", follower2.getProfileImageURL()).exists())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("내가 팔로우 하는 유저 목록 조회")
+    void findFollowee() throws Exception {
+        // given
+        User loginUser = saveTestUser();
+        String accessToken = tokenManager.createTokenDto(loginUser.getId()).getAccessToken();
+        User followee1 = saveTestUser();
+        followRepository.save(Follow.builder()
+                .follower(loginUser)
+                .followee(followee1)
+                .build());
+
+        User followee2 = saveTestUser();
+        followRepository.save(Follow.builder()
+                .follower(loginUser)
+                .followee(followee2)
+                .build());
+
+        entityManager.clear();
+        // when
+        mockMvc.perform(get("/api/following")
+                        .header("Authorization", "Bearer " + accessToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$.[?(@.userId == '%d')]", followee1.getId()).exists())
+                .andExpect(jsonPath("$.[?(@.userId == '%d')]", followee2.getId()).exists())
+                .andExpect(jsonPath("$.[?(@.nickname == '%s')]", followee1.getNickname()).exists())
+                .andExpect(jsonPath("$.[?(@.nickname == '%s')]", followee2.getNickname()).exists())
+                .andExpect(jsonPath("$.[?(@.profileImageURL == '%s')]", followee1.getProfileImageURL()).exists())
+                .andExpect(jsonPath("$.[?(@.profileImageURL == '%s')]", followee2.getProfileImageURL()).exists())
                 .andDo(print());
     }
 
