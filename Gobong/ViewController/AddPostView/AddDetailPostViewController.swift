@@ -35,7 +35,8 @@ class AddDetailPostViewController: UIViewController {
     var tools = [String]()
     
     //IS EDITING? THEN THERE IS DATA IF NOT ITS NIL
-    var selectedForEdit: dummyHowTo?
+    var selectedForEdit: RecipeDetailsModel?
+    
     //IF EDITING, EDITING INDEX PATH ELSE NEW CELL INDEX PATH
     var editIndex: IndexPath?
     
@@ -45,7 +46,7 @@ class AddDetailPostViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         setupUI()
-        setData()
+//        setData()
         setTapGesture()
         collectionViewSetup()
         
@@ -90,27 +91,27 @@ class AddDetailPostViewController: UIViewController {
 //MARK: DATA
 extension AddDetailPostViewController {
     //IF EDITING STATE (NOT NEW STEP) SET THE DATA TO THE UI
-    private func setData(){
-        if selectedForEdit != nil {
-            postImage.image = selectedForEdit?.img
-            tools = selectedForEdit?.tool ?? []
-            minuteField.text = selectedForEdit?.minute
-            secondField.text = selectedForEdit?.second
-            
-            if minuteField.text != "" || secondField.text != "" {
-                minuteField.layer.borderColor = UIColor(named: "pink")?.cgColor
-                secondField.layer.borderColor = UIColor(named: "pink")?.cgColor
-            }
-            
-            descriptionTextField.text = selectedForEdit?.description
-            if descriptionTextField.text != "" || descriptionTextField.text != "자세한 조리 과정을 입력하세요" {
-                descriptionTextField.layer.borderColor = UIColor(named: "pink")?.cgColor
-            }
-            
-            collectionView.reloadData()
-            checkOkNext()
-        }
-    }
+//    private func setData(){
+//        if selectedForEdit != nil {
+//            postImage.image = selectedForEdit?.img
+//            tools = selectedForEdit?.tool ?? []
+//            minuteField.text = selectedForEdit?.minute
+//            secondField.text = selectedForEdit?.second
+//
+//            if minuteField.text != "" || secondField.text != "" {
+//                minuteField.layer.borderColor = UIColor(named: "pink")?.cgColor
+//                secondField.layer.borderColor = UIColor(named: "pink")?.cgColor
+//            }
+//
+//            descriptionTextField.text = selectedForEdit?.description
+//            if descriptionTextField.text != "" || descriptionTextField.text != "자세한 조리 과정을 입력하세요" {
+//                descriptionTextField.layer.borderColor = UIColor(named: "pink")?.cgColor
+//            }
+//
+//            collectionView.reloadData()
+//            checkOkNext()
+//        }
+//    }
 }
 
 //MARK: UI
@@ -374,6 +375,7 @@ extension AddDetailPostViewController: UITextFieldDelegate, UITextViewDelegate {
 extension AddDetailPostViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SearchToolsDelegate {
     func passToolData(controller: SearchToolsViewController) {
         tools = controller.selectedTools
+        
         collectionView.reloadData()
         updateHeight()
     }

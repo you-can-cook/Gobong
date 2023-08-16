@@ -16,7 +16,7 @@ class UserInformationCell: UITableViewCell {
     
     @IBOutlet weak var followingStack: UIStackView!
     @IBOutlet weak var followerStack: UIStackView!
-    @IBOutlet weak var profileImg: UIImageView!
+    @IBOutlet weak var profileImg: CircularImageView!
     @IBOutlet weak var recipeCountLabel: UILabel!
     @IBOutlet weak var followerCountLabel: UILabel!
     @IBOutlet weak var followingCountLabel: UILabel!
@@ -39,7 +39,13 @@ class UserInformationCell: UITableViewCell {
     }
     
     func configuration(img: String?, recipeCount: Int, followerCount: Int, followingCount: Int){
-        profileImg.image = UIImage(named: img ?? "프로필 이미지")
+        if img != nil {
+            let url = URL(string: img!)
+            profileImg.load(url: url!)
+        } else {
+            profileImg.image = UIImage(named: "프로필 이미지")
+        }
+      
         recipeCountLabel.text = "\(recipeCount)"
         followerCountLabel.text = "\(followerCount)"
         followingCountLabel.text = "\(followingCount)"

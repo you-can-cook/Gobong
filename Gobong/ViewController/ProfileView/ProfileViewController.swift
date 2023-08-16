@@ -13,14 +13,9 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var mainTableView: UITableView!
     var selectedIndexPath = 0
+    var userInfo: UserInfoResponse!
     
-    var dummyData: [dummyFeedData] = [
-        //        dummyFeedData(username: "1", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        //        dummyFeedData(username: "2", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        //        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        //        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-        
-    ]
+    var FeedData: [FeedInfo] = []
     
     var followStateTapped = ""
     private var ShowingBlockView = true
@@ -36,21 +31,22 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         tabBarController?.tabBar.isHidden = false
         navigationController?.navigationBar.isHidden = false
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        
+        setupData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        setupUI()
-        
-        setupMainTableView()
+        setupData()
         setObservable()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetailView",
            let detailVC = segue.destination as? DetailViewController {
-            detailVC.information = dummyData[selectedIndexPath]
+            detailVC.index = FeedData[selectedIndexPath].id
+            print("SENDING DATA>>..",  FeedData[selectedIndexPath].id)
         }
         
         if segue.identifier == "showFollowView" {
@@ -126,6 +122,50 @@ extension ProfileViewController: UserInformationDelegate, profileFeedDelegete {
     }
 }
 
+//MARK: DATA
+extension ProfileViewController {
+    private func setupData(){
+        Server.shared.getUserInfo { result in
+            switch result {
+            case .success(let UserInfoResponse):
+                self.userInfo = UserInfoResponse
+                //SET THE IMAGE TO THE UI
+                self.setupUI()
+                self.setupMainTableView()
+            case .failure(let error):
+                print(error)
+                
+                let alert = UIAlertController(title: "데이터 찾을 수 없습니다", message: "잠시 후 다시 시도 해보세요", preferredStyle: .alert)
+                let okButton = UIAlertAction(title: "네", style: .default)
+                alert.addAction(okButton)
+                
+                self.present(alert, animated: true)
+            }
+        }
+        
+        Server.shared.getMyFeed { Result in
+            switch Result {
+            case .success(let FeedResponse):
+                print(Result)
+                self.FeedData = FeedResponse.feed
+                
+//                if self.FeedData.isEmpty {
+//                    self.emptyStateView.isHidden = false
+//                } else {
+//                    self.emptyStateView.isHidden = true
+//                    self.tableView.reloadData()
+//                }
+                
+                self.mainTableView.reloadData()
+                
+            case .failure(let Error):
+                print(Error)
+            }
+        }
+        
+    }
+}
+
 //MARK: UI
 extension ProfileViewController: UISearchBarDelegate{
     private func setupUI(){
@@ -145,7 +185,7 @@ extension ProfileViewController: UISearchBarDelegate{
         
         //ELSE CHANGE THE SETTINGS TO FOLLOW BUTTON 
         
-        navigationItem.title = "유저 이름"
+        navigationItem.title = userInfo.nickname
     }
 }
 
@@ -168,14 +208,15 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
         //USER INFORMATION
         if indexPath.item == 0 {
             let cell = mainTableView.dequeueReusableCell(withIdentifier: "UserInformationCell") as! UserInformationCell
-            cell.configuration(img: nil, recipeCount: 0, followerCount: 0, followingCount: 0)
+            
+            cell.configuration(img: userInfo.profileImageURL, recipeCount: userInfo.recipeNumber, followerCount: userInfo.followerNumber, followingCount: userInfo.followingNumber)
             cell.selectionStyle = .none
             cell.delegate = self
             
             return cell
         } else {
             //IF THE FEED IS EMPTY
-            if dummyData.isEmpty {
+            if FeedData.isEmpty {
                 let cell = mainTableView.dequeueReusableCell(withIdentifier: "ProfileFeedCell") as! ProfileFeedCell
                 cell.configEmpty()
                 cell.delegate = self
@@ -188,7 +229,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
                 //IF SHOWING BLOCK VIEW
                 if ShowingBlockView {
                     let cell = mainTableView.dequeueReusableCell(withIdentifier: "ProfileFeedCell") as! ProfileFeedCell
-                    cell.dummyData = dummyData
+                    cell.FeedData = FeedData
                     cell.configuration(isShowingBlock: ShowingBlockView)
                     cell.collectionView.reloadData()
                     cell.delegate = self
@@ -198,7 +239,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
                 //IF SHOWING CARD VIEW 
                 } else {
                     let cell = mainTableView.dequeueReusableCell(withIdentifier: "ProfileFeedCell") as! ProfileFeedCell
-                    cell.dummyData = dummyData
+                    cell.FeedData = FeedData
                     cell.configuration(isShowingBlock: ShowingBlockView)
                     cell.tableView.reloadData()
                     cell.delegate = self
@@ -214,15 +255,15 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
             return 180
         } else {
             //if empty
-            if dummyData.isEmpty {
+            if FeedData.isEmpty {
                 return view.bounds.height - 500
             } else {
                 if ShowingBlockView {
-                    return CGFloat(dummyData.count) * tableView.bounds.width / 3 - 2
+                    return CGFloat(FeedData.count) * tableView.bounds.width / 3 - 2
                 } else {
                     // Calculate the height based on the dummy data count and cell height
                     let cellHeight: CGFloat = 314 // Adjust the expected cell height
-                    return CGFloat(dummyData.count) * cellHeight
+                    return CGFloat(FeedData.count) * cellHeight
                 }
             }
         }

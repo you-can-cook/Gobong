@@ -34,12 +34,7 @@ class SearchViewController: UIViewController {
     
     var selectedIndexPath = 0
     
-    var dummyData: [dummyFeedData] = [
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
-//        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "맛있는 라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5)
-    ]
+    var FeedData: [FeedInfo] = []
     
     var filteredData: [dummyFeedData] = [
 //        dummyFeedData(username: "찝찝박사", following: true, thumbnailImg: "dummyImg", title: "라면", bookmarkCount: 2, cookingTime: 3, tools: "냄비", level: "쉬워요", stars: 5),
@@ -77,8 +72,9 @@ class SearchViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetailView",
-                let detailVC = segue.destination as? DetailViewController {
-            detailVC.information = dummyData[selectedIndexPath]
+           let detailVC = segue.destination as? DetailViewController {
+            detailVC.index = FeedData[selectedIndexPath].id
+            print("SENDING DATA>>..",  FeedData[selectedIndexPath].id)
         }
         if segue.identifier == "showFilterView",
            let VC = segue.destination as? FilterViewController {
@@ -143,6 +139,8 @@ extension SearchViewController {
                 
                 navigationItem.rightBarButtonItems = [filterButton]
                 navigationItem.leftBarButtonItem = tableViewToogleButton
+                
+                self.collectionView.reloadData()
             
             //SHOW CARD VIEW
             } else {
@@ -168,6 +166,8 @@ extension SearchViewController {
                 
                 navigationItem.rightBarButtonItems = [filterButton]
                 navigationItem.leftBarButtonItem = tableViewToogleButton
+                
+                self.tableView.reloadData()
             }
             
         }).disposed(by: disposeBag)
@@ -177,11 +177,27 @@ extension SearchViewController {
 //MARK: DATA
 extension SearchViewController {
     private func setupData(){
-        if dummyData.isEmpty {
-            EmptyStateView.isHidden = false
-        } else {
-            EmptyStateView.isHidden = true
+        
+        Server.shared.getRecipeFeed { Result in
+            switch Result {
+            case .success(let FeedResponse):
+                print(Result)
+                self.FeedData = FeedResponse.feed
+                
+//                if self.FeedData.isEmpty {
+//                    self.emptyStateView.isHidden = false
+//                } else {
+//                    self.emptyStateView.isHidden = true
+//                    self.tableView.reloadData()
+//                }
+                self.collectionView.reloadData()
+                
+            case .failure(let Error):
+                print(Error)
+            }
+            
         }
+        
     }
 }
 
@@ -266,14 +282,15 @@ extension SearchViewController : UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dummyData.count
+        return FeedData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeedBoxCell", for: indexPath) as! FeedBoxCell
         
         if !isSearching {
-            cell.img.image = UIImage(named: dummyData[indexPath.item].thumbnailImg)
+            let url = URL(string: FeedData[indexPath.item].thumbnailURL!)
+            cell.img.load(url: url!)
         } else {
             cell.img.image = UIImage(named: filteredData[indexPath.item].thumbnailImg)
         }
@@ -328,19 +345,35 @@ extension SearchViewController : UITableViewDelegate, UITableViewDataSource, Fee
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dummyData.count
+        return FeedData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as! FeedCell
         
         if !isSearching {
-            let data = dummyData[indexPath.item]
-            cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, isBookmarked: true, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
+            let data = FeedData[indexPath.item]
+            
+            DispatchQueue.main.async {
+                cell.configuration(
+                    userImg: data.author.profileImageURL,
+                    username: data.author.nickname,
+                    following: data.author.following,
+                    thumbnailImg: data.thumbnailURL,
+                    title: data.title,
+                    bookmarkCount: data.totalBookmarkCount,
+                    isBookmarked: data.bookmarked,
+                    cookingTime: data.totalCookTimeInSeconds,
+                    tools: data.cookwares,
+                    level: data.difficulty,
+                    stars: data.averageRating ?? 0,
+                    isFollowing: data.author.following
+                )
+            }
             cell.followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         } else {
             let data = filteredData[indexPath.item]
-            cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, isBookmarked: data.isBookmarked, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
+//            cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, isBookmarked: data.isBookmarked, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
             cell.followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         }
         

@@ -7,6 +7,7 @@
 
 import UIKit
 import AlignedCollectionViewFlowLayout
+import Kingfisher
 
 protocol RecipeCellDelegate : Any {
     func collectionViewTapped(sender: RecipeCell)
@@ -157,9 +158,7 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
             UIimage.trailingAnchor.constraint(equalTo: informationView.trailingAnchor, constant: -12),
             UIimage.heightAnchor.constraint(lessThanOrEqualToConstant: 130),
             UIimage.widthAnchor.constraint(equalTo: informationView.widthAnchor, constant: -24),
-            
             UIimage.topAnchor.constraint(equalTo: firstLineView.bottomAnchor, constant: 5),
-
             UIimage.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -23),
             
             descriptionLabel.topAnchor.constraint(equalTo: UIimage.bottomAnchor, constant: 23),
@@ -229,11 +228,53 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         descriptionLabel.text = description
     }
     
+    func configuration2(step: Int, time: String, tool: [String], image: String?, description: String, isFolded: Bool) {
+        
+        stepLabel.text = "\(step)단계"
+        
+        tools.append(time)
+        
+        for i in tool {
+            tools.append(CookingTools.caseFromEng(i)?.rawValue ?? "--")
+            print(CookingTools.caseFromEng(i)?.rawValue)
+        }
+        
+        collectionView.reloadData()
+        
+        if !isFolded{
+            if image != nil{
+                UIimage.isHidden = false
+                let url = URL(string: image!)
+                UIimage.load(url: url!)
+                
+            } else {
+                UIimage.isHidden = true
+            }
+        } else {
+            UIimage.isHidden = true
+        }
+        descriptionLabel.text = description
+    }
+    
     func toggleImageViewVisibility(isFolded: Bool, image: UIImage?){
         if !isFolded {
             if image != nil{
                 UIimage.isHidden = false
                 UIimage.image = UIImage(named: "dummyImg") ?? UIImage(named: "dummyImg")
+            } else {
+                UIimage.isHidden = true
+            }
+        } else {
+            UIimage.isHidden = true
+        }
+    }
+    
+    func toggleImageViewVisibility2(isFolded: Bool, image: String?){
+        if !isFolded {
+            if image != nil{
+                UIimage.isHidden = false
+                let url = URL(string: image!)
+                UIimage.load(url: url!)
             } else {
                 UIimage.isHidden = true
             }
@@ -273,3 +314,17 @@ class RecipeCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
     
 }
 
+
+extension UIImageView {
+    func load(url: URL) {
+        DispatchQueue.global().async { [weak self] in
+            if let data = try? Data(contentsOf: url) {
+                if let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self?.image = image
+                    }
+                }
+            }
+        }
+    }
+}

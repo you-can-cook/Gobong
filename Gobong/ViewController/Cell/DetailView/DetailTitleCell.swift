@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 protocol DetailTitleDelegate: Any {
     func profileTapped(cell: DetailTitleCell)
@@ -50,15 +51,45 @@ class DetailTitleCell: UITableViewCell {
         background.layer.shadowOffset = CGSize(width: 0, height: 0)
     }
 
-    func configuration(userImg: String? , username: String, following: Bool, thumbnailImg: String, title: String, bookmarkCount: Int, cookingTime: Int, tools: String, level: String, stars: Double) {
-        userProfile.image = UIImage(named: userImg ?? "프로필 이미지")
+    func configuration(userImg: String? , username: String, following: Bool, thumbnailImg: String, title: String, bookmarkCount: Int, cookingTime: Int, tools: [String], level: String, stars: Double?) {
+        
+        if userImg != nil {
+            let url = URL(string: userImg!)
+            userProfile.kf.setImage(with: url)
+        } else {
+            userProfile.image = UIImage(named: "프로필 이미지")
+        }
+        
         userName.text = username
         followingButton.setTitle(following ? "팔로잉" : "팔로우", for: .normal)
-        thumbnailImage.image = UIImage(named: thumbnailImg)
+        followingButton.backgroundColor = following ? UIColor(named: "softGray") : UIColor(named: "pink")
+        
+        let url = URL(string: thumbnailImg)
+        thumbnailImage.kf.setImage(with: url)
+        
         cookTimeLabel.text = "\(cookingTime)분"
-        cookingToolsLabel.text = tools
+        
+        var hanTool = [String]()
+        
+        for i in tools {
+            hanTool.append(CookingTools.caseFromEng(i)!.rawValue)
+        }
+        
+        if hanTool.count > 2 {
+            cookingToolsLabel.text = "\(hanTool.first!) +\(hanTool.count-1)개"
+        } else if tools.count == 1 {
+            cookingToolsLabel.text = hanTool.first!
+        } else {
+            cookingToolsLabel.text = "-"
+        }
+        
         levelLabel.text = level
-        starLabel.text = "\(stars)공기"
+        
+        if stars != nil {
+            starLabel.text = "\(stars!)공기"
+        } else {
+            starLabel.text = "-"
+        }
     }
     
 }

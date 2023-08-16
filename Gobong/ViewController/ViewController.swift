@@ -22,6 +22,7 @@ struct dummyFeedData {
     var stars: Double
 }
 
+
 class ViewController: UIViewController, UITabBarControllerDelegate {
 
     var userDefault = UserDefaults.standard
@@ -44,13 +45,13 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setupUI()
-        setupData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetailView",
-                let detailVC = segue.destination as? DetailViewController {
-//            detailVC.information = FeedData[selectedIndexPath]
+           let detailVC = segue.destination as? DetailViewController {
+            detailVC.index = FeedData[selectedIndexPath].id
+            print("SENDING DATA>>..",  FeedData[selectedIndexPath].id)
         }
     }
     
@@ -64,31 +65,49 @@ extension ViewController {
     // MARK: DATA
     private func setupUser() {
         //!!!!!임시!!!!
+//        userDefault.set(nil, forKey: "accessToken")
         if userDefault.string(forKey: "accessToken") == nil {
             performSegue(withIdentifier: "showLoginView", sender: self)
+        } else {
+            
+            self.setupData()
+//            Server.shared.getAccessTokenAgain { [self] result in
+//                switch result {
+//                case.success(let info):
+////                    print(info)
+//                    self.userDefault.set(info.accessToken, forKey: "accessToken")
+//                    self.userDefault.set(info.refreshToken, forKey: "refreshToken")
+//
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            }
         }
     }
     
     private func setupData(){
         activityIndicator?.startAnimating()
         
-        Server.shared.getRecipeFeed { Result in
+        Server.shared.getMainRecipeList { Result in
             switch Result {
             case .success(let FeedResponse):
                 print(Result)
                 self.FeedData = FeedResponse.feed
-                self.tableView.reloadData()
+                
+                if self.FeedData.isEmpty {
+                    self.emptyStateView.isHidden = false
+                } else {
+                    self.emptyStateView.isHidden = true
+                    self.tableView.reloadData()
+                }
+                
             case .failure(let Error):
                 print(Error)
             }
             
         }
+        activityIndicator?.stopAnimating()
         
-        if FeedData.isEmpty {
-            emptyStateView.isHidden = false
-        } else {
-            emptyStateView.isHidden = true
-        }
     }
     
     //MARK: UI
@@ -127,17 +146,39 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource, FeedCellD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as! FeedCell
+        cell.delegate = self
+        cell.selectionStyle = .none
         
         let data = FeedData[indexPath.item]
-        cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, isBookmarked: data.isBookmarked, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
-        cell.delegate = self
         
-        cell.selectionStyle = .none
+        DispatchQueue.main.async {
+            cell.configuration(
+                userImg: data.author.profileImageURL,
+                username: data.author.nickname,
+                following: data.author.following,
+                thumbnailImg: data.thumbnailURL,
+                title: data.title,
+                bookmarkCount: data.totalBookmarkCount,
+                isBookmarked: data.bookmarked,
+                cookingTime: data.totalCookTimeInSeconds,
+                tools: data.cookwares,
+                level: data.difficulty,
+                stars: data.averageRating ?? 0,
+                isFollowing: data.author.following
+            )
+            if data.author.myself {
+                cell.followingButton.isHidden = true
+            } else {
+                cell.followingButton.isHidden = false
+            }
+        }
+        
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var selectedIndexPath = indexPath.item
+        selectedIndexPath = indexPath.item
         self.performSegue(withIdentifier: "showDetailView", sender: self)
     }
     

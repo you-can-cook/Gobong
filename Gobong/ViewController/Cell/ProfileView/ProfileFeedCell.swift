@@ -3,7 +3,7 @@
 //  Gobong
 //
 //  Created by Ebbyy on 2023/08/06.
-//
+//a
 
 import UIKit
 
@@ -13,7 +13,7 @@ protocol profileFeedDelegete: Any {
 
 class ProfileFeedCell: UITableViewCell {
     
-    var dummyData: [dummyFeedData] = []
+    var FeedData: [FeedInfo] = []
     var selectedIndexPath = 0
     
     var delegate: profileFeedDelegete?
@@ -135,7 +135,7 @@ extension ProfileFeedCell : UICollectionViewDelegate, UICollectionViewDataSource
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dummyData.count
+        return FeedData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -146,8 +146,9 @@ extension ProfileFeedCell : UICollectionViewDelegate, UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeedBoxCell", for: indexPath) as! FeedBoxCell
 
-        cell.img.image = UIImage(named: dummyData[indexPath.item].thumbnailImg)
-
+        let url = URL(string:  FeedData[indexPath.item].thumbnailURL!)
+        cell.img.load(url: url!)
+    
         NSLayoutConstraint.activate([
             cell.img.widthAnchor.constraint(equalToConstant: contentView.frame.width/3-2),
             cell.img.heightAnchor.constraint(equalToConstant: contentView.frame.width/3-2)
@@ -187,7 +188,7 @@ extension ProfileFeedCell : UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dummyData.count
+        return FeedData.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -199,8 +200,27 @@ extension ProfileFeedCell : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as! FeedCell
 
-        let data = dummyData[indexPath.item]
-        cell.configuration(userImg: data.userImg, username: data.username, following: data.following, thumbnailImg: data.thumbnailImg, title: data.title, bookmarkCount: data.bookmarkCount, isBookmarked: data.isBookmarked, cookingTime: data.cookingTime, tools: data.tools, level: data.level, stars: data.stars)
+//        cell.delegate = self
+        cell.selectionStyle = .none
+        
+        let data = FeedData[indexPath.item]
+        
+        DispatchQueue.main.async {
+            cell.configuration(
+                userImg: data.author.profileImageURL,
+                username: data.author.nickname,
+                following: data.author.following,
+                thumbnailImg: data.thumbnailURL,
+                title: data.title,
+                bookmarkCount: data.totalBookmarkCount,
+                isBookmarked: data.bookmarked,
+                cookingTime: data.totalCookTimeInSeconds,
+                tools: data.cookwares,
+                level: data.difficulty,
+                stars: data.averageRating ?? 0,
+                isFollowing: data.author.following
+            )
+        }
         cell.followingButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
 
         cell.selectionStyle = .none
